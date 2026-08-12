@@ -1,0 +1,7 @@
+{
+  "command": "pytest -q",
+  "failed": 0,
+  "passed": 35,
+  "total": 35,
+  "warnings": 0
+}

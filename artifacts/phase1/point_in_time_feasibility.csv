@@ -1,0 +1,13 @@
+feature_family,status,reason
+Product attributes,SUPPORTED_WITH_LIMITATIONS,Requires live schema and slowly-changing attribute review
+Store/Region,SUPPORTED_WITH_LIMITATIONS,Join keys expected; coverage must be measured
+Customer context,SUPPORTED_WITH_LIMITATIONS,Pre-decision non-PII context only
+Customer preferences,SUPPORTED_WITH_LIMITATIONS,Conditional due to fairness and synthetic-proxy risk
+Price history,SUPPORTED_WITH_LIMITATIONS,Half-open effective interval and overlap audit required
+Competitor prices,SUPPORTED_WITH_LIMITATIONS,Latest observation at or before DecisionTime only
+Promotions,SUPPORTED_WITH_LIMITATIONS,Promotion window must overlap DecisionTime
+Historical sales,SUPPORTED_WITH_LIMITATIONS,Prior-order coverage required at fallback grains
+Behavioral events,SUPPORTED_WITH_LIMITATIONS,Events must precede DecisionTime and be aggregated
+Holiday/Weather,SUPPORTED_WITH_LIMITATIONS,Date/region coverage must be measured
+Inventory,NOT_SUPPORTED_AS_HISTORICAL_FEATURE,Point-in-time snapshot; no backfill or forward-fill
+Inventory (current),SUPPORTED_AS_CURRENT_OPTIMIZATION_CONSTRAINT,Use only at recommendation time

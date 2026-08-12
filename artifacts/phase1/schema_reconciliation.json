@@ -1,0 +1,262 @@
+{
+  "documented": {
+    "column_count": 224,
+    "row_count": 328420,
+    "table_count": 24,
+    "table_rows": {
+      "Browsing_Events": 45000,
+      "Cart_Events": 12000,
+      "Competitor_Price": 40000,
+      "Customer": 5000,
+      "Holiday": 80,
+      "Inventory": 15000,
+      "Pricing_Decision_Log": 35000,
+      "Pricing_Rules": 200,
+      "Product": 3000,
+      "Product_Price_History": 50000,
+      "Promotions": 200,
+      "Sales_Order": 12000,
+      "Sales_Order_Line": 30000,
+      "Search_Events": 12000,
+      "Weather": 3650
+    }
+  },
+  "live": {
+    "column_count": 224,
+    "database": "Retail_Hyperpersonlaization",
+    "row_count": 328420,
+    "schema": "dbo",
+    "table_count": 24,
+    "tables": [
+      {
+        "column_count": 4,
+        "row_count": 150,
+        "table_name": "Brand"
+      },
+      {
+        "column_count": 8,
+        "row_count": 45000,
+        "table_name": "Browsing_Events"
+      },
+      {
+        "column_count": 10,
+        "row_count": 12000,
+        "table_name": "Cart_Events"
+      },
+      {
+        "column_count": 8,
+        "row_count": 40000,
+        "table_name": "Competitor_Price"
+      },
+      {
+        "column_count": 12,
+        "row_count": 5000,
+        "table_name": "Customer"
+      },
+      {
+        "column_count": 8,
+        "row_count": 5000,
+        "table_name": "Customer_Preferences"
+      },
+      {
+        "column_count": 6,
+        "row_count": 80,
+        "table_name": "Holiday"
+      },
+      {
+        "column_count": 13,
+        "row_count": 15000,
+        "table_name": "Inventory"
+      },
+      {
+        "column_count": 23,
+        "row_count": 35000,
+        "table_name": "Pricing_Decision_Log"
+      },
+      {
+        "column_count": 15,
+        "row_count": 200,
+        "table_name": "Pricing_Rules"
+      },
+      {
+        "column_count": 12,
+        "row_count": 3000,
+        "table_name": "Product"
+      },
+      {
+        "column_count": 5,
+        "row_count": 80,
+        "table_name": "Product_Category"
+      },
+      {
+        "column_count": 11,
+        "row_count": 50000,
+        "table_name": "Product_Price_History"
+      },
+      {
+        "column_count": 8,
+        "row_count": 200,
+        "table_name": "Promotions"
+      },
+      {
+        "column_count": 7,
+        "row_count": 5000,
+        "table_name": "Ratings"
+      },
+      {
+        "column_count": 13,
+        "row_count": 25000,
+        "table_name": "Recommendation_Log"
+      },
+      {
+        "column_count": 7,
+        "row_count": 25000,
+        "table_name": "Recommendation_Response"
+      },
+      {
+        "column_count": 5,
+        "row_count": 10,
+        "table_name": "Region"
+      },
+      {
+        "column_count": 11,
+        "row_count": 12000,
+        "table_name": "Sales_Order"
+      },
+      {
+        "column_count": 8,
+        "row_count": 30000,
+        "table_name": "Sales_Order_Line"
+      },
+      {
+        "column_count": 9,
+        "row_count": 12000,
+        "table_name": "Search_Events"
+      },
+      {
+        "column_count": 7,
+        "row_count": 50,
+        "table_name": "Store"
+      },
+      {
+        "column_count": 8,
+        "row_count": 3650,
+        "table_name": "Weather"
+      },
+      {
+        "column_count": 6,
+        "row_count": 5000,
+        "table_name": "Wishlist"
+      }
+    ]
+  },
+  "missing_critical_columns": [],
+  "missing_required_tables": [],
+  "table_reconciliation": [
+    {
+      "difference": 0,
+      "documented_value": 35000,
+      "live_value": 35000,
+      "status": "MATCH",
+      "table": "Pricing_Decision_Log"
+    },
+    {
+      "difference": 0,
+      "documented_value": 50000,
+      "live_value": 50000,
+      "status": "MATCH",
+      "table": "Product_Price_History"
+    },
+    {
+      "difference": 0,
+      "documented_value": 40000,
+      "live_value": 40000,
+      "status": "MATCH",
+      "table": "Competitor_Price"
+    },
+    {
+      "difference": 0,
+      "documented_value": 30000,
+      "live_value": 30000,
+      "status": "MATCH",
+      "table": "Sales_Order_Line"
+    },
+    {
+      "difference": 0,
+      "documented_value": 12000,
+      "live_value": 12000,
+      "status": "MATCH",
+      "table": "Sales_Order"
+    },
+    {
+      "difference": 0,
+      "documented_value": 15000,
+      "live_value": 15000,
+      "status": "MATCH",
+      "table": "Inventory"
+    },
+    {
+      "difference": 0,
+      "documented_value": 3000,
+      "live_value": 3000,
+      "status": "MATCH",
+      "table": "Product"
+    },
+    {
+      "difference": 0,
+      "documented_value": 5000,
+      "live_value": 5000,
+      "status": "MATCH",
+      "table": "Customer"
+    },
+    {
+      "difference": 0,
+      "documented_value": 45000,
+      "live_value": 45000,
+      "status": "MATCH",
+      "table": "Browsing_Events"
+    },
+    {
+      "difference": 0,
+      "documented_value": 12000,
+      "live_value": 12000,
+      "status": "MATCH",
+      "table": "Cart_Events"
+    },
+    {
+      "difference": 0,
+      "documented_value": 12000,
+      "live_value": 12000,
+      "status": "MATCH",
+      "table": "Search_Events"
+    },
+    {
+      "difference": 0,
+      "documented_value": 200,
+      "live_value": 200,
+      "status": "MATCH",
+      "table": "Promotions"
+    },
+    {
+      "difference": 0,
+      "documented_value": 200,
+      "live_value": 200,
+      "status": "MATCH",
+      "table": "Pricing_Rules"
+    },
+    {
+      "difference": 0,
+      "documented_value": 3650,
+      "live_value": 3650,
+      "status": "MATCH",
+      "table": "Weather"
+    },
+    {
+      "difference": 0,
+      "documented_value": 80,
+      "live_value": 80,
+      "status": "MATCH",
+      "table": "Holiday"
+    }
+  ]
+}

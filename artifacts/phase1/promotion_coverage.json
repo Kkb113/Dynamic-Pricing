@@ -1,0 +1,23 @@
+{
+  "decision_coverage": {
+    "active_promotion_decisions": 3052,
+    "coverage_rate": 0.0872,
+    "decisions": 35000
+  },
+  "price_history_associations": {
+    "intervals_with_promotion": 8173,
+    "orphan_promotion_ids": 0,
+    "price_intervals": 50000,
+    "stale_or_inactive_associations": 1893
+  },
+  "promotions": {
+    "active_flag_count": 193,
+    "category_coverage": 69,
+    "invalid_discounts": 0,
+    "invalid_windows": 0,
+    "max_discount": 55.87,
+    "mean_discount": 22.545150000000003,
+    "min_discount": 5.19,
+    "promotions": 200
+  }
+}

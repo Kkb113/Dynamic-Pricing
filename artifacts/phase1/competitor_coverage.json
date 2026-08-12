@@ -1,0 +1,76 @@
+{
+  "price_gap_buckets_30d": [
+    {
+      "decision_count": 664,
+      "gap_bucket": "far above competitor",
+      "purchase_count": 113,
+      "purchase_rate": 0.17018072289156627
+    },
+    {
+      "decision_count": 359,
+      "gap_bucket": "far below competitor",
+      "purchase_count": 61,
+      "purchase_rate": 0.16991643454038996
+    },
+    {
+      "decision_count": 288,
+      "gap_bucket": "near competitor",
+      "purchase_count": 58,
+      "purchase_rate": 0.2013888888888889
+    },
+    {
+      "decision_count": 32701,
+      "gap_bucket": "NO_PRIOR_PRICE",
+      "purchase_count": 6066,
+      "purchase_rate": 0.18549891440628727
+    },
+    {
+      "decision_count": 498,
+      "gap_bucket": "slightly above competitor",
+      "purchase_count": 95,
+      "purchase_rate": 0.19076305220883535
+    },
+    {
+      "decision_count": 490,
+      "gap_bucket": "slightly below competitor",
+      "purchase_count": 99,
+      "purchase_rate": 0.20204081632653062
+    }
+  ],
+  "quality": {
+    "available_observations": 36240,
+    "competitor_count": 5,
+    "mean_price": 148.86995849999977,
+    "nonpositive_prices": 0,
+    "observations": 40000,
+    "price_std": 107.29095932753243
+  },
+  "rule": "ObservedDateTime <= DecisionTime; future observations excluded",
+  "windows": {
+    "0": {
+      "coverage_rate": 0.0015714285714285715,
+      "covered_decisions": 55,
+      "decisions": 35000
+    },
+    "14": {
+      "coverage_rate": 0.03294285714285714,
+      "covered_decisions": 1153,
+      "decisions": 35000
+    },
+    "3": {
+      "coverage_rate": 0.007514285714285715,
+      "covered_decisions": 263,
+      "decisions": 35000
+    },
+    "30": {
+      "coverage_rate": 0.06568571428571429,
+      "covered_decisions": 2299,
+      "decisions": 35000
+    },
+    "7": {
+      "coverage_rate": 0.017371428571428572,
+      "covered_decisions": 608,
+      "decisions": 35000
+    }
+  }
+}

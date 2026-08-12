@@ -1,0 +1,27 @@
+{
+  "applied_price_compliance": {
+    "compliance_rate": 0.9115714285714286,
+    "compliant_decisions": 31905,
+    "orphan_rule_references": 0,
+    "referenced_decisions": 35000
+  },
+  "decision_references": {
+    "decisions": 35000,
+    "with_rule": 35000,
+    "without_rule": 0
+  },
+  "rules": {
+    "active_rules": 200,
+    "category_scoped": 100,
+    "invalid_discount_ranges": 0,
+    "invalid_intervals": 0,
+    "invalid_margin_ranges": 0,
+    "invalid_price_change_ranges": 0,
+    "invalid_price_ranges": 0,
+    "max_priority": 100,
+    "min_priority": 10,
+    "product_scoped": 68,
+    "rule_count": 200,
+    "store_scoped": 70
+  }
+}

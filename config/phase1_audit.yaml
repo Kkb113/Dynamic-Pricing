@@ -1,0 +1,34 @@
+database:
+  env_file: .env
+  server: localhost
+  database_key: SQL_SERVER_DATABASE
+  username_key: SQL_SERVER_USER_NAME
+  password_key: SQL_SERVER_PASSWORD
+  name: Retail_Hyperpersonlaization
+  schema: dbo
+  odbc_driver: ODBC Driver 18 for SQL Server
+  connect_timeout_seconds: 15
+  read_only: true
+audit:
+  artifact_dir: artifacts/phase1
+  document_dir: docs
+  low_frequency_threshold: 5
+  competitor_windows_days: [0, 3, 7, 14, 30]
+  sales_windows_days: [7, 14, 30, 60, 90]
+  behavior_windows_hours: [1, 24, 168, 720]
+  temporal_split_ratios: [0.70, 0.15, 0.15]
+  representative_example_limit: 0
+  export_pii: false
+generator_search:
+  roots:
+    - ../Hyper-Personalization-data-generator
+  terms:
+    - Pricing_Decision_Log
+    - RecommendedPrice
+    - AppliedPrice
+    - ExpectedDemand
+    - PurchaseProbability
+    - PriceElasticity
+    - PurchasedFlag
+    - QuantityPurchased
+    - ActualRevenue

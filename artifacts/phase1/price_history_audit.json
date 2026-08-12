@@ -1,0 +1,19 @@
+{
+  "decision_coverage": {
+    "coverage_rate": 1.0,
+    "covered_decisions": 35000,
+    "decisions": 35000,
+    "duplicate_active_decisions": 0
+  },
+  "interval_rule": "[EffectiveFrom, EffectiveTo)",
+  "overlaps": {
+    "overlap_pairs": 0
+  },
+  "quality": {
+    "intervals": 50000,
+    "invalid_discount_pct": 0,
+    "invalid_interval_order": 0,
+    "missing_prices": 0,
+    "nonpositive_prices": 0
+  }
+}

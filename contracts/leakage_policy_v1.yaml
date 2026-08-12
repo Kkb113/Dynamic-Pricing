@@ -1,0 +1,61 @@
+version: 1
+classifications:
+  - TARGET
+  - ALLOWED_PRE_DECISION
+  - CONDITIONAL_PRE_DECISION
+  - JOIN_ONLY_IDENTIFIER
+  - OPTIMIZATION_ONLY
+  - PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  - PROHIBITED_POST_OUTCOME
+  - PROHIBITED_PRIVACY_OR_IRRELEVANT
+  - PROHIBITED_HISTORICAL_FEATURE
+mandatory_rules:
+  Pricing_Decision_Log.PurchasedFlag:
+    classification: TARGET
+    purchase_model: target
+    quantity_model: population_filter_only
+  Pricing_Decision_Log.QuantityPurchased:
+    classification: TARGET
+    purchase_model: prohibited
+    quantity_model: target
+  Pricing_Decision_Log.AppliedPrice:
+    classification: ALLOWED_PRE_DECISION
+    reason: Observed historical treatment price after rule enforcement; future analogue is CandidatePrice
+  Pricing_Decision_Log.CurrentPrice:
+    classification: ALLOWED_PRE_DECISION
+    reason: Price immediately before the decision
+  Pricing_Decision_Log.RecommendedPrice:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Pricing_Decision_Log.ExpectedDemand:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Pricing_Decision_Log.PurchaseProbability:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Pricing_Decision_Log.PriceElasticity:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Pricing_Decision_Log.ExpectedRevenue:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Pricing_Decision_Log.ExpectedMarginPct:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Pricing_Decision_Log.ModelVersion:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Pricing_Decision_Log.ReasonCode:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Pricing_Decision_Log.ActualRevenue:
+    classification: PROHIBITED_POST_OUTCOME
+  Pricing_Decision_Log.OutcomeTime:
+    classification: PROHIBITED_POST_OUTCOME
+  Pricing_Decision_Log.OrderLineID:
+    classification: PROHIBITED_POST_OUTCOME
+  Inventory.*:
+    classification: PROHIBITED_HISTORICAL_FEATURE
+    optimizer_classification: OPTIMIZATION_ONLY
+  Customer.FirstName:
+    classification: PROHIBITED_PRIVACY_OR_IRRELEVANT
+  Customer.LastName:
+    classification: PROHIBITED_PRIVACY_OR_IRRELEVANT
+  Customer.Email:
+    classification: PROHIBITED_PRIVACY_OR_IRRELEVANT
+  Customer.Gender:
+    classification: PROHIBITED_PRIVACY_OR_IRRELEVANT
+  Customer.BirthDate:
+    classification: PROHIBITED_PRIVACY_OR_IRRELEVANT

@@ -1,0 +1,137 @@
+{
+  "declared_foreign_key_count": 13,
+  "declared_foreign_key_orphans": {
+    "FK_Competitor_Price_Product": 0,
+    "FK_Competitor_Price_Region": 0,
+    "FK_Pricing_Decision_Log_Customer": 0,
+    "FK_Pricing_Decision_Log_OrderLine": 0,
+    "FK_Pricing_Decision_Log_Product": 0,
+    "FK_Pricing_Decision_Log_Rule": 0,
+    "FK_Pricing_Decision_Log_Store": 0,
+    "FK_Pricing_Rules_Category": 0,
+    "FK_Pricing_Rules_Product": 0,
+    "FK_Pricing_Rules_Store": 0,
+    "FK_Product_Price_History_Product": 0,
+    "FK_Product_Price_History_Promotion": 0,
+    "FK_Product_Price_History_Store": 0
+  },
+  "declared_foreign_keys": [
+    {
+      "child_column": "ProductID",
+      "child_table": "Competitor_Price",
+      "foreign_key": "FK_Competitor_Price_Product",
+      "parent_column": "ProductID",
+      "parent_table": "Product"
+    },
+    {
+      "child_column": "RegionID",
+      "child_table": "Competitor_Price",
+      "foreign_key": "FK_Competitor_Price_Region",
+      "parent_column": "RegionID",
+      "parent_table": "Region"
+    },
+    {
+      "child_column": "CustomerID",
+      "child_table": "Pricing_Decision_Log",
+      "foreign_key": "FK_Pricing_Decision_Log_Customer",
+      "parent_column": "CustomerID",
+      "parent_table": "Customer"
+    },
+    {
+      "child_column": "OrderLineID",
+      "child_table": "Pricing_Decision_Log",
+      "foreign_key": "FK_Pricing_Decision_Log_OrderLine",
+      "parent_column": "OrderLineID",
+      "parent_table": "Sales_Order_Line"
+    },
+    {
+      "child_column": "ProductID",
+      "child_table": "Pricing_Decision_Log",
+      "foreign_key": "FK_Pricing_Decision_Log_Product",
+      "parent_column": "ProductID",
+      "parent_table": "Product"
+    },
+    {
+      "child_column": "PricingRuleID",
+      "child_table": "Pricing_Decision_Log",
+      "foreign_key": "FK_Pricing_Decision_Log_Rule",
+      "parent_column": "PricingRuleID",
+      "parent_table": "Pricing_Rules"
+    },
+    {
+      "child_column": "StoreID",
+      "child_table": "Pricing_Decision_Log",
+      "foreign_key": "FK_Pricing_Decision_Log_Store",
+      "parent_column": "StoreID",
+      "parent_table": "Store"
+    },
+    {
+      "child_column": "CategoryID",
+      "child_table": "Pricing_Rules",
+      "foreign_key": "FK_Pricing_Rules_Category",
+      "parent_column": "CategoryID",
+      "parent_table": "Product_Category"
+    },
+    {
+      "child_column": "ProductID",
+      "child_table": "Pricing_Rules",
+      "foreign_key": "FK_Pricing_Rules_Product",
+      "parent_column": "ProductID",
+      "parent_table": "Product"
+    },
+    {
+      "child_column": "StoreID",
+      "child_table": "Pricing_Rules",
+      "foreign_key": "FK_Pricing_Rules_Store",
+      "parent_column": "StoreID",
+      "parent_table": "Store"
+    },
+    {
+      "child_column": "ProductID",
+      "child_table": "Product_Price_History",
+      "foreign_key": "FK_Product_Price_History_Product",
+      "parent_column": "ProductID",
+      "parent_table": "Product"
+    },
+    {
+      "child_column": "PromotionID",
+      "child_table": "Product_Price_History",
+      "foreign_key": "FK_Product_Price_History_Promotion",
+      "parent_column": "PromotionID",
+      "parent_table": "Promotions"
+    },
+    {
+      "child_column": "StoreID",
+      "child_table": "Product_Price_History",
+      "foreign_key": "FK_Product_Price_History_Store",
+      "parent_column": "StoreID",
+      "parent_table": "Store"
+    }
+  ],
+  "duplicate_primary_key_groups": {
+    "Brand": 0,
+    "Browsing_Events": 0,
+    "Cart_Events": 0,
+    "Competitor_Price": 0,
+    "Customer": 0,
+    "Customer_Preferences": 0,
+    "Holiday": 0,
+    "Inventory": 0,
+    "Pricing_Decision_Log": 0,
+    "Pricing_Rules": 0,
+    "Product": 0,
+    "Product_Category": 0,
+    "Product_Price_History": 0,
+    "Promotions": 0,
+    "Ratings": 0,
+    "Recommendation_Log": 0,
+    "Recommendation_Response": 0,
+    "Region": 0,
+    "Sales_Order": 0,
+    "Sales_Order_Line": 0,
+    "Search_Events": 0,
+    "Store": 0,
+    "Weather": 0,
+    "Wishlist": 0
+  }
+}

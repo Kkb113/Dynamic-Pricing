@@ -1,0 +1,8 @@
+{
+  "non_null_count": 35000,
+  "non_purchase_count": 28508,
+  "null_count": 0,
+  "purchase_count": 6492,
+  "purchase_rate": 0.185486,
+  "total_pricing_decisions": 35000
+}

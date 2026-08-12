@@ -1,0 +1,7 @@
+entity_id,decisions,covered_decisions,coverage_rate
+Email,7271,441,0.060651
+Kiosk,4755,281,0.059095
+Mobile,14028,895,0.063800
+Online,968,79,0.081611
+Store,2705,185,0.068391
+Web,5273,418,0.079271

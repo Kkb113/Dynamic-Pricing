@@ -1,0 +1,68 @@
+{
+  "browsing": {
+    "1": {
+      "coverage_rate": 0.7603428571428571,
+      "covered_decisions": 26612,
+      "decisions": 35000
+    },
+    "168": {
+      "coverage_rate": 0.8006,
+      "covered_decisions": 28021,
+      "decisions": 35000
+    },
+    "24": {
+      "coverage_rate": 0.7956571428571428,
+      "covered_decisions": 27848,
+      "decisions": 35000
+    },
+    "720": {
+      "coverage_rate": 0.8095142857142857,
+      "covered_decisions": 28333,
+      "decisions": 35000
+    }
+  },
+  "cart": {
+    "1": {
+      "coverage_rate": 0.2681142857142857,
+      "covered_decisions": 9384,
+      "decisions": 35000
+    },
+    "168": {
+      "coverage_rate": 0.2840285714285714,
+      "covered_decisions": 9941,
+      "decisions": 35000
+    },
+    "24": {
+      "coverage_rate": 0.2768,
+      "covered_decisions": 9688,
+      "decisions": 35000
+    },
+    "720": {
+      "coverage_rate": 0.2997142857142857,
+      "covered_decisions": 10490,
+      "decisions": 35000
+    }
+  },
+  "search_clicked_product": {
+    "1": {
+      "coverage_rate": 0.3000285714285714,
+      "covered_decisions": 10501,
+      "decisions": 35000
+    },
+    "168": {
+      "coverage_rate": 0.31434285714285715,
+      "covered_decisions": 11002,
+      "decisions": 35000
+    },
+    "24": {
+      "coverage_rate": 0.30905714285714286,
+      "covered_decisions": 10817,
+      "decisions": 35000
+    },
+    "720": {
+      "coverage_rate": 0.32817142857142856,
+      "covered_decisions": 11486,
+      "decisions": 35000
+    }
+  }
+}

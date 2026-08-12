@@ -1,0 +1,645 @@
+{
+  "canonical_metadata": {
+    "cardinality": [
+      {
+        "dimension": "ProductID",
+        "low_frequency_count": 1058,
+        "max_observations": 670,
+        "median_observations": 6.0,
+        "min_observations": 1,
+        "p90_observations": 26.0,
+        "row_coverage": 35000,
+        "singleton_count": 257,
+        "unique_values": 2671
+      },
+      {
+        "dimension": "CategoryID",
+        "low_frequency_count": 0,
+        "max_observations": 1003,
+        "median_observations": 471.0,
+        "min_observations": 151,
+        "p90_observations": 860.0,
+        "row_coverage": 35000,
+        "singleton_count": 0,
+        "unique_values": 70
+      },
+      {
+        "dimension": "BrandID",
+        "low_frequency_count": 1,
+        "max_observations": 881,
+        "median_observations": 220.0,
+        "min_observations": 1,
+        "p90_observations": 432.29999999999995,
+        "row_coverage": 35000,
+        "singleton_count": 1,
+        "unique_values": 150
+      },
+      {
+        "dimension": "StoreID",
+        "low_frequency_count": 0,
+        "max_observations": 1219,
+        "median_observations": 708.0,
+        "min_observations": 412,
+        "p90_observations": 886.8,
+        "row_coverage": 35000,
+        "singleton_count": 0,
+        "unique_values": 49
+      },
+      {
+        "dimension": "RegionID",
+        "low_frequency_count": 0,
+        "max_observations": 4705,
+        "median_observations": 3498.5,
+        "min_observations": 1955,
+        "p90_observations": 4470.1,
+        "row_coverage": 35000,
+        "singleton_count": 0,
+        "unique_values": 10
+      },
+      {
+        "dimension": "Channel",
+        "low_frequency_count": 0,
+        "max_observations": 14028,
+        "median_observations": 5014.0,
+        "min_observations": 968,
+        "p90_observations": 10649.5,
+        "row_coverage": 35000,
+        "singleton_count": 0,
+        "unique_values": 6
+      },
+      {
+        "dimension": "CustomerSegment",
+        "low_frequency_count": 0,
+        "max_observations": 7168,
+        "median_observations": 4501.0,
+        "min_observations": 1325,
+        "p90_observations": 6442.8,
+        "row_coverage": 35000,
+        "singleton_count": 0,
+        "unique_values": 8
+      },
+      {
+        "dimension": "LoyaltyTier",
+        "low_frequency_count": 0,
+        "max_observations": 13733,
+        "median_observations": 9025.5,
+        "min_observations": 3216,
+        "p90_observations": 13135.1,
+        "row_coverage": 35000,
+        "singleton_count": 0,
+        "unique_values": 4
+      },
+      {
+        "dimension": "Season",
+        "low_frequency_count": 0,
+        "max_observations": 15708,
+        "median_observations": 4845.0,
+        "min_observations": 3814,
+        "p90_observations": 11899.599999999995,
+        "row_coverage": 35000,
+        "singleton_count": 0,
+        "unique_values": 5
+      },
+      {
+        "dimension": "PromotionID",
+        "low_frequency_count": 0,
+        "max_observations": 123,
+        "median_observations": 35.5,
+        "min_observations": 5,
+        "p90_observations": 79.0,
+        "row_coverage": 8173,
+        "singleton_count": 0,
+        "unique_values": 200
+      }
+    ],
+    "database_status": "CONNECTED_READ_ONLY",
+    "price_support": {
+      "products": 2671,
+      "products_ge_10_decisions": 901,
+      "products_ge_20_decisions": 393,
+      "products_ge_2_decisions": 2414,
+      "products_ge_2_prices": 2409,
+      "products_ge_3_prices": 2101,
+      "products_ge_5_decisions": 1613,
+      "products_ge_5_prices": 1555
+    },
+    "schema_reconciliation": {
+      "documented": {
+        "column_count": 224,
+        "row_count": 328420,
+        "table_count": 24,
+        "table_rows": {
+          "Browsing_Events": 45000,
+          "Cart_Events": 12000,
+          "Competitor_Price": 40000,
+          "Customer": 5000,
+          "Holiday": 80,
+          "Inventory": 15000,
+          "Pricing_Decision_Log": 35000,
+          "Pricing_Rules": 200,
+          "Product": 3000,
+          "Product_Price_History": 50000,
+          "Promotions": 200,
+          "Sales_Order": 12000,
+          "Sales_Order_Line": 30000,
+          "Search_Events": 12000,
+          "Weather": 3650
+        }
+      },
+      "live": {
+        "column_count": 224,
+        "database": "Retail_Hyperpersonlaization",
+        "row_count": 328420,
+        "schema": "dbo",
+        "table_count": 24,
+        "tables": [
+          {
+            "column_count": 4,
+            "row_count": 150,
+            "table_name": "Brand"
+          },
+          {
+            "column_count": 8,
+            "row_count": 45000,
+            "table_name": "Browsing_Events"
+          },
+          {
+            "column_count": 10,
+            "row_count": 12000,
+            "table_name": "Cart_Events"
+          },
+          {
+            "column_count": 8,
+            "row_count": 40000,
+            "table_name": "Competitor_Price"
+          },
+          {
+            "column_count": 12,
+            "row_count": 5000,
+            "table_name": "Customer"
+          },
+          {
+            "column_count": 8,
+            "row_count": 5000,
+            "table_name": "Customer_Preferences"
+          },
+          {
+            "column_count": 6,
+            "row_count": 80,
+            "table_name": "Holiday"
+          },
+          {
+            "column_count": 13,
+            "row_count": 15000,
+            "table_name": "Inventory"
+          },
+          {
+            "column_count": 23,
+            "row_count": 35000,
+            "table_name": "Pricing_Decision_Log"
+          },
+          {
+            "column_count": 15,
+            "row_count": 200,
+            "table_name": "Pricing_Rules"
+          },
+          {
+            "column_count": 12,
+            "row_count": 3000,
+            "table_name": "Product"
+          },
+          {
+            "column_count": 5,
+            "row_count": 80,
+            "table_name": "Product_Category"
+          },
+          {
+            "column_count": 11,
+            "row_count": 50000,
+            "table_name": "Product_Price_History"
+          },
+          {
+            "column_count": 8,
+            "row_count": 200,
+            "table_name": "Promotions"
+          },
+          {
+            "column_count": 7,
+            "row_count": 5000,
+            "table_name": "Ratings"
+          },
+          {
+            "column_count": 13,
+            "row_count": 25000,
+            "table_name": "Recommendation_Log"
+          },
+          {
+            "column_count": 7,
+            "row_count": 25000,
+            "table_name": "Recommendation_Response"
+          },
+          {
+            "column_count": 5,
+            "row_count": 10,
+            "table_name": "Region"
+          },
+          {
+            "column_count": 11,
+            "row_count": 12000,
+            "table_name": "Sales_Order"
+          },
+          {
+            "column_count": 8,
+            "row_count": 30000,
+            "table_name": "Sales_Order_Line"
+          },
+          {
+            "column_count": 9,
+            "row_count": 12000,
+            "table_name": "Search_Events"
+          },
+          {
+            "column_count": 7,
+            "row_count": 50,
+            "table_name": "Store"
+          },
+          {
+            "column_count": 8,
+            "row_count": 3650,
+            "table_name": "Weather"
+          },
+          {
+            "column_count": 6,
+            "row_count": 5000,
+            "table_name": "Wishlist"
+          }
+        ]
+      },
+      "missing_critical_columns": [],
+      "missing_required_tables": [],
+      "table_reconciliation": [
+        {
+          "difference": 0,
+          "documented_value": 35000,
+          "live_value": 35000,
+          "status": "MATCH",
+          "table": "Pricing_Decision_Log"
+        },
+        {
+          "difference": 0,
+          "documented_value": 50000,
+          "live_value": 50000,
+          "status": "MATCH",
+          "table": "Product_Price_History"
+        },
+        {
+          "difference": 0,
+          "documented_value": 40000,
+          "live_value": 40000,
+          "status": "MATCH",
+          "table": "Competitor_Price"
+        },
+        {
+          "difference": 0,
+          "documented_value": 30000,
+          "live_value": 30000,
+          "status": "MATCH",
+          "table": "Sales_Order_Line"
+        },
+        {
+          "difference": 0,
+          "documented_value": 12000,
+          "live_value": 12000,
+          "status": "MATCH",
+          "table": "Sales_Order"
+        },
+        {
+          "difference": 0,
+          "documented_value": 15000,
+          "live_value": 15000,
+          "status": "MATCH",
+          "table": "Inventory"
+        },
+        {
+          "difference": 0,
+          "documented_value": 3000,
+          "live_value": 3000,
+          "status": "MATCH",
+          "table": "Product"
+        },
+        {
+          "difference": 0,
+          "documented_value": 5000,
+          "live_value": 5000,
+          "status": "MATCH",
+          "table": "Customer"
+        },
+        {
+          "difference": 0,
+          "documented_value": 45000,
+          "live_value": 45000,
+          "status": "MATCH",
+          "table": "Browsing_Events"
+        },
+        {
+          "difference": 0,
+          "documented_value": 12000,
+          "live_value": 12000,
+          "status": "MATCH",
+          "table": "Cart_Events"
+        },
+        {
+          "difference": 0,
+          "documented_value": 12000,
+          "live_value": 12000,
+          "status": "MATCH",
+          "table": "Search_Events"
+        },
+        {
+          "difference": 0,
+          "documented_value": 200,
+          "live_value": 200,
+          "status": "MATCH",
+          "table": "Promotions"
+        },
+        {
+          "difference": 0,
+          "documented_value": 200,
+          "live_value": 200,
+          "status": "MATCH",
+          "table": "Pricing_Rules"
+        },
+        {
+          "difference": 0,
+          "documented_value": 3650,
+          "live_value": 3650,
+          "status": "MATCH",
+          "table": "Weather"
+        },
+        {
+          "difference": 0,
+          "documented_value": 80,
+          "live_value": 80,
+          "status": "MATCH",
+          "table": "Holiday"
+        }
+      ]
+    },
+    "target": {
+      "non_null_count": 35000,
+      "non_purchase_count": 28508,
+      "null_count": 0,
+      "purchase_count": 6492,
+      "purchase_rate": 0.185486,
+      "total_pricing_decisions": 35000
+    },
+    "temporal_coverage": [
+      {
+        "column": "EventTime",
+        "distinct_active_dates": 365,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31T23:59:39",
+        "min_timestamp": "2025-01-01T09:02:17",
+        "row_count": 45000,
+        "status": "AVAILABLE",
+        "table": "Browsing_Events"
+      },
+      {
+        "column": "EventTime",
+        "distinct_active_dates": 365,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31T22:03:03",
+        "min_timestamp": "2025-01-01T09:36:22",
+        "row_count": 12000,
+        "status": "AVAILABLE",
+        "table": "Cart_Events"
+      },
+      {
+        "column": "ObservedDateTime",
+        "distinct_active_dates": 365,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31T22:54:02",
+        "min_timestamp": "2025-01-01T07:10:51",
+        "row_count": 40000,
+        "status": "AVAILABLE",
+        "table": "Competitor_Price"
+      },
+      {
+        "column": "DecisionTime",
+        "distinct_active_dates": 365,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31T23:59:39",
+        "min_timestamp": "2025-01-01T08:12:26",
+        "row_count": 35000,
+        "status": "AVAILABLE",
+        "table": "Pricing_Decision_Log"
+      },
+      {
+        "column": "OutcomeTime",
+        "distinct_active_dates": 373,
+        "max_gap_days": 1,
+        "max_timestamp": "2026-01-08T18:06:35",
+        "min_timestamp": "2025-01-01T13:53:16",
+        "row_count": 35000,
+        "status": "AVAILABLE",
+        "table": "Pricing_Decision_Log"
+      },
+      {
+        "column": "EffectiveFrom",
+        "distinct_active_dates": 6,
+        "max_gap_days": 91,
+        "max_timestamp": "2025-10-01T00:00:00",
+        "min_timestamp": "2025-01-01T00:00:00",
+        "row_count": 50000,
+        "status": "AVAILABLE",
+        "table": "Product_Price_History"
+      },
+      {
+        "column": "EffectiveTo",
+        "distinct_active_dates": 5,
+        "max_gap_days": 61,
+        "max_timestamp": "2025-10-01T00:00:00",
+        "min_timestamp": "2025-04-02T00:00:00",
+        "row_count": 50000,
+        "status": "AVAILABLE",
+        "table": "Product_Price_History"
+      },
+      {
+        "column": "StartDate",
+        "distinct_active_dates": 152,
+        "max_gap_days": 10,
+        "max_timestamp": "2025-12-30",
+        "min_timestamp": "2025-01-01",
+        "row_count": 200,
+        "status": "AVAILABLE",
+        "table": "Promotions"
+      },
+      {
+        "column": "EndDate",
+        "distinct_active_dates": 142,
+        "max_gap_days": 12,
+        "max_timestamp": "2025-12-31",
+        "min_timestamp": "2025-01-08",
+        "row_count": 200,
+        "status": "AVAILABLE",
+        "table": "Promotions"
+      },
+      {
+        "column": "RatingDate",
+        "distinct_active_dates": 364,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31",
+        "min_timestamp": "2025-01-02",
+        "row_count": 5000,
+        "status": "AVAILABLE",
+        "table": "Ratings"
+      },
+      {
+        "column": "ServedTime",
+        "distinct_active_dates": 365,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31T22:01:22",
+        "min_timestamp": "2025-01-01T10:00:00",
+        "row_count": 25000,
+        "status": "AVAILABLE",
+        "table": "Recommendation_Log"
+      },
+      {
+        "column": "ResponseTime",
+        "distinct_active_dates": 365,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31T23:05:40",
+        "min_timestamp": "2025-01-01T10:07:00",
+        "row_count": 25000,
+        "status": "AVAILABLE",
+        "table": "Recommendation_Response"
+      },
+      {
+        "column": "OrderDate",
+        "distinct_active_dates": 365,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31",
+        "min_timestamp": "2025-01-01",
+        "row_count": 12000,
+        "status": "AVAILABLE",
+        "table": "Sales_Order"
+      },
+      {
+        "column": "EventTime",
+        "distinct_active_dates": 365,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31T23:54:04",
+        "min_timestamp": "2025-01-01T08:37:28",
+        "row_count": 12000,
+        "status": "AVAILABLE",
+        "table": "Search_Events"
+      },
+      {
+        "column": "Date",
+        "distinct_active_dates": 365,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31",
+        "min_timestamp": "2025-01-01",
+        "row_count": 3650,
+        "status": "AVAILABLE",
+        "table": "Weather"
+      },
+      {
+        "column": "AddedDate",
+        "distinct_active_dates": 365,
+        "max_gap_days": 1,
+        "max_timestamp": "2025-12-31",
+        "min_timestamp": "2025-01-01",
+        "row_count": 5000,
+        "status": "AVAILABLE",
+        "table": "Wishlist"
+      },
+      {
+        "column": "RemovedDate",
+        "distinct_active_dates": 358,
+        "max_gap_days": 2,
+        "max_timestamp": "2025-12-31",
+        "min_timestamp": "2025-01-03",
+        "row_count": 5000,
+        "status": "AVAILABLE",
+        "table": "Wishlist"
+      },
+      {
+        "column": "CreatedDate",
+        "distinct_active_dates": 2409,
+        "max_gap_days": 5,
+        "max_timestamp": "2025-12-30",
+        "min_timestamp": "2018-01-01",
+        "row_count": 5000,
+        "status": "AVAILABLE",
+        "table": "Customer"
+      },
+      {
+        "column": "SnapshotDate",
+        "distinct_active_dates": 1,
+        "max_gap_days": null,
+        "max_timestamp": "2025-12-31",
+        "min_timestamp": "2025-12-31",
+        "row_count": 15000,
+        "status": "AVAILABLE",
+        "table": "Inventory"
+      },
+      {
+        "column": "Date",
+        "distinct_active_dates": 69,
+        "max_gap_days": 25,
+        "max_timestamp": "2025-12-25",
+        "min_timestamp": "2025-01-01",
+        "row_count": 80,
+        "status": "AVAILABLE",
+        "table": "Holiday"
+      }
+    ],
+    "temporal_split": {
+      "boundaries": {
+        "max_time": "2025-12-31T23:59:39",
+        "min_time": "2025-01-01T08:12:26",
+        "train_end": "2025-09-23T14:26:24",
+        "validation_end": "2025-11-15T23:42:22"
+      },
+      "policy": "chronological; no random row split",
+      "splits": [
+        {
+          "category_coverage": 70,
+          "end_time": "2025-09-23T14:26:24",
+          "non_purchase_count": 19919,
+          "product_coverage": 2517,
+          "purchase_count": 4581,
+          "row_count": 24500,
+          "split": "train",
+          "start_time": "2025-01-01T08:12:26",
+          "store_coverage": 49
+        },
+        {
+          "category_coverage": 70,
+          "end_time": "2025-11-15T23:42:22",
+          "non_purchase_count": 4311,
+          "product_coverage": 1470,
+          "purchase_count": 939,
+          "row_count": 5250,
+          "split": "validation",
+          "start_time": "2025-09-23T15:09:15",
+          "store_coverage": 49
+        },
+        {
+          "category_coverage": 70,
+          "end_time": "2025-12-31T23:59:39",
+          "non_purchase_count": 4278,
+          "product_coverage": 1426,
+          "purchase_count": 972,
+          "row_count": 5250,
+          "split": "test",
+          "start_time": "2025-11-15T23:57:30",
+          "store_coverage": 49
+        }
+      ]
+    }
+  },
+  "sha256": "f4a431cc0526389d53c9b3316e6807047cb3b69599c775983518fd20553f3489",
+  "status": "COMPLETE"
+}

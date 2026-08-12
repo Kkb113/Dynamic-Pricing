@@ -1,0 +1,36 @@
+{
+  "groups": [
+    {
+      "max_value": 4,
+      "mean_value": 1.3043746149106592,
+      "median": 1.0,
+      "min_value": 1,
+      "null_count": 0,
+      "outcome_group": "1",
+      "p75": 1.0,
+      "p90": 2.0,
+      "p95": 3.0,
+      "p99": 4.0,
+      "positive_count": 6492,
+      "row_count": 6492,
+      "std_value": 0.6358755078799418,
+      "zero_count": 0
+    },
+    {
+      "max_value": 0,
+      "mean_value": 0.0,
+      "median": 0.0,
+      "min_value": 0,
+      "null_count": 0,
+      "outcome_group": "0",
+      "p75": 0.0,
+      "p90": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "positive_count": 0,
+      "row_count": 28508,
+      "std_value": 0.0,
+      "zero_count": 28508
+    }
+  ]
+}

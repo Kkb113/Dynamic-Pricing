@@ -1,0 +1,5 @@
+{
+  "finding": "No generator relationship may be inferred when source is unavailable.",
+  "matches": [],
+  "status": "GENERATOR_LOGIC_NOT_AVAILABLE"
+}

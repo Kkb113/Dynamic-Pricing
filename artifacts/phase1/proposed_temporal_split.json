@@ -1,0 +1,44 @@
+{
+  "boundaries": {
+    "max_time": "2025-12-31T23:59:39",
+    "min_time": "2025-01-01T08:12:26",
+    "train_end": "2025-09-23T14:26:24",
+    "validation_end": "2025-11-15T23:42:22"
+  },
+  "policy": "chronological; no random row split",
+  "splits": [
+    {
+      "category_coverage": 70,
+      "end_time": "2025-09-23T14:26:24",
+      "non_purchase_count": 19919,
+      "product_coverage": 2517,
+      "purchase_count": 4581,
+      "row_count": 24500,
+      "split": "train",
+      "start_time": "2025-01-01T08:12:26",
+      "store_coverage": 49
+    },
+    {
+      "category_coverage": 70,
+      "end_time": "2025-11-15T23:42:22",
+      "non_purchase_count": 4311,
+      "product_coverage": 1470,
+      "purchase_count": 939,
+      "row_count": 5250,
+      "split": "validation",
+      "start_time": "2025-09-23T15:09:15",
+      "store_coverage": 49
+    },
+    {
+      "category_coverage": 70,
+      "end_time": "2025-12-31T23:59:39",
+      "non_purchase_count": 4278,
+      "product_coverage": 1426,
+      "purchase_count": 972,
+      "row_count": 5250,
+      "split": "test",
+      "start_time": "2025-11-15T23:57:30",
+      "store_coverage": 49
+    }
+  ]
+}

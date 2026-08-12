@@ -1,0 +1,83 @@
+version: 1
+project_name: AI-Driven Dynamic Pricing and Promotion Optimization
+use_case: Seasonal and slow-moving retail products
+prediction_grain: One Pricing_Decision_Log record per observed decision/context/outcome
+primary_target:
+  field: Pricing_Decision_Log.PurchasedFlag
+  task: binary_purchase_probability
+secondary_target:
+  field: Pricing_Decision_Log.QuantityPurchased
+  task: expected_quantity_conditional_on_purchase
+  population_filter: PurchasedFlag = 1
+optimization_objective:
+  primary: expected_gross_profit
+  reported_kpi: expected_revenue
+source_database: Retail_Hyperpersonlaization
+source_schema: dbo
+primary_fact_table: Pricing_Decision_Log
+identifier_policy:
+  join_only: [PricingDecisionID, SessionID, CustomerID]
+  conditional_categorical: [ProductID, StoreID]
+allowed_pre_decision_features:
+  - AppliedPrice
+  - CurrentPrice
+  - Product attributes available at DecisionTime
+  - Store and region context
+  - Season and channel
+  - Point-in-time historical sales aggregates
+  - Latest prior competitor-price aggregates
+  - Active promotion context
+  - Holiday and weather context
+conditional_features:
+  - ProductID
+  - StoreID
+  - CustomerSegment
+  - LoyaltyTier
+  - PreferredChannel
+  - PriceSensitivity
+  - CategoryAffinityScore
+  - BrandAffinityScore
+  - Region
+  - Pre-decision browsing, cart, and search aggregates
+join_only_fields: [PricingDecisionID, SessionID, CustomerID, PromotionID, PricingRuleID]
+optimization_only_fields:
+  - Current inventory snapshot
+  - CostPrice
+  - Pricing rules
+  - Commercial constraints
+prohibited_fields:
+  - RecommendedPrice
+  - ExpectedDemand
+  - PurchaseProbability
+  - PriceElasticity
+  - ExpectedRevenue
+  - ExpectedMarginPct
+  - ModelVersion
+  - ReasonCode
+  - ActualRevenue
+  - OutcomeTime
+  - OrderLineID
+  - FirstName
+  - LastName
+  - Email
+  - Gender
+  - BirthDate
+temporal_policy:
+  invariant: feature_timestamp <= DecisionTime
+  split: chronological_only_no_random_row_split
+  price_history_interval: EffectiveFrom <= DecisionTime AND (EffectiveTo IS NULL OR DecisionTime < EffectiveTo)
+inventory_policy:
+  historical_ml_feature: prohibited
+  current_optimizer_constraint: allowed
+  snapshot_must_not_be_backfilled: true
+promotion_policy: Promotion must overlap DecisionTime; a non-null PromotionID alone is insufficient
+competitor_policy: Select latest observation where ObservedDateTime <= DecisionTime; never nearest future observation
+privacy_policy: Exclude direct PII and avoid personally discriminatory pricing
+perishable_policy: Expiry-driven pricing is out of scope because expiry/batch history is unavailable
+future_train_validation_test_policy: oldest=train, later=validation, newest=holdout_test
+model_family_plan:
+  purchase_model:
+    primary_candidate: CatBoostClassifier
+  quantity_model:
+    primary_candidate: CatBoostRegressor
+  challengers: [LightGBM, XGBoost]
