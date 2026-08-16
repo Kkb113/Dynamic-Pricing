@@ -1,4 +1,19 @@
 {
+  "audit_source_columns": {
+    "behavior": "selected_behavior_event_at",
+    "competitor": "selected_competitor_observed_at",
+    "price_history": [
+      "selected_price_effective_from",
+      "selected_price_effective_to"
+    ],
+    "promotion": [
+      "active_history_promotion_id",
+      "selected_promotion_start_date",
+      "selected_promotion_end_date",
+      "active_promotion_flag"
+    ],
+    "sales": "selected_sales_order_date"
+  },
   "behavior_temporal_rule": "EventTime <= DecisionTime",
   "competitor_temporal_rule": "DecisionTime-30 days <= ObservedDateTime <= DecisionTime",
   "future_behavioral_events_used": 0,
@@ -6,7 +21,9 @@
   "future_price_intervals_used": 0,
   "future_sales_used": 0,
   "historical_inventory_features": 0,
+  "invalid_promotion_overlap": 0,
   "price_history_temporal_rule": "EffectiveFrom <= DecisionTime AND (EffectiveTo IS NULL OR DecisionTime < EffectiveTo)",
+  "promotion_temporal_rule": "StartDate <= CAST(DecisionTime AS date) <= EndDate",
   "sales_temporal_rule": "OrderDate >= DATEADD(day,-N,CAST(DecisionTime AS date)) AND OrderDate < CAST(DecisionTime AS date)",
   "same_day_date_only_sales_used": 0,
   "stale_promotion_associations_treated_active": 0

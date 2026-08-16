@@ -3,7 +3,7 @@
 ## Grain and targets
 
 - Rows: **35,000**
-- Columns: **94**
+- Columns: **102**
 - Unique `PricingDecisionID`: **35,000**
 - Purchases: **6,492**; non-purchases: **28,508**
 - Quantity-population rows: **6,492**
@@ -57,7 +57,8 @@ Core price, price-history, calendar, context, sales, promotion, holiday/weather,
     "EXACT": 2299,
     "NONE": 10456,
     "PRODUCT_FALLBACK": 12637,
-    "REGION_FALLBACK": 9608
+    "REGION_GENERIC_CHANNEL": 2609,
+    "REGION_OTHER_CHANNEL": 6999
   },
   "window_days": 30
 }
@@ -68,4 +69,4 @@ Machine-readable coverage and distribution reports are in `artifacts/phase2/feat
 
 ## Source reconciliation
 
-Source status: **MATCH**. Accepted Phase 1 head: `29c3437e6a13df2c7ee8a24796d32d4762d4a900`. Source-tree hash: `e698da53211a2a0d41cf7ad5665362cf4f0516bddcdcf0375b74d7c700619365`.
+Source status: **MATCH**. Accepted Phase 1 head: `29c3437e6a13df2c7ee8a24796d32d4762d4a900`. Source-tree hash: `a0cd1e9f3466291f712689b81ebfa297e54a791200c6bd52829c5f55509adc7b`.

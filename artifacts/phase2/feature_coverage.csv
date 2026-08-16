@@ -1,6 +1,4 @@
 feature_name,feature_group,row_count,non_null_count,null_count,coverage_pct,zero_count,distinct_count,unique_values,top_frequency
-ProductID,conditional_high_cardinality,35000,35000,0,100.0,0,2671,PRO002579|PRO002560|PRO002325|PRO000518|PRO000001|PRO001849|PRO000731|PRO000105|PRO000508|PRO002402|PRO002813|PRO000415|PRO002829|PRO002913|PRO000730|PRO000247|PRO000482|PRO001847|PRO000630|PRO001351|PRO001049|PRO002495|PRO002731|PRO001655|PRO002704,670
-StoreID,conditional_high_cardinality,35000,35000,0,100.0,0,49,STO000044|STO000037|STO000016|STO000012|STO000033|STO000041|STO000017|STO000050|STO000025|STO000023|STO000036|STO000030|STO000014|STO000026|STO000032|STO000029|STO000034|STO000038|STO000020|STO000031|STO000042|STO000035|STO000021|STO000027|STO000009,1219
 Channel,context,35000,35000,0,100.0,0,6,Mobile|Email|Web|Kiosk|Store|Online,14028
 CategoryID,context,35000,35000,0,100.0,0,70,CAT000012|CAT000019|CAT000014|CAT000011|CAT000065|CAT000024|CAT000017|CAT000021|CAT000064|CAT000052|CAT000048|CAT000043|CAT000050|CAT000057|CAT000045|CAT000016|CAT000018|CAT000047|CAT000013|CAT000022|CAT000015|CAT000074|CAT000041|CAT000046|CAT000037,1003
 BrandID,context,35000,35000,0,100.0,0,150,BRA000005|BRA000022|BRA000002|BRA000038|BRA000125|BRA000010|BRA000080|BRA000070|BRA000090|BRA000068|BRA000079|BRA000075|BRA000048|BRA000121|BRA000093|BRA000071|BRA000063|BRA000050|BRA000113|BRA000099|BRA000006|BRA000146|BRA000018|BRA000031|BRA000020,881
@@ -21,8 +19,8 @@ history_discount_pct,price_history,35000,35000,0,100.0,22372,1357,,22372
 days_since_current_price_started,price_history,35000,35000,0,100.0,0,34856,,2
 previous_selling_price,price_history,35000,25545,9455,72.985714,0,8147,,109
 previous_price_change_pct,price_history,35000,25545,9455,72.985714,54,9443,,109
-active_promotion_flag,promotion,35000,35000,0,100.0,31948,2,,31948
-active_promotion_discount_pct,promotion,35000,3052,31948,8.72,0,194,,64
+active_promotion_flag,promotion,35000,35000,0,100.0,34077,2,,34077
+active_promotion_discount_pct,promotion,35000,923,34077,2.637143,0,159,,25
 decision_month,calendar,35000,35000,0,100.0,0,12,,3607
 decision_quarter,calendar,35000,35000,0,100.0,0,4,,9794
 decision_day_of_week,calendar,35000,35000,0,100.0,5046,7,,5189
@@ -49,36 +47,8 @@ product_sales_velocity_30d,sales,35000,1,34999,0.002857,0,1,,1
 product_sales_velocity_90d,sales,35000,1,34999,0.002857,0,1,,1
 product_sales_velocity_ratio_7d_30d,sales,35000,1,34999,0.002857,0,1,,1
 days_since_last_product_sale,sales,35000,33453,1547,95.58,0,297,,1863
-competitor_price_exact_channel,optional_competitor,35000,2299,32701,6.568571,0,884,,34
-competitor_price_region_fallback,optional_competitor,35000,11907,23093,34.02,0,4902,,33
-competitor_price_product_fallback,optional_competitor,35000,24544,10456,70.125714,0,8480,,29
-competitor_price,optional_competitor,35000,24544,10456,70.125714,0,8663,,41
-competitor_price_available,optional_competitor,35000,35000,0,100.0,10456,2,,24544
-competitor_price_age_days,optional_competitor,35000,24544,10456,70.125714,0,24423,,3
-competitor_match_level,optional_competitor,35000,35000,0,100.0,0,4,PRODUCT_FALLBACK|NONE|REGION_FALLBACK|EXACT,12637
-price_vs_competitor_pct,optional_competitor,35000,24544,10456,70.125714,12,22481,,15
-product_views_1h,behavior,35000,35000,0,100.0,8388,4,,25892
-product_views_24h,behavior,35000,35000,0,100.0,7152,5,,26909
-product_views_168h,behavior,35000,35000,0,100.0,6979,10,,26235
-product_views_720h,behavior,35000,35000,0,100.0,6667,24,,24828
-cart_additions_1h,behavior,35000,35000,0,100.0,25616,3,,25616
-cart_additions_24h,behavior,35000,35000,0,100.0,25312,4,,25312
-cart_additions_168h,behavior,35000,35000,0,100.0,25059,6,,25059
-cart_additions_720h,behavior,35000,35000,0,100.0,24510,9,,24510
-search_clicks_1h,behavior,35000,35000,0,100.0,24499,2,,24499
-search_clicks_24h,behavior,35000,35000,0,100.0,24183,3,,24183
-search_clicks_168h,behavior,35000,35000,0,100.0,23998,5,,23998
-search_clicks_720h,behavior,35000,35000,0,100.0,23514,8,,23514
 is_holiday,holiday_weather,35000,35000,0,100.0,32965,2,,32965
 holiday_sales_impact_factor,holiday_weather,35000,2035,32965,5.814286,0,53,,226
 weather_temperature,holiday_weather,35000,35000,0,100.0,0,98,,881
 weather_condition,holiday_weather,35000,35000,0,100.0,0,8,Partly Cloudy|Windy|Cloudy|Clear|Heavy Rain|Rain|Snow|Light Snow,7011
 weather_precipitation,holiday_weather,35000,35000,0,100.0,27052,178,,27052
-CustomerSegment,conditional_customer,35000,35000,0,100.0,0,8,Budget-Conscious Family|Outdoor Enthusiast|Technology Early Adopter|Premium Professional|Fitness Shopper|Home and Lifestyle Shopper|Seasonal Gift Shopper|Infrequent Convenience Shopper,7168
-LoyaltyTier,conditional_customer,35000,35000,0,100.0,0,4,Bronze|Silver|Gold|Platinum,13733
-PreferredChannel,conditional_customer,35000,35000,0,100.0,0,4,Mobile|Web|Omnichannel|Store,12618
-PriceSensitivity,conditional_customer,35000,35000,0,100.0,0,3,Medium|High|Low,17934
-CategoryAffinityScore,conditional_customer,35000,35000,0,100.0,0,3679,,415
-BrandAffinityScore,conditional_customer,35000,35000,0,100.0,0,3671,,415
-FavoriteCategoryID,conditional_customer,35000,35000,0,100.0,0,70,CAT000074|CAT000079|CAT000077|CAT000024|CAT000011|CAT000018|CAT000080|CAT000020|CAT000016|CAT000021|CAT000017|CAT000012|CAT000037|CAT000064|CAT000022|CAT000075|CAT000015|CAT000052|CAT000061|CAT000046|CAT000078|CAT000032|CAT000013|CAT000019|CAT000045,1161
-FavoriteBrandID,conditional_customer,35000,35000,0,100.0,0,149,BRA000013|BRA000149|BRA000006|BRA000093|BRA000020|BRA000084|BRA000103|BRA000008|BRA000075|BRA000002|BRA000079|BRA000042|BRA000054|BRA000049|BRA000141|BRA000099|BRA000121|BRA000136|BRA000050|BRA000010|BRA000016|BRA000090|BRA000012|BRA000064|BRA000132,711

@@ -4,8 +4,18 @@
     "DecisionTime",
     "CustomerID",
     "SessionID",
+    "FavoriteCategoryID",
+    "FavoriteBrandID",
     "active_history_promotion_id",
     "active_price_history_id",
+    "selected_price_effective_from",
+    "selected_price_effective_to",
+    "active_promotion_id",
+    "selected_promotion_start_date",
+    "selected_promotion_end_date",
+    "selected_sales_order_date",
+    "selected_competitor_observed_at",
+    "selected_behavior_event_at",
     "price_history_current_price_delta",
     "price_history_current_price_mismatch",
     "holiday_count"
@@ -25,9 +35,7 @@
     "CustomerSegment",
     "LoyaltyTier",
     "PreferredChannel",
-    "PriceSensitivity",
-    "FavoriteCategoryID",
-    "FavoriteBrandID"
+    "PriceSensitivity"
   ],
   "numeric_features": [
     "CurrentPrice",
@@ -133,9 +141,7 @@
     "PreferredChannel",
     "PriceSensitivity",
     "CategoryAffinityScore",
-    "BrandAffinityScore",
-    "FavoriteCategoryID",
-    "FavoriteBrandID"
+    "BrandAffinityScore"
   ],
   "purchase_core_features": [
     "CurrentPrice",
@@ -220,9 +226,7 @@
     "PreferredChannel",
     "PriceSensitivity",
     "CategoryAffinityScore",
-    "BrandAffinityScore",
-    "FavoriteCategoryID",
-    "FavoriteBrandID"
+    "BrandAffinityScore"
   ],
   "quantity_core_features": [
     "CurrentPrice",

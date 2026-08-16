@@ -301,6 +301,26 @@
   },
   {
     "conditional": false,
+    "contract_dtype": "datetime",
+    "feature_group": "price_history",
+    "model_eligible": false,
+    "name": "selected_price_effective_from",
+    "pandas_dtype": "datetime64[us]",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "datetime",
+    "feature_group": "price_history",
+    "model_eligible": false,
+    "name": "selected_price_effective_to",
+    "pandas_dtype": "datetime64[us]",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
     "contract_dtype": "float",
     "feature_group": "price_history",
     "model_eligible": false,
@@ -328,6 +348,36 @@
     "pandas_dtype": "int8",
     "price_dependent": false,
     "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "string",
+    "feature_group": "promotion",
+    "model_eligible": false,
+    "name": "active_promotion_id",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "date",
+    "feature_group": "promotion",
+    "model_eligible": false,
+    "name": "selected_promotion_start_date",
+    "pandas_dtype": "datetime64[s]",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "date",
+    "feature_group": "promotion",
+    "model_eligible": false,
+    "name": "selected_promotion_end_date",
+    "pandas_dtype": "datetime64[s]",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
   },
   {
     "conditional": false,
@@ -601,6 +651,16 @@
   },
   {
     "conditional": false,
+    "contract_dtype": "date",
+    "feature_group": "sales",
+    "model_eligible": false,
+    "name": "selected_sales_order_date",
+    "pandas_dtype": "datetime64[ns]",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
     "contract_dtype": "float",
     "feature_group": "optional_competitor",
     "model_eligible": true,
@@ -658,6 +718,16 @@
     "pandas_dtype": "float64",
     "price_dependent": false,
     "role": "OPTIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "datetime",
+    "feature_group": "optional_competitor",
+    "model_eligible": false,
+    "name": "selected_competitor_observed_at",
+    "pandas_dtype": "datetime64[ns]",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
   },
   {
     "conditional": false,
@@ -801,6 +871,16 @@
   },
   {
     "conditional": false,
+    "contract_dtype": "datetime",
+    "feature_group": "behavior",
+    "model_eligible": false,
+    "name": "selected_behavior_event_at",
+    "pandas_dtype": "datetime64[ns]",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
     "contract_dtype": "int8",
     "feature_group": "holiday_weather",
     "model_eligible": true,
@@ -920,23 +1000,23 @@
     "role": "CONDITIONAL_MODEL_FEATURE"
   },
   {
-    "conditional": true,
+    "conditional": false,
     "contract_dtype": "category",
-    "feature_group": "conditional_customer",
-    "model_eligible": true,
+    "feature_group": "customer_context",
+    "model_eligible": false,
     "name": "FavoriteCategoryID",
     "pandas_dtype": "str",
     "price_dependent": false,
-    "role": "CONDITIONAL_MODEL_FEATURE"
+    "role": "JOIN_ONLY"
   },
   {
-    "conditional": true,
+    "conditional": false,
     "contract_dtype": "category",
-    "feature_group": "conditional_customer",
-    "model_eligible": true,
+    "feature_group": "customer_context",
+    "model_eligible": false,
     "name": "FavoriteBrandID",
     "pandas_dtype": "str",
     "price_dependent": false,
-    "role": "CONDITIONAL_MODEL_FEATURE"
+    "role": "JOIN_ONLY"
   }
 ]

@@ -24,10 +24,10 @@
   ],
   "logical_relationship_orphans_phase1": 0,
   "promotion": {
-    "delta_pp": 0.0,
+    "delta_pp": -6.082857000000001,
     "phase1_pct": 8.72,
-    "phase2_pct": 8.72,
-    "within_3pp": true
+    "phase2_pct": 2.637143,
+    "within_3pp": false
   },
   "sales": [
     {

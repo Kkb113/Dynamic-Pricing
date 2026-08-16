@@ -1,5 +1,5 @@
 {
-  "dataset_fingerprint_sha256": "dabd7e11bf73d4e108bd0c9a1a10b45a5394344374a117d5c980d39cd63a4a9b",
+  "dataset_fingerprint_sha256": "b88d3d6595d4890509b523c0df0b4ba2b173e7ed7324c5bb0e4cc95e5bd3097d",
   "diagnostics": {
     "behavior": {
       "cart_additions": {
@@ -36,13 +36,14 @@
         "EXACT": 2299,
         "NONE": 10456,
         "PRODUCT_FALLBACK": 12637,
-        "REGION_FALLBACK": 9608
+        "REGION_GENERIC_CHANNEL": 2609,
+        "REGION_OTHER_CHANNEL": 6999
       },
       "window_days": 30
     },
     "deterministic_regeneration": {
-      "build_1_fingerprint": "dabd7e11bf73d4e108bd0c9a1a10b45a5394344374a117d5c980d39cd63a4a9b",
-      "build_2_fingerprint": "dabd7e11bf73d4e108bd0c9a1a10b45a5394344374a117d5c980d39cd63a4a9b",
+      "build_1_fingerprint": "b88d3d6595d4890509b523c0df0b4ba2b173e7ed7324c5bb0e4cc95e5bd3097d",
+      "build_2_fingerprint": "b88d3d6595d4890509b523c0df0b4ba2b173e7ed7324c5bb0e4cc95e5bd3097d",
       "canonical_order": [
         "DecisionTime",
         "PricingDecisionID"
@@ -77,10 +78,10 @@
       ],
       "logical_relationship_orphans_phase1": 0,
       "promotion": {
-        "delta_pp": 0.0,
+        "delta_pp": -6.082857000000001,
         "phase1_pct": 8.72,
-        "phase2_pct": 8.72,
-        "within_3pp": true
+        "phase2_pct": 2.637143,
+        "within_3pp": false
       },
       "sales": [
         {
@@ -138,6 +139,21 @@
       "tolerance_policy": "sales and promotion <=3 percentage points; competitor fallback <=1 percentage point"
     },
     "point_in_time": {
+      "audit_source_columns": {
+        "behavior": "selected_behavior_event_at",
+        "competitor": "selected_competitor_observed_at",
+        "price_history": [
+          "selected_price_effective_from",
+          "selected_price_effective_to"
+        ],
+        "promotion": [
+          "active_history_promotion_id",
+          "selected_promotion_start_date",
+          "selected_promotion_end_date",
+          "active_promotion_flag"
+        ],
+        "sales": "selected_sales_order_date"
+      },
       "behavior_temporal_rule": "EventTime <= DecisionTime",
       "competitor_temporal_rule": "DecisionTime-30 days <= ObservedDateTime <= DecisionTime",
       "future_behavioral_events_used": 0,
@@ -145,7 +161,9 @@
       "future_price_intervals_used": 0,
       "future_sales_used": 0,
       "historical_inventory_features": 0,
+      "invalid_promotion_overlap": 0,
       "price_history_temporal_rule": "EffectiveFrom <= DecisionTime AND (EffectiveTo IS NULL OR DecisionTime < EffectiveTo)",
+      "promotion_temporal_rule": "StartDate <= CAST(DecisionTime AS date) <= EndDate",
       "sales_temporal_rule": "OrderDate >= DATEADD(day,-N,CAST(DecisionTime AS date)) AND OrderDate < CAST(DecisionTime AS date)",
       "same_day_date_only_sales_used": 0,
       "stale_promotion_associations_treated_active": 0
@@ -159,8 +177,8 @@
       "future_intervals_used": 0
     },
     "promotion": {
-      "active_count": 3052,
-      "coverage_pct": 8.72,
+      "active_count": 923,
+      "coverage_pct": 2.637143,
       "stale_association_count": 1893,
       "stale_associations_treated_active": 0
     },
@@ -208,6 +226,7 @@
         "Cancelled",
         "Returned"
       ],
+      "future_sales_used": 0,
       "observed_statuses": [
         "Cancelled",
         "Completed",
@@ -215,34 +234,36 @@
         "Partially Returned",
         "Returned",
         "Shipped"
-      ]
+      ],
+      "same_day_date_only_sales_used": 0
     },
     "target_null_count": 0,
     "unique_pricing_decision_ids": 35000,
     "verdict": "PASS_WITH_WARNINGS",
     "verdict_reason": "All hard Phase 2 checks passed; known sparse optional context remains quantified as warnings."
   },
-  "git_sha": "56534488d1c41a61a739e95d281b7c4195be215f",
+  "git_sha": "e492f71b7b501a0d8d1efb27c65ccdcb200630d9",
   "git_worktree_dirty": true,
   "recommendation": "PROCEED_TO_PHASE_3",
   "result": "PASS_WITH_WARNINGS",
   "source_snapshot_status": "MATCH",
-  "source_tree_sha256": "e698da53211a2a0d41cf7ad5665362cf4f0516bddcdcf0375b74d7c700619365",
+  "source_tree_sha256": "a0cd1e9f3466291f712689b81ebfa297e54a791200c6bd52829c5f55509adc7b",
   "test_summary": {
-    "duration_seconds": 0.861654,
+    "duration_seconds": 1.193326,
     "exit_code": 0,
     "failed": 0,
-    "generated_at_utc": "2026-08-16T09:20:01.141266+00:00",
+    "generated_at_utc": "2026-08-16T11:56:32.389482+00:00",
     "invocation": [
       "__main__.py",
       "-q"
     ],
-    "passed": 72,
+    "passed": 80,
+    "runner_exit_code": 0,
     "skipped": 0,
     "source": "pytest_sessionfinish",
-    "source_tree_sha256": "e698da53211a2a0d41cf7ad5665362cf4f0516bddcdcf0375b74d7c700619365",
+    "source_tree_sha256": "a0cd1e9f3466291f712689b81ebfa297e54a791200c6bd52829c5f55509adc7b",
     "status": "PASS",
-    "total": 72,
+    "total": 80,
     "xfailed": 0,
     "xpassed": 0
   }

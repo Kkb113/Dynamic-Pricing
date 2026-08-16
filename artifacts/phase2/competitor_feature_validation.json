@@ -9,7 +9,8 @@
     "EXACT": 2299,
     "NONE": 10456,
     "PRODUCT_FALLBACK": 12637,
-    "REGION_FALLBACK": 9608
+    "REGION_GENERIC_CHANNEL": 2609,
+    "REGION_OTHER_CHANNEL": 6999
   },
   "window_days": 30
 }

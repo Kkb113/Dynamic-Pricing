@@ -39,6 +39,7 @@
     "Cancelled",
     "Returned"
   ],
+  "future_sales_used": 0,
   "observed_statuses": [
     "Cancelled",
     "Completed",
@@ -46,5 +47,6 @@
     "Partially Returned",
     "Returned",
     "Shipped"
-  ]
+  ],
+  "same_day_date_only_sales_used": 0
 }
