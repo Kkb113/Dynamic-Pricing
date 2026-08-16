@@ -1,5 +1,5 @@
 {
-  "dataset_fingerprint_sha256": "b88d3d6595d4890509b523c0df0b4ba2b173e7ed7324c5bb0e4cc95e5bd3097d",
+  "dataset_fingerprint_sha256": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
   "diagnostics": {
     "behavior": {
       "cart_additions": {
@@ -42,8 +42,8 @@
       "window_days": 30
     },
     "deterministic_regeneration": {
-      "build_1_fingerprint": "b88d3d6595d4890509b523c0df0b4ba2b173e7ed7324c5bb0e4cc95e5bd3097d",
-      "build_2_fingerprint": "b88d3d6595d4890509b523c0df0b4ba2b173e7ed7324c5bb0e4cc95e5bd3097d",
+      "build_1_fingerprint": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
+      "build_2_fingerprint": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
       "canonical_order": [
         "DecisionTime",
         "PricingDecisionID"
@@ -79,6 +79,7 @@
       "logical_relationship_orphans_phase1": 0,
       "promotion": {
         "delta_pp": -6.082857000000001,
+        "interpretation": "Phase 1 coverage is broader association-level coverage; Phase 2 coverage is corrected point-in-time coverage after product/store/channel scope validation and stale-association exclusion.",
         "phase1_pct": 8.72,
         "phase2_pct": 2.637143,
         "within_3pp": false
@@ -242,28 +243,28 @@
     "verdict": "PASS_WITH_WARNINGS",
     "verdict_reason": "All hard Phase 2 checks passed; known sparse optional context remains quantified as warnings."
   },
-  "git_sha": "e492f71b7b501a0d8d1efb27c65ccdcb200630d9",
+  "git_sha": "695f219eb773f0a3384509e441aa5a8f02ee55d7",
   "git_worktree_dirty": true,
   "recommendation": "PROCEED_TO_PHASE_3",
   "result": "PASS_WITH_WARNINGS",
   "source_snapshot_status": "MATCH",
-  "source_tree_sha256": "a0cd1e9f3466291f712689b81ebfa297e54a791200c6bd52829c5f55509adc7b",
+  "source_tree_sha256": "8335034503ac964034838f28bec3211f793b24b339658dcfdc5f666b7bdefa6b",
   "test_summary": {
-    "duration_seconds": 1.193326,
+    "duration_seconds": 1.252761,
     "exit_code": 0,
     "failed": 0,
-    "generated_at_utc": "2026-08-16T11:56:32.389482+00:00",
+    "generated_at_utc": "2026-08-16T12:33:35.133265+00:00",
     "invocation": [
       "__main__.py",
       "-q"
     ],
-    "passed": 80,
+    "passed": 86,
     "runner_exit_code": 0,
     "skipped": 0,
     "source": "pytest_sessionfinish",
-    "source_tree_sha256": "a0cd1e9f3466291f712689b81ebfa297e54a791200c6bd52829c5f55509adc7b",
+    "source_tree_sha256": "8335034503ac964034838f28bec3211f793b24b339658dcfdc5f666b7bdefa6b",
     "status": "PASS",
-    "total": 80,
+    "total": 86,
     "xfailed": 0,
     "xpassed": 0
   }

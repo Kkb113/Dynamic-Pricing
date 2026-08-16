@@ -25,6 +25,7 @@
   "logical_relationship_orphans_phase1": 0,
   "promotion": {
     "delta_pp": -6.082857000000001,
+    "interpretation": "Phase 1 coverage is broader association-level coverage; Phase 2 coverage is corrected point-in-time coverage after product/store/channel scope validation and stale-association exclusion.",
     "phase1_pct": 8.72,
     "phase2_pct": 2.637143,
     "within_3pp": false

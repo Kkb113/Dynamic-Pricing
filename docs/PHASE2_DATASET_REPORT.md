@@ -69,4 +69,4 @@ Machine-readable coverage and distribution reports are in `artifacts/phase2/feat
 
 ## Source reconciliation
 
-Source status: **MATCH**. Accepted Phase 1 head: `29c3437e6a13df2c7ee8a24796d32d4762d4a900`. Source-tree hash: `a0cd1e9f3466291f712689b81ebfa297e54a791200c6bd52829c5f55509adc7b`.
+Source status: **MATCH**. Accepted Phase 1 head: `29c3437e6a13df2c7ee8a24796d32d4762d4a900`. Source-tree hash: `8335034503ac964034838f28bec3211f793b24b339658dcfdc5f666b7bdefa6b`.

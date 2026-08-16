@@ -47,6 +47,8 @@ Exact, generic-channel region, other-channel region, and product fallback values
 
 Promotion activity requires an active price interval, a resolved promotion, and `StartDate <= DecisionDate <= EndDate`; `active_history_promotion_id` is retained separately from validated `active_promotion_id`, and stale associations are not active.
 
+Phase 1 reported **8.72%** broader association-level coverage. Phase 2 reports the corrected scope-aware point-in-time coverage of **923 / 35,000 = 2.637%** after rejecting unrelated store/channel history and excluding stale promotion associations. The lower value is an expected consequence of the stricter eligibility rule, not unexplained data loss.
+
 ## 11. Holiday/weather features
 
 Holiday joins use decision date plus store region/general holiday rules. Weather joins use store region and decision date only.
@@ -61,7 +63,7 @@ Customer segment, loyalty, preferred channel, sensitivity, and affinity fields a
 
 ## 14. Feature coverage
 
-See `feature_coverage.csv`, `feature_distribution.csv`, and `feature_schema.json`. Infinite values: 0. Phase 1 regression: `{"competitor": [{"delta_pp": -4.285714290119813e-07, "metric": "exact_30d_pct", "phase1_pct": 6.568571428571429, "phase2_pct": 6.568571, "within_1pp": true}, {"delta_pp": 0.0, "metric": "region_30d_pct", "phase1_pct": 34.02, "phase2_pct": 34.02, "within_1pp": true}, {"delta_pp": -2.857142931134149e-07, "metric": "product_30d_pct", "phase1_pct": 70.1257142857143, "phase2_pct": 70.125714, "within_1pp": true}], "logical_relationship_orphans_phase1": 0, "promotion": {"delta_pp": -6.082857000000001, "phase1_pct": 8.72, "phase2_pct": 2.637143, "within_3pp": false}, "sales": [{"delta_pp": -1.5371424285714284, "metric": "product_store_sales_30d", "phase1_pct": 24.948571428571427, "phase2_pct": 23.411429, "within_3pp": true}, {"delta_pp": -1.6799995714285707, "metric": "product_region_sales_30d", "phase1_pct": 29.451428571428572, "phase2_pct": 27.771429, "within_3pp": true}, {"delta_pp": -2.4028575714285765, "metric": "product_sales_30d", "phase1_pct": 60.371428571428574, "phase2_pct": 57.968571, "within_3pp": true}, {"delta_pp": -2.4971432857142872, "metric": "category_store_sales_30d", "phase1_pct": 52.425714285714285, "phase2_pct": 49.928571, "within_3pp": true}, {"delta_pp": -0.005714714285716127, "metric": "category_sales_30d", "phase1_pct": 99.73428571428572, "phase2_pct": 99.728571, "within_3pp": true}, {"delta_pp": -1.7228567142857187, "metric": "product_sales_7d", "phase1_pct": 27.434285714285718, "phase2_pct": 25.711429, "within_3pp": true}, {"delta_pp": -1.8542861428571484, "metric": "product_sales_90d", "phase1_pct": 83.82285714285715, "phase2_pct": 81.968571, "within_3pp": true}], "source_fingerprint_unchanged": true, "status": "PASS_WITH_WARNINGS", "tolerance_policy": "sales and promotion <=3 percentage points; competitor fallback <=1 percentage point"}`.
+See `feature_coverage.csv`, `feature_distribution.csv`, and `feature_schema.json`. Infinite values: 0. Phase 1 regression: `{"competitor": [{"delta_pp": -4.285714290119813e-07, "metric": "exact_30d_pct", "phase1_pct": 6.568571428571429, "phase2_pct": 6.568571, "within_1pp": true}, {"delta_pp": 0.0, "metric": "region_30d_pct", "phase1_pct": 34.02, "phase2_pct": 34.02, "within_1pp": true}, {"delta_pp": -2.857142931134149e-07, "metric": "product_30d_pct", "phase1_pct": 70.1257142857143, "phase2_pct": 70.125714, "within_1pp": true}], "logical_relationship_orphans_phase1": 0, "promotion": {"delta_pp": -6.082857000000001, "interpretation": "Phase 1 coverage is broader association-level coverage; Phase 2 coverage is corrected point-in-time coverage after product/store/channel scope validation and stale-association exclusion.", "phase1_pct": 8.72, "phase2_pct": 2.637143, "within_3pp": false}, "sales": [{"delta_pp": -1.5371424285714284, "metric": "product_store_sales_30d", "phase1_pct": 24.948571428571427, "phase2_pct": 23.411429, "within_3pp": true}, {"delta_pp": -1.6799995714285707, "metric": "product_region_sales_30d", "phase1_pct": 29.451428571428572, "phase2_pct": 27.771429, "within_3pp": true}, {"delta_pp": -2.4028575714285765, "metric": "product_sales_30d", "phase1_pct": 60.371428571428574, "phase2_pct": 57.968571, "within_3pp": true}, {"delta_pp": -2.4971432857142872, "metric": "category_store_sales_30d", "phase1_pct": 52.425714285714285, "phase2_pct": 49.928571, "within_3pp": true}, {"delta_pp": -0.005714714285716127, "metric": "category_sales_30d", "phase1_pct": 99.73428571428572, "phase2_pct": 99.728571, "within_3pp": true}, {"delta_pp": -1.7228567142857187, "metric": "product_sales_7d", "phase1_pct": 27.434285714285718, "phase2_pct": 25.711429, "within_3pp": true}, {"delta_pp": -1.8542861428571484, "metric": "product_sales_90d", "phase1_pct": 83.82285714285715, "phase2_pct": 81.968571, "within_3pp": true}], "source_fingerprint_unchanged": true, "status": "PASS_WITH_WARNINGS", "tolerance_policy": "sales and promotion <=3 percentage points; competitor fallback <=1 percentage point"}`.
 
 ## 15. Null/infinite-value validation
 
@@ -112,13 +114,13 @@ No Inventory table is fetched by the feature builder and `historical_inventory_f
 
 ## 19. Deterministic regeneration
 
-- Build 1 hash: `b88d3d6595d4890509b523c0df0b4ba2b173e7ed7324c5bb0e4cc95e5bd3097d`
-- Build 2 hash: `b88d3d6595d4890509b523c0df0b4ba2b173e7ed7324c5bb0e4cc95e5bd3097d`
+- Build 1 hash: `7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2`
+- Build 2 hash: `7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2`
 - Match: **True**
 
 ## 20. Tests / CI
 
-- Tests: 80 total, 80 passed, 0 failed.
+- Tests: 86 total, 86 passed, 0 failed.
 - CI workflow: `.github/workflows/phase2-tests.yml` runs deterministic tests without SQL Server.
 
 ## 21–22. Known limitations and Phase 3 risks

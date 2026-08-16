@@ -1,6 +1,6 @@
 {
-  "build_1_fingerprint": "b88d3d6595d4890509b523c0df0b4ba2b173e7ed7324c5bb0e4cc95e5bd3097d",
-  "build_2_fingerprint": "b88d3d6595d4890509b523c0df0b4ba2b173e7ed7324c5bb0e4cc95e5bd3097d",
+  "build_1_fingerprint": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
+  "build_2_fingerprint": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
   "canonical_order": [
     "DecisionTime",
     "PricingDecisionID"
