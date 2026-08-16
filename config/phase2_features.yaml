@@ -1,0 +1,28 @@
+database:
+  env_file: .env
+  server: localhost
+  database_key: SQL_SERVER_DATABASE
+  username_key: SQL_SERVER_USER_NAME
+  password_key: SQL_SERVER_PASSWORD
+  name: Retail_Hyperpersonlaization
+  schema: dbo
+  odbc_driver: ODBC Driver 18 for SQL Server
+  connect_timeout_seconds: 30
+  read_only: true
+
+phase1:
+  accepted_head: 29c3437e6a13df2c7ee8a24796d32d4762d4a900
+  fingerprint_artifact: artifacts/phase1/dataset_fingerprint.json
+  manifest_artifact: artifacts/phase1/phase1_manifest.json
+
+features:
+  artifact_dir: artifacts/phase2
+  eligible_sales_order_statuses:
+    - Completed
+    - Delivered
+    - Shipped
+    - Partially Returned
+  sales_windows_days: [7, 14, 30, 60, 90]
+  behavior_windows_hours: [1, 24, 168, 720]
+  competitor_window_days: 30
+  sample_rows: 100

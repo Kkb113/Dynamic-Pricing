@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "dynamic-pricing-phase1"
 version = "0.1.0"
 requires-python = ">=3.10"
-dependencies = ["pyodbc>=4.0", "PyYAML>=6.0"]
+dependencies = ["pyodbc>=4.0", "PyYAML>=6.0", "pandas>=2.0", "pyarrow>=12.0", "numpy>=1.24"]
 
 [project.optional-dependencies]
 test = ["pytest>=7.0"]
@@ -19,3 +19,4 @@ asyncio_default_fixture_loop_scope = "function"
 [project.scripts]
 phase1-audit = "audit.report_builder:main"
 phase1-validate = "audit.validation_runner:main"
+phase2-build = "features.validation_runner:main"

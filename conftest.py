@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 from datetime import datetime, timezone
@@ -29,6 +30,9 @@ def pytest_sessionfinish(session, exitstatus):
         "invocation": [Path(sys.argv[0]).name, *sys.argv[1:]],
         "source_tree_sha256": source_tree_sha256(),
     }
-    path = Path(__file__).resolve().parent / "artifacts" / "phase1" / "test_results.json"
+    configured_path = os.environ.get("TEST_EVIDENCE_PATH", "artifacts/phase1/test_results.json")
+    path = Path(configured_path)
+    if not path.is_absolute():
+        path = Path(__file__).resolve().parent / path
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(evidence, indent=2, sort_keys=True) + "\n", encoding="utf-8")
