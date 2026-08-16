@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
-import yaml
+
+from tests.phase4._fixtures import phase4_fixture_frame
 
 from models.catboost_data import (
     build_feature_families,
@@ -15,14 +14,8 @@ from models.catboost_data import (
 )
 
 
-ROOT = Path(__file__).resolve().parents[2]
-
-
 def _fixture() -> tuple[pd.DataFrame, dict, tuple[str, ...]]:
-    contract = yaml.safe_load((ROOT / "contracts/phase2_feature_contract_v1.yaml").read_text(encoding="utf-8"))
-    frame = pd.read_parquet(ROOT / "artifacts/phase2/feature_dataset.parquet").head(40).copy()
-    family = build_feature_families(contract)["F0_CORE"]
-    return frame, contract, family.feature_names
+    return phase4_fixture_frame(40)
 
 
 def test_native_adapter_preserves_order_categories_and_numeric_nan() -> None:
@@ -51,7 +44,7 @@ def test_candidate_price_adapter_recreates_historical_input() -> None:
 
 
 def test_catboost_adapter_does_not_one_hot_or_target_encode() -> None:
-    source = (ROOT / "src/models/catboost_data.py").read_text(encoding="utf-8")
+    source = (phase4_fixture_frame.__globals__["ROOT"] / "src/models/catboost_data.py").read_text(encoding="utf-8")
     assert "OneHotEncoder" not in source
     assert "target_encode" not in source
     assert "cat_features" in source

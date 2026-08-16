@@ -4,25 +4,18 @@ import json
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
 import pytest
-import yaml
 
 from models.calibration import apply_calibrator, fit_calibration_candidates, select_calibration_method
-from models.catboost_data import build_feature_families
 from models.hyperparameter_search import run_hpo
 from phase4 import runner
-
-
-ROOT = Path(__file__).resolve().parents[2]
+from tests.phase4._fixtures import phase4_fixture_frame
 
 
 def test_hpo_uses_only_supplied_train_folds() -> None:
-    contract = yaml.safe_load((ROOT / "contracts/phase2_feature_contract_v1.yaml").read_text(encoding="utf-8"))
-    frame = pd.read_parquet(ROOT / "artifacts/phase2/feature_dataset.parquet").head(180).copy().reset_index(drop=True)
-    family = build_feature_families(contract)["F0_CORE"]
+    frame, contract, feature_names = phase4_fixture_frame(180)
     folds = [(np.arange(0, 60), np.arange(60, 100)), (np.arange(0, 100), np.arange(100, 140)), (np.arange(0, 140), np.arange(140, 180))]
-    trials, summary, choice = run_hpo(frame, folds, contract, family.feature_names, thread_count=2, n_trials=1, seed=42, iterations=20, early_stopping_rounds=5)
+    trials, summary, choice = run_hpo(frame, folds, contract, feature_names, thread_count=2, n_trials=1, seed=42, iterations=20, early_stopping_rounds=5)
     assert len(trials) == 1
     assert summary["completed_trials"] == 1
     assert set(np.concatenate([train for train, _ in folds]).tolist()) | set(np.concatenate([valid for _, valid in folds]).tolist()) == set(range(180))
