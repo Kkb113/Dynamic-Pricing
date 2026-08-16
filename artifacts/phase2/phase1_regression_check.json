@@ -1,0 +1,87 @@
+{
+  "competitor": [
+    {
+      "delta_pp": -4.285714290119813e-07,
+      "metric": "exact_30d_pct",
+      "phase1_pct": 6.568571428571429,
+      "phase2_pct": 6.568571,
+      "within_1pp": true
+    },
+    {
+      "delta_pp": 0.0,
+      "metric": "region_30d_pct",
+      "phase1_pct": 34.02,
+      "phase2_pct": 34.02,
+      "within_1pp": true
+    },
+    {
+      "delta_pp": -2.857142931134149e-07,
+      "metric": "product_30d_pct",
+      "phase1_pct": 70.1257142857143,
+      "phase2_pct": 70.125714,
+      "within_1pp": true
+    }
+  ],
+  "logical_relationship_orphans_phase1": 0,
+  "promotion": {
+    "delta_pp": -6.082857000000001,
+    "interpretation": "Phase 1 coverage is broader association-level coverage; Phase 2 coverage is corrected point-in-time coverage after product/store/channel scope validation and stale-association exclusion.",
+    "phase1_pct": 8.72,
+    "phase2_pct": 2.637143,
+    "within_3pp": false
+  },
+  "sales": [
+    {
+      "delta_pp": -1.5371424285714284,
+      "metric": "product_store_sales_30d",
+      "phase1_pct": 24.948571428571427,
+      "phase2_pct": 23.411429,
+      "within_3pp": true
+    },
+    {
+      "delta_pp": -1.6799995714285707,
+      "metric": "product_region_sales_30d",
+      "phase1_pct": 29.451428571428572,
+      "phase2_pct": 27.771429,
+      "within_3pp": true
+    },
+    {
+      "delta_pp": -2.4028575714285765,
+      "metric": "product_sales_30d",
+      "phase1_pct": 60.371428571428574,
+      "phase2_pct": 57.968571,
+      "within_3pp": true
+    },
+    {
+      "delta_pp": -2.4971432857142872,
+      "metric": "category_store_sales_30d",
+      "phase1_pct": 52.425714285714285,
+      "phase2_pct": 49.928571,
+      "within_3pp": true
+    },
+    {
+      "delta_pp": -0.005714714285716127,
+      "metric": "category_sales_30d",
+      "phase1_pct": 99.73428571428572,
+      "phase2_pct": 99.728571,
+      "within_3pp": true
+    },
+    {
+      "delta_pp": -1.7228567142857187,
+      "metric": "product_sales_7d",
+      "phase1_pct": 27.434285714285718,
+      "phase2_pct": 25.711429,
+      "within_3pp": true
+    },
+    {
+      "delta_pp": -1.8542861428571484,
+      "metric": "product_sales_90d",
+      "phase1_pct": 83.82285714285715,
+      "phase2_pct": 81.968571,
+      "within_3pp": true
+    }
+  ],
+  "source_fingerprint_unchanged": true,
+  "status": "PASS_WITH_WARNINGS",
+  "tolerance_policy": "sales and promotion <=3 percentage points; competitor fallback <=1 percentage point"
+}

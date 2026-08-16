@@ -1,0 +1,13 @@
+{
+  "candidate_price_recomputation": "covered by unit and parity tests",
+  "invalid_denominator_nulls": 0,
+  "price_dependent_features": [
+    "price_change_amount",
+    "price_change_pct",
+    "price_vs_base_pct",
+    "current_vs_base_pct",
+    "discount_from_base_pct",
+    "price_vs_competitor_pct"
+  ],
+  "safe_division": true
+}

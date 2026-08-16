@@ -1,0 +1,52 @@
+{
+  "coverage": {
+    "category_sales": {
+      "14": 99.211429,
+      "30": 99.728571,
+      "7": 95.971429
+    },
+    "category_store_sales": {
+      "14": 31.308571,
+      "30": 49.928571,
+      "7": 18.822857
+    },
+    "product_region_sales": {
+      "14": 15.562857,
+      "30": 27.771429,
+      "7": 8.862857
+    },
+    "product_sales": {
+      "14": 39.522857,
+      "30": 57.968571,
+      "60": 73.688571,
+      "7": 25.711429,
+      "90": 81.968571
+    },
+    "product_store_sales": {
+      "14": 12.985714,
+      "30": 23.411429,
+      "7": 7.345714
+    }
+  },
+  "eligible_line_count": 27395,
+  "eligible_statuses": [
+    "Completed",
+    "Delivered",
+    "Shipped",
+    "Partially Returned"
+  ],
+  "excluded_statuses": [
+    "Cancelled",
+    "Returned"
+  ],
+  "future_sales_used": 0,
+  "observed_statuses": [
+    "Cancelled",
+    "Completed",
+    "Delivered",
+    "Partially Returned",
+    "Returned",
+    "Shipped"
+  ],
+  "same_day_date_only_sales_used": 0
+}
