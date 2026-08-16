@@ -1,0 +1,10 @@
+price_change_bucket,rows,observed_purchase_rate,mean_predicted_probability,brier_score,interpretation
+<= -20%,0,,,,observed predictive relationship
+"(-20%, -10%]",95,0.18947368421052632,0.18319769487853363,0.16020150570668512,observed predictive relationship
+"(-10%, -5%]",942,0.2070063694267516,0.18679191769531991,0.1668077246788664,observed predictive relationship
+"(-5%, 0%)",638,0.18025078369905956,0.19286134238444608,0.1492651855907447,observed predictive relationship
+0%,767,0.15645371577574968,0.19105086821844497,0.13452326392385658,observed predictive relationship
+"(0%, 5%]",686,0.18075801749271136,0.19453448977516682,0.1494756703356704,observed predictive relationship
+"(5%, 10%]",1458,0.1700960219478738,0.19274609109585528,0.14326705442297744,observed predictive relationship
+"(10%, 20%]",664,0.17921686746987953,0.19249267468319536,0.14962372717219238,observed predictive relationship
+> 20%,0,,,,observed predictive relationship

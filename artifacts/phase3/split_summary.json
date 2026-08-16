@@ -1,0 +1,61 @@
+{
+  "assignment_sha256": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
+  "boundaries": {
+    "test_end": "2025-12-31T23:59:39",
+    "test_start": "2025-11-15T23:57:30",
+    "train_end": "2025-09-23T14:26:24",
+    "train_start": "2025-01-01T08:12:26",
+    "validation_end": "2025-11-15T23:42:22",
+    "validation_start": "2025-09-23T15:09:15"
+  },
+  "health": [
+    {
+      "decision_time_max": "2025-09-23T14:26:24",
+      "decision_time_min": "2025-01-01T08:12:26",
+      "distinct_BrandID": 150,
+      "distinct_CategoryID": 70,
+      "distinct_Channel": 6,
+      "distinct_ProductID": 2517,
+      "distinct_RegionID": 10,
+      "distinct_StoreID": 49,
+      "non_purchase_count": 19919,
+      "purchase_count": 4581,
+      "purchase_rate": 0.18697959183673468,
+      "quantity_positive_rows": 4581,
+      "row_count": 24500,
+      "split": "train"
+    },
+    {
+      "decision_time_max": "2025-11-15T23:42:22",
+      "decision_time_min": "2025-09-23T15:09:15",
+      "distinct_BrandID": 148,
+      "distinct_CategoryID": 70,
+      "distinct_Channel": 6,
+      "distinct_ProductID": 1470,
+      "distinct_RegionID": 10,
+      "distinct_StoreID": 49,
+      "non_purchase_count": 4311,
+      "purchase_count": 939,
+      "purchase_rate": 0.17885714285714285,
+      "quantity_positive_rows": 939,
+      "row_count": 5250,
+      "split": "validation"
+    },
+    {
+      "decision_time_max": "2025-12-31T23:59:39",
+      "decision_time_min": "2025-11-15T23:57:30",
+      "distinct_BrandID": 148,
+      "distinct_CategoryID": 70,
+      "distinct_Channel": 6,
+      "distinct_ProductID": 1426,
+      "distinct_RegionID": 10,
+      "distinct_StoreID": 49,
+      "non_purchase_count": 4278,
+      "purchase_count": 972,
+      "purchase_rate": 0.18514285714285714,
+      "quantity_positive_rows": 972,
+      "row_count": 5250,
+      "split": "test"
+    }
+  ]
+}

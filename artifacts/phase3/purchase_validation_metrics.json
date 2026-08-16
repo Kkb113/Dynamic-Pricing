@@ -1,0 +1,50 @@
+{
+  "purchase_dummy_prior": {
+    "average_precision": 0.17885714285714285,
+    "brier_score": 0.14693323948354853,
+    "ece": 0.008122448979591856,
+    "f1_at_0_5": 0.0,
+    "log_loss": 0.4698755578084077,
+    "non_purchase_count": 4311,
+    "precision_at_0_5": 0.0,
+    "purchase_count": 939,
+    "purchase_rate": 0.17885714285714285,
+    "recall_at_0_5": 0.0,
+    "roc_auc": 0.5,
+    "row_count": 5250,
+    "top_decile_lift": 0.9691160809371673,
+    "top_decile_purchase_rate": 0.17333333333333334
+  },
+  "purchase_logistic_core": {
+    "average_precision": 0.17790142106169896,
+    "brier_score": 0.1488640726795099,
+    "ece": 0.03212218962041481,
+    "f1_at_0_5": 0.0,
+    "log_loss": 0.4755424448028758,
+    "non_purchase_count": 4311,
+    "precision_at_0_5": 0.0,
+    "purchase_count": 939,
+    "purchase_rate": 0.17885714285714285,
+    "recall_at_0_5": 0.0,
+    "roc_auc": 0.5004593593573564,
+    "row_count": 5250,
+    "top_decile_lift": 0.9904153354632588,
+    "top_decile_purchase_rate": 0.17714285714285713
+  },
+  "purchase_logistic_core_no_price": {
+    "average_precision": 0.17858196513663682,
+    "brier_score": 0.14873582128180227,
+    "ece": 0.029789919373468764,
+    "f1_at_0_5": 0.0,
+    "log_loss": 0.4751657777166833,
+    "non_purchase_count": 4311,
+    "precision_at_0_5": 0.0,
+    "purchase_count": 939,
+    "purchase_rate": 0.17885714285714285,
+    "recall_at_0_5": 0.0,
+    "roc_auc": 0.5010495231135943,
+    "row_count": 5250,
+    "top_decile_lift": 0.979765708200213,
+    "top_decile_purchase_rate": 0.17523809523809525
+  }
+}

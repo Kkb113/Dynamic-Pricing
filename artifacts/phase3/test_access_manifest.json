@@ -1,0 +1,30 @@
+{
+  "dataset_fingerprint": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
+  "generated_at_utc": "2026-08-16T13:52:26.129117+00:00",
+  "holdout_policy": "Test predictions generated once after frozen specification refit on TRAIN+VALIDATION.",
+  "model_fingerprints": {
+    "purchase_dummy_prior": "5b0edd57cf321168efb141f617092e54327eb0a9b4a9860bf31bda13ff120408",
+    "purchase_logistic_core": "a900c435077d994e1b9e2e6d5e2f497afec67e5b5c8119b5dfe348f936abfea4",
+    "purchase_logistic_core_no_price": "b8fa205afd9f1a37bfdeb23efbcec2d58a922eded4572eb18358b6230ba2fc4a",
+    "quantity_dummy_mean": "58eb69c3cc6bd5605a3146935d5fb6ae7e80af6b369cd520893bdb9aadc5d0e4",
+    "quantity_poisson_core": "eecb97fe4461e1c759aa54c70055b13c84c01d7159c0545647c042a3ab95d614"
+  },
+  "model_specification": {
+    "purchase": "purchase_dummy_prior and purchase_logistic_core with fixed core feature contract",
+    "quantity": "quantity_dummy_mean and quantity_poisson_core with fixed core feature contract"
+  },
+  "prediction_fingerprints": {
+    "purchase_test": "e7dcbf06855226384ffb5d76b246d0ecfee6dafd3ef3d9977c1b94449e8271a8",
+    "purchase_validation": "62a25e35969bcf590de982b312d18a0b947dfb6d7a87cec4903d7b1c771f2931",
+    "quantity_test": "bef61e01599d1e670f668329999921be04c38ef8a2ea8b5f94b4d87433a3e2fd",
+    "quantity_validation": "c95280f4fec431ab69547b24535ac7e27746a2c8a7f8802cb9d2e8c47002373e"
+  },
+  "test_data_range": {
+    "test_end": "2025-12-31T23:59:39",
+    "test_start": "2025-11-15T23:57:30"
+  },
+  "training_data_range": {
+    "train_start": "2025-01-01T08:12:26",
+    "train_validation_end": "2025-11-15T23:42:22"
+  }
+}
