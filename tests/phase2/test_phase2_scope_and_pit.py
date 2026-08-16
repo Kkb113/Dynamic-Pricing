@@ -177,4 +177,7 @@ def test_full_feature_fixture_emits_audit_sources_and_separates_promotion_ids():
     assert frame.loc[0, "selected_price_effective_from"] == pd.Timestamp("2025-01-01")
     assert frame.loc[0, "selected_competitor_observed_at"] == pd.Timestamp("2025-06-10 11:00:00")
     assert frame.loc[0, "selected_behavior_event_at"] is pd.NaT or pd.isna(frame.loc[0, "selected_behavior_event_at"])
+    for name in ["product_sales_velocity_7d", "product_sales_velocity_30d", "product_sales_velocity_90d"]:
+        assert frame.loc[0, name] == 0.0
+    assert pd.isna(frame.loc[0, "product_sales_velocity_ratio_7d_30d"])
     assert result.diagnostics["price_history"]["future_intervals_used"] == 0
