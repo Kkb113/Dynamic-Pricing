@@ -59,7 +59,7 @@
     "usable_threads": 22
   },
   "conditional_quantity_minimum": 1.0,
-  "evidence_git_sha": "7c5a95fedfc6ce222b18d8d06e62d930585254e9",
+  "evidence_git_sha": "9c3a18ec6682d82326ea2ba52e4ca24d52865431",
   "fallback_mean_value": 1.3057971014492753,
   "frozen_quantity_spec_sha256": "260354340c41fe8eaccaafc4e3388f7fb28c81ec4fbaba049504a25b7a487914",
   "hpo_seconds": 2531.6139226998785,
