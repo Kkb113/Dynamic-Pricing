@@ -18,9 +18,23 @@ PRICE_DEPENDENT_FEATURES = [
 def safe_divide(numerator: Any, denominator: Any) -> Any:
     """Divide only by positive denominators; invalid denominators become null."""
     if isinstance(numerator, pd.Series) or isinstance(denominator, pd.Series):
-        num = pd.to_numeric(pd.Series(numerator), errors="coerce")
-        den = pd.to_numeric(pd.Series(denominator), errors="coerce")
-        return pd.Series(np.where(den > 0, num / den, np.nan), index=num.index, dtype="float64")
+        if isinstance(numerator, pd.Series):
+            num = pd.to_numeric(numerator, errors="coerce").astype("float64")
+        elif isinstance(denominator, pd.Series):
+            num = pd.to_numeric(pd.Series(numerator, index=denominator.index), errors="coerce").astype("float64")
+        else:
+            num = pd.to_numeric(pd.Series(numerator), errors="coerce").astype("float64")
+
+        if isinstance(denominator, pd.Series):
+            den = pd.to_numeric(denominator, errors="coerce").astype("float64")
+            den = den.reindex(num.index)
+        else:
+            den = pd.to_numeric(pd.Series(denominator, index=num.index), errors="coerce").astype("float64")
+
+        result = pd.Series(np.nan, index=num.index, dtype="float64")
+        valid = num.notna() & den.gt(0)
+        result.loc[valid] = num.loc[valid] / den.loc[valid]
+        return result
     try:
         num = float(numerator) if numerator is not None else np.nan
         den = float(denominator) if denominator is not None else np.nan

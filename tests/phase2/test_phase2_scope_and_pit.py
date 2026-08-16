@@ -2,7 +2,7 @@ import pandas as pd
 import pytest
 
 from features.feature_builder import _attach_price_history, _attach_promotions, build_feature_dataset_from_tables
-from features.validation import independent_point_in_time_validation
+from features.validation import enforce_point_in_time_acceptance, independent_point_in_time_validation
 
 
 def _decision_base(**overrides):
@@ -119,6 +119,24 @@ def test_point_in_time_validation_counts_actual_audit_violations():
     assert result["historical_inventory_features"] == 0
 
 
+def test_point_in_time_acceptance_blocks_actual_audit_violations():
+    frame = pd.DataFrame({
+        "DecisionTime": [pd.Timestamp("2025-06-10 12:00:00")],
+        "selected_competitor_observed_at": [pd.Timestamp("2025-06-10 13:00:00")],
+        "selected_behavior_event_at": [pd.Timestamp("2025-06-10 12:00:01")],
+        "selected_sales_order_date": [pd.Timestamp("2025-06-10")],
+        "selected_price_effective_from": [pd.Timestamp("2025-06-10 13:00:00")],
+        "selected_price_effective_to": [pd.NaT],
+        "active_history_promotion_id": ["P1"],
+        "selected_promotion_start_date": [pd.Timestamp("2025-06-11")],
+        "selected_promotion_end_date": [pd.Timestamp("2025-06-20")],
+        "active_promotion_flag": [1],
+    })
+    point_in_time = independent_point_in_time_validation(frame)
+    with pytest.raises(RuntimeError, match="POINT_IN_TIME_VALIDATION_FAILED"):
+        enforce_point_in_time_acceptance(point_in_time)
+
+
 def test_full_feature_fixture_emits_audit_sources_and_separates_promotion_ids():
     tables = {
         "Pricing_Decision_Log": pd.DataFrame([{
@@ -160,4 +178,3 @@ def test_full_feature_fixture_emits_audit_sources_and_separates_promotion_ids():
     assert frame.loc[0, "selected_competitor_observed_at"] == pd.Timestamp("2025-06-10 11:00:00")
     assert frame.loc[0, "selected_behavior_event_at"] is pd.NaT or pd.isna(frame.loc[0, "selected_behavior_event_at"])
     assert result.diagnostics["price_history"]["future_intervals_used"] == 0
-

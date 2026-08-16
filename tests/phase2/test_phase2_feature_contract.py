@@ -1,8 +1,10 @@
 from pathlib import Path
 
+import pandas as pd
 import pytest
 
 from features.feature_contract import load_contract, model_feature_columns, validate_model_feature_columns
+from features.validation import coverage_report
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -49,3 +51,11 @@ def test_favorite_preference_ids_are_join_only():
         assert entries[name]["role"] == "JOIN_ONLY"
         assert entries[name]["model_eligible"] is False
 
+
+def test_coverage_report_includes_all_model_eligible_features():
+    contract = load_contract(ROOT / "contracts/phase2_feature_contract_v1.yaml")
+    frame = pd.DataFrame({feature["name"]: [0] for feature in contract["features"]})
+    report = coverage_report(frame, contract)
+    eligible = {feature["name"] for feature in contract["features"] if feature["model_eligible"]}
+    assert set(report["feature_name"]) == eligible
+    assert {"ProductID", "StoreID", "competitor_price", "product_views_1h", "CustomerSegment"}.issubset(eligible)

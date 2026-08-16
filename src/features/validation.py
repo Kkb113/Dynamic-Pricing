@@ -19,6 +19,16 @@ from .feature_contract import FORBIDDEN_MODEL_COLUMNS, load_contract, model_feat
 
 
 ROOT = Path(__file__).resolve().parents[2]
+HARD_POINT_IN_TIME_FIELDS = (
+    "future_competitor_observations_used",
+    "future_behavioral_events_used",
+    "same_day_date_only_sales_used",
+    "future_sales_used",
+    "future_price_intervals_used",
+    "stale_promotion_associations_treated_active",
+    "invalid_promotion_overlap",
+    "historical_inventory_features",
+)
 
 
 def json_default(value: Any) -> Any:
@@ -75,12 +85,13 @@ def validate_feature_frame(frame: pd.DataFrame, contract: dict[str, Any]) -> dic
         raise ValueError("Target counts do not reconcile to Phase 1")
     if int(frame[["PurchasedFlag", "QuantityPurchased"]].isna().sum().sum()) != 0:
         raise ValueError("Targets contain null values")
-    for column in model_feature_columns(contract, "purchase") + model_feature_columns(contract, "quantity"):
+    model_eligible_names = [feature["name"] for feature in contract["features"] if feature["model_eligible"]]
+    for column in model_eligible_names:
         if column in frame and pd.api.types.is_numeric_dtype(frame[column]):
             values = pd.to_numeric(frame[column], errors="coerce").to_numpy(dtype=float)
             if np.isinf(values).any():
                 raise ValueError(f"Infinite model values exist in {column}")
-    model_names = set(model_feature_columns(contract, "purchase")) | set(model_feature_columns(contract, "quantity"))
+    model_names = set(model_eligible_names)
     forbidden_names = [name for name in model_names if name in FORBIDDEN_MODEL_COLUMNS or name.startswith("Pricing_Rules.") or name.startswith("Inventory.")]
     if any(name in {"FirstName", "LastName", "Email", "BirthDate", "Gender", "ReviewText"} for name in frame.columns):
         raise ValueError("Direct PII column entered the canonical dataset")
@@ -101,7 +112,7 @@ def validate_feature_frame(frame: pd.DataFrame, contract: dict[str, Any]) -> dic
 
 def coverage_report(frame: pd.DataFrame, contract: dict[str, Any]) -> pd.DataFrame:
     entries = []
-    model_names = set(model_feature_columns(contract, "purchase")) | set(model_feature_columns(contract, "quantity"))
+    model_names = {feature["name"] for feature in contract["features"] if feature["model_eligible"]}
     specs = {feature["name"]: feature for feature in contract["features"]}
     for name in [feature["name"] for feature in contract["features"] if feature["name"] in model_names]:
         values = frame[name]
@@ -226,6 +237,20 @@ def independent_point_in_time_validation(frame: pd.DataFrame) -> dict[str, Any]:
     }
 
 
+def enforce_point_in_time_acceptance(point_in_time: dict[str, Any]) -> None:
+    """Fail the Phase 2 acceptance gate when any hard PIT check is violated."""
+    missing = [name for name in HARD_POINT_IN_TIME_FIELDS if name not in point_in_time]
+    if missing:
+        raise RuntimeError(f"POINT_IN_TIME_VALIDATION_INCOMPLETE: missing={missing}")
+    violations = {
+        name: int(point_in_time[name] or 0)
+        for name in HARD_POINT_IN_TIME_FIELDS
+        if int(point_in_time[name] or 0) != 0
+    }
+    if violations:
+        raise RuntimeError(f"POINT_IN_TIME_VALIDATION_FAILED: {violations}")
+
+
 def phase1_regression_check(root: Path, diagnostics: dict[str, Any]) -> dict[str, Any]:
     """Reconcile Phase 2 measurements with accepted Phase 1 values without redefining them."""
     phase1_sales = json.loads((root / "artifacts/phase1/historical_sales_coverage.json").read_text(encoding="utf-8"))
@@ -280,7 +305,16 @@ def phase1_regression_check(root: Path, diagnostics: dict[str, Any]) -> dict[str
         "status": "PASS_WITH_WARNINGS",
         "sales": sales_rows,
         "competitor": comp_rows,
-        "promotion": {"phase1_pct": phase1_active, "phase2_pct": phase2_active, "delta_pp": phase2_active - phase1_active if phase2_active is not None else None, "within_3pp": phase2_active is not None and abs(phase2_active - phase1_active) <= 3.0},
+        "promotion": {
+            "phase1_pct": phase1_active,
+            "phase2_pct": phase2_active,
+            "delta_pp": phase2_active - phase1_active if phase2_active is not None else None,
+            "within_3pp": phase2_active is not None and abs(phase2_active - phase1_active) <= 3.0,
+            "interpretation": (
+                "Phase 1 coverage is broader association-level coverage; Phase 2 coverage is corrected "
+                "point-in-time coverage after product/store/channel scope validation and stale-association exclusion."
+            ),
+        },
         "logical_relationship_orphans_phase1": relationship_orphans,
         "source_fingerprint_unchanged": True,
         "tolerance_policy": "sales and promotion <=3 percentage points; competitor fallback <=1 percentage point",
@@ -414,6 +448,8 @@ Exact, generic-channel region, other-channel region, and product fallback values
 
 Promotion activity requires an active price interval, a resolved promotion, and `StartDate <= DecisionDate <= EndDate`; `active_history_promotion_id` is retained separately from validated `active_promotion_id`, and stale associations are not active.
 
+Phase 1 reported **8.72%** broader association-level coverage. Phase 2 reports the corrected scope-aware point-in-time coverage of **{diagnostics.get('promotion', {}).get('active_count', 0):,} / {len(frame):,} = {diagnostics.get('promotion', {}).get('coverage_pct', 0.0):.3f}%** after rejecting unrelated store/channel history and excluding stale promotion associations. The lower value is an expected consequence of the stricter eligibility rule, not unexplained data loss.
+
 ## 11. Holiday/weather features
 
 Holiday joins use decision date plus store region/general holiday rules. Weather joins use store region and decision date only.
@@ -489,6 +525,10 @@ def write_artifacts(
     validation = validate_feature_frame(frame, contract)
     ordered_columns = [feature["name"] for feature in contract["features"]]
     dataset_hash = canonical_dataset_hash(frame, ordered_columns)
+    point_in_time = independent_point_in_time_validation(frame)
+    enforce_point_in_time_acceptance(point_in_time)
+    diagnostics["point_in_time"] = point_in_time
+    diagnostics["phase1_regression"] = phase1_regression_check(root, diagnostics)
     frame.to_parquet(artifact_dir / "feature_dataset.parquet", index=False, engine="pyarrow")
     sample_columns = [column for column in frame.columns if column not in {"CustomerID", "SessionID"}]
     frame.loc[:99, sample_columns].to_csv(artifact_dir / "feature_dataset_sample.csv", index=False)
@@ -500,9 +540,6 @@ def write_artifacts(
     distribution.to_csv(artifact_dir / "feature_distribution.csv", index=False)
     null_profile = coverage[["feature_name", "row_count", "non_null_count", "null_count", "coverage_pct"]].copy()
     null_profile.to_csv(artifact_dir / "feature_null_profile.csv", index=False)
-    point_in_time = independent_point_in_time_validation(frame)
-    diagnostics["point_in_time"] = point_in_time
-    diagnostics["phase1_regression"] = phase1_regression_check(root, diagnostics)
     write_json(artifact_dir / "point_in_time_validation.json", point_in_time)
     write_json(artifact_dir / "phase1_regression_check.json", diagnostics["phase1_regression"])
     write_json(artifact_dir / "price_feature_validation.json", {
