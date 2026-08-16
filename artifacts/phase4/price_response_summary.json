@@ -1,0 +1,29 @@
+{
+  "causal_interpretation": "model-implied predictive price response only; not a causal elasticity estimate",
+  "flat_response_rate": 0.0,
+  "mean_probability_range": 0.05140012775892906,
+  "median_predicted_probability_by_multiplier": {
+    "0.8": 0.20012639189041936,
+    "0.9": 0.19008967121492165,
+    "0.95": 0.17605975797528856,
+    "1.0": 0.16417232048201363,
+    "1.05": 0.15814704181405026,
+    "1.1": 0.15640083212200656,
+    "1.2": 0.1561629179681201
+  },
+  "median_probability_change_current_to_plus_10pct": -0.00753995651905226,
+  "median_probability_change_minus_10pct_to_current": -0.027330833233782714,
+  "median_probability_range": 0.049889849271310224,
+  "multipliers": [
+    0.8,
+    0.9,
+    0.95,
+    1.0,
+    1.05,
+    1.1,
+    1.2
+  ],
+  "non_monotonic_sequence_rate": 0.5137142857142857,
+  "row_count": 5250,
+  "significant_upward_violation_rate": 0.05980952380952381
+}

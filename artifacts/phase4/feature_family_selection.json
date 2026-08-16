@@ -1,0 +1,34 @@
+{
+  "baseline_non_customer_brier": 0.1438979643435516,
+  "baseline_non_customer_log_loss": 0.4599405889898671,
+  "best_non_customer_family": "F3_CORE_BEHAVIOR",
+  "core_reference_family": "F0_CORE",
+  "customer_context_eligible_families": [],
+  "customer_context_selected": false,
+  "family_feature_counts": {
+    "F0_CORE": 53,
+    "F1_CORE_HIGH_CARDINALITY": 55,
+    "F2_CORE_COMPETITOR": 61,
+    "F3_CORE_BEHAVIOR": 65,
+    "F4_CORE_CUSTOMER": 59,
+    "F5_CORE_HIGH_CARDINALITY_COMPETITOR": 63,
+    "F6_CORE_HIGH_CARDINALITY_BEHAVIOR": 67,
+    "F7_CORE_HIGH_CARDINALITY_COMPETITOR_BEHAVIOR": 75,
+    "F8_CORE_ALL_APPROVED_CONTEXT": 81
+  },
+  "selected_feature_count": 65,
+  "selected_feature_family": "F3_CORE_BEHAVIOR",
+  "selected_groups": [
+    "BEHAVIOR_CONTEXT"
+  ],
+  "selection_policy": {
+    "customer_brier_must_not_worsen": true,
+    "customer_minimum_improved_folds": 2,
+    "customer_minimum_log_loss_improvement": 0.002,
+    "near_tie_brier": 0.0005,
+    "near_tie_log_loss": 0.001,
+    "primary_metric": "mean temporal-fold Log Loss",
+    "secondary_metric": "mean temporal-fold Brier Score",
+    "tie_break": "prefer lower Brier, then fewer features, then family name"
+  }
+}

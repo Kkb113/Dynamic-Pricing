@@ -1,0 +1,27 @@
+phase2:
+  dataset_path: artifacts/phase2/feature_dataset.parquet
+  contract_path: contracts/phase2_feature_contract_v1.yaml
+  expected_sha256: 7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2
+  expected_rows: 35000
+  expected_purchases: 6492
+  expected_non_purchases: 28508
+phase3:
+  split_path: artifacts/phase3/split_assignments.parquet
+  split_summary_path: artifacts/phase3/split_summary.json
+  contract_path: contracts/phase3_temporal_validation_contract_v1.yaml
+  validation_metrics_path: artifacts/phase3/purchase_validation_metrics.json
+  test_metrics_path: artifacts/phase3/purchase_test_metrics.json
+  fold_manifest_path: artifacts/phase3/temporal_fold_manifest.json
+compute:
+  max_threads: 22
+  random_seed: 42
+  optuna_jobs: 1
+  hpo_trials: 60
+  screening_iterations: 1500
+  max_iterations: 3000
+evaluation:
+  calibration_bins: 10
+  minimum_segment_support: 100
+  probability_tolerance: 1.0e-10
+  candidate_price_multipliers: [0.8, 0.9, 0.95, 1.0, 1.05, 1.1, 1.2]
+

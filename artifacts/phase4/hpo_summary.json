@@ -1,0 +1,27 @@
+{
+  "best_mean_log_loss": 0.45960595772380514,
+  "completed_trials": 60,
+  "eligible_trial_numbers": [
+    35,
+    50,
+    51,
+    29,
+    26,
+    34,
+    42,
+    55,
+    59,
+    52,
+    44,
+    41,
+    47
+  ],
+  "failed_trials": 0,
+  "pruned_trials": 0,
+  "requested_trials": 60,
+  "selected_mean_log_loss": 0.45986547973883124,
+  "selected_std_log_loss": 0.00782119378790251,
+  "selected_trial_number": 35,
+  "selection_tie_break": "within 0.0005 of best: lower fold std, lower mean Brier, simpler depth, fewer effective trees, trial number",
+  "stability_tolerance": 0.0005
+}

@@ -1,0 +1,13 @@
+{
+  "feature_family": "F3_CORE_BEHAVIOR",
+  "iterations_max": 3000,
+  "parameters": {
+    "bagging_temperature": 0.843547603487963,
+    "border_count": 128,
+    "depth": 4,
+    "l2_leaf_reg": 3.919279211543739,
+    "learning_rate": 0.046909856915972124,
+    "random_strength": 0.6183057530027418
+  },
+  "trial_number": 35
+}
