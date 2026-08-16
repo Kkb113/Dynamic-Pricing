@@ -1,0 +1,95 @@
+source_dataset_sha256: 7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2
+split_variable: DecisionTime
+split_method: chronological unique DecisionTime groups with approximately 70/15/15
+  proportions
+train_start: '2025-01-01T08:12:26'
+train_end: '2025-09-23T14:26:24'
+validation_start: '2025-09-23T15:09:15'
+validation_end: '2025-11-15T23:42:22'
+test_start: '2025-11-15T23:57:30'
+test_end: '2025-12-31T23:59:39'
+row_counts:
+  train: 24500
+  validation: 5250
+  test: 5250
+target_counts:
+  train:
+    purchases: 4581
+    non_purchases: 19919
+  validation:
+    purchases: 939
+    non_purchases: 4311
+  test:
+    purchases: 972
+    non_purchases: 4278
+holdout_policy: Validation is used to freeze the fixed baseline specification; TEST
+  is evaluated once after TRAIN+VALIDATION refit and is never used for selection.
+backtesting_policy: Three expanding-window folds remain within TRAIN; no shuffled
+  or stratified random folds.
+random_seed: 42
+feature_contract_path: contracts/phase2_feature_contract_v1.yaml
+purchase_baseline: purchase_logistic_core
+quantity_baseline: quantity_poisson_core
+compute_policy:
+  expected_physical_cores: 16
+  expected_logical_threads: 22
+  configured_thread_limit: 22
+  usable_threads: 22
+expanding_window_folds:
+- fold: 1
+  train_rows: 9801
+  validation_rows: 4898
+  train_purchase_count: 1962
+  train_non_purchase_count: 7839
+  validation_purchase_count: 833
+  validation_non_purchase_count: 4065
+  train_start: '2025-01-01T08:12:26'
+  train_end: '2025-04-19T18:09:16'
+  validation_start: '2025-04-19T18:13:04'
+  validation_end: '2025-06-12T10:50:49'
+  train_distinct_product: 1936
+  train_distinct_category: 70
+  train_distinct_store: 49
+  train_distinct_channel: 6
+  validation_distinct_product: 1391
+  validation_distinct_category: 70
+  validation_distinct_store: 49
+  validation_distinct_channel: 6
+- fold: 2
+  train_rows: 14699
+  validation_rows: 4899
+  train_purchase_count: 2795
+  train_non_purchase_count: 11904
+  validation_purchase_count: 889
+  validation_non_purchase_count: 4010
+  train_start: '2025-01-01T08:12:26'
+  train_end: '2025-06-12T10:50:49'
+  validation_start: '2025-06-12T10:53:56'
+  validation_end: '2025-08-02T09:04:04'
+  train_distinct_product: 2214
+  train_distinct_category: 70
+  train_distinct_store: 49
+  train_distinct_channel: 6
+  validation_distinct_product: 1408
+  validation_distinct_category: 70
+  validation_distinct_store: 49
+  validation_distinct_channel: 6
+- fold: 3
+  train_rows: 19598
+  validation_rows: 4902
+  train_purchase_count: 3684
+  train_non_purchase_count: 15914
+  validation_purchase_count: 897
+  validation_non_purchase_count: 4005
+  train_start: '2025-01-01T08:12:26'
+  train_end: '2025-08-02T09:04:04'
+  validation_start: '2025-08-02T09:08:23'
+  validation_end: '2025-09-23T14:26:24'
+  train_distinct_product: 2406
+  train_distinct_category: 70
+  train_distinct_store: 49
+  train_distinct_channel: 6
+  validation_distinct_product: 1376
+  validation_distinct_category: 70
+  validation_distinct_store: 49
+  validation_distinct_channel: 6

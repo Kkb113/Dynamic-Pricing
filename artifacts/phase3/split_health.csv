@@ -1,0 +1,4 @@
+split,row_count,purchase_count,non_purchase_count,purchase_rate,quantity_positive_rows,decision_time_min,decision_time_max,distinct_ProductID,distinct_CategoryID,distinct_BrandID,distinct_StoreID,distinct_RegionID,distinct_Channel
+train,24500,4581,19919,0.18697959183673468,4581,2025-01-01T08:12:26,2025-09-23T14:26:24,2517,70,150,49,10,6
+validation,5250,939,4311,0.17885714285714285,939,2025-09-23T15:09:15,2025-11-15T23:42:22,1470,70,148,49,10,6
+test,5250,972,4278,0.18514285714285714,972,2025-11-15T23:57:30,2025-12-31T23:59:39,1426,70,148,49,10,6

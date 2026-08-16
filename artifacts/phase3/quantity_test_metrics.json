@@ -1,0 +1,18 @@
+{
+  "quantity_dummy_mean": {
+    "mae": 0.471217272022425,
+    "mean_poisson_deviance": 0.24678758383121435,
+    "negative_prediction_count": 0,
+    "r2": -0.00022118790805558675,
+    "rmse": 0.6388924352050224,
+    "row_count": 972
+  },
+  "quantity_poisson_core": {
+    "mae": 0.4670921468977555,
+    "mean_poisson_deviance": 0.24795237058616384,
+    "negative_prediction_count": 0,
+    "r2": -0.00378715858705414,
+    "rmse": 0.6400303058664499,
+    "row_count": 972
+  }
+}
