@@ -1,8 +1,19 @@
 from __future__ import annotations
 
+from datetime import date, datetime
+
+
+def is_completed_previous_calendar_day(order_date: date, decision_time: datetime) -> bool:
+    """True only when a date-only order is from a fully completed day."""
+    return order_date < decision_time.date()
+
 
 def sales_coverage(db, windows: list[int], schema: str = "dbo") -> dict:
-    result = {"rule": "Only orders with OrderDate < DecisionTime qualify", "grains": {}}
+    result = {
+      "rule": "Only completed previous calendar days qualify: OrderDate < CAST(DecisionTime AS date)",
+      "same_day_orders_excluded": True,
+      "grains": {},
+    }
     grains={
       "product":"l.ProductID=d.ProductID",
       "product_store":"l.ProductID=d.ProductID AND o.StoreID=d.StoreID",
@@ -11,7 +22,7 @@ def sales_coverage(db, windows: list[int], schema: str = "dbo") -> dict:
       "category":"sale_product.CategoryID=decision_product.CategoryID",
     }
     for grain,condition in grains.items():
-        aggregates=",\n".join(f"SUM(CASE WHEN prior_sale.OrderDate>=DATEADD(day,-{int(days)},d.DecisionTime) THEN 1 ELSE 0 END) covered_{int(days)}d" for days in windows)
+        aggregates=",\n".join(f"SUM(CASE WHEN prior_sale.OrderDate>=DATEADD(day,-{int(days)},CAST(d.DecisionTime AS date)) THEN 1 ELSE 0 END) covered_{int(days)}d" for days in windows)
         row = db.row(f"""
           SELECT COUNT_BIG(*) decisions,{aggregates}
           FROM [{schema}].[Pricing_Decision_Log] d
@@ -21,7 +32,7 @@ def sales_coverage(db, windows: list[int], schema: str = "dbo") -> dict:
              JOIN [{schema}].[Sales_Order] o ON o.OrderID=l.OrderID
              LEFT JOIN [{schema}].[Product] sale_product ON sale_product.ProductID=l.ProductID
              LEFT JOIN [{schema}].[Store] sale_store ON sale_store.StoreID=o.StoreID
-             WHERE {condition} AND o.OrderDate<d.DecisionTime
+             WHERE {condition} AND o.OrderDate<CAST(d.DecisionTime AS date)
              ORDER BY o.OrderDate DESC) prior_sale
         """)
         result["grains"][grain]={}

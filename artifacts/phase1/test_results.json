@@ -1,7 +1,18 @@
 {
-  "command": "pytest -q",
+  "duration_seconds": 0.328875,
+  "exit_code": 0,
   "failed": 0,
-  "passed": 35,
-  "total": 35,
-  "warnings": 0
+  "generated_at_utc": "2026-08-16T07:58:52.635901+00:00",
+  "invocation": [
+    "__main__.py",
+    "-q"
+  ],
+  "passed": 59,
+  "skipped": 0,
+  "source": "pytest_sessionfinish",
+  "source_tree_sha256": "ed30d89fc4da3ccc5aebe89a37110cc2d14337a8ae38a39baecbac521d164f72",
+  "status": "PASS",
+  "total": 59,
+  "xfailed": 0,
+  "xpassed": 0
 }

@@ -20,8 +20,8 @@ Price-history integrity is strong: 50,000 intervals, zero invalid orderings, zer
 
 ## Point-in-time context
 
-- Region/channel-matched competitor coverage is 0.16% same-day, 0.75% within 3 days, 1.74% within 7 days, 3.29% within 14 days, and **6.57% within 30 days**. Competitor context is therefore conditional and sparse at the commercially correct grain.
-- Thirty-day historical-sales coverage is **25.76% Product×Store**, **30.30% Product×Region**, **61.86% Product**, **53.06% Category×Store**, and **99.95% Category**. Phase 2 should implement this hierarchy rather than discard sparse rows.
+- Strict Product×Region×Channel competitor coverage is 0.16% same-day, 0.75% within 3 days, 1.74% within 7 days, 3.29% within 14 days, and **6.57% within 30 days**. At 30 days, Product×Region with any channel reaches **34.02%** and Product-only reaches **70.13%**. Phase 2 must expose availability, age, and fallback-level indicators rather than requiring competitor context or silently mixing grains.
+- Same-day date-only orders are excluded because their true time is unknown. Using completed prior calendar days only, 30-day historical-sales coverage is **24.95% Product×Store**, **29.45% Product×Region**, **60.37% Product**, **52.43% Category×Store**, and **99.73% Category**. Phase 2 should implement this hierarchy rather than discard sparse rows.
 - Pre-decision behavioral coverage at 24 hours is 79.57% for product browsing, 27.68% for cart activity, and 30.91% for search-clicked-product activity.
 - Active promotion coverage is 8.72%. There are 1,893 price-history promotion associations outside the promotion window; a non-null PromotionID is not sufficient.
 - Weather covers all 365 days across the expected regional rows. Holidays cover 69 distinct dates. Inventory has exactly one date, 2025-12-31, and is prohibited as historical context.
@@ -32,9 +32,13 @@ ProductID has median 6 decisions, 257 singleton products, and 1,058 products bel
 
 All 200 rules have valid configured ranges and all 35,000 decisions reference a rule. Applied price satisfies the directly audited min/max/max-change constraints for **31,905 decisions (91.16%)**. The remaining 3,095 records require rule-semantics review; they were not repaired or excluded.
 
+All 13 declared foreign keys and all 29 Phase-2-critical logical relationships were validated. The logical checks cover sales, product/category/brand, customer/store/region, browsing, cart, search, ratings, wishlist, recommendation, response, weather, and holiday joins. Total logical orphans: **0**.
+
 ## Generator and leakage finding
 
 The available older generator source does not contain the pricing-decision generation fields, so the status is `GENERATOR_LOGIC_NOT_AVAILABLE`. No hidden formula is inferred. Empirical probability diagnostics show substantial synthetic-outcome encoding, so all policy outputs remain prohibited.
+
+The leakage matrix is deny-by-default. Cost and all pricing-rule fields are optimizer-only; raw sales and event outcomes are derivation-only; recommendation model outputs are prohibited. Pytest produced source-bound evidence showing **59 passed, 0 failed**. SQL read-only validation explicitly rejects `SELECT ... INTO`.
 
 ## Result
 

@@ -1,225 +1,225 @@
 source_table,column,classification,allowed_purchase_model,allowed_quantity_model,allowed_optimizer,available_at_decision_time,leakage_risk,privacy_risk,reason,notes
-Brand,BrandID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Brand,BrandName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Brand,BrandTier,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Brand,ActiveFlag,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Browsing_Events,EventID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Browsing_Events,SessionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Browsing_Events,CustomerID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Browsing_Events,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Browsing_Events,EventTime,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Browsing_Events,DurationSec,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Browsing_Events,Channel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Browsing_Events,DeviceType,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Cart_Events,CartEventID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Cart_Events,SessionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Cart_Events,CustomerID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Cart_Events,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Cart_Events,Action,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Cart_Events,EventTime,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Cart_Events,Quantity,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Cart_Events,UnitPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Cart_Events,Channel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Cart_Events,DeviceType,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Competitor_Price,CompetitorPriceID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Competitor_Price,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Competitor_Price,RegionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Competitor_Price,CompetitorName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Competitor_Price,CompetitorPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Competitor_Price,AvailabilityFlag,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Competitor_Price,ObservedDateTime,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Competitor_Price,Channel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Customer,CustomerID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,MEDIUM,Use to join/derive context; do not feed blindly to ML,
-Customer,FirstName,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal attribute is unnecessary for pricing,
-Customer,LastName,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal attribute is unnecessary for pricing,
-Customer,Gender,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal attribute is unnecessary for pricing,
-Customer,BirthDate,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal attribute is unnecessary for pricing,
-Customer,Email,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal attribute is unnecessary for pricing,
-Customer,RegionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,MEDIUM,Use to join/derive context; do not feed blindly to ML,
-Customer,LoyaltyTier,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,Commercial/customer context requires fairness and proxy review,
-Customer,CreatedDate,ALLOWED_PRE_DECISION,True,True,True,True,LOW,MEDIUM,Allowed only when a point-in-time join proves availability by DecisionTime,
-Customer,CustomerSegment,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,Commercial/customer context requires fairness and proxy review,
-Customer,PreferredChannel,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,Commercial/customer context requires fairness and proxy review,
-Customer,CustomerStatus,ALLOWED_PRE_DECISION,True,True,True,True,LOW,MEDIUM,Allowed only when a point-in-time join proves availability by DecisionTime,
-Customer_Preferences,PreferenceID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,MEDIUM,Use to join/derive context; do not feed blindly to ML,
-Customer_Preferences,CustomerID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,MEDIUM,Use to join/derive context; do not feed blindly to ML,
-Customer_Preferences,FavoriteCategoryID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,MEDIUM,Use to join/derive context; do not feed blindly to ML,
-Customer_Preferences,FavoriteBrandID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,MEDIUM,Use to join/derive context; do not feed blindly to ML,
-Customer_Preferences,PriceSensitivity,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,Commercial/customer context requires fairness and proxy review,
-Customer_Preferences,ColorPreference,ALLOWED_PRE_DECISION,True,True,True,True,LOW,MEDIUM,Allowed only when a point-in-time join proves availability by DecisionTime,
-Customer_Preferences,CategoryAffinityScore,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,Commercial/customer context requires fairness and proxy review,
-Customer_Preferences,BrandAffinityScore,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,Commercial/customer context requires fairness and proxy review,
-Holiday,HolidayID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Holiday,RegionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Holiday,Date,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Holiday,HolidayName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Holiday,HolidayType,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Holiday,SalesImpactFactor,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Inventory,InventoryID,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,StoreID,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,ProductID,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,SnapshotDate,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,OpeningQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,ReceivedQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,SoldQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,ReturnedQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,AdjustmentQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,ReservedQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,OnHandQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,AvailableQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Inventory,StockStatus,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Inventory is allowed only as a current optimization constraint
-Pricing_Decision_Log,PricingDecisionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Pricing_Decision_Log,DecisionTime,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Decision_Log,CustomerID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Pricing_Decision_Log,SessionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Pricing_Decision_Log,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Pricing_Decision_Log,StoreID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Pricing_Decision_Log,Channel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Decision_Log,CurrentPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,RecommendedPrice,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,AppliedPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,ExpectedDemand,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,PurchaseProbability,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,PriceElasticity,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,ExpectedRevenue,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,ExpectedMarginPct,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,PricingRuleID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Pricing_Decision_Log,ModelVersion,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,ReasonCode,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,PurchasedFlag,TARGET,TARGET,False,True,True,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,OrderLineID,PROHIBITED_POST_OUTCOME,False,False,False,False,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,QuantityPurchased,TARGET,False,TARGET,True,True,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,ActualRevenue,PROHIBITED_POST_OUTCOME,False,False,False,False,HIGH,LOW,Locked target/leakage policy,
-Pricing_Decision_Log,OutcomeTime,PROHIBITED_POST_OUTCOME,False,False,False,False,HIGH,LOW,Locked target/leakage policy,
-Pricing_Rules,PricingRuleID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Pricing_Rules,RuleName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Rules,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Pricing_Rules,CategoryID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Pricing_Rules,StoreID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Pricing_Rules,Channel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Rules,MinPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Rules,MaxPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Rules,MinMarginPct,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Rules,MaxDiscountPct,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Rules,MaxPriceChangePct,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Rules,Priority,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Rules,EffectiveFrom,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Rules,EffectiveTo,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Pricing_Rules,ActiveFlag,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Product,SKU,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product,ProductName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product,CategoryID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Product,BrandID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Product,BasePrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product,CostPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product,MarginPct,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product,Season,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product,Color,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product,Size,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product,ActiveFlag,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product_Category,CategoryID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Product_Category,ParentCategoryID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Product_Category,CategoryName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product_Category,CategoryLevel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product_Category,DepartmentName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product_Price_History,PriceHistoryID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Product_Price_History,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Product_Price_History,StoreID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Product_Price_History,Channel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product_Price_History,BasePrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product_Price_History,SellingPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product_Price_History,DiscountPct,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product_Price_History,PromotionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Product_Price_History,EffectiveFrom,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product_Price_History,EffectiveTo,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Product_Price_History,PriceReason,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Promotions,PromotionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Promotions,PromotionName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Promotions,CategoryID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Promotions,DiscountPct,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Promotions,Season,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Promotions,StartDate,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Promotions,EndDate,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Promotions,ActiveFlag,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Ratings,RatingID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Ratings,CustomerID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Ratings,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Ratings,Rating,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Ratings,RatingDate,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Ratings,ReviewText,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Ratings,VerifiedPurchaseFlag,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Log,RecommendationID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Recommendation_Log,RecommendationBatchID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Recommendation_Log,CustomerID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Recommendation_Log,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Recommendation_Log,Score,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Log,ServedTime,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Log,SessionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Recommendation_Log,Channel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Log,RankPosition,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Log,RecommendationStrategy,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Log,ModelVersion,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Log,InventoryAvailable,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Log,PromotionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Recommendation_Response,ResponseID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Recommendation_Response,RecommendationID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Recommendation_Response,Clicked,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Response,AddedToCart,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Response,Purchased,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Response,ResponseTime,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Recommendation_Response,OrderID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Region,RegionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Region,RegionName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Region,State,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Region,ClimateZone,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Region,TimeZone,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order,OrderID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Sales_Order,CustomerID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Sales_Order,StoreID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Sales_Order,OrderChannel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order,OrderDate,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order,OrderStatus,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order,GrossAmount,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order,DiscountAmount,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order,TaxAmount,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order,ShippingAmount,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order,NetAmount,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order_Line,OrderLineID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Sales_Order_Line,OrderID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Sales_Order_Line,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Sales_Order_Line,Qty,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order_Line,UnitPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order_Line,DiscountAmount,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Sales_Order_Line,PromotionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Sales_Order_Line,LineAmount,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Search_Events,SearchID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Search_Events,SessionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Search_Events,CustomerID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Search_Events,Keyword,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Search_Events,EventTime,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Search_Events,ClickedProductID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Search_Events,ResultCount,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Search_Events,Channel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Search_Events,DeviceType,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Store,StoreID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Store,StoreName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Store,RegionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Store,StoreType,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Store,City,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Store,OpenDate,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Store,StoreStatus,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Weather,WeatherID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Weather,RegionID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Weather,Date,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Weather,TemperatureF,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Weather,Condition,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Weather,PrecipitationIn,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Weather,SnowfallIn,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Weather,HumidityPct,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Wishlist,WishlistID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Wishlist,CustomerID,JOIN_ONLY_IDENTIFIER,True,True,True,True,LOW,LOW,Use to join/derive context; do not feed blindly to ML,
-Wishlist,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,High-cardinality context requires coverage/sparsity validation,
-Wishlist,AddedDate,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Wishlist,WishlistStatus,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
-Wishlist,RemovedDate,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Allowed only when a point-in-time join proves availability by DecisionTime,
+Brand,BrandID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Brand,BrandName,PROHIBITED_UNREVIEWED,False,False,False,True,HIGH,LOW,Deny-by-default: column is not on the explicit Phase 2 raw-feature allowlist,
+Brand,BrandTier,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Brand,ActiveFlag,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Browsing_Events,EventID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Browsing_Events,SessionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Browsing_Events,CustomerID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Browsing_Events,ProductID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Browsing_Events,EventTime,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Browsing_Events,DurationSec,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Browsing_Events,Channel,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Browsing_Events,DeviceType,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Cart_Events,CartEventID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Cart_Events,SessionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Cart_Events,CustomerID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Cart_Events,ProductID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Cart_Events,Action,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Cart_Events,EventTime,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Cart_Events,Quantity,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Cart_Events,UnitPrice,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Cart_Events,Channel,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Cart_Events,DeviceType,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Competitor_Price,CompetitorPriceID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Competitor_Price,ProductID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Competitor_Price,RegionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Competitor_Price,CompetitorName,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Competitor_Price,CompetitorPrice,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Competitor_Price,AvailabilityFlag,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Competitor_Price,ObservedDateTime,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Competitor_Price,Channel,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Customer,CustomerID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,MEDIUM,Join key only; not an unrestricted raw model feature,
+Customer,FirstName,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal or free-text attribute is unnecessary for pricing,
+Customer,LastName,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal or free-text attribute is unnecessary for pricing,
+Customer,Gender,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal or free-text attribute is unnecessary for pricing,
+Customer,BirthDate,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal or free-text attribute is unnecessary for pricing,
+Customer,Email,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal or free-text attribute is unnecessary for pricing,
+Customer,RegionID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Customer,LoyaltyTier,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Customer,CreatedDate,PROHIBITED_UNREVIEWED,False,False,False,True,HIGH,MEDIUM,Deny-by-default: column is not on the explicit Phase 2 raw-feature allowlist,
+Customer,CustomerSegment,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Customer,PreferredChannel,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Customer,CustomerStatus,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Customer_Preferences,PreferenceID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,MEDIUM,Join key only; not an unrestricted raw model feature,
+Customer_Preferences,CustomerID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,MEDIUM,Join key only; not an unrestricted raw model feature,
+Customer_Preferences,FavoriteCategoryID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,MEDIUM,Join key only; not an unrestricted raw model feature,
+Customer_Preferences,FavoriteBrandID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,MEDIUM,Join key only; not an unrestricted raw model feature,
+Customer_Preferences,PriceSensitivity,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Customer_Preferences,ColorPreference,PROHIBITED_UNREVIEWED,False,False,False,True,HIGH,MEDIUM,Deny-by-default: column is not on the explicit Phase 2 raw-feature allowlist,
+Customer_Preferences,CategoryAffinityScore,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Customer_Preferences,BrandAffinityScore,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,MEDIUM,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Holiday,HolidayID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Holiday,RegionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Holiday,Date,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Holiday,HolidayName,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Holiday,HolidayType,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Holiday,SalesImpactFactor,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Inventory,InventoryID,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,StoreID,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,ProductID,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,SnapshotDate,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,OpeningQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,ReceivedQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,SoldQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,ReturnedQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,AdjustmentQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,ReservedQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,OnHandQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,AvailableQty,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Inventory,StockStatus,PROHIBITED_HISTORICAL_FEATURE,False,False,True,True,HIGH,LOW,Snapshot inventory is optimizer-only and cannot be back/forward-filled,Current-state optimizer use only
+Pricing_Decision_Log,PricingDecisionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Pricing_Decision_Log,DecisionTime,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Pricing_Decision_Log,CustomerID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Pricing_Decision_Log,SessionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Pricing_Decision_Log,ProductID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Pricing_Decision_Log,StoreID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Pricing_Decision_Log,Channel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Pricing_Decision_Log,CurrentPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Pricing_Decision_Log,RecommendedPrice,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Pricing_Decision_Log,AppliedPrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Pricing_Decision_Log,ExpectedDemand,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Pricing_Decision_Log,PurchaseProbability,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Pricing_Decision_Log,PriceElasticity,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Pricing_Decision_Log,ExpectedRevenue,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Pricing_Decision_Log,ExpectedMarginPct,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Pricing_Decision_Log,PricingRuleID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Pricing_Decision_Log,ModelVersion,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Pricing_Decision_Log,ReasonCode,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Pricing_Decision_Log,PurchasedFlag,TARGET,TARGET,False,False,False,HIGH,LOW,Locked model target; never an inference-time predictor,
+Pricing_Decision_Log,OrderLineID,PROHIBITED_POST_OUTCOME,False,False,False,False,HIGH,LOW,Observed only after the pricing decision outcome,
+Pricing_Decision_Log,QuantityPurchased,TARGET,False,TARGET,False,False,HIGH,LOW,Locked model target; never an inference-time predictor,
+Pricing_Decision_Log,ActualRevenue,PROHIBITED_POST_OUTCOME,False,False,False,False,HIGH,LOW,Observed only after the pricing decision outcome,
+Pricing_Decision_Log,OutcomeTime,PROHIBITED_POST_OUTCOME,False,False,False,False,HIGH,LOW,Observed only after the pricing decision outcome,
+Pricing_Rules,PricingRuleID,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,RuleName,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,ProductID,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,CategoryID,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,StoreID,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,Channel,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,MinPrice,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,MaxPrice,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,MinMarginPct,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,MaxDiscountPct,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,MaxPriceChangePct,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,Priority,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,EffectiveFrom,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,EffectiveTo,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Pricing_Rules,ActiveFlag,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Product,ProductID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Product,SKU,PROHIBITED_UNREVIEWED,False,False,False,True,HIGH,LOW,Deny-by-default: column is not on the explicit Phase 2 raw-feature allowlist,
+Product,ProductName,PROHIBITED_UNREVIEWED,False,False,False,True,HIGH,LOW,Deny-by-default: column is not on the explicit Phase 2 raw-feature allowlist,
+Product,CategoryID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Product,BrandID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Product,BasePrice,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Product,CostPrice,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Product,MarginPct,OPTIMIZATION_ONLY,False,False,True,True,LOW,LOW,"Commercial cost/rule input belongs to the optimizer, not either ML model",
+Product,Season,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Product,Color,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Product,Size,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Product,ActiveFlag,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Product_Category,CategoryID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Product_Category,ParentCategoryID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Product_Category,CategoryName,PROHIBITED_UNREVIEWED,False,False,False,True,HIGH,LOW,Deny-by-default: column is not on the explicit Phase 2 raw-feature allowlist,
+Product_Category,CategoryLevel,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Product_Category,DepartmentName,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Product_Price_History,PriceHistoryID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Product_Price_History,ProductID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Product_Price_History,StoreID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Product_Price_History,Channel,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Product_Price_History,BasePrice,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Product_Price_History,SellingPrice,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Product_Price_History,DiscountPct,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Product_Price_History,PromotionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Product_Price_History,EffectiveFrom,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Product_Price_History,EffectiveTo,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Product_Price_History,PriceReason,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Promotions,PromotionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Promotions,PromotionName,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Promotions,CategoryID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Promotions,DiscountPct,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Promotions,Season,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Promotions,StartDate,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Promotions,EndDate,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Promotions,ActiveFlag,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Ratings,RatingID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Ratings,CustomerID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Ratings,ProductID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Ratings,Rating,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Ratings,RatingDate,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Ratings,ReviewText,PROHIBITED_PRIVACY_OR_IRRELEVANT,False,False,False,True,HIGH,HIGH,Direct personal or free-text attribute is unnecessary for pricing,
+Ratings,VerifiedPurchaseFlag,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Recommendation_Log,RecommendationID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Recommendation_Log,RecommendationBatchID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Recommendation_Log,CustomerID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Recommendation_Log,ProductID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Recommendation_Log,Score,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Recommendation_Log,ServedTime,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,Recommendation-system field is not an approved pricing-model input,
+Recommendation_Log,SessionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Recommendation_Log,Channel,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,Recommendation-system field is not an approved pricing-model input,
+Recommendation_Log,RankPosition,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Recommendation_Log,RecommendationStrategy,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Recommendation_Log,ModelVersion,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Recommendation_Log,InventoryAvailable,PROHIBITED_SYNTHETIC_POLICY_OUTPUT,False,False,False,True,HIGH,LOW,"Synthetic model, ranking, inventory-policy, or optimizer output",
+Recommendation_Log,PromotionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Recommendation_Response,ResponseID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Recommendation_Response,RecommendationID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Recommendation_Response,Clicked,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Recommendation_Response,AddedToCart,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Recommendation_Response,Purchased,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Recommendation_Response,ResponseTime,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Recommendation_Response,OrderID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Region,RegionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Region,RegionName,PROHIBITED_UNREVIEWED,False,False,False,True,HIGH,LOW,Deny-by-default: column is not on the explicit Phase 2 raw-feature allowlist,
+Region,State,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Region,ClimateZone,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Region,TimeZone,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Sales_Order,OrderID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Sales_Order,CustomerID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Sales_Order,StoreID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Sales_Order,OrderChannel,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order,OrderDate,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order,OrderStatus,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order,GrossAmount,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order,DiscountAmount,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order,TaxAmount,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order,ShippingAmount,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order,NetAmount,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order_Line,OrderLineID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Sales_Order_Line,OrderID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Sales_Order_Line,ProductID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Sales_Order_Line,Qty,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order_Line,UnitPrice,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order_Line,DiscountAmount,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Sales_Order_Line,PromotionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Sales_Order_Line,LineAmount,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Search_Events,SearchID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Search_Events,SessionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Search_Events,CustomerID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Search_Events,Keyword,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Search_Events,EventTime,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Search_Events,ClickedProductID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Search_Events,ResultCount,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Search_Events,Channel,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Search_Events,DeviceType,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Store,StoreID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Store,StoreName,PROHIBITED_UNREVIEWED,False,False,False,True,HIGH,LOW,Deny-by-default: column is not on the explicit Phase 2 raw-feature allowlist,
+Store,RegionID,CONDITIONAL_PRE_DECISION,True,True,True,True,MEDIUM,LOW,"Explicit conditional allowlist; requires coverage, sparsity, fairness, or proxy approval",
+Store,StoreType,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Store,City,PROHIBITED_UNREVIEWED,False,False,False,True,HIGH,LOW,Deny-by-default: column is not on the explicit Phase 2 raw-feature allowlist,
+Store,OpenDate,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Store,StoreStatus,ALLOWED_PRE_DECISION,True,True,True,True,LOW,LOW,Explicit raw-feature allowlist; still subject to point-in-time validation,
+Weather,WeatherID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Weather,RegionID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Weather,Date,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Weather,TemperatureF,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Weather,Condition,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Weather,PrecipitationIn,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Weather,SnowfallIn,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Weather,HumidityPct,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Wishlist,WishlistID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Wishlist,CustomerID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Wishlist,ProductID,JOIN_ONLY_IDENTIFIER,False,False,False,True,LOW,LOW,Join key only; not an unrestricted raw model feature,
+Wishlist,AddedDate,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Wishlist,WishlistStatus,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML
+Wishlist,RemovedDate,DERIVATION_ONLY,False,False,False,True,MEDIUM,LOW,Raw event/outcome is allowed only through leakage-safe historical aggregation,Raw values must not be fed to ML

@@ -22,8 +22,23 @@ def competitor_coverage(db, windows: list[int], schema: str = "dbo") -> dict:
       SUM(CASE WHEN CompetitorPrice<=0 THEN 1 ELSE 0 END) nonpositive_prices,
       COUNT(DISTINCT CompetitorName) competitor_count,
       SUM(CASE WHEN AvailabilityFlag=1 THEN 1 ELSE 0 END) available_observations,
+      SUM(CASE WHEN Channel IS NULL OR LTRIM(RTRIM(Channel))='' THEN 1 ELSE 0 END) generic_or_null_channel_observations,
       AVG(CAST(CompetitorPrice AS float)) mean_price, STDEV(CAST(CompetitorPrice AS float)) price_std
       FROM [{schema}].[Competitor_Price]""")
+    output["fallback_coverage_30d"]={}
+    fallback_conditions={
+      "exact_product_region_channel":"c.ProductID=d.ProductID AND c.RegionID=s.RegionID AND c.Channel=d.Channel",
+      "product_region_any_channel":"c.ProductID=d.ProductID AND c.RegionID=s.RegionID",
+      "product_any_region_channel":"c.ProductID=d.ProductID",
+    }
+    for name,condition in fallback_conditions.items():
+        row=db.row(f"""SELECT COUNT_BIG(*) decisions,SUM(CASE WHEN prior.covered=1 THEN 1 ELSE 0 END) covered_decisions
+          FROM [{schema}].[Pricing_Decision_Log] d LEFT JOIN [{schema}].[Store] s ON s.StoreID=d.StoreID
+          OUTER APPLY (SELECT TOP(1) 1 covered FROM [{schema}].[Competitor_Price] c
+           WHERE {condition} AND c.ObservedDateTime<=d.DecisionTime
+            AND c.ObservedDateTime>=DATEADD(day,-30,d.DecisionTime) ORDER BY c.ObservedDateTime DESC) prior""")
+        row["coverage_rate"]=row["covered_decisions"]/row["decisions"] if row["decisions"] else None
+        output["fallback_coverage_30d"][name]=row
     output["price_gap_buckets_30d"] = db.rows(f"""SELECT gap_bucket,COUNT_BIG(*) decision_count,
       SUM(CASE WHEN PurchasedFlag=1 THEN 1 ELSE 0 END) purchase_count,AVG(CAST(PurchasedFlag AS float)) purchase_rate
       FROM (SELECT d.PurchasedFlag,CASE WHEN prior.CompetitorPrice IS NULL OR prior.CompetitorPrice=0 THEN 'NO_PRIOR_PRICE'

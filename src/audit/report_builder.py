@@ -67,12 +67,50 @@ def git_sha() -> str | None:
     except Exception: return None
 
 
+def git_metadata() -> dict[str, Any]:
+    sha = git_sha()
+    try:
+        worktree_dirty = bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True, stderr=subprocess.DEVNULL).strip())
+        code_paths=["pyproject.toml","conftest.py","src","tests","config","contracts",".github"]
+        code_dirty=subprocess.run(["git","diff","--quiet","HEAD","--",*code_paths],cwd=ROOT,check=False,
+                                  stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode != 0
+        code_dirty=code_dirty or subprocess.run(["git","diff","--cached","--quiet","HEAD","--",*code_paths],cwd=ROOT,check=False,
+                                                stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode != 0
+        untracked=subprocess.check_output(["git","ls-files","--others","--exclude-standard","--",*code_paths],cwd=ROOT,text=True,stderr=subprocess.DEVNULL).strip()
+        code_dirty=code_dirty or bool(untracked)
+    except Exception:
+        worktree_dirty = None
+        code_dirty = None
+    return {"git_sha": sha, "git_code_dirty": code_dirty, "git_worktree_dirty": worktree_dirty}
+
+
 def source_tree_sha256() -> str:
     digest=hashlib.sha256()
-    paths=[ROOT/"pyproject.toml",*sorted((ROOT/"src").rglob("*.py")),*sorted((ROOT/"tests").rglob("*.py"))]
+    paths=[ROOT/"pyproject.toml",ROOT/"conftest.py",*sorted((ROOT/"src").rglob("*.py")),*sorted((ROOT/"tests").rglob("*.py"))]
     for path in paths:
         digest.update(path.relative_to(ROOT).as_posix().encode()); digest.update(b"\0"); digest.update(path.read_bytes()); digest.update(b"\0")
     return digest.hexdigest()
+
+
+def load_test_evidence(path: Path, current_source_hash: str) -> dict[str, Any]:
+    if not path.exists():
+        return {"status":"NOT_RUN","reason":"Machine-generated pytest evidence is missing"}
+    try:
+        evidence=json.loads(path.read_text(encoding="utf-8"))
+    except (OSError,json.JSONDecodeError) as exc:
+        return {"status":"INVALID","reason":type(exc).__name__}
+    if evidence.get("source") != "pytest_sessionfinish":
+        return {"status":"INVALID","reason":"Evidence was not emitted by pytest_sessionfinish"}
+    if evidence.get("source_tree_sha256") != current_source_hash:
+        return {**evidence,"status":"STALE","reason":"Test evidence does not match the current source tree"}
+    return evidence
+
+
+def locate_schema_document() -> Path | None:
+    candidates=[]
+    for pattern in ("Retail_Hyperpersonlaization_schema_document*.md","*retail*schema*document*.md","*schema*document*.md"):
+        candidates.extend(ROOT.glob(pattern))
+    return sorted({p.resolve() for p in candidates if p.is_file()})[0] if candidates else None
 
 
 def safe_audit(name: str, fn: Callable[[], Any], errors: list[dict]) -> Any:
@@ -115,9 +153,11 @@ def acceptance_markdown(verdict: str, reason: str, data: dict) -> str:
     target=data.get("target_profile") or {}; profile=data.get("database_profile") or {}
     price=(data.get("price") or {}).get("product_support_summary",{}); quantity=(data.get("quantity") or {}).get("groups",[])
     purchased=next((x for x in quantity if x.get("outcome_group")=="1"),{})
-    competitor=(data.get("competitor") or {}).get("windows",{}); sales_data=data.get("sales") or {}; sales=sales_data.get("product",{}); sales_grains=sales_data.get("grains",{})
+    competitor_data=data.get("competitor") or {}; competitor=competitor_data.get("windows",{}); competitor_fallbacks=competitor_data.get("fallback_coverage_30d",{})
+    sales_data=data.get("sales") or {}; sales=sales_data.get("product",{}); sales_grains=sales_data.get("grains",{})
     promotion_data=data.get("promotion") or {}; promotion=promotion_data.get("decision_coverage",{}); history=(data.get("price_history") or {}).get("decision_coverage",{})
     outcome=data.get("outcome") or {}; split=(data.get("split") or {}).get("splits",[]); rules=(data.get("rule") or {}).get("applied_price_compliance",{})
+    relationships=data.get("relationship") or {}; tests=data.get("test_evidence") or {}
     temporal=data.get("temporal") if isinstance(data.get("temporal"),list) else []
     decision_time=next((x for x in temporal if x.get("table")=="Pricing_Decision_Log" and x.get("column")=="DecisionTime"),{})
     card=data.get("cardinality") if isinstance(data.get("cardinality"),list) else []
@@ -157,11 +197,11 @@ Pricing decisions span **{decision_time.get('min_timestamp','NA')} through {deci
 
 ## 7. Competitor coverage
 
-Point-in-time coverage is same-day **{pct((competitor.get('0') or {}).get('coverage_rate'))}**, prior 3d **{pct((competitor.get('3') or {}).get('coverage_rate'))}**, 7d **{pct((competitor.get('7') or {}).get('coverage_rate'))}**, 14d **{pct((competitor.get('14') or {}).get('coverage_rate'))}**, and 30d **{pct((competitor.get('30') or {}).get('coverage_rate'))}**. Only observations at or before the decision qualify.
+Strict Product×Region×Channel point-in-time coverage is same-day **{pct((competitor.get('0') or {}).get('coverage_rate'))}**, prior 3d **{pct((competitor.get('3') or {}).get('coverage_rate'))}**, 7d **{pct((competitor.get('7') or {}).get('coverage_rate'))}**, 14d **{pct((competitor.get('14') or {}).get('coverage_rate'))}**, and 30d **{pct((competitor.get('30') or {}).get('coverage_rate'))}**. At 30 days, Product×Region with any channel covers **{pct((competitor_fallbacks.get('product_region_any_channel') or {}).get('coverage_rate'))}** and Product-only covers **{pct((competitor_fallbacks.get('product_any_region_channel') or {}).get('coverage_rate'))}**. Phase 2 must retain availability/age/fallback indicators and never drop rows lacking competitor context.
 
 ## 8. Historical-sales feasibility
 
-At 30 days, prior-sale coverage is Product×Store **{pct((((sales_grains.get('product_store') or {}).get('30')) or {}).get('coverage_rate'))}**, Product×Region **{pct((((sales_grains.get('product_region') or {}).get('30')) or {}).get('coverage_rate'))}**, Product **{pct((sales.get('30') or {}).get('coverage_rate'))}**, Category×Store **{pct((((sales_grains.get('category_store') or {}).get('30')) or {}).get('coverage_rate'))}**, and Category **{pct((((sales_grains.get('category') or {}).get('30')) or {}).get('coverage_rate'))}**. Product-only coverage rises from 7d **{pct((sales.get('7') or {}).get('coverage_rate'))}** to 90d **{pct((sales.get('90') or {}).get('coverage_rate'))}**. Phase 2 should use this measured fallback hierarchy.
+Only completed previous calendar days qualify; same-day date-only orders are excluded. At 30 days, prior-sale coverage is Product×Store **{pct((((sales_grains.get('product_store') or {}).get('30')) or {}).get('coverage_rate'))}**, Product×Region **{pct((((sales_grains.get('product_region') or {}).get('30')) or {}).get('coverage_rate'))}**, Product **{pct((sales.get('30') or {}).get('coverage_rate'))}**, Category×Store **{pct((((sales_grains.get('category_store') or {}).get('30')) or {}).get('coverage_rate'))}**, and Category **{pct((((sales_grains.get('category') or {}).get('30')) or {}).get('coverage_rate'))}**. Product-only coverage rises from 7d **{pct((sales.get('7') or {}).get('coverage_rate'))}** to 90d **{pct((sales.get('90') or {}).get('coverage_rate'))}**. Phase 2 should use this measured fallback hierarchy.
 
 ## 9. Promotion/calendar/weather feasibility
 
@@ -173,7 +213,7 @@ ProductID has **{n(product_card.get('unique_values'))}** observed values (median
 
 ## 11. Data-quality issues
 
-Outcome-consistency violations: **{consistency}**. Price-history decision coverage is **{pct(history.get('coverage_rate'))}** with {n(history.get('duplicate_active_decisions'))} decisions matching multiple eligible intervals. Referenced-price-rule compliance is **{pct(rules.get('compliance_rate'))}**; the remaining cases need rule-semantics review rather than automatic repair. Detailed relationship, numeric, missingness, and primary-key findings are machine-readable artifacts.
+Outcome-consistency violations: **{consistency}**. Price-history decision coverage is **{pct(history.get('coverage_rate'))}** with {n(history.get('duplicate_active_decisions'))} decisions matching multiple eligible intervals. All **{n(relationships.get('logical_relationship_count'))}** Phase-2-critical logical joins were audited with **{n(relationships.get('logical_relationship_orphan_total'))}** total orphans. Referenced-price-rule compliance is **{pct(rules.get('compliance_rate'))}**; the remaining cases need rule-semantics review rather than automatic repair. Pytest evidence is machine-generated and source-bound: **{n(tests.get('passed'))} passed / {n(tests.get('failed'))} failed**.
 
 ## 12. Generator leakage analysis
 
@@ -181,7 +221,7 @@ Generator result: **{gen}**. The located older generator registry does not conta
 
 ## 13. Final leakage matrix summary
 
-All live columns are classified. Synthetic policy outputs and post-outcome fields are prohibited; PII is excluded; identifiers are join-only by default; inventory is prohibited historically.
+All live columns are classified under a **deny-by-default explicit allowlist**. Cost and pricing rules are optimizer-only; raw sales/events are derivation-only; recommendation outputs and post-outcome fields are prohibited; PII is excluded; identifiers are join-only by default; inventory is prohibited historically.
 
 ## 14. Locked feature-policy summary
 
@@ -246,10 +286,12 @@ def run() -> int:
     artifacts = ROOT / cfg["audit"]["artifact_dir"]
     docs = ROOT / cfg["audit"]["document_dir"]
     artifacts.mkdir(parents=True, exist_ok=True); docs.mkdir(parents=True, exist_ok=True)
+    current_source_hash=source_tree_sha256()
+    test_evidence=load_test_evidence(artifacts/"test_results.json",current_source_hash)
     generator = search_generator(cfg["generator_search"]["roots"], cfg["generator_search"]["terms"], ROOT)
     write_json(artifacts / "generator_analysis.json", generator)
     errors: list[dict] = []
-    data: dict[str, Any] = {"database_status":"NOT_AVAILABLE", "generator":generator}
+    data: dict[str, Any] = {"database_status":"NOT_AVAILABLE", "generator":generator, "test_evidence":test_evidence}
     raw = ""
     try:
         raw = connection_string_from_settings(cfg["database"], ROOT)
@@ -307,6 +349,11 @@ def run() -> int:
             if missing_tables: hard_reasons.append("required tables missing")
             if missing_columns: hard_reasons.append("critical columns missing")
             if errors: hard_reasons.append("one or more mandatory audits failed")
+            if test_evidence.get("status") != "PASS" or test_evidence.get("exit_code") != 0:
+                hard_reasons.append("current machine-generated pytest evidence is missing, stale, or failed")
+            logical_orphans=data["relationship"].get("logical_relationship_orphan_total",0)
+            if logical_orphans > data["target_profile"].get("total_pricing_decisions",0)*0.01:
+                hard_reasons.append("Phase-2-critical logical relationship orphans exceed 1% of pricing decisions")
             if not data["target_profile"].get("purchase_count") or not data["target_profile"].get("non_purchase_count"): hard_reasons.append("purchase target has one class")
             if not price.get("product_support_summary",{}).get("products_ge_2_prices"): hard_reasons.append("no meaningful applied-price variation")
             if sum(int(v or 0) for v in data["outcome"].values() if isinstance(v,(int,float))) > data["target_profile"].get("total_pricing_decisions",0)*0.05:
@@ -336,7 +383,13 @@ def run() -> int:
       "temporal_split":data.get("split")},sort_keys=True,default=json_default)
     fingerprint={"status":"COMPLETE" if data["database_status"]=="CONNECTED_READ_ONLY" else "INCOMPLETE_LIVE_DATABASE_UNAVAILABLE","sha256":hashlib.sha256(canonical.encode()).hexdigest(),"canonical_metadata":json.loads(canonical)}
     write_json(artifacts/"dataset_fingerprint.json",fingerprint)
-    manifest={"audit_timestamp_utc":datetime.now(timezone.utc).isoformat(),"result":verdict,"database":cfg["database"]["name"],"schema":cfg["database"]["schema"],"sanitized_server_identity":server_identity,"git_sha":git_sha(),"source_tree_sha256":source_tree_sha256(),"schema_document_sha256":None,"ml_contract_sha256":sha256_file(contract),"leakage_policy_sha256":sha256_file(policy),"configuration_sha256":sha256_file(cfg_path),"dataset_fingerprint_sha256":fingerprint["sha256"],"test_summary":{"total":35,"passed":35,"failed":0,"command":"pytest -q"},"errors":errors}
+    git_info=git_metadata(); schema_document=locate_schema_document()
+    manifest={"audit_timestamp_utc":datetime.now(timezone.utc).isoformat(),"result":verdict,"database":cfg["database"]["name"],"schema":cfg["database"]["schema"],"sanitized_server_identity":server_identity,
+      **git_info,"source_tree_sha256":current_source_hash,"schema_document_path":str(schema_document.relative_to(ROOT)) if schema_document else None,
+      "schema_document_sha256":sha256_file(schema_document) if schema_document else None,"ml_contract_sha256":sha256_file(contract),
+      "leakage_policy_sha256":sha256_file(policy),"configuration_sha256":sha256_file(cfg_path),
+      "dataset_fingerprint_sha256":fingerprint["sha256"],"test_evidence_sha256":sha256_file(artifacts/"test_results.json"),
+      "test_summary":test_evidence,"errors":errors}
     write_json(artifacts/"phase1_manifest.json",manifest)
     (docs/"PHASE1_ACCEPTANCE_REPORT.md").write_text(acceptance_markdown(verdict,reason,data),encoding="utf-8")
     LOG.info(json.dumps({"event":"phase1_acceptance_completed","result":verdict}))

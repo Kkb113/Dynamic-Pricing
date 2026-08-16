@@ -6,8 +6,9 @@ Create the ignored `.env` file with `SQL_SERVER_DATABASE`, `SQL_SERVER_USER_NAME
 
 ```powershell
 $env:PYTHONPATH = "src"
-python -m audit.report_builder
-pytest -q
+python -m audit.validation_runner
 ```
 
 The audit adds the installed ODBC Driver 18 name when the configuration omits it and normalizes boolean ODBC options. Credentials are never printed or written to artifacts.
+
+The validation runner executes pytest first, writes machine-derived test evidence bound to the current source-tree hash, and only then runs the live read-only audit. Running the audit with missing or stale test evidence produces a blocked result.

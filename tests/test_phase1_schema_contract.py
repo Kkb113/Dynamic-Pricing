@@ -23,3 +23,11 @@ def test_no_production_training_declared():
     contract = yaml.safe_load((ROOT / "contracts/dynamic_pricing_ml_contract_v1.yaml").read_text())
     assert "primary_candidate" in contract["model_family_plan"]["purchase_model"]
     assert "trained_model" not in contract
+
+
+def test_contract_uses_explicit_deny_by_default_feature_admission():
+    contract = yaml.safe_load((ROOT / "contracts/dynamic_pricing_ml_contract_v1.yaml").read_text())
+    policy = yaml.safe_load((ROOT / "contracts/leakage_policy_v1.yaml").read_text())
+    assert contract["feature_admission_policy"]["default"] == "deny"
+    assert policy["default_policy"] == "DENY"
+    assert policy["phase2_feature_admission"] == "explicit_allowlist_only"

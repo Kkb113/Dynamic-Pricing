@@ -18,3 +18,4 @@ asyncio_default_fixture_loop_scope = "function"
 
 [project.scripts]
 phase1-audit = "audit.report_builder:main"
+phase1-validate = "audit.validation_runner:main"

@@ -2,166 +2,167 @@
   "grains": {
     "category": {
       "14": {
-        "coverage_rate": 0.9969142857142858,
-        "covered_decisions": 34892,
+        "coverage_rate": 0.9947428571428572,
+        "covered_decisions": 34816,
         "decisions": 35000
       },
       "30": {
-        "coverage_rate": 0.9995428571428572,
-        "covered_decisions": 34984,
+        "coverage_rate": 0.9973428571428572,
+        "covered_decisions": 34907,
         "decisions": 35000
       },
       "60": {
-        "coverage_rate": 0.9996857142857143,
-        "covered_decisions": 34989,
+        "coverage_rate": 0.9974285714285714,
+        "covered_decisions": 34910,
         "decisions": 35000
       },
       "7": {
-        "coverage_rate": 0.9718571428571429,
-        "covered_decisions": 34015,
+        "coverage_rate": 0.9696285714285714,
+        "covered_decisions": 33937,
         "decisions": 35000
       },
       "90": {
-        "coverage_rate": 0.9996857142857143,
-        "covered_decisions": 34989,
+        "coverage_rate": 0.9974285714285714,
+        "covered_decisions": 34910,
         "decisions": 35000
       }
     },
     "category_store": {
       "14": {
-        "coverage_rate": 0.3426571428571429,
-        "covered_decisions": 11993,
+        "coverage_rate": 0.3344285714285714,
+        "covered_decisions": 11705,
         "decisions": 35000
       },
       "30": {
-        "coverage_rate": 0.5306,
-        "covered_decisions": 18571,
+        "coverage_rate": 0.5242571428571429,
+        "covered_decisions": 18349,
         "decisions": 35000
       },
       "60": {
-        "coverage_rate": 0.7062,
-        "covered_decisions": 24717,
+        "coverage_rate": 0.7006857142857142,
+        "covered_decisions": 24524,
         "decisions": 35000
       },
       "7": {
-        "coverage_rate": 0.21142857142857144,
-        "covered_decisions": 7400,
+        "coverage_rate": 0.20354285714285714,
+        "covered_decisions": 7124,
         "decisions": 35000
       },
       "90": {
-        "coverage_rate": 0.8003714285714286,
-        "covered_decisions": 28013,
+        "coverage_rate": 0.7958571428571428,
+        "covered_decisions": 27855,
         "decisions": 35000
       }
     },
     "product": {
       "14": {
-        "coverage_rate": 0.43605714285714287,
-        "covered_decisions": 15262,
+        "coverage_rate": 0.4160285714285714,
+        "covered_decisions": 14561,
         "decisions": 35000
       },
       "30": {
-        "coverage_rate": 0.6185714285714285,
-        "covered_decisions": 21650,
+        "coverage_rate": 0.6037142857142858,
+        "covered_decisions": 21130,
         "decisions": 35000
       },
       "60": {
-        "coverage_rate": 0.7687428571428572,
-        "covered_decisions": 26906,
+        "coverage_rate": 0.7579142857142858,
+        "covered_decisions": 26527,
         "decisions": 35000
       },
       "7": {
-        "coverage_rate": 0.2993142857142857,
-        "covered_decisions": 10476,
+        "coverage_rate": 0.27434285714285717,
+        "covered_decisions": 9602,
         "decisions": 35000
       },
       "90": {
-        "coverage_rate": 0.8460571428571428,
-        "covered_decisions": 29612,
+        "coverage_rate": 0.8382285714285714,
+        "covered_decisions": 29338,
         "decisions": 35000
       }
     },
     "product_region": {
       "14": {
-        "coverage_rate": 0.178,
-        "covered_decisions": 6230,
+        "coverage_rate": 0.16825714285714286,
+        "covered_decisions": 5889,
         "decisions": 35000
       },
       "30": {
-        "coverage_rate": 0.30297142857142856,
-        "covered_decisions": 10604,
+        "coverage_rate": 0.29451428571428573,
+        "covered_decisions": 10308,
         "decisions": 35000
       },
       "60": {
-        "coverage_rate": 0.4449714285714286,
-        "covered_decisions": 15574,
+        "coverage_rate": 0.4383714285714286,
+        "covered_decisions": 15343,
         "decisions": 35000
       },
       "7": {
-        "coverage_rate": 0.10748571428571428,
-        "covered_decisions": 3762,
+        "coverage_rate": 0.09691428571428572,
+        "covered_decisions": 3392,
         "decisions": 35000
       },
       "90": {
-        "coverage_rate": 0.5428285714285714,
-        "covered_decisions": 18999,
+        "coverage_rate": 0.5367714285714286,
+        "covered_decisions": 18787,
         "decisions": 35000
       }
     },
     "product_store": {
       "14": {
-        "coverage_rate": 0.14991428571428572,
-        "covered_decisions": 5247,
+        "coverage_rate": 0.14122857142857143,
+        "covered_decisions": 4943,
         "decisions": 35000
       },
       "30": {
-        "coverage_rate": 0.2576,
-        "covered_decisions": 9016,
+        "coverage_rate": 0.24948571428571428,
+        "covered_decisions": 8732,
         "decisions": 35000
       },
       "60": {
-        "coverage_rate": 0.38785714285714284,
-        "covered_decisions": 13575,
+        "coverage_rate": 0.3812,
+        "covered_decisions": 13342,
         "decisions": 35000
       },
       "7": {
-        "coverage_rate": 0.09002857142857143,
-        "covered_decisions": 3151,
+        "coverage_rate": 0.08117142857142857,
+        "covered_decisions": 2841,
         "decisions": 35000
       },
       "90": {
-        "coverage_rate": 0.4822,
-        "covered_decisions": 16877,
+        "coverage_rate": 0.47637142857142856,
+        "covered_decisions": 16673,
         "decisions": 35000
       }
     }
   },
   "product": {
     "14": {
-      "coverage_rate": 0.43605714285714287,
-      "covered_decisions": 15262,
+      "coverage_rate": 0.4160285714285714,
+      "covered_decisions": 14561,
       "decisions": 35000
     },
     "30": {
-      "coverage_rate": 0.6185714285714285,
-      "covered_decisions": 21650,
+      "coverage_rate": 0.6037142857142858,
+      "covered_decisions": 21130,
       "decisions": 35000
     },
     "60": {
-      "coverage_rate": 0.7687428571428572,
-      "covered_decisions": 26906,
+      "coverage_rate": 0.7579142857142858,
+      "covered_decisions": 26527,
       "decisions": 35000
     },
     "7": {
-      "coverage_rate": 0.2993142857142857,
-      "covered_decisions": 10476,
+      "coverage_rate": 0.27434285714285717,
+      "covered_decisions": 9602,
       "decisions": 35000
     },
     "90": {
-      "coverage_rate": 0.8460571428571428,
-      "covered_decisions": 29612,
+      "coverage_rate": 0.8382285714285714,
+      "covered_decisions": 29338,
       "decisions": 35000
     }
   },
-  "rule": "Only orders with OrderDate < DecisionTime qualify"
+  "rule": "Only completed previous calendar days qualify: OrderDate < CAST(DecisionTime AS date)",
+  "same_day_orders_excluded": true
 }

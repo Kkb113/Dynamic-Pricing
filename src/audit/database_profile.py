@@ -10,18 +10,20 @@ from typing import Any, Iterable
 import pyodbc
 
 READ_ONLY_SQL = re.compile(r"^\s*(SELECT|WITH|DECLARE|SET\s+TRANSACTION\s+ISOLATION\s+LEVEL)\b", re.I)
-FORBIDDEN_SQL = re.compile(r"\b(INSERT|UPDATE|DELETE|MERGE|TRUNCATE|DROP|ALTER|CREATE|EXEC(?:UTE)?|GRANT|REVOKE)\b", re.I)
+FORBIDDEN_SQL = re.compile(r"\b(INSERT|UPDATE|DELETE|MERGE|TRUNCATE|DROP|ALTER|CREATE|EXEC(?:UTE)?|GRANT|REVOKE|BACKUP|RESTORE|DBCC|BULK\s+INSERT|SHUTDOWN)\b", re.I)
+SELECT_INTO_SQL = re.compile(r"\bSELECT\b[\s\S]*?\bINTO\b", re.I)
 
 
 def assert_read_only_sql(sql: str) -> None:
     scrubbed = re.sub(r"--[^\n]*|/\*.*?\*/", " ", sql, flags=re.S)
-    if FORBIDDEN_SQL.search(scrubbed) or not READ_ONLY_SQL.search(scrubbed):
+    scrubbed = re.sub(r"'(?:''|[^'])*'", "''", scrubbed)
+    if FORBIDDEN_SQL.search(scrubbed) or SELECT_INTO_SQL.search(scrubbed) or not READ_ONLY_SQL.search(scrubbed):
         raise ValueError("Phase 1 permits read-only SELECT/metadata statements only")
 
 
 def normalize_odbc_connection(raw: str, driver: str) -> str:
     if not raw:
-        raise RuntimeError("Missing AI_DLC_SQL_CONNECTION_STRING; configure it without committing secrets")
+        raise RuntimeError("Missing SQL Server connection configuration; configure it without committing secrets")
     tokens: list[str] = []
     has_driver = False
     for token in raw.split(";"):

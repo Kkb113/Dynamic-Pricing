@@ -28,6 +28,10 @@ allowed_pre_decision_features:
   - Latest prior competitor-price aggregates
   - Active promotion context
   - Holiday and weather context
+feature_admission_policy:
+  default: deny
+  mechanism: explicit Phase 2 allowlist
+  raw_transaction_policy: historical_derivation_only
 conditional_features:
   - ProductID
   - StoreID
@@ -45,6 +49,7 @@ optimization_only_fields:
   - CostPrice
   - Pricing rules
   - Commercial constraints
+  - Product.MarginPct
 prohibited_fields:
   - RecommendedPrice
   - ExpectedDemand

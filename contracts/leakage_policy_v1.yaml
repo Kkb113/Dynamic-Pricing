@@ -4,11 +4,15 @@ classifications:
   - ALLOWED_PRE_DECISION
   - CONDITIONAL_PRE_DECISION
   - JOIN_ONLY_IDENTIFIER
+  - DERIVATION_ONLY
   - OPTIMIZATION_ONLY
   - PROHIBITED_SYNTHETIC_POLICY_OUTPUT
   - PROHIBITED_POST_OUTCOME
   - PROHIBITED_PRIVACY_OR_IRRELEVANT
   - PROHIBITED_HISTORICAL_FEATURE
+  - PROHIBITED_UNREVIEWED
+default_policy: DENY
+phase2_feature_admission: explicit_allowlist_only
 mandatory_rules:
   Pricing_Decision_Log.PurchasedFlag:
     classification: TARGET
@@ -49,6 +53,27 @@ mandatory_rules:
   Inventory.*:
     classification: PROHIBITED_HISTORICAL_FEATURE
     optimizer_classification: OPTIMIZATION_ONLY
+  Product.CostPrice:
+    classification: OPTIMIZATION_ONLY
+  Product.MarginPct:
+    classification: OPTIMIZATION_ONLY
+  Pricing_Rules.*:
+    classification: OPTIMIZATION_ONLY
+  Sales_Order.*:
+    classification: DERIVATION_ONLY
+    reason: Raw transaction outcomes may contribute only through completed-prior-day aggregates
+  Sales_Order_Line.*:
+    classification: DERIVATION_ONLY
+    reason: Raw quantities and amounts may contribute only through completed-prior-day aggregates
+  Recommendation_Log.Score:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Recommendation_Log.ModelVersion:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Recommendation_Log.InventoryAvailable:
+    classification: PROHIBITED_SYNTHETIC_POLICY_OUTPUT
+  Recommendation_Response.*:
+    classification: DERIVATION_ONLY
+    reason: Response outcomes may contribute only through prior historical behavior aggregates
   Customer.FirstName:
     classification: PROHIBITED_PRIVACY_OR_IRRELEVANT
   Customer.LastName:

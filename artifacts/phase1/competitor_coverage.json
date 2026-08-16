@@ -1,4 +1,21 @@
 {
+  "fallback_coverage_30d": {
+    "exact_product_region_channel": {
+      "coverage_rate": 0.06568571428571429,
+      "covered_decisions": 2299,
+      "decisions": 35000
+    },
+    "product_any_region_channel": {
+      "coverage_rate": 0.7012571428571429,
+      "covered_decisions": 24544,
+      "decisions": 35000
+    },
+    "product_region_any_channel": {
+      "coverage_rate": 0.3402,
+      "covered_decisions": 11907,
+      "decisions": 35000
+    }
+  },
   "price_gap_buckets_30d": [
     {
       "decision_count": 664,
@@ -40,6 +57,7 @@
   "quality": {
     "available_observations": 36240,
     "competitor_count": 5,
+    "generic_or_null_channel_observations": 7104,
     "mean_price": 148.86995849999977,
     "nonpositive_prices": 0,
     "observations": 40000,

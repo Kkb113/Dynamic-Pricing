@@ -14,6 +14,19 @@ def test_select_sql_is_allowed(sql):
     assert_read_only_sql(sql)
 
 
+@pytest.mark.parametrize("sql", [
+    "SELECT * INTO audit_copy FROM dbo.Pricing_Decision_Log",
+    "WITH x AS (SELECT 1 a) SELECT * INTO #temp FROM x",
+])
+def test_select_into_is_rejected(sql):
+    with pytest.raises(ValueError):
+        assert_read_only_sql(sql)
+
+
+def test_into_inside_string_literal_is_not_mistaken_for_select_into():
+    assert_read_only_sql("SELECT 'INTO' AS harmless_text")
+
+
 def test_connection_normalization_does_not_disclose_or_change_credentials():
     result = normalize_odbc_connection("Server=s;Database=d;User ID=u;Password=secret;Encrypt=True", "ODBC Driver 18 for SQL Server")
     assert "Password=secret" in result

@@ -26,11 +26,11 @@ Pricing decisions span **2025-01-01 08:12:26 through 2025-12-31 23:59:39**, acro
 
 ## 7. Competitor coverage
 
-Point-in-time coverage is same-day **0.16%**, prior 3d **0.75%**, 7d **1.74%**, 14d **3.29%**, and 30d **6.57%**. Only observations at or before the decision qualify.
+Strict Product×Region×Channel point-in-time coverage is same-day **0.16%**, prior 3d **0.75%**, 7d **1.74%**, 14d **3.29%**, and 30d **6.57%**. At 30 days, Product×Region with any channel covers **34.02%** and Product-only covers **70.13%**. Phase 2 must retain availability/age/fallback indicators and never drop rows lacking competitor context.
 
 ## 8. Historical-sales feasibility
 
-At 30 days, prior-sale coverage is Product×Store **25.76%**, Product×Region **30.30%**, Product **61.86%**, Category×Store **53.06%**, and Category **99.95%**. Product-only coverage rises from 7d **29.93%** to 90d **84.61%**. Phase 2 should use this measured fallback hierarchy.
+Only completed previous calendar days qualify; same-day date-only orders are excluded. At 30 days, prior-sale coverage is Product×Store **24.95%**, Product×Region **29.45%**, Product **60.37%**, Category×Store **52.43%**, and Category **99.73%**. Product-only coverage rises from 7d **27.43%** to 90d **83.82%**. Phase 2 should use this measured fallback hierarchy.
 
 ## 9. Promotion/calendar/weather feasibility
 
@@ -42,7 +42,7 @@ ProductID has **2,671** observed values (median 6.0 decisions/entity; 1,058 belo
 
 ## 11. Data-quality issues
 
-Outcome-consistency violations: **0**. Price-history decision coverage is **100.00%** with 0 decisions matching multiple eligible intervals. Referenced-price-rule compliance is **91.16%**; the remaining cases need rule-semantics review rather than automatic repair. Detailed relationship, numeric, missingness, and primary-key findings are machine-readable artifacts.
+Outcome-consistency violations: **0**. Price-history decision coverage is **100.00%** with 0 decisions matching multiple eligible intervals. All **29** Phase-2-critical logical joins were audited with **0** total orphans. Referenced-price-rule compliance is **91.16%**; the remaining cases need rule-semantics review rather than automatic repair. Pytest evidence is machine-generated and source-bound: **59 passed / 0 failed**.
 
 ## 12. Generator leakage analysis
 
@@ -50,7 +50,7 @@ Generator result: **GENERATOR_LOGIC_NOT_AVAILABLE**. The located older generator
 
 ## 13. Final leakage matrix summary
 
-All live columns are classified. Synthetic policy outputs and post-outcome fields are prohibited; PII is excluded; identifiers are join-only by default; inventory is prohibited historically.
+All live columns are classified under a **deny-by-default explicit allowlist**. Cost and pricing rules are optimizer-only; raw sales/events are derivation-only; recommendation outputs and post-outcome fields are prohibited; PII is excluded; identifiers are join-only by default; inventory is prohibited historically.
 
 ## 14. Locked feature-policy summary
 
@@ -76,7 +76,7 @@ This is a Phase 3 proposal and uses chronological boundaries only.
 
 - Generator source for pricing decisions is unavailable.
 - Region/channel-matched competitor context is sparse (30-day coverage 6.57%).
-- Product×Store 30-day sales coverage is 25.76%; hierarchical fallbacks are required.
+- Product×Store 30-day sales coverage is 24.95%; hierarchical fallbacks are required.
 - 1,893 promotion associations are not active at their price interval.
 - Rule compliance is 91.16% under the audited direct constraints and needs semantic review.
 - Individual SKU histories are uneven; global/hierarchical modelling is required.
@@ -101,7 +101,7 @@ Synthetic probability/policy outputs could make accuracy misleading if admitted 
 3. Quantity target usable? **YES** — 6,492 consistent positive purchased rows.
 4. Leakage-safe point-in-time features constructible? **YES_WITH_LIMITATIONS** — coverage varies by feature family.
 5. Competitor history useful? **YES_WITH_LIMITATIONS** — region/channel-matched 30-day coverage is 6.57%.
-6. Sales velocity derivable? **YES_WITH_LIMITATIONS** — 30-day coverage ranges from Product×Store 25.76% to Category 99.95%.
+6. Sales velocity derivable? **YES_WITH_LIMITATIONS** — 30-day coverage ranges from Product×Store 24.95% to Category 99.73%.
 7. Season/promotion/calendar context joinable? **YES_WITH_LIMITATIONS** — temporal overlap and region/date rules are mandatory.
 8. Optimizer outputs separable? **YES** — explicit policy plus automated rejection tests.
 9. Hidden generator structural problem? **NO** — none demonstrated; source unavailable, so empirical proxy risk remains a warning.
