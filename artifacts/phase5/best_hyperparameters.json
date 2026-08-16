@@ -1,0 +1,15 @@
+{
+  "feature_family": "F3_CORE_BEHAVIOR",
+  "loss": "RMSE",
+  "max_iterations": 2500,
+  "parameters": {
+    "bagging_temperature": 4.297478199669065,
+    "border_count": 64,
+    "depth": 6,
+    "iterations": 1972,
+    "l2_leaf_reg": 15.440679481213703,
+    "learning_rate": 0.08303861712824889,
+    "random_strength": 2.0510119338294075
+  },
+  "trial_number": 20
+}

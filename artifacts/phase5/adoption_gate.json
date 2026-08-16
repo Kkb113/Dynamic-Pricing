@@ -1,0 +1,16 @@
+{
+  "decision": "CONSTANT_MEAN",
+  "eligible": false,
+  "mae_improvement": -0.00353710827638809,
+  "material_damage": false,
+  "material_improvement": false,
+  "poisson_deviance_improvement": 0.0005214629621272948,
+  "rmse_improvement": 0.000530447516818966,
+  "thresholds": {
+    "mae_damage": 0.01,
+    "poisson_damage": 0.002,
+    "poisson_improvement": 0.002,
+    "rmse_damage": 0.003,
+    "rmse_improvement": 0.003
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "candidate_price_definition": "CandidatePrice = historical AppliedPrice",
+  "expected_unit_prediction_delta": 0.0,
+  "feature_parity": true,
+  "feature_violations": 0,
+  "integrated_parity": true,
+  "max_numeric_feature_delta": 0.0,
+  "phase4_purchase_probability_delta": 0.0,
+  "quantity_prediction_delta": 0.0,
+  "tolerance": 1e-10
+}

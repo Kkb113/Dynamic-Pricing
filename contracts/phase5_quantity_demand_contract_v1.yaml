@@ -1,0 +1,90 @@
+contract_name: phase5_quantity_demand_contract_v1
+contract_version: 1
+phase: 5
+upstream:
+  phase2_dataset_sha256: 7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2
+  phase3_split_assignment_sha256: 9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d
+  phase4_frozen_model_spec_sha256: 87ffb4e56af455937a0c92b1be45be0e2c8082cc0efd6afa51eb62f9c05ba9d0
+  phase4_model_sha256: 1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d
+  phase4_validation_prediction_sha256: e57d407d57395146f828e786a13d6eba16653f2ccb7952bf8205141a466af09a
+  phase4_test_prediction_sha256: cb0f044d27b882b8a03efd34592c811b73942cb5fd4ba2881143ed8db40c1e8f
+target:
+  name: QuantityPurchased
+  population_filter: PurchasedFlag == 1
+  prohibited_predictors:
+  - PurchasedFlag
+  - QuantityPurchased
+  - CustomerID
+  - SessionID
+  - PricingDecisionID
+  - RecommendedPrice
+  - ExpectedDemand
+  - PurchaseProbability
+  - PriceElasticity
+  - ExpectedRevenue
+  - ExpectedMarginPct
+  - ActualRevenue
+  - OutcomeTime
+  - OrderLineID
+  - Inventory.*
+  - Pricing_Rules.*
+  support:
+    minimum: 1.0
+    projection: np.maximum(raw_prediction, minimum)
+feature_candidates:
+  families:
+  - QF0_CORE
+  - QF1_CORE_HIGH_CARDINALITY
+  - QF2_CORE_COMPETITOR
+  - QF3_CORE_BEHAVIOR
+  - QF4_CORE_CUSTOMER
+  - QF5_CORE_HIGH_CARDINALITY_COMPETITOR
+  - QF6_CORE_HIGH_CARDINALITY_BEHAVIOR
+  - QF7_CORE_HIGH_CARDINALITY_COMPETITOR_BEHAVIOR
+  - QF8_CORE_ALL_APPROVED_CONTEXT
+  phase4_reference: F3_CORE_BEHAVIOR
+  source: model_feature_columns(phase2_contract, population=quantity)
+loss_candidates:
+- RMSE
+- POISSON
+selected_feature_family: F3_CORE_BEHAVIOR
+selected_loss: RMSE
+hpo:
+  sampler: TPESampler
+  seed: 42
+  n_jobs: 1
+  trials: 60
+  objective: mean temporal-fold RMSE on purchased TRAIN folds
+  iterations_max: 2500
+  tie_band_rmse: 0.002
+official_estimator:
+  type: CONSTANT_MEAN
+  fallback: CONSTANT_MEAN when validation materiality or integrated safety gate fails
+  adoption_gate:
+    rmse_improvement: 0.003
+    poisson_deviance_improvement: 0.002
+    rmse_damage: 0.003
+    poisson_deviance_damage: 0.002
+    mae_damage: 0.01
+  fallback_mean_value: 1.3057971014492753
+  selected_iterations: 31
+  frozen_quantity_spec_sha256: 260354340c41fe8eaccaafc4e3388f7fb28c81ec4fbaba049504a25b7a487914
+expected_units:
+  formula: Phase4 official probability * Phase5 official conditional quantity
+  observed_units: PurchasedFlag * QuantityPurchased for evaluation only
+purchase_probability_source: Phase4 official_probability; immutable; no recalibration
+candidate_price_policy:
+  adapter: features.price_features.build_price_dependent_features
+  historical_parity: CandidatePrice == AppliedPrice
+  optimization: prohibited in Phase 5
+test_access_policy:
+  frozen_spec_required: true
+  test_eval_count: 1
+  test_eval_set: false
+compute:
+  max_catboost_threads: 22
+  optuna_jobs: 1
+  nested_parallelism: false
+  task_type: CPU
+  catboost_threads_used: 22
+  catboost_version: 1.2.10

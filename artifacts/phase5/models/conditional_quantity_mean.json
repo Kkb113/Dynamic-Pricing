@@ -1,0 +1,5 @@
+{
+  "conditional_quantity_minimum": 1.0,
+  "estimator_type": "CONSTANT_MEAN",
+  "mean_value": 1.3057971014492753
+}

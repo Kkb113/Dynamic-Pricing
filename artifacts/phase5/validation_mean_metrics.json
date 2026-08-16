@@ -1,0 +1,14 @@
+{
+  "bias": 0.014299931722429092,
+  "conditional_quantity_minimum": 1.0,
+  "mae": 0.4695451114351798,
+  "mean_actual": 1.293929712460064,
+  "mean_poisson_deviance": 0.24302858245317835,
+  "mean_prediction": 1.3082296441824928,
+  "negative_prediction_count": 0,
+  "r2": -0.0005094900773796596,
+  "raw_predictions_below_minimum_count": 0,
+  "raw_predictions_below_minimum_rate": 0.0,
+  "rmse": 0.6336897828022066,
+  "row_count": 939
+}
