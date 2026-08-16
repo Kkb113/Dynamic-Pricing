@@ -165,6 +165,65 @@ def feature_schema(frame: pd.DataFrame, contract: dict[str, Any]) -> list[dict[s
     } for name in [feature["name"] for feature in contract["features"]]]
 
 
+def independent_point_in_time_validation(frame: pd.DataFrame) -> dict[str, Any]:
+    """Measure temporal violations from selected-source audit columns.
+
+    These counts deliberately do not read builder diagnostics.  They are
+    recomputed from the finished feature frame so a regression in source
+    selection cannot be hidden by a hard-coded zero in a builder.
+    """
+    required = {
+        "selected_competitor_observed_at", "selected_behavior_event_at", "selected_sales_order_date",
+        "selected_price_effective_from", "selected_price_effective_to",
+        "active_history_promotion_id", "selected_promotion_start_date", "selected_promotion_end_date",
+        "active_promotion_flag",
+    }
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError(f"Point-in-time audit columns are missing: {missing}")
+    decision_time = pd.to_datetime(frame["DecisionTime"], errors="coerce")
+    decision_date = decision_time.dt.normalize()
+    competitor_time = pd.to_datetime(frame["selected_competitor_observed_at"], errors="coerce")
+    behavior_time = pd.to_datetime(frame["selected_behavior_event_at"], errors="coerce")
+    sales_date = pd.to_datetime(frame["selected_sales_order_date"], errors="coerce").dt.normalize()
+    price_from = pd.to_datetime(frame["selected_price_effective_from"], errors="coerce")
+    price_to = pd.to_datetime(frame["selected_price_effective_to"], errors="coerce")
+    promotion_start = pd.to_datetime(frame["selected_promotion_start_date"], errors="coerce").dt.normalize()
+    promotion_end = pd.to_datetime(frame["selected_promotion_end_date"], errors="coerce").dt.normalize()
+    active_promotion = frame["active_promotion_flag"].fillna(0).astype(bool)
+    invalid_promotion_overlap = frame["active_history_promotion_id"].notna() & (
+        promotion_start.isna() | promotion_end.isna() | promotion_start.gt(decision_date) | promotion_end.lt(decision_date)
+    )
+    inventory_columns = [
+        column for column in frame.columns
+        if column.lower().startswith("inventory.") or "inventory" in column.lower()
+    ]
+    return {
+        "future_competitor_observations_used": int(competitor_time.gt(decision_time).fillna(False).sum()),
+        "future_behavioral_events_used": int(behavior_time.gt(decision_time).fillna(False).sum()),
+        "same_day_date_only_sales_used": int(sales_date.eq(decision_date).fillna(False).sum()),
+        "future_sales_used": int(sales_date.gt(decision_date).fillna(False).sum()),
+        "future_price_intervals_used": int(
+            (price_from.gt(decision_time) | (price_to.notna() & price_to.le(decision_time))).fillna(False).sum()
+        ),
+        "stale_promotion_associations_treated_active": int((active_promotion & invalid_promotion_overlap).sum()),
+        "invalid_promotion_overlap": int((active_promotion & invalid_promotion_overlap).sum()),
+        "historical_inventory_features": int(len(inventory_columns)),
+        "audit_source_columns": {
+            "competitor": "selected_competitor_observed_at",
+            "behavior": "selected_behavior_event_at",
+            "sales": "selected_sales_order_date",
+            "price_history": ["selected_price_effective_from", "selected_price_effective_to"],
+            "promotion": ["active_history_promotion_id", "selected_promotion_start_date", "selected_promotion_end_date", "active_promotion_flag"],
+        },
+        "sales_temporal_rule": "OrderDate >= DATEADD(day,-N,CAST(DecisionTime AS date)) AND OrderDate < CAST(DecisionTime AS date)",
+        "behavior_temporal_rule": "EventTime <= DecisionTime",
+        "competitor_temporal_rule": "DecisionTime-30 days <= ObservedDateTime <= DecisionTime",
+        "price_history_temporal_rule": "EffectiveFrom <= DecisionTime AND (EffectiveTo IS NULL OR DecisionTime < EffectiveTo)",
+        "promotion_temporal_rule": "StartDate <= CAST(DecisionTime AS date) <= EndDate",
+    }
+
+
 def phase1_regression_check(root: Path, diagnostics: dict[str, Any]) -> dict[str, Any]:
     """Reconcile Phase 2 measurements with accepted Phase 1 values without redefining them."""
     phase1_sales = json.loads((root / "artifacts/phase1/historical_sales_coverage.json").read_text(encoding="utf-8"))
@@ -347,11 +406,11 @@ Separate Product×Store, Product×Region, Product, Category×Store, and Category
 
 ## 9. Competitor features and fallback usage
 
-Exact, generic-region, region, and product fallback values are separate. Final selected match counts: {json.dumps(diagnostics.get('competitor', {}).get('selected_match_counts', {}), sort_keys=True)}.
+Exact, generic-channel region, other-channel region, and product fallback values are separate. Final selected match counts: {json.dumps(diagnostics.get('competitor', {}).get('selected_match_counts', {}), sort_keys=True)}.
 
 ## 10. Promotion features
 
-Promotion activity requires an active price interval, a resolved promotion, and `StartDate <= DecisionDate <= EndDate`; stale associations are not active.
+Promotion activity requires an active price interval, a resolved promotion, and `StartDate <= DecisionDate <= EndDate`; `active_history_promotion_id` is retained separately from validated `active_promotion_id`, and stale associations are not active.
 
 ## 11. Holiday/weather features
 
@@ -363,7 +422,7 @@ Browsing, validated cart additions, and clicked-product searches use `EventTime 
 
 ## 13. Conditional customer context
 
-Customer segment, loyalty, preferred channel, sensitivity, and affinity fields are isolated as conditional features and are not automatically approved for final training.
+Customer segment, loyalty, preferred channel, sensitivity, and affinity fields are isolated as conditional features and require an explicit approval list before final training. Favorite category/brand IDs remain join-only context.
 
 ## 14. Feature coverage
 
@@ -374,6 +433,8 @@ See `feature_coverage.csv`, `feature_distribution.csv`, and `feature_schema.json
 Legitimate optional context remains null, valid absent event counts are zero, and no model-eligible numeric field contains NaN-derived infinity.
 
 ## 16. Point-in-time validation
+
+The counts below are independently computed from selected-source audit timestamps in the finished feature frame (`audit_source_columns`), not copied from builder diagnostics.
 
 {json.dumps(point, indent=2, sort_keys=True)}
 
@@ -437,19 +498,7 @@ def write_artifacts(
     distribution.to_csv(artifact_dir / "feature_distribution.csv", index=False)
     null_profile = coverage[["feature_name", "row_count", "non_null_count", "null_count", "coverage_pct"]].copy()
     null_profile.to_csv(artifact_dir / "feature_null_profile.csv", index=False)
-    point_in_time = {
-        "future_competitor_observations_used": int(diagnostics.get("competitor", {}).get("future_observations_used", 0)),
-        "future_behavioral_events_used": int(diagnostics.get("behavior", {}).get("future_events_used", 0)),
-        "same_day_date_only_sales_used": 0,
-        "future_sales_used": 0,
-        "future_price_intervals_used": int(diagnostics.get("price_history", {}).get("future_intervals_used", 0)),
-        "stale_promotion_associations_treated_active": int(diagnostics.get("promotion", {}).get("stale_associations_treated_active", 0)),
-        "historical_inventory_features": 0,
-        "sales_temporal_rule": "OrderDate >= DATEADD(day,-N,CAST(DecisionTime AS date)) AND OrderDate < CAST(DecisionTime AS date)",
-        "behavior_temporal_rule": "EventTime <= DecisionTime",
-        "competitor_temporal_rule": "DecisionTime-30 days <= ObservedDateTime <= DecisionTime",
-        "price_history_temporal_rule": "EffectiveFrom <= DecisionTime AND (EffectiveTo IS NULL OR DecisionTime < EffectiveTo)",
-    }
+    point_in_time = independent_point_in_time_validation(frame)
     diagnostics["point_in_time"] = point_in_time
     diagnostics["phase1_regression"] = phase1_regression_check(root, diagnostics)
     write_json(artifact_dir / "point_in_time_validation.json", point_in_time)
@@ -490,3 +539,4 @@ def write_artifacts(
     })
     _write_markdown_reports(root, frame, contract, diagnostics, source_snapshot, deterministic, tests, source_tree_sha256())
     return {**validation, "canonical_feature_dataset_sha256": dataset_hash}
+

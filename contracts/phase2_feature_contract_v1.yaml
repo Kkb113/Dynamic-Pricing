@@ -226,6 +226,22 @@ features:
     model_eligible: false
     formula_or_semantics: deterministic selected price-history row identifier
   - <<: *feature_defaults
+    name: selected_price_effective_from
+    role: AUDIT_ONLY
+    feature_group: price_history
+    source_tables: [Product_Price_History]
+    dtype: datetime
+    model_eligible: false
+    formula_or_semantics: EffectiveFrom of the selected point-in-time price interval
+  - <<: *feature_defaults
+    name: selected_price_effective_to
+    role: AUDIT_ONLY
+    feature_group: price_history
+    source_tables: [Product_Price_History]
+    dtype: datetime
+    model_eligible: false
+    formula_or_semantics: EffectiveTo of the selected point-in-time price interval; null means open-ended
+  - <<: *feature_defaults
     name: price_history_current_price_delta
     role: AUDIT_ONLY
     feature_group: price_history
@@ -248,6 +264,30 @@ features:
     dtype: int8
     formula_or_semantics: active price interval promotion resolves and DecisionDate is within StartDate..EndDate
     null_semantics: zero when no valid active promotion
+  - <<: *feature_defaults
+    name: active_promotion_id
+    role: AUDIT_ONLY
+    feature_group: promotion
+    source_tables: [Product_Price_History, Promotions]
+    dtype: string
+    model_eligible: false
+    formula_or_semantics: promotion key that passes price-interval scope and promotion-date validation
+  - <<: *feature_defaults
+    name: selected_promotion_start_date
+    role: AUDIT_ONLY
+    feature_group: promotion
+    source_tables: [Promotions]
+    dtype: date
+    model_eligible: false
+    formula_or_semantics: StartDate for the promotion referenced by the selected historical price interval
+  - <<: *feature_defaults
+    name: selected_promotion_end_date
+    role: AUDIT_ONLY
+    feature_group: promotion
+    source_tables: [Promotions]
+    dtype: date
+    model_eligible: false
+    formula_or_semantics: EndDate for the promotion referenced by the selected historical price interval
   - <<: *feature_defaults
     name: active_promotion_discount_pct
     feature_group: promotion
@@ -409,6 +449,14 @@ features:
     formula_or_semantics: days since latest eligible product sale strictly before DecisionDate
     null_semantics: null when no prior eligible product sale exists
   - <<: *feature_defaults
+    name: selected_sales_order_date
+    role: AUDIT_ONLY
+    feature_group: sales
+    source_tables: [Sales_Order, Sales_Order_Line]
+    dtype: date
+    model_eligible: false
+    formula_or_semantics: latest eligible product sale date independently selected strictly before DecisionDate
+  - <<: *feature_defaults
     name: competitor_price_exact_channel
     role: OPTIONAL_MODEL_FEATURE
     feature_group: optional_competitor
@@ -457,12 +505,20 @@ features:
     formula_or_semantics: DecisionTime minus selected ObservedDateTime in days
     null_semantics: null when no competitor context
   - <<: *feature_defaults
+    name: selected_competitor_observed_at
+    role: AUDIT_ONLY
+    feature_group: optional_competitor
+    source_tables: [Competitor_Price]
+    dtype: datetime
+    model_eligible: false
+    formula_or_semantics: ObservedDateTime of the selected competitor row
+  - <<: *feature_defaults
     name: competitor_match_level
     role: OPTIONAL_MODEL_FEATURE
     feature_group: optional_competitor
     source_tables: [Competitor_Price]
     dtype: category
-    formula_or_semantics: EXACT, REGION_FALLBACK, PRODUCT_FALLBACK, or NONE
+    formula_or_semantics: EXACT, REGION_GENERIC_CHANNEL, REGION_OTHER_CHANNEL, PRODUCT_FALLBACK, or NONE
     fallback_policy: explicit level is preserved; fallback is never mislabeled exact
   - <<: *feature_defaults
     name: price_vs_competitor_pct
@@ -545,6 +601,14 @@ features:
     source_tables: [Search_Events]
     dtype: float
     formula_or_semantics: count clicked-product search events in [DecisionTime-720h, DecisionTime]
+  - <<: *feature_defaults
+    name: selected_behavior_event_at
+    role: AUDIT_ONLY
+    feature_group: behavior
+    source_tables: [Browsing_Events, Cart_Events, Search_Events]
+    dtype: datetime
+    model_eligible: false
+    formula_or_semantics: latest selected behavior event timestamp not later than DecisionTime
   - <<: *feature_defaults
     name: is_holiday
     feature_group: holiday_weather
@@ -634,20 +698,22 @@ features:
     formula_or_semantics: source brand affinity score; conditional feature only
   - <<: *feature_defaults
     name: FavoriteCategoryID
-    role: CONDITIONAL_MODEL_FEATURE
-    feature_group: conditional_customer
+    role: JOIN_ONLY
+    feature_group: customer_context
     source_tables: [Customer_Preferences]
     dtype: category
-    conditional: true
-    formula_or_semantics: customer favorite category context; conditional feature only
+    conditional: false
+    model_eligible: false
+    formula_or_semantics: customer preference join/context identifier; not an approved model predictor
   - <<: *feature_defaults
     name: FavoriteBrandID
-    role: CONDITIONAL_MODEL_FEATURE
-    feature_group: conditional_customer
+    role: JOIN_ONLY
+    feature_group: customer_context
     source_tables: [Customer_Preferences]
     dtype: category
-    conditional: true
-    formula_or_semantics: customer favorite brand context; conditional feature only
+    conditional: false
+    model_eligible: false
+    formula_or_semantics: customer preference join/context identifier; not an approved model predictor
 
 feature_lists:
   purchase_core_features: &purchase_core_features
@@ -733,8 +799,6 @@ feature_lists:
     - PriceSensitivity
     - CategoryAffinityScore
     - BrandAffinityScore
-    - FavoriteCategoryID
-    - FavoriteBrandID
   quantity_core_features: *purchase_core_features
   quantity_conditional_features: *purchase_conditional_features
   price_dependent_features:
@@ -760,8 +824,6 @@ feature_lists:
     - LoyaltyTier
     - PreferredChannel
     - PriceSensitivity
-    - FavoriteCategoryID
-    - FavoriteBrandID
   numeric_features:
     - CurrentPrice
     - AppliedPrice
@@ -829,5 +891,6 @@ feature_lists:
     - holiday_sales_impact_factor
     - weather_temperature
     - weather_precipitation
-  audit_columns: [PricingDecisionID, DecisionTime, CustomerID, SessionID, active_history_promotion_id, active_price_history_id, price_history_current_price_delta, price_history_current_price_mismatch, holiday_count]
+  audit_columns: [PricingDecisionID, DecisionTime, CustomerID, SessionID, FavoriteCategoryID, FavoriteBrandID, active_history_promotion_id, active_price_history_id, selected_price_effective_from, selected_price_effective_to, active_promotion_id, selected_promotion_start_date, selected_promotion_end_date, selected_sales_order_date, selected_competitor_observed_at, selected_behavior_event_at, price_history_current_price_delta, price_history_current_price_mismatch, holiday_count]
   target_columns: [PurchasedFlag, QuantityPurchased]
+

@@ -26,5 +26,26 @@ def test_targets_audit_keys_and_optimizer_outputs_are_not_model_features():
     features = model_feature_columns(contract)
     forbidden = {"PurchasedFlag", "QuantityPurchased", "PricingDecisionID", "CustomerID", "CostPrice", "MarginPct", "RecommendedPrice", "ExpectedDemand"}
     assert forbidden.isdisjoint(features)
-    assert "ProductID" in features
-    assert "StoreID" in features
+    assert "ProductID" not in features
+    assert "StoreID" not in features
+    assert "FavoriteCategoryID" not in features
+    assert "FavoriteBrandID" not in features
+
+
+def test_conditional_features_require_explicit_approval():
+    contract = load_contract(ROOT / "contracts/phase2_feature_contract_v1.yaml")
+    with pytest.raises(ValueError, match="require approved_conditional_features"):
+        model_feature_columns(contract, include_conditional=True)
+    approved = model_feature_columns(contract, approved_conditional_features=["ProductID", "StoreID"])
+    assert "ProductID" in approved
+    assert "StoreID" in approved
+    assert "FavoriteCategoryID" not in approved
+
+
+def test_favorite_preference_ids_are_join_only():
+    contract = load_contract(ROOT / "contracts/phase2_feature_contract_v1.yaml")
+    entries = {feature["name"]: feature for feature in contract["features"]}
+    for name in ["FavoriteCategoryID", "FavoriteBrandID"]:
+        assert entries[name]["role"] == "JOIN_ONLY"
+        assert entries[name]["model_eligible"] is False
+

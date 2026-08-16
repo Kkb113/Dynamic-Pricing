@@ -73,12 +73,35 @@ def validate_contract(contract: dict[str, Any]) -> None:
             raise ValueError(f"Non-eligible feature admitted: {name}")
 
 
-def model_feature_columns(contract: dict[str, Any], population: str = "purchase") -> list[str]:
+def model_feature_columns(
+    contract: dict[str, Any],
+    population: str = "purchase",
+    include_conditional: bool = False,
+    approved_conditional_features: Iterable[str] | None = None,
+) -> list[str]:
+    """Return model columns, keeping conditional features opt-in.
+
+    Conditional/high-cardinality fields remain in the contract so controlled
+    experiments can request them, but a normal Phase 3 caller gets only the
+    approved core list.  Supplying an explicit approval list is required for
+    every conditional field that is added to a model population.
+    """
     lists = contract["feature_lists"]
     if population == "quantity":
-        names = list(lists["quantity_core_features"]) + list(lists["quantity_conditional_features"])
+        core = list(lists["quantity_core_features"])
+        conditional = list(lists["quantity_conditional_features"])
     else:
-        names = list(lists["purchase_core_features"]) + list(lists["purchase_conditional_features"])
+        core = list(lists["purchase_core_features"])
+        conditional = list(lists["purchase_conditional_features"])
+    if approved_conditional_features is not None:
+        approved = list(approved_conditional_features)
+        unknown = set(approved) - set(conditional)
+        if unknown:
+            raise ValueError(f"Conditional features are not approved for {population}: {sorted(unknown)}")
+        include_conditional = True
+    elif include_conditional:
+        raise ValueError("Conditional features require approved_conditional_features")
+    names = core + ([name for name in conditional if name in set(approved)] if include_conditional else [])
     if len(names) != len(set(names)):
         raise ValueError(f"Duplicate model feature names for {population}")
     validate_model_feature_columns(names, contract)
@@ -97,3 +120,4 @@ def validate_model_feature_columns(columns: Iterable[str], contract: dict[str, A
     ]
     if forbidden:
         raise ValueError(f"Forbidden model columns: {sorted(forbidden)}")
+
