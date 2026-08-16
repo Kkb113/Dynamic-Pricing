@@ -29,7 +29,7 @@ Three expanding folds are contained entirely inside TRAIN. Their manifest and pe
 
 The official benchmark is `purchase_logistic_core`; `purchase_dummy_prior` is the lower bound. Validation logistic metrics: ROC-AUC **0.5004593593573564**, average precision **0.17790142106169896**, log loss **0.4755424448028758**, Brier **0.1488640726795099**, ECE **0.03212218962041481**, top-decile lift **0.9904153354632588**. Holdout metrics: ROC-AUC **0.526029431852506**, average precision **0.198224848939275**, log loss **0.4825975666616103**, Brier **0.15195172395850157**.
 
-The price ablation is a predictive signal diagnostic only; its comparison is validation-only and is not a causal elasticity estimate.
+The price ablation is a predictive signal diagnostic only. Its explicit no-price policy excludes the `price`, `price_history`, and promotion-price proxy groups plus all contract-declared price-dependent features; the comparison is validation-only and is not a causal elasticity estimate.
 
 ## Calibration, segment, and price diagnostics
 
@@ -45,7 +45,7 @@ Quantity models are trained only on `PurchasedFlag == 1` rows, and `PurchasedFla
 - Logical threads: **22**
 - Usable/configured limit: **22 / 22**
 - Random seed: **42**; nested parallelism: **disabled**
-- Test evidence: **94/94 passed**
+- Test evidence: **96/96 passed**
 
 ## Warnings
 
@@ -53,4 +53,5 @@ Quantity models are trained only on `PurchasedFlag == 1` rows, and `PurchasedFla
 - logistic validation log_loss (0.475542) is worse than dummy prior (0.469876); investigate before promotion
 - logistic validation brier_score (0.148864) is worse than dummy prior (0.146933); investigate before promotion
 - logistic validation average precision (0.177901) is near purchase prevalence (0.178857)
+- quantity Poisson baseline does not beat the mean on validation (mae 0.480232 vs mean 0.469545, rmse 0.635063 vs mean 0.633690, mean_poisson_deviance 0.244353 vs mean 0.243029)
 - Phase 3 baselines are predictive benchmarks; no causal elasticity claim is made

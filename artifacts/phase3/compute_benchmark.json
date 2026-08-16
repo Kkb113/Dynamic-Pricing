@@ -1,6 +1,6 @@
 {
-  "purchase_logistic_fit_seconds": 2.1907625000021653,
-  "quantity_poisson_fit_seconds": 0.2309564000024693,
-  "temporal_fold_total_seconds": 7.106226799995056,
+  "purchase_logistic_fit_seconds": 1.7032164000120247,
+  "quantity_poisson_fit_seconds": 0.17473829998925794,
+  "temporal_fold_total_seconds": 4.96405960006814,
   "threads_used": 22
 }

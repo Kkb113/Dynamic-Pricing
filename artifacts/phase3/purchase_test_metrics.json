@@ -12,8 +12,9 @@
     "recall_at_0_5": 0.0,
     "roc_auc": 0.5,
     "row_count": 5250,
-    "top_decile_lift": 0.720164609053498,
-    "top_decile_purchase_rate": 0.13333333333333333
+    "top_decile_lift": 1.0,
+    "top_decile_purchase_rate": 0.18514285714285714,
+    "top_decile_tie_policy": "fractional inclusion at score cutoff"
   },
   "purchase_logistic_core": {
     "average_precision": 0.198224848939275,
@@ -29,6 +30,7 @@
     "roc_auc": 0.526029431852506,
     "row_count": 5250,
     "top_decile_lift": 1.1213991769547325,
-    "top_decile_purchase_rate": 0.20761904761904762
+    "top_decile_purchase_rate": 0.20761904761904762,
+    "top_decile_tie_policy": "fractional inclusion at score cutoff"
   }
 }

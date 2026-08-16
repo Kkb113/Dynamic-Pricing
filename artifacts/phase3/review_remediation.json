@@ -1,0 +1,30 @@
+{
+  "reviewed_branch_head": "2390036b504fdcffe7b693150adc55a36b3831bb",
+  "remediation_implementation_commit": "1417ad9b60384760556ee4f44e81167d13678fbd",
+  "changes": [
+    "Removed all price, price-history, promotion-price proxy, and price-dependent features from the validation-only no-price ablation.",
+    "Changed top-decile lift to fractional tie-aware cutoff handling.",
+    "Added a validation warning when Poisson quantity metrics do not beat the mean baseline."
+  ],
+  "official_test_prediction_fingerprints_before": {
+    "purchase_test": "e7dcbf06855226384ffb5d76b246d0ecfee6dafd3ef3d9977c1b94449e8271a8",
+    "quantity_test": "bef61e01599d1e670f668329999921be04c38ef8a2ea8b5f94b4d87433a3e2fd"
+  },
+  "official_test_prediction_fingerprints_after": {
+    "purchase_test": "e7dcbf06855226384ffb5d76b246d0ecfee6dafd3ef3d9977c1b94449e8271a8",
+    "quantity_test": "bef61e01599d1e670f668329999921be04c38ef8a2ea8b5f94b4d87433a3e2fd"
+  },
+  "official_test_prediction_fingerprints_unchanged": true,
+  "test_reaccessed_for_review_remediation_only": true,
+  "holdout_models_unchanged": true,
+  "no_price_policy": {
+    "excluded_feature_groups": ["price", "price_history", "promotion"],
+    "excluded_price_dependent_contract_features": true,
+    "validation_only": true,
+    "causal_interpretation": false
+  },
+  "old_validation_no_price_roc_auc": 0.5010495231135943,
+  "new_validation_no_price_roc_auc": 0.5012546846872886,
+  "old_dummy_validation_top_decile_lift": 0.9691160809371673,
+  "new_dummy_validation_top_decile_lift": 1.0
+}

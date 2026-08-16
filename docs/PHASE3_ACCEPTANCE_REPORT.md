@@ -57,7 +57,7 @@ Each model is a single `ColumnTransformer` + `Pipeline`: numeric median imputati
 
 | Model | Split | ROC-AUC | AP | Log loss | Brier | ECE | Top-decile lift |
 |---|---|---:|---:|---:|---:|---:|---:|
-| purchase_dummy_prior | validation | 0.500000 | 0.178857 | 0.469876 | 0.146933 | 0.008122 | 0.969116 |
+| purchase_dummy_prior | validation | 0.500000 | 0.178857 | 0.469876 | 0.146933 | 0.008122 | 1.000000 |
 | purchase_logistic_core | validation | 0.500459 | 0.177901 | 0.475542 | 0.148864 | 0.032122 | 0.990415 |
 | purchase_logistic_core | test | 0.526029 | 0.198225 | 0.482598 | 0.151952 | 0.026116 | 1.121399 |
 
@@ -73,7 +73,7 @@ The logistic-core fold summary is **mean ROC-AUC 0.511835 ± 0.011288**, with mi
 
 ## 14. Price-response diagnostic
 
-`purchase_logistic_core_no_price` is a validation-only predictive signal ablation. Validation logistic core ROC-AUC **0.500459** versus no-price **0.501050**; observed difference **-0.000590**. This is not causal elasticity.
+`purchase_logistic_core_no_price` is a validation-only predictive signal ablation. Its explicit policy excludes the entire `price`, `price_history`, and promotion-price proxy groups plus all contract-declared price-dependent features. Validation logistic core ROC-AUC **0.500459** versus no-price **0.501255**; observed difference **-0.000795**. This is not causal elasticity.
 
 ## 15. Quantity mean baseline
 
@@ -93,7 +93,7 @@ Validation and test segment metrics for Channel, Season, RegionID, CategoryID, a
 
 ## 19. Holdout-test discipline
 
-The TEST partition was not used for feature choice, threshold choice, preprocessing fit, model selection, or tuning. Frozen specifications were refit once on TRAIN+VALIDATION and evaluated once on TEST. `test_access_manifest.json` records the data ranges, model fingerprints, prediction fingerprints, and generation time.
+The TEST partition was not used for feature choice, threshold choice, preprocessing fit, model selection, or tuning. The deterministic runner was rerun once for this review remediation; the official purchase and quantity TEST prediction fingerprints remained unchanged. Frozen specifications were refit on TRAIN+VALIDATION and evaluated on TEST solely to verify that holdout outputs were unaffected. `test_access_manifest.json` and `review_remediation.json` record the data ranges, model fingerprints, prediction fingerprints, and generation time.
 
 ## 20. Compute performance
 
@@ -115,6 +115,7 @@ Warnings: - one or more core feature null rates shift by more than 10 percentage
 - logistic validation log_loss (0.475542) is worse than dummy prior (0.469876); investigate before promotion
 - logistic validation brier_score (0.148864) is worse than dummy prior (0.146933); investigate before promotion
 - logistic validation average precision (0.177901) is near purchase prevalence (0.178857)
+- quantity Poisson baseline does not beat the mean on validation (mae 0.480232 vs mean 0.469545, rmse 0.635063 vs mean 0.633690, mean_poisson_deviance 0.244353 vs mean 0.243029)
 - Phase 3 baselines are predictive benchmarks; no causal elasticity claim is made
 
 Leakage status: **0 runtime leakage violations; 0 conditional-feature violations in official baselines; 0 test-fit violations**.

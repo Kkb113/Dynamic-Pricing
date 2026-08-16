@@ -12,8 +12,9 @@
     "recall_at_0_5": 0.0,
     "roc_auc": 0.5,
     "row_count": 5250,
-    "top_decile_lift": 0.9691160809371673,
-    "top_decile_purchase_rate": 0.17333333333333334
+    "top_decile_lift": 1.0,
+    "top_decile_purchase_rate": 0.17885714285714288,
+    "top_decile_tie_policy": "fractional inclusion at score cutoff"
   },
   "purchase_logistic_core": {
     "average_precision": 0.17790142106169896,
@@ -29,22 +30,24 @@
     "roc_auc": 0.5004593593573564,
     "row_count": 5250,
     "top_decile_lift": 0.9904153354632588,
-    "top_decile_purchase_rate": 0.17714285714285713
+    "top_decile_purchase_rate": 0.17714285714285713,
+    "top_decile_tie_policy": "fractional inclusion at score cutoff"
   },
   "purchase_logistic_core_no_price": {
-    "average_precision": 0.17858196513663682,
-    "brier_score": 0.14873582128180227,
-    "ece": 0.029789919373468764,
+    "average_precision": 0.17810998379058834,
+    "brier_score": 0.14873612599574967,
+    "ece": 0.027313849903641628,
     "f1_at_0_5": 0.0,
-    "log_loss": 0.4751657777166833,
+    "log_loss": 0.47516582143794206,
     "non_purchase_count": 4311,
     "precision_at_0_5": 0.0,
     "purchase_count": 939,
     "purchase_rate": 0.17885714285714285,
     "recall_at_0_5": 0.0,
-    "roc_auc": 0.5010495231135943,
+    "roc_auc": 0.5012546846872886,
     "row_count": 5250,
-    "top_decile_lift": 0.979765708200213,
-    "top_decile_purchase_rate": 0.17523809523809525
+    "top_decile_lift": 0.9584664536741214,
+    "top_decile_purchase_rate": 0.17142857142857143,
+    "top_decile_tie_policy": "fractional inclusion at score cutoff"
   }
 }

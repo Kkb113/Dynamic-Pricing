@@ -5,4 +5,6 @@ Official quantity baseline: `quantity_poisson_core`.
 
 The machine-readable comparison is `artifacts/phase3/baseline_model_comparison.csv`; all model pipelines are serialized under `artifacts/phase3/models/`. Test predictions are locked in `artifacts/phase3/predictions/` and described by `test_access_manifest.json`.
 
+The validation-only `purchase_logistic_core_no_price` diagnostic excludes the `price`, `price_history`, and promotion-price proxy feature groups and all contract-declared price-dependent features. It is not a causal elasticity estimate. Review remediation preserved the official TEST prediction fingerprints; details are in `artifacts/phase3/review_remediation.json`.
+
 No hyperparameter optimization, advanced tree model, neural network, or pricing optimizer was run.
