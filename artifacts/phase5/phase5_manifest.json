@@ -35,7 +35,7 @@
     "quantity_prediction_delta": 0.0,
     "tolerance": 1e-10
   },
-  "ci_status": "PENDING",
+  "ci_status": "PASS",
   "compute": {
     "catboost_thread_count": 22,
     "catboost_version": "1.2.10",
