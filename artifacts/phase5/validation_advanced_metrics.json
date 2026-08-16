@@ -1,0 +1,23 @@
+{
+  "best_iteration": 30,
+  "best_score": {
+    "learn": {
+      "RMSE": 0.5943760135256911
+    },
+    "validation": {
+      "RMSE": 0.6331593352853875
+    }
+  },
+  "bias": 0.021802985716518494,
+  "conditional_quantity_minimum": 1.0,
+  "mae": 0.4730822197115679,
+  "mean_actual": 1.293929712460064,
+  "mean_poisson_deviance": 0.24250711949105105,
+  "mean_prediction": 1.3157326981765822,
+  "negative_prediction_count": 0,
+  "r2": 0.0011648170141482783,
+  "raw_predictions_below_minimum_count": 0,
+  "raw_predictions_below_minimum_rate": 0.0,
+  "rmse": 0.6331593352853876,
+  "row_count": 939
+}

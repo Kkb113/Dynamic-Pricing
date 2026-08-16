@@ -1,0 +1,9 @@
+{
+  "final_fit_seconds": 2.531557900001644,
+  "hpo_seconds": 2531.6139226998785,
+  "hpo_trials": 60,
+  "screening_seconds": 779.1211012000276,
+  "threads_used": 22,
+  "total_seconds": 3327.8692684999114,
+  "validation_fit_seconds": 14.602686700003687
+}

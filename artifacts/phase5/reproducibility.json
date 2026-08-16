@@ -1,0 +1,8 @@
+{
+  "estimator_type": "CONSTANT_MEAN",
+  "max_prediction_delta": 0.0,
+  "mean_value": 1.3057971014492753,
+  "repeated_mean_value": 1.3057971014492753,
+  "status": "PASS",
+  "tolerance": 0.0
+}

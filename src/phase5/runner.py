@@ -672,13 +672,14 @@ def main() -> int:
             fold_screening = screening_output[screening_output["row_type"] == "fold"].copy()
             screening_summary = screening_output[screening_output["row_type"] == "aggregate"].copy()
             selection = json.loads(selection_path.read_text(encoding="utf-8"))
+            screening_seconds = float(pd.to_numeric(fold_screening.get("fit_seconds", 0), errors="coerce").fillna(0).sum() + pd.to_numeric(fold_screening.get("prediction_seconds", 0), errors="coerce").fillna(0).sum())
         else:
             fold_screening, screening_summary = screen_quantity_feature_families(development, folds, contract, families, thread_count=compute["usable_threads"], iterations=config["compute"]["screening_iterations"], minimum=minimum)
             screening_output = pd.concat([fold_screening, screening_summary], ignore_index=True, sort=False)
             screening_output.to_csv(screening_path, index=False)
             selection = select_quantity_feature_loss(fold_screening, screening_summary, families)
             write_json(selection_path, selection)
-        screening_seconds = time.perf_counter() - screening_started
+            screening_seconds = time.perf_counter() - screening_started
         selected_family = families[selection["selected_feature_family"]]
         selected_loss = str(selection["selected_loss"])
 
@@ -693,13 +694,14 @@ def main() -> int:
             best_hp_payload = json.loads(best_hp_path.read_text(encoding="utf-8"))
             hpo_params = best_hp_payload["parameters"]
             hpo_choice = {"parameters": hpo_params, "trial": best_hp_payload["trial_number"]}
+            hpo_seconds = float(pd.to_numeric(hpo_frame.get("duration_seconds", 0), errors="coerce").fillna(0).sum())
         else:
             hpo_frame, hpo_summary, hpo_choice = run_quantity_hpo(development, folds, contract, selected_family.feature_names, loss=selected_loss, thread_count=compute["usable_threads"], n_trials=hpo_trials, seed=42, max_iterations=config["compute"]["max_iterations"], minimum=minimum)
             hpo_frame.to_csv(hpo_trials_path, index=False)
             hpo_params = hpo_choice["parameters"]
             write_json(hpo_summary_path, hpo_summary)
             write_json(best_hp_path, {"feature_family": selected_family.name, "loss": selected_loss, "trial_number": hpo_choice["trial"], "parameters": hpo_params, "max_iterations": config["compute"]["max_iterations"]})
-        hpo_seconds = time.perf_counter() - hpo_started
+            hpo_seconds = time.perf_counter() - hpo_started
 
         # Official VALIDATION is first opened only after screening and HPO.
         train_purchased = train.loc[train["PurchasedFlag"].astype(int).eq(1)].copy()
@@ -826,7 +828,7 @@ def main() -> int:
         compute["python_version"] = sys.version
         compute["platform"] = platform.platform()
         write_json(ARTIFACTS / "compute_environment.json", compute)
-        write_json(ARTIFACTS / "compute_benchmark.json", {"screening_seconds": screening_seconds, "hpo_seconds": hpo_seconds, "validation_fit_seconds": validation_fit_seconds, "final_fit_seconds": final_fit_seconds, "threads_used": compute["usable_threads"], "hpo_trials": hpo_summary["requested_trials"], "total_seconds": time.perf_counter() - started_at})
+        write_json(ARTIFACTS / "compute_benchmark.json", {"screening_seconds": screening_seconds, "hpo_seconds": hpo_seconds, "validation_fit_seconds": validation_fit_seconds, "final_fit_seconds": final_fit_seconds, "threads_used": compute["usable_threads"], "hpo_trials": hpo_summary["requested_trials"], "total_seconds": screening_seconds + hpo_seconds + validation_fit_seconds + final_fit_seconds})
 
         if estimator_type == "CATBOOST":
             test_collapse = test_conditional["official"]["rmse"] > test_conditional["mean"]["rmse"] and test_conditional["official"]["mae"] > test_conditional["mean"]["mae"] and test_conditional["official"]["mean_poisson_deviance"] > test_conditional["mean"]["mean_poisson_deviance"] and test_expected["official"]["rmse"] > test_expected["mean"]["rmse"] and test_expected["official"]["mean_poisson_deviance"] > test_expected["mean"]["mean_poisson_deviance"]
