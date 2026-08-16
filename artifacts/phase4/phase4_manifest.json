@@ -21,7 +21,7 @@
     "Channel",
     "weather_condition"
   ],
-  "ci_status": "PENDING_REMOTE_CI",
+  "ci_status": "PASS",
   "compute": {
     "catboost_thread_count": 22,
     "configured_thread_limit": 22,
@@ -116,7 +116,7 @@
   "phase2_dataset_sha256": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
   "phase3_split_assignment_sha256": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
   "phase4_branch_behind_default": 0,
-  "phase4_evidence_git_sha": "LOCAL_PHASE4_EVIDENCE_PENDING",
+  "phase4_evidence_git_sha": "c244d30bcdb40608ad6d48466c3af0ec657ef16e",
   "phase4_implementation_git_sha": "54d038a5d161cadc3f71cb2b46a6cdb703653566",
   "recommendation": "PROCEED_TO_PHASE_5",
   "result": "PASS_WITH_WARNINGS",
