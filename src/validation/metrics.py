@@ -77,7 +77,12 @@ def _tie_aware_top_decile(y: np.ndarray, probabilities: np.ndarray) -> tuple[flo
         expected_positive += (remaining / tied_count) * float(y[tied].sum())
     top_rate = expected_positive / top_count
     overall = float(y.mean())
-    lift = (top_rate / overall) if overall else None
+    if not overall:
+        lift = None
+    elif np.isclose(top_rate, overall, rtol=0.0, atol=1e-12):
+        lift = 1.0
+    else:
+        lift = top_rate / overall
     return float(top_rate), _float_or_none(lift)
 
 
