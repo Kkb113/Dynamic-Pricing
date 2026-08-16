@@ -1,11 +1,11 @@
 {
-  "audit_timestamp_utc": "2026-08-16T08:01:17.656243+00:00",
+  "audit_timestamp_utc": "2026-08-16T08:09:57.026739+00:00",
   "configuration_sha256": "634098896f265a1c98ac012a2dede13d71aaa63fd1735c7e60af5510c95d7f51",
   "database": "Retail_Hyperpersonlaization",
   "dataset_fingerprint_sha256": "f4a431cc0526389d53c9b3316e6807047cb3b69599c775983518fd20553f3489",
   "errors": [],
-  "git_code_dirty": true,
-  "git_sha": "0674ad0d6b06a2560c34e33f5265abd2aa5ab7e0",
+  "git_code_dirty": false,
+  "git_sha": "81b3b3623ace31404d0aa91d246b1f0dea784ad5",
   "git_worktree_dirty": true,
   "leakage_policy_sha256": "5dac4c93e59d8e84ef74675e997e308b122951567a7241d1d227ecd048c6dd75",
   "ml_contract_sha256": "9765dfc1ae40957a66814ef11f253f607709b62e8228f1750b50d9e3d2b60297",
@@ -15,12 +15,12 @@
   "schema_document_path": null,
   "schema_document_sha256": null,
   "source_tree_sha256": "ed30d89fc4da3ccc5aebe89a37110cc2d14337a8ae38a39baecbac521d164f72",
-  "test_evidence_sha256": "aade21ebc1a17e96086208f6d56118f64984c68da78726fb2a02232b11032610",
+  "test_evidence_sha256": "a8c2cde5eea65218a3efc28ac970e3513faf6d7986766aff4dbbee821038fb5c",
   "test_summary": {
-    "duration_seconds": 0.328875,
+    "duration_seconds": 0.264962,
     "exit_code": 0,
     "failed": 0,
-    "generated_at_utc": "2026-08-16T07:58:52.635901+00:00",
+    "generated_at_utc": "2026-08-16T08:07:38.391621+00:00",
     "invocation": [
       "__main__.py",
       "-q"
