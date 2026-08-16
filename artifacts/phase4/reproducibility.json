@@ -1,0 +1,42 @@
+{
+  "best_iteration_first": 200,
+  "best_iteration_second": 200,
+  "max_probability_delta": 0.0,
+  "metrics_first": {
+    "average_precision": 0.2345912741210851,
+    "brier_score": 0.14446562537988186,
+    "ece": 0.0014885103538651529,
+    "f1_at_0_5": 0.0,
+    "log_loss": 0.4615397127791993,
+    "non_purchase_count": 4311,
+    "precision_at_0_5": 0.0,
+    "purchase_count": 939,
+    "purchase_rate": 0.17885714285714285,
+    "recall_at_0_5": 0.0,
+    "roc_auc": 0.5968302104555081,
+    "row_count": 5250,
+    "top_decile_lift": 1.4802981895633653,
+    "top_decile_purchase_rate": 0.26476190476190475,
+    "top_decile_tie_policy": "fractional inclusion at score cutoff"
+  },
+  "metrics_second": {
+    "average_precision": 0.2345912741210851,
+    "brier_score": 0.14446562537988186,
+    "ece": 0.0014885103538651529,
+    "f1_at_0_5": 0.0,
+    "log_loss": 0.4615397127791993,
+    "non_purchase_count": 4311,
+    "precision_at_0_5": 0.0,
+    "purchase_count": 939,
+    "purchase_rate": 0.17885714285714285,
+    "recall_at_0_5": 0.0,
+    "roc_auc": 0.5968302104555081,
+    "row_count": 5250,
+    "top_decile_lift": 1.4802981895633653,
+    "top_decile_purchase_rate": 0.26476190476190475,
+    "top_decile_tie_policy": "fractional inclusion at score cutoff"
+  },
+  "native_max_probability_delta": 0.0,
+  "status": "PASS",
+  "tolerance": 1e-10
+}

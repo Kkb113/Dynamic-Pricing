@@ -126,18 +126,18 @@ compute_policy:
   optuna_parallel_jobs: 1
   nested_parallelism: false
 selected_hyperparameters:
-  bagging_temperature: 0.7800932022121826
-  border_count: 254
-  depth: 10
-  l2_leaf_reg: 12.057126287443763
-  learning_rate: 0.03553295925546116
-  random_strength: 1.7959754525911098
+  bagging_temperature: 0.843547603487963
+  border_count: 128
+  depth: 4
+  l2_leaf_reg: 3.919279211543739
+  learning_rate: 0.046909856915972124
+  random_strength: 0.6183057530027418
   iterations: 3000
   task_type: CPU
   thread_count: 22
   class_weights: null
   auto_class_weights: null
-selected_iterations: 228
+selected_iterations: 201
 calibration_policy:
   candidates:
   - NATIVE
@@ -164,4 +164,3 @@ test_access_policy:
   test_used_for_calibration_selection: false
   test_used_for_model_selection: false
   access_reason: FINAL_PHASE4_BENCHMARK
-

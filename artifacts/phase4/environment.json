@@ -1,0 +1,11 @@
+{
+  "catboost_version": "1.2.10",
+  "joblib_version": "1.5.3",
+  "numpy_version": "2.5.2",
+  "optuna_version": "4.9.0",
+  "pandas_version": "3.0.5",
+  "psutil_version": "7.2.2",
+  "python_version": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+  "scikit_learn_version": "1.9.0",
+  "threadpoolctl_version": "3.6.0"
+}
