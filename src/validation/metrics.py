@@ -61,6 +61,26 @@ def expected_calibration_error(y_true: Iterable, probabilities: Iterable, bins: 
     return float(weighted.sum() / total)
 
 
+def _tie_aware_top_decile(y: np.ndarray, probabilities: np.ndarray) -> tuple[float | None, float | None]:
+    """Estimate top-decile rate with fractional inclusion at a tied cutoff."""
+    if not len(y):
+        return None, None
+    top_count = max(1, int(np.ceil(len(y) * 0.10)))
+    order = np.argsort(-probabilities, kind="mergesort")
+    cutoff = probabilities[order[top_count - 1]]
+    above = probabilities > cutoff
+    tied = probabilities == cutoff
+    remaining = top_count - int(above.sum())
+    tied_count = int(tied.sum())
+    expected_positive = float(y[above].sum())
+    if remaining and tied_count:
+        expected_positive += (remaining / tied_count) * float(y[tied].sum())
+    top_rate = expected_positive / top_count
+    overall = float(y.mean())
+    lift = (top_rate / overall) if overall else None
+    return float(top_rate), _float_or_none(lift)
+
+
 def purchase_metrics(y_true: Iterable, probabilities: Iterable, threshold: float = 0.5) -> dict[str, Any]:
     y = np.asarray(list(y_true), dtype=int)
     p = np.asarray(list(probabilities), dtype=float)
@@ -81,12 +101,10 @@ def purchase_metrics(y_true: Iterable, probabilities: Iterable, threshold: float
         "f1_at_0_5": _float_or_none(f1_score(y, labels, zero_division=0)),
         "ece": expected_calibration_error(y, p),
     }
-    order = np.argsort(-p, kind="mergesort")
-    top_count = max(1, int(np.ceil(len(y) * 0.10))) if len(y) else 0
-    top_rate = float(y[order[:top_count]].mean()) if top_count else None
-    overall = float(y.mean()) if len(y) else None
+    top_rate, top_lift = _tie_aware_top_decile(y, p)
     result["top_decile_purchase_rate"] = top_rate
-    result["top_decile_lift"] = _float_or_none(top_rate / overall) if top_rate is not None and overall else None
+    result["top_decile_lift"] = top_lift
+    result["top_decile_tie_policy"] = "fractional inclusion at score cutoff"
     return result
 
 

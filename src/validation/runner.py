@@ -361,6 +361,21 @@ def _warnings(frame: pd.DataFrame, health: pd.DataFrame, missingness: pd.DataFra
             warnings.append(
                 f"logistic validation average precision ({logistic['average_precision']:.6f}) is near purchase prevalence ({logistic['purchase_rate']:.6f})"
             )
+    quantity_mean = metrics["quantity_validation_metrics"].get("quantity_dummy_mean", {})
+    quantity_poisson = metrics["quantity_validation_metrics"].get("quantity_poisson_core", {})
+    quantity_worse = [
+        name
+        for name in ["mae", "rmse", "mean_poisson_deviance"]
+        if quantity_mean.get(name) is not None
+        and quantity_poisson.get(name) is not None
+        and quantity_poisson[name] > quantity_mean[name]
+    ]
+    if quantity_worse:
+        details = ", ".join(
+            f"{name} {quantity_poisson[name]:.6f} vs mean {quantity_mean[name]:.6f}"
+            for name in quantity_worse
+        )
+        warnings.append(f"quantity Poisson baseline does not beat the mean on validation ({details})")
     if metrics["quantity_test_metrics"]["quantity_poisson_core"].get("negative_prediction_count", 0):
         warnings.append("quantity Poisson baseline emitted negative predictions")
     warnings.append("Phase 3 baselines are predictive benchmarks; no causal elasticity claim is made")

@@ -7,7 +7,12 @@ import pandas as pd
 import pytest
 from sklearn.linear_model import LogisticRegression
 
-from baselines.purchase import make_purchase_pipeline, purchase_feature_sets
+from baselines.purchase import (
+    PRICE_ABLATION_FEATURES,
+    PRICE_ABLATION_FEATURE_GROUPS,
+    make_purchase_pipeline,
+    purchase_feature_sets,
+)
 from baselines.quantity import make_quantity_pipeline, purchased_population
 from features.feature_contract import load_contract, model_feature_columns
 from validation.preprocessing import make_preprocessor, validate_feature_names
@@ -34,6 +39,25 @@ def test_core_features_are_contract_driven_and_conditionals_are_opt_in(contract)
     assert "PurchasedFlag" not in quantity
     assert "QuantityPurchased" not in quantity
     assert purchase_feature_sets(contract)["core"] == purchase
+
+
+def test_no_price_ablation_excludes_direct_price_and_price_proxy_features(contract):
+    feature_sets = purchase_feature_sets(contract)
+    contract_features = {
+        feature["name"]: feature
+        for feature in contract["features"]
+    }
+    excluded_by_group = {
+        name
+        for name, feature in contract_features.items()
+        if feature.get("feature_group") in PRICE_ABLATION_FEATURE_GROUPS
+    }
+    assert excluded_by_group
+    assert excluded_by_group.isdisjoint(feature_sets["core_no_price"])
+    assert PRICE_ABLATION_FEATURES.isdisjoint(feature_sets["core_no_price"])
+    assert {"CurrentPrice", "AppliedPrice", "BasePrice", "active_history_selling_price"}.isdisjoint(
+        feature_sets["core_no_price"]
+    )
 
 
 def test_forbidden_targets_identifiers_and_optimizer_fields_are_rejected(contract):

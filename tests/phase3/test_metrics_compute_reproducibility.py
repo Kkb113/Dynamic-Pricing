@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from validation.compute import detect_compute_environment
 from validation.metrics import calibration_table, expected_calibration_error, purchase_metrics, quantity_metrics
@@ -19,6 +20,14 @@ def test_metrics_and_calibration_are_deterministic():
     assert quantity["negative_prediction_count"] == 0
     assert quantity["mae"] == 1 / 6
     assert quantity["mean_poisson_deviance"] is not None
+
+
+def test_tie_aware_top_decile_lift_does_not_invent_dummy_ranking_signal():
+    y = np.array([0, 1, 0, 1, 1, 0, 0, 0, 1, 0])
+    metrics = purchase_metrics(y, np.full(len(y), y.mean()))
+    assert metrics["top_decile_tie_policy"] == "fractional inclusion at score cutoff"
+    assert metrics["top_decile_purchase_rate"] == pytest.approx(float(y.mean()))
+    assert metrics["top_decile_lift"] == pytest.approx(1.0)
 
 
 def test_compute_policy_never_exceeds_machine_or_phase_limit():
