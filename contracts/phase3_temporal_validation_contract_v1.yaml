@@ -1,0 +1,25 @@
+version: 1
+name: phase3_temporal_validation_contract
+status: generated_by_validation_runner
+source_dataset_sha256: 7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2
+split_variable: DecisionTime
+split_method: chronological unique DecisionTime groups with approximately 70/15/15 proportions
+train_start: null
+train_end: null
+validation_start: null
+validation_end: null
+test_start: null
+test_end: null
+row_counts: {}
+target_counts: {}
+holdout_policy: Validation freezes the baseline specification; TEST is evaluated once after TRAIN+VALIDATION refit.
+backtesting_policy: Three expanding-window folds remain within TRAIN; no shuffled or stratified random folds.
+random_seed: 42
+feature_contract_path: contracts/phase2_feature_contract_v1.yaml
+purchase_baseline: purchase_logistic_core
+quantity_baseline: quantity_poisson_core
+compute_policy:
+  expected_physical_cores: 16
+  expected_logical_threads: 22
+  configured_thread_limit: 22
+  usable_threads: 22

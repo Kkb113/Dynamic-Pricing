@@ -1,0 +1,42 @@
+phase2:
+  dataset_path: artifacts/phase2/feature_dataset.parquet
+  expected_sha256: 7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2
+  contract_path: contracts/phase2_feature_contract_v1.yaml
+
+split:
+  time_column: DecisionTime
+  id_column: PricingDecisionID
+  target_column: PurchasedFlag
+  train_fraction: 0.70
+  validation_fraction: 0.15
+  expanding_window_folds: 3
+
+compute:
+  expected_physical_cores: 16
+  expected_logical_threads: 22
+  max_cpu_threads: 22
+  random_seed: 42
+
+baselines:
+  purchase:
+    - purchase_dummy_prior
+    - purchase_logistic_core
+  purchase_diagnostics:
+    - purchase_logistic_core_no_price
+  quantity:
+    - quantity_dummy_mean
+    - quantity_poisson_core
+
+evaluation:
+  calibration_bins: 10
+  segment_min_support: 100
+  price_buckets:
+    - [null, -20]
+    - [-20, -10]
+    - [-10, -5]
+    - [-5, 0]
+    - [0, 0]
+    - [0, 5]
+    - [5, 10]
+    - [10, 20]
+    - [20, null]
