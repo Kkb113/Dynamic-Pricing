@@ -3,6 +3,8 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
+import re
 import subprocess
 from datetime import date, datetime
 from pathlib import Path
@@ -526,10 +528,15 @@ def write_artifacts(
         "source_tree_sha256": source_tree_sha256(),
         "canonical_feature_dataset_sha256": dataset_hash,
     })
+    implementation_sha = os.environ.get("PHASE2_IMPLEMENTATION_SHA", "").strip()
+    if implementation_sha and not re.fullmatch(r"[0-9a-f]{40}", implementation_sha):
+        raise ValueError("PHASE2_IMPLEMENTATION_SHA must be a 40-character lowercase commit SHA")
+    if not implementation_sha:
+        implementation_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
     write_json(artifact_dir / "phase2_manifest.json", {
         "result": diagnostics.get("verdict", "PASS_WITH_WARNINGS"),
         "recommendation": "PROCEED_TO_PHASE_3",
-        "git_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
+        "git_sha": implementation_sha,
         "git_worktree_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip()),
         "source_tree_sha256": source_tree_sha256(),
         "source_snapshot_status": source_snapshot.get("status"),
@@ -539,4 +546,3 @@ def write_artifacts(
     })
     _write_markdown_reports(root, frame, contract, diagnostics, source_snapshot, deterministic, tests, source_tree_sha256())
     return {**validation, "canonical_feature_dataset_sha256": dataset_hash}
-
