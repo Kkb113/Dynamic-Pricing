@@ -1,0 +1,249 @@
+{
+  "dataset_fingerprint_sha256": "dabd7e11bf73d4e108bd0c9a1a10b45a5394344374a117d5c980d39cd63a4a9b",
+  "diagnostics": {
+    "behavior": {
+      "cart_additions": {
+        "168h": 9941,
+        "1h": 9384,
+        "24h": 9688,
+        "720h": 10490
+      },
+      "future_events_used": 0,
+      "product_views": {
+        "168h": 28021,
+        "1h": 26612,
+        "24h": 27848,
+        "720h": 28333
+      },
+      "search_clicks": {
+        "168h": 11002,
+        "1h": 10501,
+        "24h": 10817,
+        "720h": 11486
+      },
+      "validated_cart_actions": [
+        "Add"
+      ]
+    },
+    "competitor": {
+      "exact_coverage_pct": 6.568571,
+      "future_observations_used": 0,
+      "generic_region_fallback_selected_count": 2609,
+      "no_context_rate_pct": 29.874286,
+      "product_fallback_coverage_pct": 70.125714,
+      "region_fallback_coverage_pct": 34.02,
+      "selected_match_counts": {
+        "EXACT": 2299,
+        "NONE": 10456,
+        "PRODUCT_FALLBACK": 12637,
+        "REGION_FALLBACK": 9608
+      },
+      "window_days": 30
+    },
+    "deterministic_regeneration": {
+      "build_1_fingerprint": "dabd7e11bf73d4e108bd0c9a1a10b45a5394344374a117d5c980d39cd63a4a9b",
+      "build_2_fingerprint": "dabd7e11bf73d4e108bd0c9a1a10b45a5394344374a117d5c980d39cd63a4a9b",
+      "canonical_order": [
+        "DecisionTime",
+        "PricingDecisionID"
+      ],
+      "match": true
+    },
+    "duplicate_pricing_decision_ids": 0,
+    "non_purchase_count": 28508,
+    "phase1_regression": {
+      "competitor": [
+        {
+          "delta_pp": -4.285714290119813e-07,
+          "metric": "exact_30d_pct",
+          "phase1_pct": 6.568571428571429,
+          "phase2_pct": 6.568571,
+          "within_1pp": true
+        },
+        {
+          "delta_pp": 0.0,
+          "metric": "region_30d_pct",
+          "phase1_pct": 34.02,
+          "phase2_pct": 34.02,
+          "within_1pp": true
+        },
+        {
+          "delta_pp": -2.857142931134149e-07,
+          "metric": "product_30d_pct",
+          "phase1_pct": 70.1257142857143,
+          "phase2_pct": 70.125714,
+          "within_1pp": true
+        }
+      ],
+      "logical_relationship_orphans_phase1": 0,
+      "promotion": {
+        "delta_pp": 0.0,
+        "phase1_pct": 8.72,
+        "phase2_pct": 8.72,
+        "within_3pp": true
+      },
+      "sales": [
+        {
+          "delta_pp": -1.5371424285714284,
+          "metric": "product_store_sales_30d",
+          "phase1_pct": 24.948571428571427,
+          "phase2_pct": 23.411429,
+          "within_3pp": true
+        },
+        {
+          "delta_pp": -1.6799995714285707,
+          "metric": "product_region_sales_30d",
+          "phase1_pct": 29.451428571428572,
+          "phase2_pct": 27.771429,
+          "within_3pp": true
+        },
+        {
+          "delta_pp": -2.4028575714285765,
+          "metric": "product_sales_30d",
+          "phase1_pct": 60.371428571428574,
+          "phase2_pct": 57.968571,
+          "within_3pp": true
+        },
+        {
+          "delta_pp": -2.4971432857142872,
+          "metric": "category_store_sales_30d",
+          "phase1_pct": 52.425714285714285,
+          "phase2_pct": 49.928571,
+          "within_3pp": true
+        },
+        {
+          "delta_pp": -0.005714714285716127,
+          "metric": "category_sales_30d",
+          "phase1_pct": 99.73428571428572,
+          "phase2_pct": 99.728571,
+          "within_3pp": true
+        },
+        {
+          "delta_pp": -1.7228567142857187,
+          "metric": "product_sales_7d",
+          "phase1_pct": 27.434285714285718,
+          "phase2_pct": 25.711429,
+          "within_3pp": true
+        },
+        {
+          "delta_pp": -1.8542861428571484,
+          "metric": "product_sales_90d",
+          "phase1_pct": 83.82285714285715,
+          "phase2_pct": 81.968571,
+          "within_3pp": true
+        }
+      ],
+      "source_fingerprint_unchanged": true,
+      "status": "PASS_WITH_WARNINGS",
+      "tolerance_policy": "sales and promotion <=3 percentage points; competitor fallback <=1 percentage point"
+    },
+    "point_in_time": {
+      "behavior_temporal_rule": "EventTime <= DecisionTime",
+      "competitor_temporal_rule": "DecisionTime-30 days <= ObservedDateTime <= DecisionTime",
+      "future_behavioral_events_used": 0,
+      "future_competitor_observations_used": 0,
+      "future_price_intervals_used": 0,
+      "future_sales_used": 0,
+      "historical_inventory_features": 0,
+      "price_history_temporal_rule": "EffectiveFrom <= DecisionTime AND (EffectiveTo IS NULL OR DecisionTime < EffectiveTo)",
+      "sales_temporal_rule": "OrderDate >= DATEADD(day,-N,CAST(DecisionTime AS date)) AND OrderDate < CAST(DecisionTime AS date)",
+      "same_day_date_only_sales_used": 0,
+      "stale_promotion_associations_treated_active": 0
+    },
+    "price_history": {
+      "coverage_pct": 100.0,
+      "current_price_mismatch_count": 0,
+      "decision_count": 35000,
+      "duplicate_selected_decisions": 0,
+      "eligible_interval_count": 35000,
+      "future_intervals_used": 0
+    },
+    "promotion": {
+      "active_count": 3052,
+      "coverage_pct": 8.72,
+      "stale_association_count": 1893,
+      "stale_associations_treated_active": 0
+    },
+    "purchase_count": 6492,
+    "quantity_population_rows": 6492,
+    "row_count": 35000,
+    "sales": {
+      "coverage": {
+        "category_sales": {
+          "14": 99.211429,
+          "30": 99.728571,
+          "7": 95.971429
+        },
+        "category_store_sales": {
+          "14": 31.308571,
+          "30": 49.928571,
+          "7": 18.822857
+        },
+        "product_region_sales": {
+          "14": 15.562857,
+          "30": 27.771429,
+          "7": 8.862857
+        },
+        "product_sales": {
+          "14": 39.522857,
+          "30": 57.968571,
+          "60": 73.688571,
+          "7": 25.711429,
+          "90": 81.968571
+        },
+        "product_store_sales": {
+          "14": 12.985714,
+          "30": 23.411429,
+          "7": 7.345714
+        }
+      },
+      "eligible_line_count": 27395,
+      "eligible_statuses": [
+        "Completed",
+        "Delivered",
+        "Shipped",
+        "Partially Returned"
+      ],
+      "excluded_statuses": [
+        "Cancelled",
+        "Returned"
+      ],
+      "observed_statuses": [
+        "Cancelled",
+        "Completed",
+        "Delivered",
+        "Partially Returned",
+        "Returned",
+        "Shipped"
+      ]
+    },
+    "target_null_count": 0,
+    "unique_pricing_decision_ids": 35000,
+    "verdict": "PASS_WITH_WARNINGS",
+    "verdict_reason": "All hard Phase 2 checks passed; known sparse optional context remains quantified as warnings."
+  },
+  "git_sha": "56534488d1c41a61a739e95d281b7c4195be215f",
+  "git_worktree_dirty": true,
+  "recommendation": "PROCEED_TO_PHASE_3",
+  "result": "PASS_WITH_WARNINGS",
+  "source_snapshot_status": "MATCH",
+  "source_tree_sha256": "e698da53211a2a0d41cf7ad5665362cf4f0516bddcdcf0375b74d7c700619365",
+  "test_summary": {
+    "duration_seconds": 0.861654,
+    "exit_code": 0,
+    "failed": 0,
+    "generated_at_utc": "2026-08-16T09:20:01.141266+00:00",
+    "invocation": [
+      "__main__.py",
+      "-q"
+    ],
+    "passed": 72,
+    "skipped": 0,
+    "source": "pytest_sessionfinish",
+    "source_tree_sha256": "e698da53211a2a0d41cf7ad5665362cf4f0516bddcdcf0375b74d7c700619365",
+    "status": "PASS",
+    "total": 72,
+    "xfailed": 0,
+    "xpassed": 0
+  }
+}

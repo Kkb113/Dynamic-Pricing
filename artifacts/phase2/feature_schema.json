@@ -1,0 +1,942 @@
+[
+  {
+    "conditional": false,
+    "contract_dtype": "string",
+    "feature_group": "core",
+    "model_eligible": false,
+    "name": "PricingDecisionID",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "ROW_IDENTIFIER"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "datetime",
+    "feature_group": "core",
+    "model_eligible": false,
+    "name": "DecisionTime",
+    "pandas_dtype": "datetime64[us]",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "string",
+    "feature_group": "core",
+    "model_eligible": false,
+    "name": "CustomerID",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "JOIN_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "string",
+    "feature_group": "core",
+    "model_eligible": false,
+    "name": "SessionID",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "JOIN_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "int8",
+    "feature_group": "core",
+    "model_eligible": false,
+    "name": "PurchasedFlag",
+    "pandas_dtype": "int8",
+    "price_dependent": false,
+    "role": "TARGET"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "int64",
+    "feature_group": "core",
+    "model_eligible": false,
+    "name": "QuantityPurchased",
+    "pandas_dtype": "int64",
+    "price_dependent": false,
+    "role": "TARGET"
+  },
+  {
+    "conditional": true,
+    "contract_dtype": "category",
+    "feature_group": "conditional_high_cardinality",
+    "model_eligible": true,
+    "name": "ProductID",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CONDITIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": true,
+    "contract_dtype": "category",
+    "feature_group": "conditional_high_cardinality",
+    "model_eligible": true,
+    "name": "StoreID",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CONDITIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "category",
+    "feature_group": "context",
+    "model_eligible": true,
+    "name": "Channel",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "category",
+    "feature_group": "context",
+    "model_eligible": true,
+    "name": "CategoryID",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "category",
+    "feature_group": "context",
+    "model_eligible": true,
+    "name": "BrandID",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "category",
+    "feature_group": "context",
+    "model_eligible": true,
+    "name": "Season",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "category",
+    "feature_group": "context",
+    "model_eligible": true,
+    "name": "StoreType",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "category",
+    "feature_group": "context",
+    "model_eligible": true,
+    "name": "RegionID",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "category",
+    "feature_group": "context",
+    "model_eligible": true,
+    "name": "ClimateZone",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price",
+    "model_eligible": true,
+    "name": "CurrentPrice",
+    "pandas_dtype": "float64",
+    "price_dependent": true,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price",
+    "model_eligible": true,
+    "name": "AppliedPrice",
+    "pandas_dtype": "float64",
+    "price_dependent": true,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price",
+    "model_eligible": true,
+    "name": "BasePrice",
+    "pandas_dtype": "float64",
+    "price_dependent": true,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price",
+    "model_eligible": true,
+    "name": "price_change_amount",
+    "pandas_dtype": "float64",
+    "price_dependent": true,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price",
+    "model_eligible": true,
+    "name": "price_change_pct",
+    "pandas_dtype": "float64",
+    "price_dependent": true,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price",
+    "model_eligible": true,
+    "name": "price_vs_base_pct",
+    "pandas_dtype": "float64",
+    "price_dependent": true,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price",
+    "model_eligible": true,
+    "name": "current_vs_base_pct",
+    "pandas_dtype": "float64",
+    "price_dependent": true,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price",
+    "model_eligible": true,
+    "name": "discount_from_base_pct",
+    "pandas_dtype": "float64",
+    "price_dependent": true,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price_history",
+    "model_eligible": true,
+    "name": "active_history_selling_price",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price_history",
+    "model_eligible": true,
+    "name": "history_discount_pct",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price_history",
+    "model_eligible": true,
+    "name": "days_since_current_price_started",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price_history",
+    "model_eligible": true,
+    "name": "previous_selling_price",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price_history",
+    "model_eligible": true,
+    "name": "previous_price_change_pct",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "string",
+    "feature_group": "promotion",
+    "model_eligible": false,
+    "name": "active_history_promotion_id",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "string",
+    "feature_group": "price_history",
+    "model_eligible": false,
+    "name": "active_price_history_id",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "price_history",
+    "model_eligible": false,
+    "name": "price_history_current_price_delta",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "boolean",
+    "feature_group": "price_history",
+    "model_eligible": false,
+    "name": "price_history_current_price_mismatch",
+    "pandas_dtype": "bool",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "int8",
+    "feature_group": "promotion",
+    "model_eligible": true,
+    "name": "active_promotion_flag",
+    "pandas_dtype": "int8",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "promotion",
+    "model_eligible": true,
+    "name": "active_promotion_discount_pct",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "int8",
+    "feature_group": "calendar",
+    "model_eligible": true,
+    "name": "decision_month",
+    "pandas_dtype": "int8",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "int8",
+    "feature_group": "calendar",
+    "model_eligible": true,
+    "name": "decision_quarter",
+    "pandas_dtype": "int8",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "int8",
+    "feature_group": "calendar",
+    "model_eligible": true,
+    "name": "decision_day_of_week",
+    "pandas_dtype": "int8",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "int8",
+    "feature_group": "calendar",
+    "model_eligible": true,
+    "name": "decision_is_weekend",
+    "pandas_dtype": "int8",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_store_sales_7d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_store_sales_14d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_store_sales_30d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_region_sales_7d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_region_sales_14d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_region_sales_30d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_sales_7d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_sales_14d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_sales_30d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_sales_60d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_sales_90d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "category_store_sales_7d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "category_store_sales_14d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "category_store_sales_30d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "category_sales_7d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "category_sales_14d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "category_sales_30d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_sales_velocity_7d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_sales_velocity_30d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_sales_velocity_90d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "product_sales_velocity_ratio_7d_30d",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "sales",
+    "model_eligible": true,
+    "name": "days_since_last_product_sale",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "optional_competitor",
+    "model_eligible": true,
+    "name": "competitor_price_exact_channel",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "OPTIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "optional_competitor",
+    "model_eligible": true,
+    "name": "competitor_price_region_fallback",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "OPTIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "optional_competitor",
+    "model_eligible": true,
+    "name": "competitor_price_product_fallback",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "OPTIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "optional_competitor",
+    "model_eligible": true,
+    "name": "competitor_price",
+    "pandas_dtype": "float64",
+    "price_dependent": true,
+    "role": "OPTIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "int8",
+    "feature_group": "optional_competitor",
+    "model_eligible": true,
+    "name": "competitor_price_available",
+    "pandas_dtype": "int64",
+    "price_dependent": false,
+    "role": "OPTIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "optional_competitor",
+    "model_eligible": true,
+    "name": "competitor_price_age_days",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "OPTIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "category",
+    "feature_group": "optional_competitor",
+    "model_eligible": true,
+    "name": "competitor_match_level",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "OPTIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "optional_competitor",
+    "model_eligible": true,
+    "name": "price_vs_competitor_pct",
+    "pandas_dtype": "float64",
+    "price_dependent": true,
+    "role": "OPTIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "product_views_1h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "product_views_24h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "product_views_168h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "product_views_720h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "cart_additions_1h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "cart_additions_24h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "cart_additions_168h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "cart_additions_720h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "search_clicks_1h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "search_clicks_24h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "search_clicks_168h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "behavior",
+    "model_eligible": true,
+    "name": "search_clicks_720h",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "int8",
+    "feature_group": "holiday_weather",
+    "model_eligible": true,
+    "name": "is_holiday",
+    "pandas_dtype": "int8",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "holiday_weather",
+    "model_eligible": true,
+    "name": "holiday_sales_impact_factor",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "int16",
+    "feature_group": "holiday_weather",
+    "model_eligible": false,
+    "name": "holiday_count",
+    "pandas_dtype": "int16",
+    "price_dependent": false,
+    "role": "AUDIT_ONLY"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "holiday_weather",
+    "model_eligible": true,
+    "name": "weather_temperature",
+    "pandas_dtype": "int64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "category",
+    "feature_group": "holiday_weather",
+    "model_eligible": true,
+    "name": "weather_condition",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": false,
+    "contract_dtype": "float",
+    "feature_group": "holiday_weather",
+    "model_eligible": true,
+    "name": "weather_precipitation",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CORE_MODEL_FEATURE"
+  },
+  {
+    "conditional": true,
+    "contract_dtype": "category",
+    "feature_group": "conditional_customer",
+    "model_eligible": true,
+    "name": "CustomerSegment",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CONDITIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": true,
+    "contract_dtype": "category",
+    "feature_group": "conditional_customer",
+    "model_eligible": true,
+    "name": "LoyaltyTier",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CONDITIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": true,
+    "contract_dtype": "category",
+    "feature_group": "conditional_customer",
+    "model_eligible": true,
+    "name": "PreferredChannel",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CONDITIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": true,
+    "contract_dtype": "category",
+    "feature_group": "conditional_customer",
+    "model_eligible": true,
+    "name": "PriceSensitivity",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CONDITIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": true,
+    "contract_dtype": "float",
+    "feature_group": "conditional_customer",
+    "model_eligible": true,
+    "name": "CategoryAffinityScore",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CONDITIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": true,
+    "contract_dtype": "float",
+    "feature_group": "conditional_customer",
+    "model_eligible": true,
+    "name": "BrandAffinityScore",
+    "pandas_dtype": "float64",
+    "price_dependent": false,
+    "role": "CONDITIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": true,
+    "contract_dtype": "category",
+    "feature_group": "conditional_customer",
+    "model_eligible": true,
+    "name": "FavoriteCategoryID",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CONDITIONAL_MODEL_FEATURE"
+  },
+  {
+    "conditional": true,
+    "contract_dtype": "category",
+    "feature_group": "conditional_customer",
+    "model_eligible": true,
+    "name": "FavoriteBrandID",
+    "pandas_dtype": "str",
+    "price_dependent": false,
+    "role": "CONDITIONAL_MODEL_FEATURE"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "behavior_temporal_rule": "EventTime <= DecisionTime",
+  "competitor_temporal_rule": "DecisionTime-30 days <= ObservedDateTime <= DecisionTime",
+  "future_behavioral_events_used": 0,
+  "future_competitor_observations_used": 0,
+  "future_price_intervals_used": 0,
+  "future_sales_used": 0,
+  "historical_inventory_features": 0,
+  "price_history_temporal_rule": "EffectiveFrom <= DecisionTime AND (EffectiveTo IS NULL OR DecisionTime < EffectiveTo)",
+  "sales_temporal_rule": "OrderDate >= DATEADD(day,-N,CAST(DecisionTime AS date)) AND OrderDate < CAST(DecisionTime AS date)",
+  "same_day_date_only_sales_used": 0,
+  "stale_promotion_associations_treated_active": 0
+}

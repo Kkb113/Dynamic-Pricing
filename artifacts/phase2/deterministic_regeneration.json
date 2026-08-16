@@ -1,0 +1,9 @@
+{
+  "build_1_fingerprint": "dabd7e11bf73d4e108bd0c9a1a10b45a5394344374a117d5c980d39cd63a4a9b",
+  "build_2_fingerprint": "dabd7e11bf73d4e108bd0c9a1a10b45a5394344374a117d5c980d39cd63a4a9b",
+  "canonical_order": [
+    "DecisionTime",
+    "PricingDecisionID"
+  ],
+  "match": true
+}

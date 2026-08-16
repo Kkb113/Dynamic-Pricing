@@ -1,0 +1,15 @@
+{
+  "exact_coverage_pct": 6.568571,
+  "future_observations_used": 0,
+  "generic_region_fallback_selected_count": 2609,
+  "no_context_rate_pct": 29.874286,
+  "product_fallback_coverage_pct": 70.125714,
+  "region_fallback_coverage_pct": 34.02,
+  "selected_match_counts": {
+    "EXACT": 2299,
+    "NONE": 10456,
+    "PRODUCT_FALLBACK": 12637,
+    "REGION_FALLBACK": 9608
+  },
+  "window_days": 30
+}
