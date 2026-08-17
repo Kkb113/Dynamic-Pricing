@@ -1,0 +1,48 @@
+version: 1
+name: phase6_candidate_price_optimization
+phase2:
+  dataset_path: artifacts/phase2/feature_dataset.parquet
+  contract_path: contracts/phase2_feature_contract_v1.yaml
+  expected_sha256: 7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2
+  expected_rows: 35000
+phase3:
+  split_path: artifacts/phase3/split_assignments.parquet
+  expected_sha256: 9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d
+phase4:
+  frozen_spec_path: artifacts/phase4/frozen_model_spec.json
+  model_path: artifacts/phase4/models/purchase_catboost.cbm
+  model_sha256: 1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d
+  frozen_spec_sha256: 87ffb4e56af455937a0c92b1be45be0e2c8082cc0efd6afa51eb62f9c05ba9d0
+  validation_prediction_path: artifacts/phase4/predictions/purchase_validation.parquet
+  test_prediction_path: artifacts/phase4/predictions/purchase_test.parquet
+phase5:
+  frozen_spec_path: artifacts/phase5/frozen_quantity_spec.json
+  estimator_metadata_path: artifacts/phase5/models/quantity_estimator_metadata.json
+  mean_path: artifacts/phase5/models/conditional_quantity_mean.json
+  frozen_spec_sha256: 260354340c41fe8eaccaafc4e3388f7fb28c81ec4fbaba049504a25b7a487914
+  estimator_type: CONSTANT_MEAN
+  mean_value: 1.3057971014492753
+cost:
+  schema: dbo
+  product_table: Product
+  cost_column: CostPrice
+  env_file: .env
+candidate_grid:
+  technical_multiplier_low: 0.80
+  technical_multiplier_high: 1.20
+  template: [0.800, 0.825, 0.850, 0.875, 0.900, 0.925, 0.950, 0.975, 1.000, 1.025, 1.050, 1.075, 1.100, 1.125, 1.150, 1.175, 1.200]
+  rounding: ROUND_HALF_UP_2_DECIMAL
+  candidate_prediction_batch_size: 250000
+response_safety:
+  policy: LOW_TO_HIGH_CUMULATIVE_MINIMUM
+  tolerance: 1.0e-12
+objective:
+  official: EXPECTED_GROSS_PROFIT
+  tie_band_absolute: 1.0e-8
+  tie_band_relative: 0.001
+  tie_break: [CLOSEST_TO_CURRENT_PRICE, LOWER_PRICE, DETERMINISTIC_CANDIDATE_ORDER]
+  minimum_relative_expected_profit_uplift: 0.005
+compute:
+  max_threads: 22
+  random_seed: 42
+  nested_parallelism: false
