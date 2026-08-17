@@ -32,7 +32,7 @@
     "status": "PASS",
     "tolerance": 1e-10
   },
-  "ci_status": "PENDING",
+  "ci_status": "PASS",
   "compute": {
     "Phase4_prediction_seconds": 0.41672309997375123,
     "Phase5_quantity_seconds": 0.05409909997251816,
@@ -71,7 +71,7 @@
   },
   "cost_coverage": 1.0,
   "cost_source": "dbo.Product.CostPrice_read_only",
-  "evidence_git_sha": "PENDING",
+  "evidence_git_sha": "e8fdd5acb14f5ac0435ff508ab21c286dcc881e2",
   "implementation_git_sha": "408c87276d24dd34c6455cf60fbcb6967c2616d7",
   "major_blockers": [],
   "materiality_policy": {
