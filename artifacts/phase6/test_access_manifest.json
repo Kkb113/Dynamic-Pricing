@@ -1,0 +1,15 @@
+{
+  "ActualRevenue_accessed": false,
+  "OrderLineID_accessed": false,
+  "OutcomeTime_accessed": false,
+  "PurchasedFlag_accessed": false,
+  "QuantityPurchased_accessed": false,
+  "frozen_optimizer_spec_sha256": "8a2361f145a93ae372311c5fe49d24ccb889dd87a7eee6523cd66a1d46d53ab8",
+  "test_feature_end": "2025-12-31T23:59:39",
+  "test_feature_start": "2025-11-15T23:57:30",
+  "test_outcomes_accessed": false,
+  "test_used_to_tune_candidate_grid": false,
+  "test_used_to_tune_materiality": false,
+  "test_used_to_tune_objective": false,
+  "test_used_to_tune_response_guard": false
+}

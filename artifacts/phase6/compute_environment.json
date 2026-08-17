@@ -1,0 +1,20 @@
+{
+  "configured_thread_limit": 22,
+  "detected_logical_threads": 22,
+  "detected_physical_cores": 16,
+  "effective_parallelism": "single_fit_at_a_time_with_threadpool_limit",
+  "logical_threads": 22,
+  "nested_parallelism": false,
+  "numpy_version": "2.5.2",
+  "physical_cores": 16,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python_version": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+  "thread_environment": {
+    "MKL_NUM_THREADS": "22",
+    "NUMEXPR_NUM_THREADS": "22",
+    "OMP_NUM_THREADS": "22",
+    "OPENBLAS_NUM_THREADS": "22"
+  },
+  "threads_used": 22,
+  "usable_threads": 22
+}

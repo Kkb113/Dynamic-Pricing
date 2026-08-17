@@ -1,0 +1,15 @@
+{
+  "Phase4_prediction_seconds": 0.3754034000012325,
+  "Phase5_quantity_seconds": 0.07260919999680482,
+  "candidate_generation_seconds": 0.3206557000085013,
+  "candidate_rows_per_second": 868.841632009339,
+  "candidate_rows_scored": 94500,
+  "decisions_scored": 10500,
+  "economic_scoring_seconds": 0.02261670000734739,
+  "feature_generation_seconds": 1.0287443999841344,
+  "logical_threads": 22,
+  "optimizer_selection_seconds": 83.3457822999917,
+  "physical_cores": 16,
+  "threads_used": 22,
+  "total_seconds": 108.76550629998383
+}

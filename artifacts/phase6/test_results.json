@@ -1,0 +1,19 @@
+{
+  "duration_seconds": 12.144589,
+  "exit_code": 0,
+  "failed": 0,
+  "generated_at_utc": "2026-08-16T22:11:57.990670+00:00",
+  "invocation": [
+    "__main__.py",
+    "-q",
+    "--basetemp=C:\\Users\\karth\\AppData\\Local\\Temp\\dynamic-pricing-phase4-publish-20260816\\.phase6-pytest-yjmybrei"
+  ],
+  "passed": 132,
+  "skipped": 0,
+  "source": "pytest_sessionfinish",
+  "source_tree_sha256": "252d32ddc082bdc973beef249cd9c9c9796f22de11acb44014f261ba5ecccf6d",
+  "status": "PASS",
+  "total": 132,
+  "xfailed": 0,
+  "xpassed": 0
+}

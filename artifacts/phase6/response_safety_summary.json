@@ -1,0 +1,32 @@
+{
+  "test": {
+    "adjusted_decision_count": 1952,
+    "adjusted_decision_rate": 0.3718095238095238,
+    "candidate_adjustment_count": 3183,
+    "candidate_adjustment_rate": 0.06736507936507936,
+    "candidate_count": 47250,
+    "decision_count": 5250,
+    "max_adjustment": 0.039215312653799905,
+    "mean_adjustment": 0.00019594293743743028,
+    "median_adjustment": 0.0,
+    "p95_adjustment": 0.0006397710545302332,
+    "raw_non_monotonic_decision_count": 1952,
+    "raw_non_monotonic_decision_rate": 0.3718095238095238,
+    "safe_monotonic_violations": 0
+  },
+  "validation": {
+    "adjusted_decision_count": 1958,
+    "adjusted_decision_rate": 0.372952380952381,
+    "candidate_adjustment_count": 3216,
+    "candidate_adjustment_rate": 0.06806349206349206,
+    "candidate_count": 47250,
+    "decision_count": 5250,
+    "max_adjustment": 0.04187030097774669,
+    "mean_adjustment": 0.00019667536083375713,
+    "median_adjustment": 0.0,
+    "p95_adjustment": 0.0006123767676781108,
+    "raw_non_monotonic_decision_count": 1958,
+    "raw_non_monotonic_decision_rate": 0.372952380952381,
+    "safe_monotonic_violations": 0
+  }
+}

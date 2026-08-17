@@ -1,0 +1,13 @@
+{
+  "candidate_price_mismatch_count": 0,
+  "candidate_row_count_run1": 47250,
+  "candidate_row_count_run2": 47250,
+  "decision_status_mismatch_count": 0,
+  "max_expected_profit_delta": 0.0,
+  "max_expected_units_delta": 0.0,
+  "max_probability_delta": 0.0,
+  "max_revenue_delta": 0.0,
+  "selected_price_mismatch_count": 0,
+  "status": "PASS",
+  "tolerance": 1e-10
+}
