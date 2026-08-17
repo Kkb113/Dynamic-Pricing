@@ -1,0 +1,20 @@
+{
+  "available_qty": {
+    "max": 130.0,
+    "mean": 71.6464,
+    "median": 72.0,
+    "min": 7.0,
+    "zero_rate": 0.0
+  },
+  "duplicate_product_store_snapshot_rows": 0,
+  "latest_snapshot_date": "2025-12-31",
+  "rows": 15000,
+  "snapshot_dates": [
+    "2025-12-31"
+  ],
+  "stock_status_counts": {
+    "In Stock": 15000
+  },
+  "unique_product_count": 2860,
+  "unique_store_count": 50
+}

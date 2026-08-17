@@ -1,0 +1,43 @@
+{
+  "precedence": {
+    "best_reconciliation_rate": 0.9343265306122449,
+    "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED",
+    "false_negative_rule_assignments": 0,
+    "false_positive_rule_assignments": 0,
+    "historical_null_rule_rows": 0,
+    "null_historical_rule_rows": 0,
+    "policies": {
+      "P1_PRIORITY_DESC_SPECIFICITY_DESC": {
+        "matched_rows": 0,
+        "no_applicable_rule_rows": 0,
+        "reconciliation_rate": 0.0,
+        "rows_evaluated": 24500
+      },
+      "P2_PRIORITY_ASC_SPECIFICITY_DESC": {
+        "matched_rows": 22891,
+        "no_applicable_rule_rows": 0,
+        "reconciliation_rate": 0.9343265306122449,
+        "rows_evaluated": 24500
+      },
+      "P3_SPECIFICITY_DESC_PRIORITY_DESC": {
+        "matched_rows": 8767,
+        "no_applicable_rule_rows": 0,
+        "reconciliation_rate": 0.35783673469387756,
+        "rows_evaluated": 24500
+      },
+      "P4_SPECIFICITY_DESC_PRIORITY_ASC": {
+        "matched_rows": 22866,
+        "no_applicable_rule_rows": 0,
+        "reconciliation_rate": 0.9333061224489796,
+        "rows_evaluated": 24500
+      }
+    },
+    "resolver_null_rule_rows": 0,
+    "rows_evaluated": 24500,
+    "selected_policy": null,
+    "status": "BLOCKED",
+    "unique_best_policy": true
+  },
+  "selected_policy": null,
+  "status": "BLOCKED"
+}

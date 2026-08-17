@@ -1,0 +1,66 @@
+{
+  "candidate_rows": 47250,
+  "changed_price_rate": 0.0,
+  "decision_count": 5250,
+  "diagnostics": {
+    "action_counts": {
+      "MANUAL_REVIEW_RULE_CONFLICT": 5250
+    },
+    "candidate_augmentation": {
+      "added_candidates": 0,
+      "out_of_support_boundaries": [],
+      "status": "NOT_RUN_RULE_POLICY_BLOCKED"
+    },
+    "constraint_impact": {
+      "RULE_MAX_DISCOUNT": {
+        "candidate_rows_filtered": 0,
+        "decisions_affected": 0,
+        "price_delta_mean": 0.0
+      },
+      "RULE_MAX_PRICE": {
+        "candidate_rows_filtered": 0,
+        "decisions_affected": 0,
+        "price_delta_mean": 0.0
+      },
+      "RULE_MAX_PRICE_CHANGE": {
+        "candidate_rows_filtered": 0,
+        "decisions_affected": 0,
+        "price_delta_mean": 0.0
+      },
+      "RULE_MIN_MARGIN": {
+        "candidate_rows_filtered": 0,
+        "decisions_affected": 0,
+        "price_delta_mean": 0.0
+      },
+      "RULE_MIN_PRICE": {
+        "candidate_rows_filtered": 0,
+        "decisions_affected": 0,
+        "price_delta_mean": 0.0
+      }
+    },
+    "decisions": 5250,
+    "rule": {
+      "candidate_rows": 47250,
+      "decisions": 5250,
+      "rule_resolution_null_rate": 1.0,
+      "rule_violation_rows": 47250
+    }
+  },
+  "final_rule_violation_count": 0,
+  "hold_rate": 0.0,
+  "manual_review_rate": 1.0,
+  "markdown_action_rate": 0.0,
+  "mean_expected_gross_profit_after": NaN,
+  "mean_price_change_pct": NaN,
+  "median_price_change_pct": NaN,
+  "outcomes_used": false,
+  "phase6_upper_boundary_rate": 0.981904761904762,
+  "phase7_minus_phase6_upper_boundary_delta": -0.981904761904762,
+  "phase7_upper_boundary_rate": 0.0,
+  "price_decrease_rate": 0.0,
+  "price_increase_rate": 0.0,
+  "promotion_action_rate": 0.0,
+  "rule_forced_change_rate": 0.0,
+  "same_price_rate": 1.0,
+  "split": "validation"
+}

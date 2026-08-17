@@ -1,0 +1,6 @@
+constraint_type,decisions_affected,candidate_rows_filtered,price_delta_mean
+MinPrice,0,0,0.0
+MaxPrice,0,0,0.0
+MinMarginPct,0,0,0.0
+MaxDiscountPct,0,0,0.0
+MaxPriceChangePct,0,0,0.0

@@ -1,0 +1,9 @@
+{
+  "mapping": {
+    "In Stock": "NORMAL"
+  },
+  "observed_values": [
+    "In Stock"
+  ],
+  "unknown_policy": "UNKNOWN"
+}

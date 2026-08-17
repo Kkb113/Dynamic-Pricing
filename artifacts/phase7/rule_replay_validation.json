@@ -1,0 +1,21 @@
+{
+  "acceptance_threshold": 0.995,
+  "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED",
+  "metrics": {
+    "absolute_delta_max": 13.860000000000014,
+    "absolute_delta_mean": 0.07673714285714288,
+    "absolute_delta_median": 0.0,
+    "absolute_delta_p95": 0.21550000000000477,
+    "constrained_decision_count": 896,
+    "constrained_decision_rate": 0.17066666666666666,
+    "exact_cent_match_rate": 0.9363809523809524,
+    "rows": 5250,
+    "rule_violation_count": 0
+  },
+  "policy_used_for_diagnostic_replay": "P2_PRIORITY_ASC_SPECIFICITY_DESC",
+  "reference_full_historical_constrained_rate": 0.173,
+  "reference_historical_rule_violations": 0,
+  "semantics_status": "BLOCKED",
+  "split": "validation",
+  "status": "BLOCKED"
+}

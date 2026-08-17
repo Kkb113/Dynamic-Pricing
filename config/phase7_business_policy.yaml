@@ -1,0 +1,53 @@
+version: 1
+name: phase7_business_rules_promotions_markdowns
+base_branch: codex/phase1-data-audit
+mode:
+  historical: HISTORICAL_POLICY_MODE
+  current: CURRENT_INVENTORY_MODE
+database:
+  env_file: ../.env
+  server: localhost
+  schema: dbo
+  driver: ODBC Driver 18 for SQL Server
+  read_only: true
+sources:
+  pricing_rules: dbo.Pricing_Rules
+  promotions: dbo.Promotions
+  inventory: dbo.Inventory
+  product: dbo.Product
+  product_category: dbo.Product_Category
+  price_history: dbo.Product_Price_History
+  decision_log: dbo.Pricing_Decision_Log
+rules:
+  effective_date_convention: '[EffectiveFrom, EffectiveTo)'
+  scope_null_semantics: wildcard
+  precedence_candidates:
+    - P1_PRIORITY_DESC_SPECIFICITY_DESC
+    - P2_PRIORITY_ASC_SPECIFICITY_DESC
+    - P3_SPECIFICITY_DESC_PRIORITY_DESC
+    - P4_SPECIFICITY_DESC_PRIORITY_ASC
+  minimum_train_reconciliation: 0.995
+  percentage_convention: freeze_from_train
+  price_rounding: ROUND_HALF_UP_2_DECIMAL
+promotions:
+  date_convention: '[StartDate, EndDate]'
+  conflict_action: PROMOTION_CONFLICT_REVIEW
+  pricing_mode: freeze_from_train
+inventory:
+  historical_snapshot_allowed: false
+  current_as_of: max(SnapshotDate)
+  max_current_context_age_days: 30
+  missing_action: MANUAL_REVIEW_INVENTORY_UNAVAILABLE
+markdown:
+  metric: product_store_sales_30d
+  category_quantile: 0.25
+  minimum_category_rows: 100
+  eligibility: seasonal_and_slow_moving_and_overstock_and_positive_available
+  low_stock_policy: NO_NEW_DISCOUNT_LOW_STOCK
+decisioning:
+  objective: EXPECTED_GROSS_PROFIT
+  tie_absolute: 1.0e-8
+  tie_relative: 0.001
+  minimum_relative_profit_uplift: 0.005
+  advisory_only: true
+  auto_writeback: false
