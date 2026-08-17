@@ -712,7 +712,11 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
         sources["decision_log"] = history
     source_history = sources.get("decision_log", pd.DataFrame()).copy()
     blockers: list[str] = []
-    warnings: list[str] = []
+    warnings: list[str] = [
+        "PHASE6_OPTIMIZER_BOUNDARY_HEAVY_PRESERVED",
+        "PHASE6_OPTIMIZER_STRONGLY_BOUNDARY_SEEKING_PRESERVED",
+        "PHASE6_HIGH_RESPONSE_GUARD_USAGE_PRESERVED",
+    ]
     timings: dict[str, float | None] = {
         "rule_resolution_seconds": None,
         "promotion_resolution_seconds": None,
