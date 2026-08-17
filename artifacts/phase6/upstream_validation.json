@@ -1,0 +1,11 @@
+{
+  "phase2_dataset_sha256": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
+  "phase3_split_assignment_sha256": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
+  "phase4_frozen_spec_sha256": "87ffb4e56af455937a0c92b1be45be0e2c8082cc0efd6afa51eb62f9c05ba9d0",
+  "phase4_model_sha256": "1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d",
+  "phase5_estimator_fingerprint": "481e7de3c4fa8113ee5fd13e5c318b8bc2cb7dc2c652883119ee8608975978ba",
+  "phase5_estimator_type": "CONSTANT_MEAN",
+  "phase5_frozen_quantity_spec_sha256": "260354340c41fe8eaccaafc4e3388f7fb28c81ec4fbaba049504a25b7a487914",
+  "phase5_mean_value": 1.3057971014492753,
+  "status": "PASS"
+}

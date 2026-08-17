@@ -1,0 +1,57 @@
+version: 1
+name: phase6_price_optimization_contract_v1
+status: FROZEN
+upstream_fingerprints:
+  phase2_dataset_sha256: 7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2
+  phase3_split_assignment_sha256: 9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d
+  phase4_model_sha256: 1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d
+  phase4_frozen_spec_sha256: 87ffb4e56af455937a0c92b1be45be0e2c8082cc0efd6afa51eb62f9c05ba9d0
+  phase5_frozen_quantity_spec_sha256: 260354340c41fe8eaccaafc4e3388f7fb28c81ec4fbaba049504a25b7a487914
+purchase_model_source:
+  phase: 4
+  artifact: artifacts/phase4/models/purchase_catboost.cbm
+  calibration: NATIVE
+quantity_estimator_source:
+  phase: 5
+  loader: models.quantity_estimator.load_quantity_estimator
+  official_estimator_type: CONSTANT_MEAN
+  diagnostic_catboost_allowed: false
+cost_source:
+  source: dbo.Product.CostPrice
+  access: READ_ONLY
+  use: OPTIMIZER_ONLY_AFTER_MODEL_INFERENCE
+  static_reference_limitation: true
+candidate_support_policy:
+  technical_envelope: [0.80, 1.20]
+  empirical_envelope: TRAIN_RATIO_P01_P99
+  current_price_required: true
+  minimum_global_multipliers: 5
+candidate_multiplier_template: [0.800, 0.825, 0.850, 0.875, 0.900, 0.925, 0.950, 0.975, 1.000, 1.025, 1.050, 1.075, 1.100, 1.125, 1.150, 1.175, 1.200]
+price_rounding_policy: ROUND_HALF_UP_2_DECIMAL
+response_safety_policy:
+  transform: safe_expected_units = minimum_accumulate(raw_expected_units_low_to_high_price)
+  tolerance: 1.0e-12
+expected_units_formula: raw_purchase_probability * conditional_quantity
+revenue_formula: CandidatePrice * safe_expected_units
+gross_profit_formula: (CandidatePrice - CostPrice) * safe_expected_units
+margin_formula: (CandidatePrice - CostPrice) / CandidatePrice
+official_objective: EXPECTED_GROSS_PROFIT
+tie_band:
+  absolute: 1.0e-8
+  relative: 0.001
+tie_break_policy: [CLOSEST_TO_CURRENT_PRICE, LOWER_PRICE, DETERMINISTIC_CANDIDATE_ORDER]
+minimum_uplift_policy:
+  minimum_relative_expected_profit_uplift: 0.005
+  requires_absolute_uplift_positive: true
+inventory_policy: CURRENT_INFERENCE_ONLY; NOT_APPLIED_HISTORICAL_VALIDATION_OR_TEST
+pricing_rule_policy: NOT_APPLIED_PHASE6
+promotion_policy: NOT_APPLIED_PHASE6
+test_outcome_policy:
+  outcome_blind: true
+  forbidden_columns: [PurchasedFlag, QuantityPurchased, ActualRevenue, OutcomeTime, OrderLineID]
+  no_backtesting: true
+compute_policy:
+  vectorized_candidate_surface: true
+  candidate_prediction_batch_size: 250000
+  max_logical_threads: 22
+  nested_parallelism: false

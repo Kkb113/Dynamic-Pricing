@@ -1,0 +1,16 @@
+{
+  "integrated_expected_unit_delta": 0.0,
+  "phase4_candidate_probability_delta": 0.0,
+  "phase4_feature_max_delta": 0.0,
+  "phase4_feature_violations": 0,
+  "phase4_test_prediction_delta": 0.0,
+  "phase5_artifact_quantity_delta": 0.0,
+  "phase5_artifact_scope": "POST_FREEZE_TRAIN_PLUS_VALIDATION",
+  "phase5_candidate_quantity_delta": 0.0,
+  "phase5_feature_max_delta": 0.0,
+  "phase5_test_expected_unit_delta": 0.0,
+  "rows": 5250,
+  "split": "test",
+  "status": "PASS",
+  "tolerance": 1e-10
+}

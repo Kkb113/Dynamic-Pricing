@@ -1,0 +1,21 @@
+{
+  "cost_gt_base_count": 0,
+  "cost_gt_base_rate": 0.0,
+  "cost_gt_current_count": 0,
+  "cost_gt_current_rate": 0.0,
+  "coverage_rate": 1.0,
+  "covered_rows": 35000,
+  "decision_rows": 35000,
+  "invalid_count": 0,
+  "max": 426.46,
+  "mean": 86.85882685714286,
+  "median": 74.365,
+  "min": 2.58,
+  "missing_count": 0,
+  "optimizer_only": true,
+  "sidecar_path": "artifacts/phase6/product_cost_sidecar.parquet",
+  "sidecar_sha256": "67207c07321025d19065fc3163af1ed38b032f633f06d091b800200a96dc18c4",
+  "source": "dbo.Product.CostPrice_read_only",
+  "static_cost_limitation": "Product.CostPrice is a static reference; historical cost variation is unavailable in Phase 2.",
+  "unique_products": 2671
+}
