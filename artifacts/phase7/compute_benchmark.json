@@ -2,13 +2,13 @@
   "augmented_candidates_scored": 0,
   "candidate_rows_processed": 94500,
   "decisions_processed": 12329,
-  "final_selection_seconds": 132.678596999991,
-  "inventory_policy_seconds": 0.016558700008317828,
+  "final_selection_seconds": 149.27857619998395,
+  "inventory_policy_seconds": 0.01927689998410642,
   "inventory_rows_loaded": 15000,
   "model_augmentation_inference_seconds": 0.0,
-  "promotion_resolution_seconds": 46.058281599980546,
+  "promotion_resolution_seconds": 47.057197500020266,
   "promotions_loaded": 200,
-  "rule_resolution_seconds": 25.253583500016248,
+  "rule_resolution_seconds": 26.196000799973262,
   "rules_loaded": 200,
-  "total_seconds": 207.82018239999888
+  "total_seconds": 226.75306869999622
 }

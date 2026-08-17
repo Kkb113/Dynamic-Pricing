@@ -794,12 +794,24 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "phase": 7,
   "base_branch": "codex/phase1-data-audit",
   "base_git_sha": "6b0f4c990b3abcb28c5b60c11551ec6f6554c1a0",
-  "phase7_implementation_git_sha": "6b0f4c990b3abcb28c5b60c11551ec6f6554c1a0",
+  "phase7_implementation_git_sha": "d4e9713b82022767aa1e7b6b6db3c3bc4893a69c",
   "upstream": {
+    "phase2_dataset_sha": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
+    "phase3_split_sha": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
+    "phase4_model_sha": "1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d",
+    "phase4_spec_sha": "6746428e9875726202e28a6adfc498421c09f4c129cf91d75b3ad2c0412a1f8d",
+    "phase5_estimator_sha": "481e7de3c4fa8113ee5fd13e5c318b8bc2cb7dc2c652883119ee8608975978ba",
+    "phase5_spec_sha": "cd7e8aa198fcbc886b893b5319439dfa381c192ede31b1f27ea11a93d14712f0",
     "phase6_manifest_sha": "b0881cd6e13ae8aa16fea8163a46cbdc40a2fabe66f3ca346539523b7f737b8a",
     "phase6_optimizer_spec_sha": "d18bf5783aee43443709848f224ad6f6158638150f7272bf43ea1a371f86177e",
-    "validation": "4c2e1729736d429f9f0c7910d4c1fc7d82fc6c850255112d6cf4cc63d41bb610",
-    "test": "da959dac729757fe4cee76c309c92e85ae88948758c28ad3475b384c092e00ac"
+    "candidate_surface_fingerprints": {
+      "validation": "4c2e1729736d429f9f0c7910d4c1fc7d82fc6c850255112d6cf4cc63d41bb610",
+      "test": "da959dac729757fe4cee76c309c92e85ae88948758c28ad3475b384c092e00ac"
+    },
+    "recommendation_fingerprints": {
+      "validation": "2db3bb58f18aa0d21dd68b52721556e845a5a92c5babbe89b353f9818948edab",
+      "test": "d7ec42c95eaa06766e0e2195d02d88fd4b1d56b1030fb23bcf130728aa834f52"
+    }
   },
   "rule_percentage_convention": "PERCENT_POINTS",
   "rule_effective_date_convention": "[EffectiveFrom, EffectiveTo)",
@@ -1011,7 +1023,7 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "max_current_context_age_days": 30,
   "ADVISORY_ONLY": true,
   "AUTO_WRITEBACK": false,
-  "frozen_business_policy_spec_sha256": "fa7ca50411226c93a3f7a06ff5c233cef34f780adfbeeb3c1b8688ed8de4804f"
+  "frozen_business_policy_spec_sha256": "4cc554bf8197fd92d61b6d8d84a012df1153a37714a1d0f55119588c00b53786"
 }
 
 ## 19. TEST policy replay
@@ -1388,12 +1400,12 @@ See `current_inventory_summary.json` and the current decision Parquet artifact.
 ## 32. Compute
 
 {
-  "rule_resolution_seconds": 25.253583500016248,
-  "promotion_resolution_seconds": 46.058281599980546,
-  "inventory_policy_seconds": 0.016558700008317828,
+  "rule_resolution_seconds": 26.196000799973262,
+  "promotion_resolution_seconds": 47.057197500020266,
+  "inventory_policy_seconds": 0.01927689998410642,
   "model_augmentation_inference_seconds": 0.0,
-  "final_selection_seconds": 132.678596999991,
-  "total_seconds": 207.90217489999486
+  "final_selection_seconds": 149.27857619998395,
+  "total_seconds": 226.86081059998833
 }
 
 ## 33. Known limitations

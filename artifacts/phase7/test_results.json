@@ -1,7 +1,7 @@
 {
   "command": "pytest -q tests/phase7",
   "failed": 0,
-  "output_tail": "................                                                         [100%]\n============================== warnings summary ===============================\n.venv\\Lib\\site-packages\\_pytest\\config\\__init__.py:1464\n  C:\\Users\\karth\\OneDrive\\Documents\\Intellify\\dynamic-pricing\\.phase7-work\\.venv\\Lib\\site-packages\\_pytest\\config\\__init__.py:1464: PytestConfigWarning: Unknown config option: asyncio_default_fixture_loop_scope\n  \n    self._warn_or_fail_if_strict(f\"Unknown config option: {key}\\n\")\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n16 passed, 1 warning in 0.19s\n",
+  "output_tail": "................                                                         [100%]\n============================== warnings summary ===============================\n.venv\\Lib\\site-packages\\_pytest\\config\\__init__.py:1464\n  C:\\Users\\karth\\OneDrive\\Documents\\Intellify\\dynamic-pricing\\.phase7-work\\.venv\\Lib\\site-packages\\_pytest\\config\\__init__.py:1464: PytestConfigWarning: Unknown config option: asyncio_default_fixture_loop_scope\n  \n    self._warn_or_fail_if_strict(f\"Unknown config option: {key}\\n\")\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n16 passed, 1 warning in 0.25s\n",
   "passed": 16,
   "status": "PASS",
   "total": 16
