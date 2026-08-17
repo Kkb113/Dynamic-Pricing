@@ -50,6 +50,16 @@ PHASE4_SPEC_SHA = "87ffb4e56af455937a0c92b1be45be0e2c8082cc0efd6afa51eb62f9c05ba
 PHASE4_MODEL_SHA = "1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d"
 PHASE5_SPEC_SHA = "260354340c41fe8eaccaafc4e3388f7fb28c81ec4fbaba049504a25b7a487914"
 PHASE5_MEAN = 1.3057971014492753
+OPTIMIZER_CONTEXT_ROUTING_COLUMNS = (
+    "PricingDecisionID",
+    "DecisionTime",
+    "ProductID",
+    "StoreID",
+    "Channel",
+    "CurrentPrice",
+    "AppliedPrice",
+    "BasePrice",
+)
 
 
 def _config() -> dict[str, Any]:
@@ -69,6 +79,37 @@ def _date(value: Any) -> str | None:
 def _split(frame: pd.DataFrame, assignments: pd.DataFrame, split: str) -> pd.DataFrame:
     ids = set(assignments.loc[assignments["split"].eq(split), "PricingDecisionID"].astype(str))
     return frame.loc[frame["PricingDecisionID"].astype(str).isin(ids)].copy().sort_values(["DecisionTime", "PricingDecisionID"], kind="mergesort").reset_index(drop=True)
+
+
+def _optimizer_context_columns(
+    frame: pd.DataFrame,
+    phase4_spec: dict[str, Any],
+    phase5_metadata: dict[str, Any],
+) -> list[str]:
+    """Return the explicit, outcome-free scenario-engine allowlist."""
+
+    ordered = list(dict.fromkeys([
+        *OPTIMIZER_CONTEXT_ROUTING_COLUMNS,
+        *phase4_spec["ordered_feature_names"],
+        *phase5_metadata["ordered_feature_names"],
+    ]))
+    forbidden = sorted(OUTCOME_COLUMNS.intersection(ordered))
+    if forbidden:
+        raise RuntimeError(f"OPTIMIZER_CONTEXT_ALLOWLIST_OUTCOME_COLUMNS: {forbidden}")
+    missing = sorted(set(ordered).difference(frame.columns))
+    if missing:
+        raise RuntimeError(f"OPTIMIZER_CONTEXT_COLUMNS_MISSING: {missing}")
+    return ordered
+
+
+def _high_response_guard_usage(timings: list[dict[str, Any]], threshold: float = 0.25) -> bool:
+    """Flag decisions whose candidate response surface was actually adjusted."""
+
+    adjusted_rates = [
+        float(timing.get("safety_summary", {}).get("adjusted_decision_rate", 0.0))
+        for timing in timings
+    ]
+    return max(adjusted_rates, default=0.0) > threshold
 
 
 def _verify_hash_payload(payload: dict[str, Any], key: str, expected: str, label: str) -> None:
@@ -109,8 +150,16 @@ def _verify_upstream(config: dict[str, Any], contract: dict[str, Any]) -> dict[s
     mean_value = float(json.loads(mean_path.read_text(encoding="utf-8"))["mean_value"])
     if abs(mean_value - PHASE5_MEAN) > 1e-15:
         raise RuntimeError("PHASE5_ESTIMATOR_FINGERPRINT_MISMATCH")
+    optimizer_columns = _optimizer_context_columns(frame, phase4_spec, metadata)
+    # The canonical frame above is used only for upstream integrity checks. The
+    # scenario engine receives a separate parquet read with an explicit
+    # outcome-free allowlist, before cost resolution, parity, or simulation.
+    optimizer_frame = pd.read_parquet(dataset_path, columns=optimizer_columns)
+    if len(optimizer_frame) != len(frame) or set(optimizer_frame["PricingDecisionID"].astype(str)) != set(frame["PricingDecisionID"].astype(str)):
+        raise RuntimeError("OPTIMIZER_CONTEXT_ID_SET_MISMATCH")
     return {
-        "frame": frame,
+        "optimizer_frame": optimizer_frame,
+        "optimizer_columns": optimizer_columns,
         "assignments": assignments,
         "dataset_sha": dataset_sha,
         "split_sha": split_sha,
@@ -126,7 +175,7 @@ def _verify_upstream(config: dict[str, Any], contract: dict[str, Any]) -> dict[s
         "phase5_estimator_type": "CONSTANT_MEAN",
         "phase5_mean": mean_value,
         "health": {
-            split: {"rows": int(len(_split(frame, assignments, split))), "start": _date(_split(frame, assignments, split)["DecisionTime"].min()), "end": _date(_split(frame, assignments, split)["DecisionTime"].max())}
+            split: {"rows": int(len(_split(optimizer_frame, assignments, split))), "start": _date(_split(optimizer_frame, assignments, split)["DecisionTime"].min()), "end": _date(_split(optimizer_frame, assignments, split)["DecisionTime"].max())}
             for split in ("train", "validation", "test")
         },
     }
@@ -322,7 +371,7 @@ def _write_reports(manifest: dict[str, Any], support: dict[str, Any], grid: Any,
 
 ## 3–20. Contract and parity gates
 
-Outcome-blind TEST simulation: **{manifest.get('outcome_blindness', {}).get('test_outcomes_accessed', False)}**. Cost coverage: **{manifest.get('cost_coverage')}**. Support: **{json.dumps(manifest.get('price_support', {}), sort_keys=True)}**. Candidate parity: **{json.dumps(manifest.get('candidate_parity', {}), sort_keys=True)}**. TEST stack parity: **{json.dumps(manifest.get('test_stack_parity', {}), sort_keys=True)}**.
+TEST outcomes accessed by scenario engine: **{manifest.get('outcome_blindness', {}).get('test_scenario_outcomes_accessed', False)}**. TEST scenario context outcome columns: **{json.dumps(manifest.get('outcome_blindness', {}).get('test_scenario_context_outcome_columns', []), sort_keys=True)}**. Cost coverage: **{manifest.get('cost_coverage')}**. Support: **{json.dumps(manifest.get('price_support', {}), sort_keys=True)}**. Candidate parity: **{json.dumps(manifest.get('candidate_parity', {}), sort_keys=True)}**. TEST stack parity: **{json.dumps(manifest.get('test_stack_parity', {}), sort_keys=True)}**.
 
 ## 21–30. Scenario diagnostics
 
@@ -413,7 +462,7 @@ def main() -> int:
     try:
         contract = load_contract(ROOT / config["phase2"]["contract_path"])
         upstream = _verify_upstream(config, contract)
-        frame, assignments = upstream["frame"], upstream["assignments"]
+        frame, assignments = upstream["optimizer_frame"], upstream["assignments"]
         train = _split(frame, assignments, "train")
         validation = _split(frame, assignments, "validation")
         test = _split(frame, assignments, "test")
@@ -493,14 +542,19 @@ def main() -> int:
             warnings.append("OPTIMIZER_BOUNDARY_HEAVY")
         if boundary_max > 0.80:
             warnings.append("OPTIMIZER_STRONGLY_BOUNDARY_SEEKING")
-        guard_max = max(x["raw_vs_safe_recommendation_change_rate"] for x in all_summaries)
-        if guard_max > 0.25:
+        if _high_response_guard_usage([val_timing, test_timing]):
             warnings.append("HIGH_RESPONSE_GUARD_USAGE")
         if val_timing["safety_summary"]["safe_monotonic_violations"] or test_timing["safety_summary"]["safe_monotonic_violations"]:
             raise RuntimeError("OPTIMIZER_SAFE_DEMAND_MONOTONICITY_FAILURE")
+        scenario_context_outcome_columns = sorted(OUTCOME_COLUMNS.intersection(test_cost.columns))
+        if scenario_context_outcome_columns:
+            raise RuntimeError(f"TEST_SCENARIO_CONTEXT_OUTCOME_COLUMNS: {scenario_context_outcome_columns}")
         test_access = {
             "frozen_optimizer_spec_sha256": optimizer_spec["frozen_optimizer_spec_sha256"],
             "test_feature_start": _date(test_cost["DecisionTime"].min()), "test_feature_end": _date(test_cost["DecisionTime"].max()),
+            "test_scenario_outcomes_accessed": False,
+            "test_scenario_context_columns": list(test_cost.columns),
+            "test_scenario_context_outcome_columns": scenario_context_outcome_columns,
             "test_outcomes_accessed": False, "PurchasedFlag_accessed": False, "QuantityPurchased_accessed": False,
             "ActualRevenue_accessed": False, "OutcomeTime_accessed": False, "OrderLineID_accessed": False,
             "test_used_to_tune_candidate_grid": False, "test_used_to_tune_objective": False,
