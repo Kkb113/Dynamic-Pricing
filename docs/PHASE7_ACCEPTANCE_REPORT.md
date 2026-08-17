@@ -794,7 +794,7 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "phase": 7,
   "base_branch": "codex/phase1-data-audit",
   "base_git_sha": "6b0f4c990b3abcb28c5b60c11551ec6f6554c1a0",
-  "phase7_implementation_git_sha": "d4e9713b82022767aa1e7b6b6db3c3bc4893a69c",
+  "phase7_implementation_git_sha": "6e6174589ce14bf8f2ca5a09537a09d578b415ce",
   "upstream": {
     "phase2_dataset_sha": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
     "phase3_split_sha": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
@@ -1023,7 +1023,7 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "max_current_context_age_days": 30,
   "ADVISORY_ONLY": true,
   "AUTO_WRITEBACK": false,
-  "frozen_business_policy_spec_sha256": "4cc554bf8197fd92d61b6d8d84a012df1153a37714a1d0f55119588c00b53786"
+  "frozen_business_policy_spec_sha256": "209edef4f5bb2a1512066388b404cff88df245fabf82ce87b1b2502153308be3"
 }
 
 ## 19. TEST policy replay
@@ -1400,12 +1400,12 @@ See `current_inventory_summary.json` and the current decision Parquet artifact.
 ## 32. Compute
 
 {
-  "rule_resolution_seconds": 26.196000799973262,
-  "promotion_resolution_seconds": 47.057197500020266,
-  "inventory_policy_seconds": 0.01927689998410642,
+  "rule_resolution_seconds": 29.662137900013477,
+  "promotion_resolution_seconds": 59.05922799999826,
+  "inventory_policy_seconds": 0.017656899988651276,
   "model_augmentation_inference_seconds": 0.0,
-  "final_selection_seconds": 149.27857619998395,
-  "total_seconds": 226.86081059998833
+  "final_selection_seconds": 172.33161560000735,
+  "total_seconds": 265.2060458000051
 }
 
 ## 33. Known limitations

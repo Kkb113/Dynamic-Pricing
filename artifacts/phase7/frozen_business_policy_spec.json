@@ -10,7 +10,7 @@
   ],
   "base_branch": "codex/phase1-data-audit",
   "base_git_sha": "6b0f4c990b3abcb28c5b60c11551ec6f6554c1a0",
-  "frozen_business_policy_spec_sha256": "4cc554bf8197fd92d61b6d8d84a012df1153a37714a1d0f55119588c00b53786",
+  "frozen_business_policy_spec_sha256": "209edef4f5bb2a1512066388b404cff88df245fabf82ce87b1b2502153308be3",
   "inventory_snapshot_policy": "CURRENT_ONLY",
   "inventory_status_map": {
     "In Stock": "NORMAL"
@@ -28,7 +28,7 @@
     ],
     "relative": 0.001
   },
-  "phase7_implementation_git_sha": "d4e9713b82022767aa1e7b6b6db3c3bc4893a69c",
+  "phase7_implementation_git_sha": "6e6174589ce14bf8f2ca5a09537a09d578b415ce",
   "promotion_pricing_mode": "CONTEXT_ONLY",
   "promotion_season_semantics": {
     "calendar_mapping_used": false,
