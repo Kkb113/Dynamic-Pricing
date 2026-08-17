@@ -1,19 +1,19 @@
 {
-  "duration_seconds": 12.144589,
+  "duration_seconds": 13.318926,
   "exit_code": 0,
   "failed": 0,
-  "generated_at_utc": "2026-08-16T22:11:57.990670+00:00",
+  "generated_at_utc": "2026-08-17T01:34:29.991595+00:00",
   "invocation": [
     "__main__.py",
     "-q",
-    "--basetemp=C:\\Users\\karth\\AppData\\Local\\Temp\\dynamic-pricing-phase4-publish-20260816\\.phase6-pytest-yjmybrei"
+    "--basetemp=C:\\Users\\karth\\AppData\\Local\\Temp\\dynamic-pricing-phase4-publish-20260816\\.phase6-pytest-p69jcc1l"
   ],
-  "passed": 132,
+  "passed": 134,
   "skipped": 0,
   "source": "pytest_sessionfinish",
-  "source_tree_sha256": "252d32ddc082bdc973beef249cd9c9c9796f22de11acb44014f261ba5ecccf6d",
+  "source_tree_sha256": "a55c7f23a2c5e57190c9db01cefb77d8cc8daa350dbd1fbbbdb877d0311bc60a",
   "status": "PASS",
-  "total": 132,
+  "total": 134,
   "xfailed": 0,
   "xpassed": 0
 }

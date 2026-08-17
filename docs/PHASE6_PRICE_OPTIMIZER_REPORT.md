@@ -4,4 +4,4 @@ The official objective is expected gross profit `(CandidatePrice - CostPrice) * 
 
 The output is `ModelOptimalCandidatePrice`, never a final business recommendation. Phase 7 owns price rules, margin floors, promotion/markdown actions, and inventory constraints.
 
-Warnings measured by this run: ["OPTIMIZER_BOUNDARY_HEAVY", "OPTIMIZER_STRONGLY_BOUNDARY_SEEKING"]
+Warnings measured by this run: ["OPTIMIZER_BOUNDARY_HEAVY", "OPTIMIZER_STRONGLY_BOUNDARY_SEEKING", "HIGH_RESPONSE_GUARD_USAGE"]
