@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 
 from phase8.scenario_evaluation import guard_counterfactual_language
+from phase8.bootstrap import bootstrap_intervals
 from phase8.segment_analysis import segment_metrics
 from phase8.validation import EvaluationFreeze
 
@@ -33,3 +34,12 @@ def test_counterfactual_language_guard():
     guard_counterfactual_language("model-implied expected gross profit scenario")
     with pytest.raises(ValueError):
         guard_counterfactual_language("guaranteed uplift")
+
+
+def test_bootstrap_gp_delta_uses_automatic_cohort_for_both_scenarios():
+    frame = pd.DataFrame([
+        {"QuantityPurchased": 1, "historical_expected_units": 1.0, "ActualRevenue": 100.0, "historical_expected_revenue": 100.0, "ObservedGrossProfit": 40.0, "historical_expected_gross_profit": 40.0, "S0_HISTORICAL_APPLIED_expected_gross_profit": 40.0, "S3_PHASE7_FINAL_AUTOMATIC_price": 110.0, "S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit": 50.0},
+        {"QuantityPurchased": 1, "historical_expected_units": 1.0, "ActualRevenue": 100.0, "historical_expected_revenue": 100.0, "ObservedGrossProfit": 40.0, "historical_expected_gross_profit": 40.0, "S0_HISTORICAL_APPLIED_expected_gross_profit": 40.0, "S3_PHASE7_FINAL_AUTOMATIC_price": None, "S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit": None},
+    ])
+    result = bootstrap_intervals(frame, samples=20)
+    assert result["intervals"]["phase7_model_implied_gp_delta_pct"]["mean"] == 0.25

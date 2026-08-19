@@ -27,8 +27,16 @@ def segment_metrics(frame: pd.DataFrame, *, minimum_rows: int = 100) -> tuple[pd
             predicted_revenue = float(pd.to_numeric(group["historical_expected_revenue"], errors="coerce").sum())
             actual_gp = float(pd.to_numeric(group["ObservedGrossProfit"], errors="coerce").sum())
             predicted_gp = float(pd.to_numeric(group["historical_expected_gross_profit"], errors="coerce").sum())
-            phase7_gp = float(pd.to_numeric(group["S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit"], errors="coerce").sum())
-            historical_gp = float(pd.to_numeric(group["S0_HISTORICAL_APPLIED_expected_gross_profit"], errors="coerce").sum())
+            if "S3_PHASE7_FINAL_AUTOMATIC_price" in group:
+                automatic = pd.to_numeric(group["S3_PHASE7_FINAL_AUTOMATIC_price"], errors="coerce").notna()
+            else:
+                automatic = pd.to_numeric(group["S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit"], errors="coerce").notna()
+            # Compare S0 and S3 on the same automatic decision IDs.  Summing
+            # S0 over all rows while S3 skips manual rows creates an artificial
+            # segment-level GP loss.
+            automatic_group = group.loc[automatic]
+            phase7_gp = float(pd.to_numeric(automatic_group["S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit"], errors="coerce").sum())
+            historical_gp = float(pd.to_numeric(automatic_group["S0_HISTORICAL_APPLIED_expected_gross_profit"], errors="coerce").sum())
             revenue_error = (predicted_revenue - actual_revenue) / actual_revenue if actual_revenue else 0.0
             gp_error = (predicted_gp - actual_gp) / actual_gp if actual_gp else 0.0
             gp_delta = (phase7_gp - historical_gp) / historical_gp if historical_gp else 0.0
@@ -48,6 +56,7 @@ def segment_metrics(frame: pd.DataFrame, *, minimum_rows: int = 100) -> tuple[pd
                 "predicted_historical_gp": predicted_gp,
                 "gp_error_pct": gp_error,
                 "phase7_model_implied_gp_delta_pct": gp_delta,
+                "phase7_automatic_cohort_rows": int(len(automatic_group)),
                 "automatic_recommendation_coverage": float(auto.mean()),
                 "manual_review_rate": float((~auto).mean()),
                 "price_increase_rate": float((price_change > 0.005).mean()) if len(price_change) else 0.0,

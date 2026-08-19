@@ -5,10 +5,13 @@
     "seed": 42
   },
   "boundary_diagnostics": {
+    "exact_boundary_support_source": "PHASE6_EFFECTIVE_SUPPORT_ENVELOPE",
     "fragility_rate": 0.8,
     "grid_tolerance": 0.005,
     "near_tie_relative_gp": 0.005,
-    "near_tie_share": 0.5
+    "near_tie_share": 0.5,
+    "policywide_automatic_gap_blocker": 0.02,
+    "policywide_automatic_gap_warning": 0.005
   },
   "business_thresholds": {
     "demand_strong": 0.05,
@@ -49,7 +52,7 @@
     "REPRODUCIBILITY_FAILURE",
     "TESTS_FAILED"
   ],
-  "frozen_at": "2026-08-19T06:19:32.822911+00:00",
+  "frozen_at": "2026-08-19T07:09:48.143058+00:00",
   "historical_inventory_policy": "NOT_AVAILABLE_FOR_VALIDATION_OR_TEST",
   "metrics": {
     "demand": [
@@ -89,6 +92,16 @@
   "no_training": true,
   "phase": 8,
   "protocol_version": "phase8_business_backtesting_v1",
+  "scenario_cohort_policy": {
+    "automatic_cohort_definition": "S3_PHASE7_FINAL_AUTOMATIC_price.notna()",
+    "automatic_only_scenarios": [
+      "S0_HISTORICAL_APPLIED",
+      "S1_CURRENT_PRICE",
+      "S2_PHASE6_MODEL_OPTIMAL",
+      "S3_PHASE7_FINAL_AUTOMATIC"
+    ],
+    "fallback_scenario": "S4_PHASE7_WITH_HISTORICAL_FALLBACK uses all decision rows"
+  },
   "scenario_definitions": {
     "S0_HISTORICAL_APPLIED": "historical observed AppliedPrice",
     "S1_CURRENT_PRICE": "model-implied expected economics",

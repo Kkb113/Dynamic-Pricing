@@ -1,4 +1,5 @@
 {
+  "automatic_cohort_identical": true,
   "bootstrap_identical": true,
   "factual_metrics_identical": true,
   "joined_outcomes_identical": true,

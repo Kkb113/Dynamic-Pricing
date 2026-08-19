@@ -2,7 +2,7 @@
 
 ## 1. Executive verdict
 
-**BLOCKED** — DO_NOT_PROCEED_TO_PHASE_9.
+**PASS_WITH_WARNINGS** — PROCEED_TO_PHASE_9.
 
 ## 2. Upstream Phase 7 verification
 
@@ -607,7 +607,7 @@
 
 ## 3. Evaluation protocol freeze
 
-Frozen spec SHA: `6c69beb6de9ef92be4a6f79f7c1a247444ab31be9283b65a8b16c9412da6f1f4`. The spec was
+Frozen spec SHA: `9c8ceb607834057ce158ab94c3d22264d52e387629be421b79f1550b2101a04c`. The spec was
 written before the single TEST outcome read.
 
 ## 4. TEST outcome access control
@@ -621,42 +621,15 @@ written before the single TEST outcome read.
   "test_used_for_rule_selection": false,
   "test_used_for_candidate_grid_selection": false,
   "test_used_for_threshold_selection": false,
-  "evaluation_spec_frozen_at": "2026-08-19T06:19:32.822911+00:00",
-  "test_outcomes_loaded_at": "2026-08-19T06:19:32.969246+00:00",
+  "evaluation_spec_frozen_at": "2026-08-19T07:09:48.143058+00:00",
+  "test_outcomes_loaded_at": "2026-08-19T07:09:48.189523+00:00",
   "source": {
-    "status": "CONNECTED_READ_ONLY",
+    "status": "FROZEN_ARTIFACT_REUSE",
     "rows": 5250,
-    "requested_ids": 5250,
-    "query_count": 6,
-    "chunk_size": 1000,
-    "driver": "pymssql_tds",
-    "sql_select_only": true,
-    "query_shapes": [
-      {
-        "row_count": 1000,
-        "has_outcome_columns": true
-      },
-      {
-        "row_count": 1000,
-        "has_outcome_columns": true
-      },
-      {
-        "row_count": 1000,
-        "has_outcome_columns": true
-      },
-      {
-        "row_count": 1000,
-        "has_outcome_columns": true
-      },
-      {
-        "row_count": 1000,
-        "has_outcome_columns": true
-      },
-      {
-        "row_count": 250,
-        "has_outcome_columns": true
-      }
-    ]
+    "sql_select_only": false,
+    "outcome_reread": false,
+    "source_path": "artifacts\\phase8\\test_factual_backtest.parquet",
+    "source_sha256": "347aa556c7fa9a0f61748c80c890a09a4132fa2d3098ce83865873b9abaee9f4"
   }
 }
 
@@ -872,7 +845,7 @@ written before the single TEST outcome read.
     "aggregate_expected_revenue": 178069.79657353478,
     "aggregate_expected_gross_profit": 73956.0129525392,
     "gross_margin_rate": 0.41532036524789706,
-    "mean_price": 148.11187619047618,
+    "mean_price": 148.1118761904762,
     "median_price": 129.18,
     "price_increase_rate": 0.304952380952381,
     "price_decrease_rate": 0.5481904761904762,
@@ -888,14 +861,14 @@ written before the single TEST outcome read.
     "missing_price_rows": 0,
     "aggregate_expected_units": 1158.8265285696234,
     "aggregate_expected_revenue": 186997.14279058683,
-    "aggregate_expected_gross_profit": 87601.06025970248,
-    "gross_margin_rate": 0.46846202542145043,
+    "aggregate_expected_gross_profit": 87601.06025970247,
+    "gross_margin_rate": 0.4684620254214503,
     "mean_price": 162.6966457142857,
     "median_price": 142.1,
     "price_increase_rate": 0.8636190476190476,
     "price_decrease_rate": 0.13428571428571429,
     "hold_rate": 0.0020952380952380953,
-    "mean_price_change_pct": 0.07892394713202426,
+    "mean_price_change_pct": 0.07892394713202425,
     "median_price_change_pct": 0.07467536721626919,
     "factual_or_counterfactual": "counterfactual_model_implied"
   },
@@ -904,7 +877,7 @@ written before the single TEST outcome read.
     "label": "model-implied scenario estimate",
     "rows": 5175,
     "missing_price_rows": 75,
-    "aggregate_expected_units": 1145.2622360745602,
+    "aggregate_expected_units": 1145.2622360745604,
     "aggregate_expected_revenue": 183014.3161701461,
     "aggregate_expected_gross_profit": 84966.10135086284,
     "gross_margin_rate": 0.4642593165874025,
@@ -938,29 +911,140 @@ written before the single TEST outcome read.
 }
 
 {
+  "S0_HISTORICAL_APPLIED": {
+    "scenario": "S0_HISTORICAL_APPLIED",
+    "label": "historical factual prediction at observed price",
+    "rows": 5175,
+    "missing_price_rows": 0,
+    "aggregate_expected_units": 1206.929504767121,
+    "aggregate_expected_revenue": 181538.62644019473,
+    "aggregate_expected_gross_profit": 77815.73288175625,
+    "gross_margin_rate": 0.4286455968498336,
+    "mean_price": 150.44936231884057,
+    "median_price": 132.35,
+    "price_increase_rate": 0.0,
+    "price_decrease_rate": 0.0,
+    "hold_rate": 1.0,
+    "mean_price_change_pct": 0.0,
+    "median_price_change_pct": 0.0,
+    "factual_or_counterfactual": "factual_prediction"
+  },
   "S1_CURRENT_PRICE": {
-    "expected_units_delta": -16.16784030816507,
-    "expected_units_delta_pct": -0.013193270105689102,
-    "expected_revenue_delta": -6718.232991790603,
-    "expected_revenue_delta_pct": -0.03635642962151726,
-    "expected_gross_profit_delta": -5294.0917754728,
-    "expected_gross_profit_delta_pct": -0.0668023316012292
+    "scenario": "S1_CURRENT_PRICE",
+    "label": "model-implied scenario estimate",
+    "rows": 5175,
+    "missing_price_rows": 0,
+    "aggregate_expected_units": 1191.163157565345,
+    "aggregate_expected_revenue": 174952.91684146834,
+    "aggregate_expected_gross_profit": 72605.03386567248,
+    "gross_margin_rate": 0.4149975614951463,
+    "mean_price": 147.84114396135266,
+    "median_price": 129.04,
+    "price_increase_rate": 0.3045410628019324,
+    "price_decrease_rate": 0.5489855072463768,
+    "hold_rate": 0.14647342995169083,
+    "mean_price_change_pct": -0.018260009946182713,
+    "median_price_change_pct": -0.017668939863608082,
+    "factual_or_counterfactual": "counterfactual_model_implied"
   },
   "S2_PHASE6_MODEL_OPTIMAL": {
-    "expected_units_delta": -66.6346481247956,
-    "expected_units_delta_pct": -0.05437516046370159,
-    "expected_revenue_delta": 2209.113225261448,
-    "expected_revenue_delta_pct": 0.011954850270647497,
-    "expected_gross_profit_delta": 8350.955531690488,
-    "expected_gross_profit_delta_pct": 0.10537469395594039
+    "scenario": "S2_PHASE6_MODEL_OPTIMAL",
+    "label": "model-implied scenario estimate",
+    "rows": 5175,
+    "missing_price_rows": 0,
+    "aggregate_expected_units": 1141.5734573855752,
+    "aggregate_expected_revenue": 183735.79395386198,
+    "aggregate_expected_gross_profit": 86018.21349884434,
+    "gross_margin_rate": 0.4681625264614713,
+    "mean_price": 162.3955458937198,
+    "median_price": 141.94,
+    "price_increase_rate": 0.8624154589371981,
+    "price_decrease_rate": 0.13545893719806762,
+    "hold_rate": 0.0021256038647342996,
+    "mean_price_change_pct": 0.07881857970815584,
+    "median_price_change_pct": 0.0742482781790694,
+    "factual_or_counterfactual": "counterfactual_model_implied"
   },
   "S3_PHASE7_FINAL_AUTOMATIC": {
-    "expected_units_delta": -80.19894061985883,
-    "expected_units_delta_pct": -0.06544388524505435,
-    "expected_revenue_delta": -1773.7133951792785,
-    "expected_revenue_delta_pct": -0.00959863796021616,
-    "expected_gross_profit_delta": 5715.996622850842,
-    "expected_gross_profit_delta_pct": 0.0721260450376471
+    "scenario": "S3_PHASE7_FINAL_AUTOMATIC",
+    "label": "model-implied scenario estimate",
+    "rows": 5175,
+    "missing_price_rows": 0,
+    "aggregate_expected_units": 1145.2622360745604,
+    "aggregate_expected_revenue": 183014.3161701461,
+    "aggregate_expected_gross_profit": 84966.10135086284,
+    "gross_margin_rate": 0.4642593165874025,
+    "mean_price": 161.21689661835748,
+    "median_price": 140.32,
+    "price_increase_rate": 0.7694685990338165,
+    "price_decrease_rate": 0.22743961352657005,
+    "hold_rate": 0.0030917874396135265,
+    "mean_price_change_pct": 0.07101919974198002,
+    "median_price_change_pct": 0.06679519165343599,
+    "factual_or_counterfactual": "counterfactual_model_implied"
+  },
+  "S4_PHASE7_WITH_HISTORICAL_FALLBACK": {
+    "scenario": "S4_PHASE7_WITH_HISTORICAL_FALLBACK",
+    "label": "model-implied scenario estimate",
+    "rows": 5175,
+    "missing_price_rows": 0,
+    "aggregate_expected_units": 1145.2622360745604,
+    "aggregate_expected_revenue": 183014.3161701461,
+    "aggregate_expected_gross_profit": 84966.10135086284,
+    "gross_margin_rate": 0.4642593165874025,
+    "mean_price": 161.21689661835748,
+    "median_price": 140.32,
+    "price_increase_rate": 0.7694685990338165,
+    "price_decrease_rate": 0.22743961352657005,
+    "hold_rate": 0.0030917874396135265,
+    "mean_price_change_pct": 0.07101919974198002,
+    "median_price_change_pct": 0.06679519165343599,
+    "factual_or_counterfactual": "counterfactual_model_implied"
+  }
+}
+{
+  "S1_CURRENT_PRICE": {
+    "cohort": "S3_PHASE7_FINAL_AUTOMATIC",
+    "rows": 5175
+  },
+  "S2_PHASE6_MODEL_OPTIMAL": {
+    "cohort": "S3_PHASE7_FINAL_AUTOMATIC",
+    "rows": 5175
+  },
+  "S3_PHASE7_FINAL_AUTOMATIC": {
+    "cohort": "S3_PHASE7_FINAL_AUTOMATIC",
+    "rows": 5175
+  },
+  "S4_PHASE7_WITH_HISTORICAL_FALLBACK": {
+    "cohort": "ALL_DECISION_ROWS",
+    "rows": 5250
+  }
+}
+
+{
+  "S1_CURRENT_PRICE": {
+    "expected_units_delta": -15.766347201775943,
+    "expected_units_delta_pct": -0.013063188147693916,
+    "expected_revenue_delta": -6585.709598726389,
+    "expected_revenue_delta_pct": -0.03627718093865801,
+    "expected_gross_profit_delta": -5210.699016083774,
+    "expected_gross_profit_delta_pct": -0.06696202455616032
+  },
+  "S2_PHASE6_MODEL_OPTIMAL": {
+    "expected_units_delta": -65.35604738154575,
+    "expected_units_delta_pct": -0.0541506750173916,
+    "expected_revenue_delta": 2197.1675136672566,
+    "expected_revenue_delta_pct": 0.012103030394972618,
+    "expected_gross_profit_delta": 8202.480617088091,
+    "expected_gross_profit_delta_pct": 0.1054090260841217
+  },
+  "S3_PHASE7_FINAL_AUTOMATIC": {
+    "expected_units_delta": -61.66726869256058,
+    "expected_units_delta_pct": -0.051094341839343284,
+    "expected_revenue_delta": 1475.6897299513803,
+    "expected_revenue_delta_pct": 0.00812879197605654,
+    "expected_gross_profit_delta": 7150.368469106586,
+    "expected_gross_profit_delta_pct": 0.09188846784970622
   },
   "S4_PHASE7_WITH_HISTORICAL_FALLBACK": {
     "expected_units_delta": -61.66726869256081,
@@ -1013,20 +1097,34 @@ written before the single TEST outcome read.
     "warning_codes": []
   },
   "boundary_augmentation": {
-    "in_support_unsimulated_boundaries": 3195,
-    "boundaries_scored": 3195,
-    "decision_rows_with_scored_boundaries": 1711,
-    "decisions_where_augmented_optimum_differs": 1490,
-    "change_rate": 0.8708357685563998,
-    "aggregate_model_implied_gp_delta": 974.9540889714186,
-    "relative_aggregate_gp_delta": 0.035584990155558174,
-    "mean_price_delta": 3.532817066043249,
+    "in_support_unsimulated_boundaries": 5384,
+    "boundaries_scored": 5384,
+    "decision_rows_with_scored_boundaries": 3171,
+    "augmented_candidate_rows": 33923,
+    "decisions_where_augmented_optimum_differs": 2912,
+    "change_rate": 0.9183222958057395,
+    "aggregate_model_implied_gp_delta": 931.5944455800493,
+    "relative_aggregate_gp_delta": 0.01096430730336892,
+    "affected_subset_gp_gap_pct": 0.01950360905688137,
+    "policywide_automatic_gp_gap_pct": 0.01096430730336892,
+    "affected_subset_phase7_automatic_gp": 48470.62116655262,
+    "policywide_automatic_phase7_gp": 84966.10135086284,
+    "ineligible_augmented_candidate_rows": 3657,
+    "mean_price_delta": 1.8574929044465476,
+    "selection_policy": {
+      "objective": "EXPECTED_GROSS_PROFIT",
+      "tie_relative": 0.001,
+      "tie_absolute": 1e-08,
+      "closest_to_current_price": true,
+      "lower_price_tie_break": true,
+      "materiality_relative_expected_profit_uplift": 0.005
+    },
+    "support_envelope_source": "PHASE6_EFFECTIVE_SUPPORT_ENVELOPE",
     "warning_codes": [
       "COARSE_GRID_VALUE_WARNING"
     ],
-    "blockers": [
-      "MATERIAL_GRID_GRANULARITY_GAP"
-    ]
+    "blockers": [],
+    "augmented_surface_rows": 33923
   },
   "policy_overlap": {
     "exact_matches": 16,
@@ -1035,7 +1133,7 @@ written before the single TEST outcome read.
     "observed_revenue": 169.08,
     "observed_gross_profit": 86.39000000000001,
     "predicted_units": 4.43862424344971,
-    "predicted_revenue": 276.8203721139847,
+    "predicted_revenue": 276.8203721139848,
     "predicted_gross_profit": 132.14082872379646
   }
 }
@@ -1051,19 +1149,19 @@ written before the single TEST outcome read.
         "code": "SEGMENT_REVENUE_CALIBRATION_WARNING",
         "dimension": "Channel",
         "value": "Online",
-        "error_pct": -0.22116571598038934
+        "error_pct": -0.22116571598038945
       },
       {
         "code": "SEGMENT_GP_CALIBRATION_WARNING",
         "dimension": "Channel",
         "value": "Online",
-        "error_pct": -0.25168191630699954
+        "error_pct": -0.2516819163069995
       },
       {
         "code": "SEGMENT_REVENUE_CALIBRATION_WARNING",
         "dimension": "RegionID",
         "value": "REG000006",
-        "error_pct": 0.23201200644779071
+        "error_pct": 0.23201200644779046
       },
       {
         "code": "SEGMENT_REVENUE_CALIBRATION_WARNING",
@@ -1081,49 +1179,49 @@ written before the single TEST outcome read.
         "code": "SEGMENT_REVENUE_CALIBRATION_WARNING",
         "dimension": "CategoryID",
         "value": "CAT000016",
-        "error_pct": -0.22970725215114035
+        "error_pct": -0.22970725215114013
       },
       {
         "code": "SEGMENT_REVENUE_CALIBRATION_WARNING",
         "dimension": "CategoryID",
         "value": "CAT000019",
-        "error_pct": 0.3162953951888013
+        "error_pct": 0.31629539518880145
       },
       {
         "code": "SEGMENT_GP_CALIBRATION_WARNING",
         "dimension": "CategoryID",
         "value": "CAT000019",
-        "error_pct": 0.3581582649802674
+        "error_pct": 0.3581582649802672
       },
       {
         "code": "SEGMENT_REVENUE_CALIBRATION_WARNING",
         "dimension": "CategoryID",
         "value": "CAT000024",
-        "error_pct": 0.40285672946738105
+        "error_pct": 0.4028567294673812
       },
       {
         "code": "SEGMENT_GP_CALIBRATION_WARNING",
         "dimension": "CategoryID",
         "value": "CAT000024",
-        "error_pct": 0.2765998631581284
+        "error_pct": 0.2765998631581282
       },
       {
         "code": "SEGMENT_REVENUE_CALIBRATION_WARNING",
         "dimension": "CategoryID",
         "value": "CAT000043",
-        "error_pct": 0.20976566226182022
+        "error_pct": 0.2097656622618202
       },
       {
         "code": "SEGMENT_REVENUE_CALIBRATION_WARNING",
         "dimension": "CategoryID",
         "value": "CAT000046",
-        "error_pct": -0.4664963445293585
+        "error_pct": -0.4664963445293586
       },
       {
         "code": "SEGMENT_GP_CALIBRATION_WARNING",
         "dimension": "CategoryID",
         "value": "CAT000046",
-        "error_pct": -0.4669548244330101
+        "error_pct": -0.46695482443301034
       },
       {
         "code": "SEGMENT_REVENUE_CALIBRATION_WARNING",
@@ -1244,24 +1342,24 @@ written before the single TEST outcome read.
     "confidence": 0.95,
     "intervals": {
       "aggregate_units_error_pct": {
-        "lower_2_5_pct": -0.08482607578100819,
-        "upper_97_5_pct": 0.03601064022899703,
-        "mean": -0.027306257863473918
+        "lower_2_5_pct": -0.08385347290671867,
+        "upper_97_5_pct": 0.03497827630566439,
+        "mean": -0.02608835189996143
       },
       "aggregate_revenue_error_pct": {
-        "lower_2_5_pct": -0.10972360311356681,
-        "upper_97_5_pct": 0.03846038538486725,
-        "mean": -0.03919513882535475
+        "lower_2_5_pct": -0.10996268376568366,
+        "upper_97_5_pct": 0.0387044894921101,
+        "mean": -0.0374005056842816
       },
       "aggregate_gp_error_pct": {
-        "lower_2_5_pct": -0.11137137178425276,
-        "upper_97_5_pct": 0.028981591257943078,
-        "mean": -0.04593698881804898
+        "lower_2_5_pct": -0.11511013495858238,
+        "upper_97_5_pct": 0.029795851730678957,
+        "mean": -0.04368037448770488
       },
       "phase7_model_implied_gp_delta_pct": {
-        "lower_2_5_pct": 0.0659634982304701,
-        "upper_97_5_pct": 0.07821837331642315,
-        "mean": 0.07208562024826802
+        "lower_2_5_pct": 0.08893329451141022,
+        "upper_97_5_pct": 0.09502387560381478,
+        "mean": 0.09192639225565152
       }
     },
     "interpretation": "Sample uncertainty only; intervals do not make counterfactual comparisons causal.",
@@ -1275,6 +1373,7 @@ written before the single TEST outcome read.
     "joined_outcomes_identical": true,
     "factual_metrics_identical": true,
     "scenario_economics_identical": true,
+    "automatic_cohort_identical": true,
     "bootstrap_identical": true
   }
 }
@@ -1288,37 +1387,37 @@ written before the single TEST outcome read.
     "usable_threads": 22,
     "rows_evaluated": 10500,
     "candidate_rows_inspected": 47250,
-    "boundary_candidates_scored": 3195,
+    "boundary_candidates_scored": 5384,
     "timings_seconds": {
-      "validation_outcome_loading_seconds": 0.19127450000087265,
-      "test_outcome_loading_seconds": 0.14249019999988377,
-      "validation_historical_scoring_seconds": 0.1262092999968445,
-      "validation_scenario_scoring_seconds": 0.3163023999950383,
-      "validation_s0_historical_applied_scoring_seconds": 0.021508400001039263,
-      "validation_s1_current_price_scoring_seconds": 0.1170983999982127,
-      "validation_s2_phase6_model_optimal_scoring_seconds": 0.07873639999888837,
-      "validation_s3_phase7_final_automatic_scoring_seconds": 0.05562540000391891,
-      "validation_s4_phase7_with_historical_fallback_scoring_seconds": 0.01978850000159582,
-      "validation_scenario_assembly_seconds": 0.017646899999817833,
-      "validation_factual_metrics_seconds": 0.018248499996843748,
-      "test_historical_scoring_seconds": 0.12376490000315243,
-      "test_scenario_scoring_seconds": 0.2909639999998035,
-      "test_s0_historical_applied_scoring_seconds": 0.02014999999664724,
-      "test_s1_current_price_scoring_seconds": 0.08020079999550944,
-      "test_s2_phase6_model_optimal_scoring_seconds": 0.08934040000167442,
-      "test_s3_phase7_final_automatic_scoring_seconds": 0.05981759999849601,
-      "test_s4_phase7_with_historical_fallback_scoring_seconds": 0.020683299997472204,
-      "test_scenario_assembly_seconds": 0.017826000002969522,
-      "test_factual_metrics_seconds": 0.012917200001538731,
-      "boundary_analysis_seconds": 25.13742320000165,
-      "segment_analysis_seconds": 0.0937978000001749,
-      "bootstrap_seconds": 8.990065400001185,
-      "outcome_loading_seconds": 0.3337647000007564,
-      "historical_scoring_seconds": 0.24997419999999693,
-      "current_price_scoring_seconds": 0.19729919999372214,
-      "scenario_assembly_seconds": 0.035472900002787355,
-      "factual_metrics_seconds": 0.03116569999838248,
-      "total": 47.266520799996215
+      "validation_outcome_loading_seconds": 0.030050900000787806,
+      "test_outcome_loading_seconds": 0.03254629999719327,
+      "validation_historical_scoring_seconds": 0.156301999995776,
+      "validation_scenario_scoring_seconds": 0.3680045999935828,
+      "validation_s0_historical_applied_scoring_seconds": 0.021233899999060668,
+      "validation_s1_current_price_scoring_seconds": 0.09207480000623036,
+      "validation_s2_phase6_model_optimal_scoring_seconds": 0.12973280000005616,
+      "validation_s3_phase7_final_automatic_scoring_seconds": 0.07627640000282554,
+      "validation_s4_phase7_with_historical_fallback_scoring_seconds": 0.020046199999342207,
+      "validation_scenario_assembly_seconds": 0.023656299999856856,
+      "validation_factual_metrics_seconds": 0.027145400003064424,
+      "test_historical_scoring_seconds": 0.1846739000029629,
+      "test_scenario_scoring_seconds": 0.3822924999985844,
+      "test_s0_historical_applied_scoring_seconds": 0.02164999999513384,
+      "test_s1_current_price_scoring_seconds": 0.09955469999840716,
+      "test_s2_phase6_model_optimal_scoring_seconds": 0.10677920000307495,
+      "test_s3_phase7_final_automatic_scoring_seconds": 0.10232349999569124,
+      "test_s4_phase7_with_historical_fallback_scoring_seconds": 0.022417000000132248,
+      "test_scenario_assembly_seconds": 0.026286299995263107,
+      "test_factual_metrics_seconds": 0.030178400003933348,
+      "boundary_analysis_seconds": 88.84170219999942,
+      "segment_analysis_seconds": 0.11226280000119004,
+      "bootstrap_seconds": 8.298957399994833,
+      "outcome_loading_seconds": 0.06259719999798108,
+      "historical_scoring_seconds": 0.3409758999987389,
+      "current_price_scoring_seconds": 0.19162950000463752,
+      "scenario_assembly_seconds": 0.04994259999511996,
+      "factual_metrics_seconds": 0.05732380000699777,
+      "total": 110.24323949999962
     },
     "policy": "Batched frozen CatBoost inference; no nested outer parallel loop.",
     "no_training": true
@@ -1331,9 +1430,7 @@ written before the single TEST outcome read.
     "SEGMENT_GP_CALIBRATION_WARNING",
     "SEGMENT_REVENUE_CALIBRATION_WARNING"
   ],
-  "major_blockers": [
-    "MATERIAL_GRID_GRANULARITY_GAP"
-  ]
+  "major_blockers": []
 }
 
 Phase 9 may consume the frozen recommendation and evaluation artifacts only
