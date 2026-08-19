@@ -25,5 +25,9 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install --upgrade pip
-      - run: python -m pip install pandas numpy pyarrow pyyaml pytest
+      # conftest.py's session audit hook imports audit.database_profile, which
+      # requires pyodbc even though these deterministic tests do not connect
+      # to SQL Server.
+      - run: python -m pip install pandas numpy pyarrow pyyaml pytest pyodbc
       - run: pytest -q tests/phase7
+
