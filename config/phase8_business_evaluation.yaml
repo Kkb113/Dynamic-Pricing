@@ -1,0 +1,99 @@
+phase: 8
+name: business_backtesting_revenue_margin_evaluation
+base_branch: codex/phase1-data-audit
+base_git_sha: 54f0f0b58647e3945776605cde31563393730401
+upstream:
+  phase7_manifest: artifacts/phase7/phase7_manifest.json
+  phase7_policy: artifacts/phase7/frozen_business_policy_spec.json
+  validation_decisions: artifacts/phase7/validation_business_decisions.parquet
+  test_decisions: artifacts/phase7/test_business_decisions.parquet
+  current_decisions: artifacts/phase7/current_inventory_business_decisions.parquet
+protocol:
+  freeze_before_test: true
+  test_outcome_access_count: 1
+  test_used_for_training: false
+  test_used_for_hpo: false
+  test_used_for_model_selection: false
+  test_used_for_rule_selection: false
+  test_used_for_candidate_grid_selection: false
+  test_used_for_threshold_selection: false
+  sql_select_only: true
+  outcome_join_key: PricingDecisionID
+  expected_rows:
+    validation: 5250
+    test: 5250
+  outcome_columns:
+    - PricingDecisionID
+    - PurchasedFlag
+    - QuantityPurchased
+    - ActualRevenue
+    - OutcomeTime
+    - AppliedPrice
+  forbidden_model_context_columns:
+    - PurchasedFlag
+    - QuantityPurchased
+    - ActualRevenue
+    - OutcomeTime
+    - OrderLineID
+economics:
+  observed_gross_profit: ActualRevenue - (Product.CostPrice * QuantityPurchased)
+  cost_policy: static_product_cost_proxy
+  revenue_tolerance: 0.01
+  terminology:
+    historical: observed/factual
+    alternative_price: model-implied/scenario estimate
+  scenarios:
+    - S0_HISTORICAL_APPLIED
+    - S1_CURRENT_PRICE
+    - S2_PHASE6_MODEL_OPTIMAL
+    - S3_PHASE7_FINAL_AUTOMATIC
+    - S4_PHASE7_WITH_HISTORICAL_FALLBACK
+thresholds:
+  demand_strong: 0.05
+  demand_warning: 0.10
+  revenue_strong: 0.075
+  revenue_warning: 0.15
+  gross_profit_strong: 0.10
+  gross_profit_warning: 0.20
+  economic_policy_regression: -0.05
+  material_grid_gap: 0.02
+  segment_minimum_rows: 100
+  segment_revenue_warning: 0.20
+  segment_gp_warning: 0.25
+  major_segment_revenue_share: 0.20
+  major_segment_gp_error: 0.30
+  boundary_tolerance: 0.005
+  low_policy_overlap_rows: 100
+bootstrap:
+  seed: 42
+  samples: 1000
+  confidence: 0.95
+boundary_sensitivity:
+  exact_cent: true
+  response_safety: true
+  in_support_only: true
+  coarse_grid_warning: 0.005
+  material_gap_blocker: 0.02
+training:
+  allowed: false
+  forbidden:
+    - CatBoost.fit
+    - Optuna
+    - GridSearch
+    - RandomizedSearch
+    - model_calibration
+    - feature_selection
+    - hyperparameter_tuning
+    - rule_tuning
+    - price_grid_tuning
+historical_inventory:
+  allowed: false
+current_inventory:
+  source: artifacts/phase7/current_inventory_business_decisions.parquet
+claim_language:
+  alternative_prices: model-implied
+  forbidden:
+    - causal uplift
+    - causal elasticity
+    - guaranteed revenue increase
+    - realized profit uplift

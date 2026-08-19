@@ -1,0 +1,22 @@
+{
+  "mean_gp_advantage": 0.6271238134445573,
+  "mean_relative_gp_advantage": 0.04017070047615495,
+  "median_gp_advantage": 0.5082451471843683,
+  "median_relative_gp_advantage": 0.04036603503149194,
+  "p05_gp_advantage": 0.08480222776073763,
+  "p25_gp_advantage": 0.25452628938152255,
+  "p75_gp_advantage": 0.8433037191674373,
+  "p95_gp_advantage": 1.6590832121460246,
+  "phase6_lower_grid_boundary_rate": 0.00019047619047619048,
+  "phase6_upper_grid_boundary_rate": 0.9756190476190476,
+  "phase7_any_grid_boundary_rate": 0.6894685990338164,
+  "phase7_automatic_rows": 5175,
+  "phase7_lower_grid_boundary_rate": 0.0001932367149758454,
+  "phase7_upper_grid_boundary_rate": 0.6892753623188406,
+  "rows": 3567,
+  "share_relative_at_least_1pct": 0.9823380992430614,
+  "share_relative_below_0_1pct": 0.0,
+  "share_relative_below_0_5pct": 0.005326604990187833,
+  "tolerance": 0.005,
+  "warning_codes": []
+}

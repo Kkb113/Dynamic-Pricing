@@ -1,0 +1,20 @@
+{
+  "as_of_date": "2025-12-31",
+  "eligible_contexts": 1829,
+  "holds": 170,
+  "inventory_capped_expected_gross_profit": 30353.774653034478,
+  "inventory_capped_expected_revenue": 66877.96588809243,
+  "inventory_capped_expected_units": 406.9253978968268,
+  "inventory_coverage": 1.0,
+  "markdown_reviews": 172,
+  "price_decreases": 78,
+  "price_increases": 1564,
+  "promotion_reviews": 0,
+  "seasonal_markdowns": 69,
+  "source_artifact": "phase7/current_inventory_business_decisions.parquet",
+  "stale_context_rate": 0.24546204620462045,
+  "stale_contexts": 595,
+  "warnings": [
+    "CURRENT_CONTEXT_STALENESS_HIGH"
+  ]
+}

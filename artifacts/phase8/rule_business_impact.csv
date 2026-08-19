@@ -1,0 +1,6 @@
+constraint_type,decisions_affected,candidate_rows_filtered,price_delta_mean,share_of_test_decisions_affected,average_model_implied_gp_impact,average_price_impact,gp_impact_note
+MinPrice,3,4,-4.693333333333334,0.0005714285714285715,,-4.693333333333334,Phase 7 source diagnostics do not attribute counterfactual GP to one overlapping guardrail; no invented attribution is reported.
+MaxPrice,55,103,14.120011904761904,0.010476190476190476,,14.120011904761904,Phase 7 source diagnostics do not attribute counterfactual GP to one overlapping guardrail; no invented attribution is reported.
+MinMarginPct,139,249,-9.944321386603994,0.026476190476190476,,-9.944321386603994,Phase 7 source diagnostics do not attribute counterfactual GP to one overlapping guardrail; no invented attribution is reported.
+MaxDiscountPct,525,1056,-8.437652932998716,0.1,,-8.437652932998716,Phase 7 source diagnostics do not attribute counterfactual GP to one overlapping guardrail; no invented attribution is reported.
+MaxPriceChangePct,3047,6462,0.0005244797513998,0.5803809523809523,,0.0005244797513998,Phase 7 source diagnostics do not attribute counterfactual GP to one overlapping guardrail; no invented attribution is reported.
