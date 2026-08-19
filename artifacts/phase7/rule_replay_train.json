@@ -1,21 +1,56 @@
 {
   "acceptance_threshold": 0.995,
-  "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED",
+  "blocker": null,
+  "historical_rule_id_replay": {
+    "blocker": null,
+    "metrics": {
+      "absolute_delta_max": 0.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "constrained_decision_count": 4373,
+      "constrained_decision_rate": 0.17848979591836733,
+      "exact_cent_match_rate": 1.0,
+      "historical_rule_missing_count": 0,
+      "rows": 24500,
+      "rule_violation_count": 0
+    },
+    "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT",
+    "status": "PASS"
+  },
   "metrics": {
-    "absolute_delta_max": 13.389999999999986,
-    "absolute_delta_mean": 0.07198326530612244,
+    "absolute_delta_max": 0.0,
+    "absolute_delta_mean": 0.0,
     "absolute_delta_median": 0.0,
-    "absolute_delta_p95": 0.2504999999999923,
+    "absolute_delta_p95": 0.0,
     "constrained_decision_count": 4373,
     "constrained_decision_rate": 0.17848979591836733,
-    "exact_cent_match_rate": 0.9343265306122449,
+    "exact_cent_match_rate": 1.0,
+    "historical_rule_missing_count": 0,
     "rows": 24500,
     "rule_violation_count": 0
   },
-  "policy_used_for_diagnostic_replay": "P2_PRIORITY_ASC_SPECIFICITY_DESC",
+  "policy_used_for_diagnostic_replay": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
   "reference_full_historical_constrained_rate": 0.173,
   "reference_historical_rule_violations": 0,
-  "semantics_status": "BLOCKED",
+  "resolver_replay": {
+    "blocker": null,
+    "metrics": {
+      "absolute_delta_max": 0.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "constrained_decision_count": 4373,
+      "constrained_decision_rate": 0.17848979591836733,
+      "exact_cent_match_rate": 1.0,
+      "historical_rule_missing_count": 0,
+      "rows": 24500,
+      "rule_violation_count": 0
+    },
+    "policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+    "status": "PASS"
+  },
+  "semantics_status": "PASS",
   "split": "train",
-  "status": "BLOCKED"
+  "status": "PASS"
 }

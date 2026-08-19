@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pandas as pd
 
 from validation.artifacts import sha256_file
@@ -90,19 +91,54 @@ def validate_decision_frame(frame: pd.DataFrame, *, mode: str) -> dict[str, Any]
 
 def reproducibility_check(first: pd.DataFrame, second: pd.DataFrame) -> dict[str, Any]:
     keys = ["PricingDecisionID", "PricingRuleID", "RecommendedPromotionID", "MarkdownAction", "FinalRecommendedPrice", "FinalAction", "manual_review_flag"]
+    economic_columns = [
+        "expected_units", "expected_revenue", "expected_gross_profit",
+        "inventory_capped_expected_units", "inventory_capped_expected_revenue",
+        "inventory_capped_expected_gross_profit",
+    ]
+    present_economics = [column for column in economic_columns if column in first.columns or column in second.columns]
+    comparison_columns = [*keys[1:], *present_economics]
     missing = sorted(set(keys).difference(first.columns).union(set(keys).difference(second.columns)))
+    missing.extend(sorted(set(present_economics).difference(first.columns).union(set(present_economics).difference(second.columns))))
     if missing:
-        raise ValueError(f"REPRODUCIBILITY_COLUMNS_MISSING: {missing}")
-    left = first.set_index("PricingDecisionID")[keys[1:]].sort_index()
-    right = second.set_index("PricingDecisionID")[keys[1:]].sort_index()
+        raise ValueError(f"REPRODUCIBILITY_COLUMNS_MISSING: {sorted(set(missing))}")
+    left = first.set_index("PricingDecisionID")[comparison_columns].sort_index()
+    right = second.set_index("PricingDecisionID")[comparison_columns].sort_index()
     aligned = left.join(right, lsuffix="_first", rsuffix="_second", how="outer")
     mismatches = {}
-    for key in keys[1:]:
+    max_economic_delta = 0.0
+
+    def _numeric_equal(left_values: pd.Series, right_values: pd.Series) -> tuple[pd.Series, float]:
+        left_numeric = pd.to_numeric(left_values, errors="coerce").to_numpy(dtype=float)
+        right_numeric = pd.to_numeric(right_values, errors="coerce").to_numpy(dtype=float)
+        one_missing = np.isnan(left_numeric) ^ np.isnan(right_numeric)
+        equal = np.isclose(left_numeric, right_numeric, atol=1e-12, rtol=0.0, equal_nan=True)
+        equal[one_missing] = False
+        finite = np.isfinite(left_numeric) & np.isfinite(right_numeric)
+        delta = float(np.max(np.abs(left_numeric[finite] - right_numeric[finite]))) if finite.any() else 0.0
+        return pd.Series(equal, index=left_values.index), delta
+
+    for key in comparison_columns:
         first_value = aligned[f"{key}_first"]
         second_value = aligned[f"{key}_second"]
-        equal = first_value.eq(second_value) | (first_value.isna() & second_value.isna())
+        numeric = key in {"FinalRecommendedPrice", *economic_columns}
+        if numeric:
+            equal, delta = _numeric_equal(first_value, second_value)
+            if key in economic_columns:
+                max_economic_delta = max(max_economic_delta, delta)
+        else:
+            equal = first_value.eq(second_value) | (first_value.isna() & second_value.isna())
         mismatches[key] = int((~equal).sum())
-    return {"rule_resolution_mismatches": mismatches["PricingRuleID"], "final_price_mismatches": mismatches["FinalRecommendedPrice"], "action_mismatches": mismatches["FinalAction"], "mismatches": mismatches, "max_economic_delta": 0.0, "status": "PASS" if not any(mismatches.values()) else "FAIL"}
+    return {
+        "rows_compared": int(len(aligned)),
+        "rule_resolution_mismatches": mismatches["PricingRuleID"],
+        "final_price_mismatches": mismatches["FinalRecommendedPrice"],
+        "action_mismatches": mismatches["FinalAction"],
+        "economic_mismatches": int(sum(mismatches[column] for column in present_economics)),
+        "mismatches": mismatches,
+        "max_economic_delta": max_economic_delta,
+        "status": "PASS" if not any(mismatches.values()) else "FAIL",
+    }
 
 
 __all__ = ["OUTCOME_COLUMNS", "canonical_json_hash", "reproducibility_check", "validate_decision_frame", "verify_phase6_upstream"]

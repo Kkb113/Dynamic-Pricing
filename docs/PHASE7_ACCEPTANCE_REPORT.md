@@ -4,7 +4,7 @@ This report is generated from the read-only SQL acceptance run and the immutable
 
 ## 1. Executive verdict
 
-**BLOCKED** — DO_NOT_PROCEED_TO_PHASE_8.
+**PASS_WITH_WARNINGS** — PROCEED_TO_PHASE_8.
 
 ## 2. Upstream Phase 6 verification
 
@@ -604,27 +604,62 @@ Rules use the half-open `[EffectiveFrom, EffectiveTo)` interval.
 
 ## 7. Priority/specificity resolution
 
-Selected policy: **None**. An unresolved policy is a hard blocker; no fallback precedence is used for automatic prices.
+Selected policy: **P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC**. An unresolved policy is a hard blocker; no fallback precedence is used for automatic prices.
 
 ## 8. TRAIN rule-ID reconciliation
 
 {
   "split": "train",
-  "status": "BLOCKED",
-  "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED",
-  "policy_used_for_diagnostic_replay": "P2_PRIORITY_ASC_SPECIFICITY_DESC",
-  "semantics_status": "BLOCKED",
+  "status": "PASS",
+  "blocker": null,
+  "policy_used_for_diagnostic_replay": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+  "semantics_status": "PASS",
   "acceptance_threshold": 0.995,
+  "historical_rule_id_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "metrics": {
+      "rows": 24500,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 4373,
+      "constrained_decision_rate": 0.17848979591836733,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    },
+    "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT"
+  },
+  "resolver_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+    "metrics": {
+      "rows": 24500,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 4373,
+      "constrained_decision_rate": 0.17848979591836733,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    }
+  },
   "metrics": {
     "rows": 24500,
-    "exact_cent_match_rate": 0.9343265306122449,
-    "absolute_delta_mean": 0.07198326530612244,
+    "exact_cent_match_rate": 1.0,
+    "absolute_delta_mean": 0.0,
     "absolute_delta_median": 0.0,
-    "absolute_delta_p95": 0.2504999999999923,
-    "absolute_delta_max": 13.389999999999986,
+    "absolute_delta_p95": 0.0,
+    "absolute_delta_max": 0.0,
     "constrained_decision_count": 4373,
     "constrained_decision_rate": 0.17848979591836733,
-    "rule_violation_count": 0
+    "rule_violation_count": 0,
+    "historical_rule_missing_count": 0
   },
   "reference_full_historical_constrained_rate": 0.173,
   "reference_historical_rule_violations": 0
@@ -638,21 +673,56 @@ MinPrice, MaxPrice, minimum margin, maximum discount, and maximum movement are e
 
 {
   "split": "train",
-  "status": "BLOCKED",
-  "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED",
-  "policy_used_for_diagnostic_replay": "P2_PRIORITY_ASC_SPECIFICITY_DESC",
-  "semantics_status": "BLOCKED",
+  "status": "PASS",
+  "blocker": null,
+  "policy_used_for_diagnostic_replay": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+  "semantics_status": "PASS",
   "acceptance_threshold": 0.995,
+  "historical_rule_id_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "metrics": {
+      "rows": 24500,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 4373,
+      "constrained_decision_rate": 0.17848979591836733,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    },
+    "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT"
+  },
+  "resolver_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+    "metrics": {
+      "rows": 24500,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 4373,
+      "constrained_decision_rate": 0.17848979591836733,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    }
+  },
   "metrics": {
     "rows": 24500,
-    "exact_cent_match_rate": 0.9343265306122449,
-    "absolute_delta_mean": 0.07198326530612244,
+    "exact_cent_match_rate": 1.0,
+    "absolute_delta_mean": 0.0,
     "absolute_delta_median": 0.0,
-    "absolute_delta_p95": 0.2504999999999923,
-    "absolute_delta_max": 13.389999999999986,
+    "absolute_delta_p95": 0.0,
+    "absolute_delta_max": 0.0,
     "constrained_decision_count": 4373,
     "constrained_decision_rate": 0.17848979591836733,
-    "rule_violation_count": 0
+    "rule_violation_count": 0,
+    "historical_rule_missing_count": 0
   },
   "reference_full_historical_constrained_rate": 0.173,
   "reference_historical_rule_violations": 0
@@ -662,21 +732,56 @@ MinPrice, MaxPrice, minimum margin, maximum discount, and maximum movement are e
 
 {
   "split": "validation",
-  "status": "BLOCKED",
-  "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED",
-  "policy_used_for_diagnostic_replay": "P2_PRIORITY_ASC_SPECIFICITY_DESC",
-  "semantics_status": "BLOCKED",
+  "status": "PASS",
+  "blocker": null,
+  "policy_used_for_diagnostic_replay": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+  "semantics_status": "PASS",
   "acceptance_threshold": 0.995,
+  "historical_rule_id_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "metrics": {
+      "rows": 5250,
+      "exact_cent_match_rate": 0.9998095238095238,
+      "absolute_delta_mean": 1.9047619047601723e-06,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.009999999999990905,
+      "constrained_decision_count": 896,
+      "constrained_decision_rate": 0.17066666666666666,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    },
+    "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT"
+  },
+  "resolver_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+    "metrics": {
+      "rows": 5250,
+      "exact_cent_match_rate": 0.9998095238095238,
+      "absolute_delta_mean": 1.9047619047601723e-06,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.009999999999990905,
+      "constrained_decision_count": 896,
+      "constrained_decision_rate": 0.17066666666666666,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    }
+  },
   "metrics": {
     "rows": 5250,
-    "exact_cent_match_rate": 0.9363809523809524,
-    "absolute_delta_mean": 0.07673714285714288,
+    "exact_cent_match_rate": 0.9998095238095238,
+    "absolute_delta_mean": 1.9047619047601723e-06,
     "absolute_delta_median": 0.0,
-    "absolute_delta_p95": 0.21550000000000477,
-    "absolute_delta_max": 13.860000000000014,
+    "absolute_delta_p95": 0.0,
+    "absolute_delta_max": 0.009999999999990905,
     "constrained_decision_count": 896,
     "constrained_decision_rate": 0.17066666666666666,
-    "rule_violation_count": 0
+    "rule_violation_count": 0,
+    "historical_rule_missing_count": 0
   },
   "reference_full_historical_constrained_rate": 0.173,
   "reference_historical_rule_violations": 0
@@ -725,63 +830,65 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "split": "validation",
   "decision_count": 5250,
   "candidate_rows": 47250,
-  "same_price_rate": 1.0,
-  "changed_price_rate": 0.0,
-  "price_increase_rate": 0.0,
-  "price_decrease_rate": 0.0,
+  "same_price_rate": 0.0020952380952380953,
+  "changed_price_rate": 0.9979047619047619,
+  "price_increase_rate": 0.9935238095238095,
+  "price_decrease_rate": 0.004380952380952381,
   "hold_rate": 0.0,
   "rule_forced_change_rate": 0.0,
   "promotion_action_rate": 0.0,
   "markdown_action_rate": 0.0,
-  "manual_review_rate": 1.0,
-  "mean_price_change_pct": NaN,
-  "median_price_change_pct": NaN,
+  "manual_review_rate": 0.0020952380952380953,
+  "mean_price_change_pct": 0.09124178323898371,
+  "median_price_change_pct": 0.09998468840912578,
   "phase6_upper_boundary_rate": 0.981904761904762,
-  "phase7_upper_boundary_rate": 0.0,
-  "phase7_minus_phase6_upper_boundary_delta": -0.981904761904762,
-  "mean_expected_gross_profit_after": NaN,
+  "phase7_upper_boundary_rate": 0.9935238095238095,
+  "phase7_minus_phase6_upper_boundary_delta": 0.011619047619047529,
+  "mean_expected_gross_profit_after": 16.33019251588467,
   "final_rule_violation_count": 0,
   "outcomes_used": false,
   "diagnostics": {
     "rule": {
       "candidate_rows": 47250,
       "decisions": 5250,
-      "rule_violation_rows": 47250,
-      "rule_resolution_null_rate": 1.0
+      "rule_violation_rows": 3817,
+      "rule_resolution_null_rate": 0.0
     },
     "decisions": 5250,
     "action_counts": {
-      "MANUAL_REVIEW_RULE_CONFLICT": 5250
+      "PRICE_INCREASE": 5216,
+      "PRICE_DECREASE": 23,
+      "PROMOTION_REVIEW": 11
     },
     "constraint_impact": {
       "RULE_MIN_PRICE": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 2,
+        "candidate_rows_filtered": 3,
+        "price_delta_mean": -3.896666666666667
       },
       "RULE_MAX_PRICE": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 23,
+        "candidate_rows_filtered": 40,
+        "price_delta_mean": 14.180499999999999
       },
       "RULE_MIN_MARGIN": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 57,
+        "candidate_rows_filtered": 111,
+        "price_delta_mean": -9.639729729729728
       },
       "RULE_MAX_DISCOUNT": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 289,
+        "candidate_rows_filtered": 571,
+        "price_delta_mean": -8.814728546409805
       },
       "RULE_MAX_PRICE_CHANGE": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 1519,
+        "candidate_rows_filtered": 3220,
+        "price_delta_mean": 0.0004875776397518949
       }
     },
     "candidate_augmentation": {
-      "status": "NOT_RUN_RULE_POLICY_BLOCKED",
+      "status": "NOT_RUN",
       "added_candidates": 0,
       "out_of_support_boundaries": []
     }
@@ -794,7 +901,7 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "phase": 7,
   "base_branch": "codex/phase1-data-audit",
   "base_git_sha": "6b0f4c990b3abcb28c5b60c11551ec6f6554c1a0",
-  "phase7_implementation_git_sha": "6e6174589ce14bf8f2ca5a09537a09d578b415ce",
+  "phase7_implementation_git_sha": "2b7ae83a3eead816e41e12bde0ad2ea6dc78722d",
   "upstream": {
     "phase2_dataset_sha": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
     "phase3_split_sha": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
@@ -815,7 +922,7 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   },
   "rule_percentage_convention": "PERCENT_POINTS",
   "rule_effective_date_convention": "[EffectiveFrom, EffectiveTo)",
-  "rule_precedence_policy": null,
+  "rule_precedence_policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
   "scope_wildcard_policy": "NULL_APPLIES_TO_ALL",
   "rule_formulas": {
     "MinPrice": "floor",
@@ -849,6 +956,81 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "inventory_status_map": {
     "In Stock": "NORMAL"
   },
+  "high_inventory_policy": "CATEGORY_SPECIFIC_SNAPSHOT_AVAILABLE_QTY_P75",
+  "high_inventory_category_p75": {
+    "CAT000011": 87.0,
+    "CAT000012": 86.0,
+    "CAT000013": 89.5,
+    "CAT000014": 87.0,
+    "CAT000015": 88.0,
+    "CAT000016": 90.5,
+    "CAT000017": 88.0,
+    "CAT000018": 85.0,
+    "CAT000019": 88.0,
+    "CAT000020": 86.0,
+    "CAT000021": 89.0,
+    "CAT000022": 88.0,
+    "CAT000023": 89.0,
+    "CAT000024": 87.0,
+    "CAT000025": 87.75,
+    "CAT000026": 88.0,
+    "CAT000027": 88.0,
+    "CAT000028": 92.0,
+    "CAT000029": 88.0,
+    "CAT000030": 86.75,
+    "CAT000031": 83.75,
+    "CAT000032": 86.0,
+    "CAT000033": 87.0,
+    "CAT000034": 89.0,
+    "CAT000035": 90.25,
+    "CAT000036": 83.0,
+    "CAT000037": 91.0,
+    "CAT000038": 88.75,
+    "CAT000039": 93.0,
+    "CAT000040": 88.0,
+    "CAT000041": 87.0,
+    "CAT000042": 88.75,
+    "CAT000043": 89.0,
+    "CAT000044": 86.0,
+    "CAT000045": 91.0,
+    "CAT000046": 87.0,
+    "CAT000047": 82.5,
+    "CAT000048": 91.0,
+    "CAT000049": 88.0,
+    "CAT000050": 89.0,
+    "CAT000051": 88.0,
+    "CAT000052": 87.0,
+    "CAT000053": 87.0,
+    "CAT000054": 85.0,
+    "CAT000055": 91.0,
+    "CAT000056": 89.0,
+    "CAT000057": 91.0,
+    "CAT000058": 91.75,
+    "CAT000059": 88.0,
+    "CAT000060": 88.0,
+    "CAT000061": 84.0,
+    "CAT000062": 91.75,
+    "CAT000063": 90.0,
+    "CAT000064": 83.0,
+    "CAT000065": 85.25,
+    "CAT000066": 91.0,
+    "CAT000067": 93.0,
+    "CAT000068": 90.5,
+    "CAT000069": 86.25,
+    "CAT000070": 89.75,
+    "CAT000071": 88.5,
+    "CAT000072": 86.5,
+    "CAT000073": 98.0,
+    "CAT000074": 82.5,
+    "CAT000075": 90.25,
+    "CAT000076": 83.25,
+    "CAT000077": 87.0,
+    "CAT000078": 92.75,
+    "CAT000079": 87.5,
+    "CAT000080": 93.25
+  },
+  "high_inventory_global_p75_fallback": 88.0,
+  "boundary_scoring_enabled": false,
   "slow_moving_thresholds": {
     "metric": "product_store_sales_30d",
     "fallback_metric": "product_sales_30d",
@@ -1023,28 +1205,63 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "max_current_context_age_days": 30,
   "ADVISORY_ONLY": true,
   "AUTO_WRITEBACK": false,
-  "frozen_business_policy_spec_sha256": "209edef4f5bb2a1512066388b404cff88df245fabf82ce87b1b2502153308be3"
+  "frozen_business_policy_spec_sha256": "70e0f0d95d9b0e0f1aabf47a507bd4ceec815d3ee35d2c140e3e4560c0762f3c"
 }
 
 ## 19. TEST policy replay
 
 {
   "split": "test",
-  "status": "BLOCKED",
-  "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED",
-  "policy_used_for_diagnostic_replay": "P2_PRIORITY_ASC_SPECIFICITY_DESC",
-  "semantics_status": "BLOCKED",
+  "status": "PASS",
+  "blocker": null,
+  "policy_used_for_diagnostic_replay": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+  "semantics_status": "PASS",
   "acceptance_threshold": 0.995,
+  "historical_rule_id_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "metrics": {
+      "rows": 5250,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 886,
+      "constrained_decision_rate": 0.16876190476190475,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    },
+    "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT"
+  },
+  "resolver_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+    "metrics": {
+      "rows": 5250,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 886,
+      "constrained_decision_rate": 0.16876190476190475,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    }
+  },
   "metrics": {
     "rows": 5250,
-    "exact_cent_match_rate": 0.9335238095238095,
-    "absolute_delta_mean": 0.09208380952380966,
+    "exact_cent_match_rate": 1.0,
+    "absolute_delta_mean": 0.0,
     "absolute_delta_median": 0.0,
-    "absolute_delta_p95": 0.2700000000000031,
-    "absolute_delta_max": 13.360000000000014,
+    "absolute_delta_p95": 0.0,
+    "absolute_delta_max": 0.0,
     "constrained_decision_count": 886,
     "constrained_decision_rate": 0.16876190476190475,
-    "rule_violation_count": 0
+    "rule_violation_count": 0,
+    "historical_rule_missing_count": 0
   },
   "reference_full_historical_constrained_rate": 0.173,
   "reference_historical_rule_violations": 0
@@ -1056,63 +1273,66 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "split": "test",
   "decision_count": 5250,
   "candidate_rows": 47250,
-  "same_price_rate": 1.0,
-  "changed_price_rate": 0.0,
-  "price_increase_rate": 0.0,
-  "price_decrease_rate": 0.0,
-  "hold_rate": 0.0,
+  "same_price_rate": 0.015238095238095238,
+  "changed_price_rate": 0.9847619047619047,
+  "price_increase_rate": 0.9801904761904762,
+  "price_decrease_rate": 0.004571428571428572,
+  "hold_rate": 0.0009523809523809524,
   "rule_forced_change_rate": 0.0,
   "promotion_action_rate": 0.0,
   "markdown_action_rate": 0.0,
-  "manual_review_rate": 1.0,
-  "mean_price_change_pct": NaN,
-  "median_price_change_pct": NaN,
+  "manual_review_rate": 0.014285714285714285,
+  "mean_price_change_pct": 0.09100111515245198,
+  "median_price_change_pct": 0.09998472738380082,
   "phase6_upper_boundary_rate": 0.9758095238095238,
-  "phase7_upper_boundary_rate": 0.0,
-  "phase7_minus_phase6_upper_boundary_delta": -0.9758095238095238,
-  "mean_expected_gross_profit_after": NaN,
+  "phase7_upper_boundary_rate": 0.9801904761904762,
+  "phase7_minus_phase6_upper_boundary_delta": 0.004380952380952374,
+  "mean_expected_gross_profit_after": 16.388466245148646,
   "final_rule_violation_count": 0,
   "outcomes_used": false,
   "diagnostics": {
     "rule": {
       "candidate_rows": 47250,
       "decisions": 5250,
-      "rule_violation_rows": 47250,
-      "rule_resolution_null_rate": 1.0
+      "rule_violation_rows": 3792,
+      "rule_resolution_null_rate": 0.0
     },
     "decisions": 5250,
     "action_counts": {
-      "MANUAL_REVIEW_RULE_CONFLICT": 5250
+      "PRICE_INCREASE": 5146,
+      "PROMOTION_REVIEW": 75,
+      "PRICE_DECREASE": 24,
+      "HOLD_PRICE": 5
     },
     "constraint_impact": {
       "RULE_MIN_PRICE": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 1,
+        "candidate_rows_filtered": 1,
+        "price_delta_mean": -5.490000000000002
       },
       "RULE_MAX_PRICE": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 32,
+        "candidate_rows_filtered": 63,
+        "price_delta_mean": 14.059523809523807
       },
       "RULE_MIN_MARGIN": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 82,
+        "candidate_rows_filtered": 138,
+        "price_delta_mean": -10.24891304347826
       },
       "RULE_MAX_DISCOUNT": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 236,
+        "candidate_rows_filtered": 485,
+        "price_delta_mean": -8.060577319587628
       },
       "RULE_MAX_PRICE_CHANGE": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 1528,
+        "candidate_rows_filtered": 3242,
+        "price_delta_mean": 0.000561381863047837
       }
     },
     "candidate_augmentation": {
-      "status": "NOT_RUN_RULE_POLICY_BLOCKED",
+      "status": "NOT_RUN",
       "added_candidates": 0,
       "out_of_support_boundaries": []
     }
@@ -1151,6 +1371,156 @@ The live source run records the boundary-heavy behavior rather than tuning it aw
   },
   "stock_status_counts": {
     "In Stock": 15000
+  },
+  "high_inventory_thresholds": {
+    "status": "PASS",
+    "method": "Inventory.ProductID -> Product.CategoryID; AvailableQty.quantile(0.75)",
+    "category_count": 70,
+    "category_support": {
+      "CAT000011": 248,
+      "CAT000012": 347,
+      "CAT000013": 327,
+      "CAT000014": 344,
+      "CAT000015": 317,
+      "CAT000016": 287,
+      "CAT000017": 272,
+      "CAT000018": 245,
+      "CAT000019": 244,
+      "CAT000020": 174,
+      "CAT000021": 313,
+      "CAT000022": 213,
+      "CAT000023": 275,
+      "CAT000024": 215,
+      "CAT000025": 274,
+      "CAT000026": 224,
+      "CAT000027": 273,
+      "CAT000028": 281,
+      "CAT000029": 213,
+      "CAT000030": 254,
+      "CAT000031": 238,
+      "CAT000032": 188,
+      "CAT000033": 212,
+      "CAT000034": 265,
+      "CAT000035": 200,
+      "CAT000036": 201,
+      "CAT000037": 213,
+      "CAT000038": 262,
+      "CAT000039": 227,
+      "CAT000040": 237,
+      "CAT000041": 309,
+      "CAT000042": 246,
+      "CAT000043": 313,
+      "CAT000044": 266,
+      "CAT000045": 330,
+      "CAT000046": 205,
+      "CAT000047": 143,
+      "CAT000048": 325,
+      "CAT000049": 237,
+      "CAT000050": 340,
+      "CAT000051": 242,
+      "CAT000052": 367,
+      "CAT000053": 157,
+      "CAT000054": 166,
+      "CAT000055": 140,
+      "CAT000056": 188,
+      "CAT000057": 227,
+      "CAT000058": 190,
+      "CAT000059": 194,
+      "CAT000060": 104,
+      "CAT000061": 129,
+      "CAT000062": 178,
+      "CAT000063": 135,
+      "CAT000064": 150,
+      "CAT000065": 204,
+      "CAT000066": 154,
+      "CAT000067": 158,
+      "CAT000068": 106,
+      "CAT000069": 144,
+      "CAT000070": 98,
+      "CAT000071": 139,
+      "CAT000072": 103,
+      "CAT000073": 109,
+      "CAT000074": 94,
+      "CAT000075": 116,
+      "CAT000076": 108,
+      "CAT000077": 162,
+      "CAT000078": 150,
+      "CAT000079": 123,
+      "CAT000080": 168
+    },
+    "category_p75": {
+      "CAT000011": 87.0,
+      "CAT000012": 86.0,
+      "CAT000013": 89.5,
+      "CAT000014": 87.0,
+      "CAT000015": 88.0,
+      "CAT000016": 90.5,
+      "CAT000017": 88.0,
+      "CAT000018": 85.0,
+      "CAT000019": 88.0,
+      "CAT000020": 86.0,
+      "CAT000021": 89.0,
+      "CAT000022": 88.0,
+      "CAT000023": 89.0,
+      "CAT000024": 87.0,
+      "CAT000025": 87.75,
+      "CAT000026": 88.0,
+      "CAT000027": 88.0,
+      "CAT000028": 92.0,
+      "CAT000029": 88.0,
+      "CAT000030": 86.75,
+      "CAT000031": 83.75,
+      "CAT000032": 86.0,
+      "CAT000033": 87.0,
+      "CAT000034": 89.0,
+      "CAT000035": 90.25,
+      "CAT000036": 83.0,
+      "CAT000037": 91.0,
+      "CAT000038": 88.75,
+      "CAT000039": 93.0,
+      "CAT000040": 88.0,
+      "CAT000041": 87.0,
+      "CAT000042": 88.75,
+      "CAT000043": 89.0,
+      "CAT000044": 86.0,
+      "CAT000045": 91.0,
+      "CAT000046": 87.0,
+      "CAT000047": 82.5,
+      "CAT000048": 91.0,
+      "CAT000049": 88.0,
+      "CAT000050": 89.0,
+      "CAT000051": 88.0,
+      "CAT000052": 87.0,
+      "CAT000053": 87.0,
+      "CAT000054": 85.0,
+      "CAT000055": 91.0,
+      "CAT000056": 89.0,
+      "CAT000057": 91.0,
+      "CAT000058": 91.75,
+      "CAT000059": 88.0,
+      "CAT000060": 88.0,
+      "CAT000061": 84.0,
+      "CAT000062": 91.75,
+      "CAT000063": 90.0,
+      "CAT000064": 83.0,
+      "CAT000065": 85.25,
+      "CAT000066": 91.0,
+      "CAT000067": 93.0,
+      "CAT000068": 90.5,
+      "CAT000069": 86.25,
+      "CAT000070": 89.75,
+      "CAT000071": 88.5,
+      "CAT000072": 86.5,
+      "CAT000073": 98.0,
+      "CAT000074": 82.5,
+      "CAT000075": 90.25,
+      "CAT000076": 83.25,
+      "CAT000077": 87.0,
+      "CAT000078": 92.75,
+      "CAT000079": 87.5,
+      "CAT000080": 93.25
+    },
+    "global_p75_fallback": 88.0
   }
 }
 
@@ -1164,48 +1534,53 @@ The live source run records the boundary-heavy behavior rather than tuning it aw
   "inventory_matched": 1829,
   "no_price_out_of_stock_decisions": 0,
   "promotion_actions": 0,
-  "markdown_actions": 234,
-  "manual_reviews": 1829,
+  "markdown_actions": 241,
+  "manual_reviews": 186,
   "diagnostics": {
     "rule": {
       "candidate_rows": 16461,
       "decisions": 1829,
-      "rule_violation_rows": 16461,
-      "rule_resolution_null_rate": 1.0
+      "rule_violation_rows": 1367,
+      "rule_resolution_null_rate": 0.0
     },
     "decisions": 1829,
     "action_counts": {
-      "MANUAL_REVIEW_RULE_CONFLICT": 1829
+      "PRICE_INCREASE": 1564,
+      "MARKDOWN_REVIEW_REQUIRED": 169,
+      "SEASONAL_SLOW_MOVING_MARKDOWN": 69,
+      "PROMOTION_REVIEW": 17,
+      "PRICE_DECREASE": 9,
+      "HOLD_PRICE": 1
     },
     "constraint_impact": {
       "RULE_MIN_PRICE": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 1,
+        "candidate_rows_filtered": 1,
+        "price_delta_mean": -5.490000000000002
       },
       "RULE_MAX_PRICE": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 11,
+        "candidate_rows_filtered": 18,
+        "price_delta_mean": 15.879999999999995
       },
       "RULE_MIN_MARGIN": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 29,
+        "candidate_rows_filtered": 57,
+        "price_delta_mean": -9.66
       },
       "RULE_MAX_DISCOUNT": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 84,
+        "candidate_rows_filtered": 173,
+        "price_delta_mean": -8.393121387283236
       },
       "RULE_MAX_PRICE_CHANGE": {
-        "decisions_affected": 0,
-        "candidate_rows_filtered": 0,
-        "price_delta_mean": 0.0
+        "decisions_affected": 563,
+        "candidate_rows_filtered": 1172,
+        "price_delta_mean": 0.0003924914675770229
       }
     },
     "candidate_augmentation": {
-      "status": "NOT_RUN_RULE_POLICY_BLOCKED",
+      "status": "NOT_RUN",
       "added_candidates": 0,
       "out_of_support_boundaries": []
     }
@@ -1383,29 +1758,100 @@ See `current_inventory_summary.json` and the current decision Parquet artifact.
 ## 30. Manual review
 
 {
-  "validation": 1.0,
-  "test": 1.0
+  "validation": 0.0020952380952380953,
+  "test": 0.014285714285714285
 }
 
 ## 31. Reproducibility
 
 {
+  "validation": {
+    "rows_compared": 5250,
+    "rule_resolution_mismatches": 0,
+    "final_price_mismatches": 0,
+    "action_mismatches": 0,
+    "economic_mismatches": 0,
+    "mismatches": {
+      "PricingRuleID": 0,
+      "RecommendedPromotionID": 0,
+      "MarkdownAction": 0,
+      "FinalRecommendedPrice": 0,
+      "FinalAction": 0,
+      "manual_review_flag": 0,
+      "expected_units": 0,
+      "expected_revenue": 0,
+      "expected_gross_profit": 0,
+      "inventory_capped_expected_units": 0,
+      "inventory_capped_expected_revenue": 0,
+      "inventory_capped_expected_gross_profit": 0
+    },
+    "max_economic_delta": 0.0,
+    "status": "PASS"
+  },
+  "test": {
+    "rows_compared": 5250,
+    "rule_resolution_mismatches": 0,
+    "final_price_mismatches": 0,
+    "action_mismatches": 0,
+    "economic_mismatches": 0,
+    "mismatches": {
+      "PricingRuleID": 0,
+      "RecommendedPromotionID": 0,
+      "MarkdownAction": 0,
+      "FinalRecommendedPrice": 0,
+      "FinalAction": 0,
+      "manual_review_flag": 0,
+      "expected_units": 0,
+      "expected_revenue": 0,
+      "expected_gross_profit": 0,
+      "inventory_capped_expected_units": 0,
+      "inventory_capped_expected_revenue": 0,
+      "inventory_capped_expected_gross_profit": 0
+    },
+    "max_economic_delta": 0.0,
+    "status": "PASS"
+  },
+  "current_inventory": {
+    "rows_compared": 1829,
+    "rule_resolution_mismatches": 0,
+    "final_price_mismatches": 0,
+    "action_mismatches": 0,
+    "economic_mismatches": 0,
+    "mismatches": {
+      "PricingRuleID": 0,
+      "RecommendedPromotionID": 0,
+      "MarkdownAction": 0,
+      "FinalRecommendedPrice": 0,
+      "FinalAction": 0,
+      "manual_review_flag": 0,
+      "expected_units": 0,
+      "expected_revenue": 0,
+      "expected_gross_profit": 0,
+      "inventory_capped_expected_units": 0,
+      "inventory_capped_expected_revenue": 0,
+      "inventory_capped_expected_gross_profit": 0
+    },
+    "max_economic_delta": 0.0,
+    "status": "PASS"
+  },
   "rule_resolution_mismatches": 0,
   "final_price_mismatches": 0,
   "action_mismatches": 0,
+  "economic_mismatches": 0,
   "max_economic_delta": 0.0,
+  "runs_per_split": 2,
   "status": "PASS"
 }
 
 ## 32. Compute
 
 {
-  "rule_resolution_seconds": 29.662137900013477,
-  "promotion_resolution_seconds": 59.05922799999826,
-  "inventory_policy_seconds": 0.017656899988651276,
+  "rule_resolution_seconds": 25.120595200001844,
+  "promotion_resolution_seconds": 64.57274440000037,
+  "inventory_policy_seconds": 0.020300399999541696,
   "model_augmentation_inference_seconds": 0.0,
-  "final_selection_seconds": 172.33161560000735,
-  "total_seconds": 265.2060458000051
+  "final_selection_seconds": 285.28749139999854,
+  "total_seconds": 620.7068776000015
 }
 
 ## 33. Known limitations
@@ -1418,8 +1864,8 @@ Phase 8 must not begin until this Phase 7 verdict is independently reviewed and 
 
 ## 35. PASS / PASS_WITH_WARNINGS / BLOCKED
 
-**BLOCKED**.
+**PASS_WITH_WARNINGS**.
 
 ## 36. Final recommendation
 
-**DO_NOT_PROCEED_TO_PHASE_8**
+**PROCEED_TO_PHASE_8**

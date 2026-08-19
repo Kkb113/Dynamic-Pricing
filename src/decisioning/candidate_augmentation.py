@@ -39,6 +39,7 @@ def augment_rule_boundary_candidates(
     if "candidate_origin" not in base:
         base["candidate_origin"] = "PHASE6_GRID"
     additions: list[dict[str, Any]] = []
+    pending_scores: list[tuple[pd.Series, float, str]] = []
     out_of_support: list[dict[str, Any]] = []
     for decision_id, group in base.groupby("PricingDecisionID", sort=False):
         bound = bounds_by_decision.get(decision_id)
@@ -58,9 +59,16 @@ def augment_rule_boundary_candidates(
             if score_candidate is None:
                 raise ValueError("RULE_BOUNDARY_REQUIRES_MODEL_SCORING")
             source = group.iloc[0].copy()
-            scored = dict(score_candidate(source, price))
+            pending_scores.append((source, price, origin))
+    if pending_scores:
+        if hasattr(score_candidate, "score_candidates"):
+            score_inputs = pd.DataFrame([source.to_dict() for source, _, _ in pending_scores])
+            scored_values = list(score_candidate.score_candidates(score_inputs, [price for _, price, _ in pending_scores]))
+        else:
+            scored_values = [dict(score_candidate(source, price)) for source, price, _ in pending_scores]
+        for (source, price, origin), scored in zip(pending_scores, scored_values):
             row = source.to_dict()
-            row.update(scored)
+            row.update(dict(scored))
             row.update({
                 "CandidatePrice": price,
                 "candidate_origin": origin,

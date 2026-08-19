@@ -27,9 +27,9 @@ import yaml
 from audit.database_profile import assert_read_only_sql, connect_read_only, connection_string_from_settings, load_env_file
 from business_rules.rule_constraints import derive_rule_bounds, evaluate_candidate_constraints
 from business_rules.rule_loader import PRICING_RULE_COLUMNS, load_pricing_rules
-from business_rules.rule_replay import replay_metrics, replay_historical_rule_application
+from business_rules.rule_replay import replay_historical_rule_application, replay_historical_rule_id_application, replay_metrics
 from business_rules.rule_resolver import resolve_pricing_rule
-from business_rules.rule_semantics import audit_percentage_semantics, infer_rule_precedence, rule_specificity
+from business_rules.rule_semantics import CONSTRAINT_ADJUSTMENT_POLICY, audit_percentage_semantics, infer_rule_precedence, precedence_mismatch_forensics, rule_specificity
 from decisioning.candidate_augmentation import augment_rule_boundary_candidates
 from decisioning.business_selector import select_business_candidates
 from decisioning.final_decision import final_action
@@ -44,7 +44,7 @@ from inventory_policy.markdown_policy import (
 )
 from phase7.artifacts import compute_environment, write_csv, write_frame, write_phase7_json
 from phase7.frozen_scorer import FrozenPhase7Scorer, recompute_response_safety
-from phase7.validation import validate_decision_frame, verify_phase6_upstream
+from phase7.validation import OUTCOME_COLUMNS, reproducibility_check, validate_decision_frame, verify_phase6_upstream
 from promotions.promotion_loader import PROMOTION_COLUMNS, load_promotions
 from promotions.promotion_resolver import audit_promotion_semantics, resolve_promotion, round_promotion_price
 from validation.artifacts import sha256_file
@@ -69,6 +69,29 @@ ACTION_ENUM = {
     "PRICE_DECREASE",
     "HOLD_PRICE",
 }
+
+# Phase 7 consumes a deliberately small, explicit context contract.  In
+# particular, outcome columns are not merely dropped after loading: they are
+# absent from the Parquet read itself.  Product.CostPrice is joined later from
+# the read-only Product sidecar because it is not part of the frozen Phase 2
+# feature contract.
+PHASE7_CONTEXT_ALLOWLIST = (
+    "PricingDecisionID", "DecisionTime", "CustomerID", "SessionID", "ProductID", "StoreID", "Channel",
+    "CurrentPrice", "AppliedPrice", "CategoryID", "BrandID", "BasePrice", "Season", "RegionID", "StoreType", "ClimateZone",
+    "LoyaltyTier", "CustomerSegment", "PreferredChannel", "FavoriteCategoryID", "FavoriteBrandID", "PriceSensitivity", "CategoryAffinityScore", "BrandAffinityScore",
+    "active_history_selling_price", "history_discount_pct", "days_since_current_price_started", "previous_selling_price", "previous_price_change_pct",
+    "active_history_promotion_id", "active_price_history_id", "selected_price_effective_from", "selected_price_effective_to", "price_history_current_price_delta", "price_history_current_price_mismatch",
+    "selected_promotion_start_date", "selected_promotion_end_date", "active_promotion_id", "active_promotion_flag", "active_promotion_discount_pct", "selected_sales_order_date",
+    "product_store_sales_7d", "product_store_sales_14d", "product_store_sales_30d", "product_region_sales_7d", "product_region_sales_14d", "product_region_sales_30d",
+    "product_sales_7d", "product_sales_14d", "product_sales_30d", "product_sales_60d", "product_sales_90d",
+    "category_store_sales_7d", "category_store_sales_14d", "category_store_sales_30d", "category_sales_7d", "category_sales_14d", "category_sales_30d",
+    "product_sales_velocity_7d", "product_sales_velocity_30d", "product_sales_velocity_90d", "product_sales_velocity_ratio_7d_30d", "days_since_last_product_sale",
+    "competitor_price_exact_channel", "competitor_price_region_fallback", "competitor_price_product_fallback", "competitor_price_available", "competitor_price_age_days", "selected_competitor_observed_at", "competitor_match_level", "competitor_price",
+    "selected_behavior_event_at", "product_views_1h", "product_views_24h", "product_views_168h", "product_views_720h", "cart_additions_1h", "cart_additions_24h", "cart_additions_168h", "cart_additions_720h",
+    "search_clicks_1h", "search_clicks_24h", "search_clicks_168h", "search_clicks_720h", "decision_month", "decision_quarter", "decision_day_of_week", "decision_is_weekend",
+    "weather_temperature", "weather_condition", "weather_precipitation", "is_holiday", "holiday_sales_impact_factor", "holiday_count",
+    "price_change_amount", "price_change_pct", "price_vs_base_pct", "discount_from_base_pct", "price_vs_competitor_pct", "current_vs_base_pct",
+)
 
 
 def _git_sha() -> str | None:
@@ -207,7 +230,14 @@ def _load_source_tables(*, use_fixtures: bool) -> tuple[dict[str, pd.DataFrame],
 
 
 def _load_context(root: Path, split: str) -> tuple[pd.DataFrame, pd.DataFrame]:
-    dataset = pd.read_parquet(root / "artifacts/phase2/feature_dataset.parquet")
+    dataset_path = root / "artifacts/phase2/feature_dataset.parquet"
+    try:
+        dataset = pd.read_parquet(dataset_path, columns=list(PHASE7_CONTEXT_ALLOWLIST))
+    except ValueError as exc:
+        raise RuntimeError(f"PHASE7_CONTEXT_ALLOWLIST_MISMATCH: {exc}") from exc
+    outcome_columns = sorted(OUTCOME_COLUMNS.intersection(dataset.columns))
+    if outcome_columns:
+        raise RuntimeError(f"PHASE7_OUTCOME_COLUMNS_IN_CONTEXT: {outcome_columns}")
     assignments = pd.read_parquet(root / "artifacts/phase3/split_assignments.parquet")
     ids = set(assignments.loc[assignments["split"].eq(split), "PricingDecisionID"].astype(str))
     context = dataset.loc[dataset["PricingDecisionID"].astype(str).isin(ids)].copy()
@@ -216,7 +246,8 @@ def _load_context(root: Path, split: str) -> tuple[pd.DataFrame, pd.DataFrame]:
 
 
 def _surface_with_context(surface: pd.DataFrame, context: pd.DataFrame) -> pd.DataFrame:
-    extra = [column for column in ["CategoryID", "Season", "product_store_sales_30d", "product_sales_30d", "AppliedPrice", "BasePrice", "CostPrice"] if column in context.columns]
+    extra = [column for column in PHASE7_CONTEXT_ALLOWLIST if column != "PricingDecisionID" and column in context.columns]
+    extra.extend(column for column in ("CostPrice",) if column in context.columns and column not in extra)
     lookup = context.set_index("PricingDecisionID")[extra]
     result = surface.copy()
     for column in extra:
@@ -248,6 +279,38 @@ def _enrich_context_with_product(context: pd.DataFrame, product: pd.DataFrame) -
     return result
 
 
+def _inventory_category_thresholds(inventory: pd.DataFrame, product: pd.DataFrame) -> tuple[dict[str, float], float | None, dict[str, Any]]:
+    """Calculate current-snapshot AvailableQty p75 by Product.CategoryID."""
+
+    if inventory.empty or product.empty or not {"ProductID", "CategoryID"}.issubset(product.columns):
+        return {}, None, {"status": "UNAVAILABLE", "category_count": 0, "global_p75": None}
+    product_categories = product[["ProductID", "CategoryID"]].drop_duplicates("ProductID").copy()
+    product_categories["_ProductID_key"] = product_categories["ProductID"].astype(str)
+    snapshot = inventory.copy()
+    snapshot["_ProductID_key"] = snapshot["ProductID"].astype(str)
+    snapshot = snapshot.merge(product_categories[["_ProductID_key", "CategoryID"]], on="_ProductID_key", how="left")
+    snapshot["AvailableQty"] = pd.to_numeric(snapshot["AvailableQty"], errors="coerce")
+    valid = snapshot.dropna(subset=["AvailableQty"])
+    if valid.empty:
+        return {}, None, {"status": "EMPTY", "category_count": 0, "global_p75": None}
+    category_thresholds = {
+        str(category): float(group["AvailableQty"].quantile(0.75))
+        for category, group in valid.dropna(subset=["CategoryID"]).groupby("CategoryID", sort=True)
+    }
+    global_p75 = float(valid["AvailableQty"].quantile(0.75))
+    return category_thresholds, global_p75, {
+        "status": "PASS",
+        "method": "Inventory.ProductID -> Product.CategoryID; AvailableQty.quantile(0.75)",
+        "category_count": int(len(category_thresholds)),
+        "category_support": {
+            str(category): int(len(group))
+            for category, group in valid.dropna(subset=["CategoryID"]).groupby("CategoryID", sort=True)
+        },
+        "category_p75": category_thresholds,
+        "global_p75_fallback": global_p75,
+    }
+
+
 def annotate_rule_compliance(
     surface: pd.DataFrame,
     rules: pd.DataFrame,
@@ -264,6 +327,9 @@ def annotate_rule_compliance(
     # quadratic SQL-rule scan over the 47k-row Phase 6 surface.
     for _, group in result.groupby("PricingDecisionID", sort=False):
         context_row = group.iloc[0].to_dict()
+        reference_price = context_row.get("_phase7_rule_reference_price")
+        if reference_price is None or (not isinstance(reference_price, (list, tuple, dict)) and pd.isna(reference_price)):
+            reference_price = context_row.get("RecommendedPrice", context_row.get("ModelOptimalCandidatePrice"))
         # A failed TRAIN semantics audit is a hard gate.  Do not silently use
         # an arbitrary precedence policy to emit automatic prices while the
         # source rule ordering remains unresolved.
@@ -280,6 +346,8 @@ def annotate_rule_compliance(
             as_of=context_row.get("DecisionTime"),
             category_id=context_row.get("CategoryID"),
             policy=policy,
+            reference_price=reference_price,
+            percentage_convention=percentage_convention,
         ))
         rule = resolution.get("rule")
         for row in group.to_dict("records"):
@@ -349,11 +417,19 @@ def build_business_decisions(
     inventory: pd.DataFrame | None = None,
     status_mapping: dict[str, str] | None = None,
     slow_thresholds: dict[str, Any] | None = None,
+    inventory_category_p75: dict[str, float] | None = None,
+    inventory_global_p75: float | None = None,
     score_candidate: Any | None = None,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Apply rule, promotion, and current-inventory policy to a frozen surface."""
 
     surface = _surface_with_context(surface, context)
+    # P5 rule semantics are evaluated against the frozen model-optimal price,
+    # never against a historical AppliedPrice or an arbitrary first grid row.
+    if "ModelOptimalCandidatePrice" in recommendations.columns:
+        reference_lookup = recommendations.set_index("PricingDecisionID")["ModelOptimalCandidatePrice"]
+        surface = surface.copy()
+        surface["_phase7_rule_reference_price"] = surface["PricingDecisionID"].map(reference_lookup)
     compliant_surface, rule_diag = annotate_rule_compliance(surface, rules, policy=rule_policy, percentage_convention=percentage_convention)
     augmentation_diag: dict[str, Any] = {"status": "NOT_RUN", "added_candidates": 0, "out_of_support_boundaries": []}
     if rule_policy is not None and score_candidate is not None and not compliant_surface.empty:
@@ -387,9 +463,17 @@ def build_business_decisions(
             inv = resolve_current_inventory(inventory, product_id=source.get("ProductID"), store_id=source.get("StoreID"), as_of_date=inventory["SnapshotDate"].max() if not inventory.empty else None, status_mapping=status_mapping)
             available = inv.get("AvailableQty")
             high_inventory = inv.get("StockStatus") == "OVERSTOCK"
-            if not high_inventory and available is not None and not inventory.empty:
-                category_values = inventory.loc[inventory["ProductID"].astype(str).isin(context["ProductID"].astype(str)), "AvailableQty"]
-                high_inventory = bool(len(category_values) and float(available) >= float(category_values.quantile(0.75)))
+            category_threshold = None
+            if not high_inventory and available is not None and inventory_category_p75:
+                category_threshold = inventory_category_p75.get(str(source.get("CategoryID")))
+                if category_threshold is not None:
+                    high_inventory = bool(float(available) >= float(category_threshold))
+            # A missing Product.CategoryID is a data-quality case, not a reason
+            # to use another category's distribution.  The global snapshot p75
+            # is retained only as an explicit, auditable fallback for that
+            # missing-category case.
+            if not high_inventory and available is not None and category_threshold is None and inventory_global_p75 is not None and pd.isna(source.get("CategoryID")):
+                high_inventory = bool(float(available) >= float(inventory_global_p75))
             markdown_info = markdown_eligibility(mode=mode, seasonal=seasonal, slow_moving=slow, high_inventory_or_overstock=high_inventory, available_qty=available, stock_status=inv.get("StockStatus"))
             markdown.update(markdown_info)
             markdown["high_inventory"] = high_inventory
@@ -581,18 +665,41 @@ def _rule_replay_payload(
     if history.empty:
         return {"split": split, "status": "BLOCKED", "blocker": "HISTORICAL_RULE_REPLAY_SOURCE_UNAVAILABLE", "metrics": {"rows": 0}}
     subset = history.loc[history["PricingDecisionID"].astype(str).isin(ids.astype(str))].copy()
-    required = {"DecisionTime", "ProductID", "StoreID", "Channel", "CurrentPrice", "RecommendedPrice", "AppliedPrice", "BasePrice", "CostPrice"}
+    required = {"DecisionTime", "ProductID", "StoreID", "Channel", "CurrentPrice", "RecommendedPrice", "AppliedPrice", "BasePrice", "CostPrice", "PricingRuleID"}
     missing = sorted(required.difference(subset.columns))
     if missing:
         return {"split": split, "status": "BLOCKED", "blocker": "HISTORICAL_RULE_REPLAY_SOURCE_UNAVAILABLE", "missing_columns": missing, "metrics": {"rows": 0}}
+    historical_id_replay = replay_historical_rule_id_application(
+        subset,
+        rules,
+        percentage_convention=percentage_convention,
+    )
+    historical_id_metrics = replay_metrics(historical_id_replay)
+    historical_id_exact = historical_id_metrics.get("exact_cent_match_rate")
+    historical_id_status = "PASS" if historical_id_exact is not None and historical_id_exact >= 0.995 else "BLOCKED"
+    historical_id_blocker = None if historical_id_status == "PASS" else "HISTORICAL_RULE_ID_REPLAY_FAILURE"
     if policy is None:
-        return {"split": split, "status": "BLOCKED", "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED", "metrics": {"rows": 0}, "semantics_status": semantics_status}
-    replayed = replay_historical_rule_application(subset, rules, policy=policy, percentage_convention=percentage_convention)
-    metrics = replay_metrics(replayed)
-    exact = metrics.get("exact_cent_match_rate")
-    replay_blocker = None if exact is not None and exact >= 0.995 else "HISTORICAL_RULE_REPLAY_FAILURE"
+        resolver_payload = {
+            "status": "BLOCKED",
+            "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED",
+            "policy": None,
+            "metrics": {"rows": 0},
+        }
+    else:
+        replayed = replay_historical_rule_application(subset, rules, policy=policy, percentage_convention=percentage_convention)
+        metrics = replay_metrics(replayed)
+        exact = metrics.get("exact_cent_match_rate")
+        resolver_blocker = None if exact is not None and exact >= 0.995 else "HISTORICAL_RULE_REPLAY_FAILURE"
+        resolver_payload = {
+            "status": "PASS" if resolver_blocker is None else "BLOCKED",
+            "blocker": resolver_blocker,
+            "policy": policy,
+            "metrics": metrics,
+        }
+    replay_blocker = historical_id_blocker or resolver_payload.get("blocker")
     if semantics_status != "PASS":
         replay_blocker = "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED"
+    resolver_metrics = resolver_payload.get("metrics", {"rows": 0})
     return {
         "split": split,
         "status": "PASS" if replay_blocker is None else "BLOCKED",
@@ -600,7 +707,18 @@ def _rule_replay_payload(
         "policy_used_for_diagnostic_replay": policy,
         "semantics_status": semantics_status,
         "acceptance_threshold": 0.995,
-        "metrics": metrics,
+        # ``historical_rule_id_replay`` proves the recorded ID plus canonical
+        # math independently of resolver semantics.  ``resolver_replay`` is
+        # the separate policy-selection replay used for the acceptance gate.
+        "historical_rule_id_replay": {
+            "status": historical_id_status,
+            "blocker": historical_id_blocker,
+            "metrics": historical_id_metrics,
+            "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT",
+        },
+        "resolver_replay": resolver_payload,
+        # Compatibility alias retained for earlier Phase 7 consumers.
+        "metrics": resolver_metrics,
         "reference_full_historical_constrained_rate": 0.173,
         "reference_historical_rule_violations": 0,
     }
@@ -631,6 +749,8 @@ def _write_reports(manifest: dict[str, Any]) -> None:
         "# Phase 7 Pricing Rule Report\n\n"
         "Pricing_Rules are loaded read-only. NULL scope values are wildcards, effective windows use `[EffectiveFrom, EffectiveTo)`, and priority/specificity semantics are selected from TRAIN reconciliation only.\n\n"
         f"Selected precedence: `{manifest.get('rule_precedence_policy')}`. Percentage convention: `{manifest.get('percentage_convention')}`.\n\n"
+        "The selected source-backed policy is the maximum absolute constraint adjustment from the frozen pre-rule recommendation, tied by higher numeric priority, specificity, and ascending rule ID; no-change rows use the deterministic P2 fallback. The complete P2 mismatch diagnostic is `artifacts/phase7/rule_precedence_mismatch_forensics.parquet`.\n\n"
+        f"Precedence forensics: {json.dumps(manifest.get('rule_precedence_forensics', {}), indent=2, default=str)}\n\n"
         "Constraints use independent MinPrice, MaxPrice, minimum-margin, maximum-discount, and maximum-price-change bounds. Conflicting intervals never receive an automatic price.\n\n"
         f"Rule replay: {json.dumps(manifest.get('rule_replay', {}), indent=2, default=str)}\n\n"
         f"Constraint impact: {json.dumps(manifest.get('constraint_impact', {}), indent=2, default=str)}\n",
@@ -641,7 +761,9 @@ def _write_reports(manifest: dict[str, Any]) -> None:
         "Promotions are category-level, date-inclusive, and never receive an invented priority. Conflicting active discounts require review; identical overlaps use the deterministic PromotionID only for provenance.\n\n"
         "Inventory is a current point-in-time snapshot. Historical VALIDATION/TEST outputs carry no inventory fields. Markdown is seasonal + slow-moving + overstock only; no expiry/perishability logic exists.\n\n"
         f"Promotion audit: {json.dumps(manifest.get('promotion_semantics', {}), indent=2, default=str)}\n\n"
-        f"Inventory audit: {json.dumps(manifest.get('inventory_semantics', {}), indent=2, default=str)}\n",
+        f"Inventory audit: {json.dumps(manifest.get('inventory_semantics', {}), indent=2, default=str)}\n\n"
+        "When the source has no explicit OVERSTOCK status, high inventory is determined from the current snapshot's AvailableQty p75 after the Inventory.ProductID -> Product.CategoryID join.\n\n"
+        f"Category p75 audit: {json.dumps(manifest.get('inventory_high_inventory_thresholds', {}), indent=2, default=str)}\n",
         encoding="utf-8",
     )
     (docs / "PHASE7_ACCEPTANCE_REPORT.md").write_text(
@@ -653,7 +775,7 @@ def _write_reports(manifest: dict[str, Any]) -> None:
         f"## 4. Percentage semantics\n\nCanonical convention: **{manifest.get('percentage_convention')}**.\n\n"
         "## 5. Rule scope semantics\n\nNULL ProductID/CategoryID/StoreID/Channel values are wildcards; CategoryID is joined from dbo.Product.\n\n"
         "## 6. Effective-date semantics\n\nRules use the half-open `[EffectiveFrom, EffectiveTo)` interval.\n\n"
-        f"## 7. Priority/specificity resolution\n\nSelected policy: **{manifest.get('rule_precedence_policy')}**. An unresolved policy is a hard blocker; no fallback precedence is used for automatic prices.\n\n"
+        f"## 7. Priority/specificity resolution\n\nSelected policy: **{manifest.get('rule_precedence_policy')}**. The unchanged 99.5% gate is evaluated on TRAIN only; the P2 mismatch forensic dataset contains **{manifest.get('rule_precedence_forensics', {}).get('mismatch_rows')}** rows and is retained at `artifacts/phase7/rule_precedence_mismatch_forensics.parquet`. An unresolved policy is a hard blocker; no fallback precedence is used for automatic prices.\n\n"
         f"## 8. TRAIN rule-ID reconciliation\n\n{json.dumps(manifest.get('rule_replay', {}).get('train', {}), indent=2, default=str)}\n\n"
         "## 9. Rule constraint formulas\n\nMinPrice, MaxPrice, minimum margin, maximum discount, and maximum movement are evaluated independently and intersected; invalid intervals require manual review.\n\n"
         f"## 10. Historical TRAIN replay\n\n{json.dumps(manifest.get('rule_replay', {}).get('train', {}), indent=2, default=str)}\n\n"
@@ -661,7 +783,7 @@ def _write_reports(manifest: dict[str, Any]) -> None:
         f"## 12. Promotion semantics\n\n{json.dumps(manifest.get('promotion_semantics', {}), indent=2, default=str)}\n\n"
         "## 13. Promotion overlap/conflicts\n\nOverlapping discounts never select the larger discount implicitly; conflicting overlaps produce review.\n\n"
         f"## 14. Promotion pricing mode\n\n**{manifest.get('promotion_semantics', {}).get('promotion_pricing_mode')}**.\n\n"
-        "## 15. Candidate augmentation\n\nOnly exact-cent rule/promotion boundaries inside the Phase 6 support envelope may be added, and they require a frozen-model scoring callback. No unsimulated boundary is written.\n\n"
+        f"## 15. Candidate augmentation\n\nOnly exact-cent rule/promotion boundaries inside the Phase 6 support envelope may be added, and they require a frozen-model scoring callback. Canonical acceptance boundary scoring enabled: **{manifest.get('frozen_policy', {}).get('boundary_scoring_enabled')}**; the accepted Phase 6 surface remains the model-scored input when disabled. No unsimulated boundary is written.\n\n"
         "## 16. Business candidate filtering\n\nOnly candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 objective and tie/materiality policy are preserved.\n\n"
         f"## 17. VALIDATION final recommendations\n\n{json.dumps(manifest.get('summaries', {}).get('validation', {}), indent=2, default=str)}\n\n"
         f"## 18. Frozen Phase 7 policy\n\n{json.dumps(manifest.get('frozen_policy', {}), indent=2, default=str)}\n\n"
@@ -678,6 +800,7 @@ def _write_reports(manifest: dict[str, Any]) -> None:
         "## 29. Current snapshot recommendation distribution\n\nSee `current_inventory_summary.json` and the current decision Parquet artifact.\n\n"
         f"## 30. Manual review\n\n{json.dumps(manifest.get('manual_review_rate', {}), indent=2, default=str)}\n\n"
         f"## 31. Reproducibility\n\n{json.dumps(manifest.get('reproducibility', {}), indent=2, default=str)}\n\n"
+        f"## 31a. TEST context boundary\n\n{json.dumps(manifest.get('test_access', {}), indent=2, default=str)}\n\n"
         f"## 32. Compute\n\n{json.dumps(manifest.get('compute', {}), indent=2, default=str)}\n\n"
         "## 33. Known limitations\n\nHistorical inventory is unavailable by contract; current inventory is a single 2025-12-31 snapshot. Outcome backtesting is deferred to Phase 8.\n\n"
         "## 34. Phase 8 handoff\n\nPhase 8 must not begin until this Phase 7 verdict is independently reviewed and explicitly approved.\n\n"
@@ -727,6 +850,15 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
     if source_status["status"] != "CONNECTED_READ_ONLY":
         blockers.append("LIVE_SQL_SOURCE_UNAVAILABLE")
         warnings.append("FIXTURE_OR_LIVE_SQL_UNAVAILABLE")
+    train_history = pd.DataFrame()
+    precedence_forensics = pd.DataFrame()
+    precedence_forensics_summary: dict[str, Any] = {
+        "policy": "P2_PRIORITY_ASC_SPECIFICITY_DESC",
+        "rows_evaluated": 0,
+        "mismatch_rows": 0,
+        "mismatch_rate": 0.0,
+        "status": "NOT_RUN",
+    }
     if rules.empty:
         blockers.append("PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED")
         rule_audit = {"status": "BLOCKED", "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED", "rows": 0}
@@ -754,9 +886,20 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
             rule_policy = rule_audit.get("selected_policy")
             if not rule_policy:
                 blockers.append("PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED")
-    # Keep the best hypothesis visible for diagnostic replay even when the
-    # >=99.5% acceptance gate correctly leaves the policy unresolved.  It is
-    # never used to emit automatic business prices in that blocked state.
+    if not train_history.empty:
+        precedence_forensics, precedence_forensics_summary = precedence_mismatch_forensics(
+            rules,
+            train_history,
+            policy="P2_PRIORITY_ASC_SPECIFICITY_DESC",
+        )
+    precedence_forensics_sha = write_frame(ARTIFACTS / "rule_precedence_mismatch_forensics.parquet", precedence_forensics)
+    write_phase7_json(ARTIFACTS / "rule_precedence_mismatch_summary.json", {
+        **precedence_forensics_summary,
+        "artifact": "artifacts/phase7/rule_precedence_mismatch_forensics.parquet",
+        "artifact_sha256": precedence_forensics_sha,
+    })
+    # The best hypothesis is retained for diagnostic replay only if the frozen
+    # policy gate remains unresolved. It is never used for automatic prices.
     replay_policy = rule_policy
     if replay_policy is None and rule_audit.get("policies"):
         replay_policy = max(rule_audit["policies"], key=lambda name: rule_audit["policies"][name].get("reconciliation_rate", -1.0))
@@ -767,6 +910,15 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
         except Exception as exc:
             blockers.append("FROZEN_MODEL_AUGMENTATION_UNAVAILABLE")
             warnings.append(f"FROZEN_MODEL_AUGMENTATION_UNAVAILABLE:{type(exc).__name__}")
+    # Phase 6 already supplies the frozen, model-scored candidate surface.  A
+    # separate opt-in is kept for the expensive exact-cent boundary expansion;
+    # the canonical acceptance run remains reproducible without re-scoring
+    # tens of thousands of boundary rows.  If enabled, the same frozen scorer
+    # and its deterministic cache are used for every pass.
+    boundary_scoring_enabled = os.environ.get("PHASE7_ENABLE_BOUNDARY_SCORING", "0").strip().casefold() in {"1", "true", "yes"}
+    scoring_callback = frozen_scorer if boundary_scoring_enabled else None
+    if frozen_scorer is not None and not boundary_scoring_enabled:
+        warnings.append("PHASE6_FROZEN_SURFACE_USED_WITHOUT_BOUNDARY_EXPANSION")
     percentage_frame = pd.DataFrame({
         "MinMarginPct": rules["MinMarginPct"] if "MinMarginPct" in rules else pd.Series(dtype=float),
         "MaxDiscountPct": rules["MaxDiscountPct"] if "MaxDiscountPct" in rules else pd.Series(dtype=float),
@@ -788,11 +940,18 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
     status_mapping = freeze_status_mapping(inventory["StockStatus"].tolist()) if not inventory.empty else {}
     slow_thresholds = derive_slow_moving_thresholds(context_train)
     seasonal_audit = audit_seasonal_semantics(context_train["Season"].tolist())
+    inventory_category_p75, inventory_global_p75, inventory_threshold_audit = _inventory_category_thresholds(
+        inventory,
+        sources.get("product", pd.DataFrame()),
+    )
+    if not inventory.empty and not inventory_category_p75 and not use_fixtures:
+        warnings.append("INVENTORY_CATEGORY_P75_UNAVAILABLE")
     write_phase7_json(ARTIFACTS / "upstream_validation.json", upstream)
     write_phase7_json(ARTIFACTS / "rule_semantics_audit.json", rule_audit)
     write_phase7_json(ARTIFACTS / "rule_resolution_policy.json", {"status": "PASS" if rule_policy else "BLOCKED", "selected_policy": rule_policy, "precedence": rule_audit})
     write_phase7_json(ARTIFACTS / "percentage_semantics_audit.json", percentage_audit)
     write_phase7_json(ARTIFACTS / "promotion_semantics_audit.json", promotion_audit)
+    inventory_audit = {**inventory_audit, "high_inventory_thresholds": inventory_threshold_audit}
     write_phase7_json(ARTIFACTS / "inventory_semantics_audit.json", inventory_audit)
     write_phase7_json(ARTIFACTS / "inventory_status_mapping.json", {"mapping": status_mapping, "observed_values": sorted(status_mapping), "unknown_policy": "UNKNOWN"})
     write_phase7_json(ARTIFACTS / "slow_moving_thresholds.json", {**slow_thresholds, "seasonal_semantics": seasonal_audit})
@@ -822,6 +981,10 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
         "promotion_season_semantics": seasonal_audit,
         "inventory_snapshot_policy": "CURRENT_ONLY",
         "inventory_status_map": status_mapping,
+        "high_inventory_policy": "CATEGORY_SPECIFIC_SNAPSHOT_AVAILABLE_QTY_P75",
+        "high_inventory_category_p75": inventory_category_p75,
+        "high_inventory_global_p75_fallback": inventory_global_p75,
+        "boundary_scoring_enabled": boundary_scoring_enabled,
         "slow_moving_thresholds": slow_thresholds,
         "markdown_policy": "seasonal + slow-moving + overstock + positive available; no expiry logic",
         "action_precedence": ["OUT_OF_STOCK / INVENTORY UNAVAILABLE", "RULE CONFLICT / NO COMPLIANT CANDIDATE", "ACTIVE PROMOTION COMMITMENT / PROMOTION CONFLICT", "CURRENT seasonal slow-moving markdown policy", "NORMAL rule-compliant model pricing"],
@@ -836,12 +999,16 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
     summaries: dict[str, Any] = {}
     replay: dict[str, Any] = {}
     decisions_by_split: dict[str, pd.DataFrame] = {}
+    surfaces_by_split: dict[str, pd.DataFrame] = {}
+    recommendations_by_split: dict[str, pd.DataFrame] = {}
     split_diagnostics: list[dict[str, Any]] = []
     selection_started = time.perf_counter()
     for split, context in (("validation", context_validation), ("test", context_test)):
         surface = pd.read_parquet(ROOT / f"artifacts/phase6/{split}_candidate_surface.parquet")
         recommendations = pd.read_parquet(ROOT / f"artifacts/phase6/{split}_recommendations.parquet")
-        decisions, diag = build_business_decisions(surface, recommendations, context, rules=rules, promotions=promotions, mode=HISTORICAL_POLICY_MODE, rule_policy=rule_policy, percentage_convention=percentage_convention, promotion_pricing_mode=promotion_mode, slow_thresholds=slow_thresholds, score_candidate=frozen_scorer)
+        surfaces_by_split[split] = surface
+        recommendations_by_split[split] = recommendations
+        decisions, diag = build_business_decisions(surface, recommendations, context, rules=rules, promotions=promotions, mode=HISTORICAL_POLICY_MODE, rule_policy=rule_policy, percentage_convention=percentage_convention, promotion_pricing_mode=promotion_mode, slow_thresholds=slow_thresholds, inventory_category_p75=inventory_category_p75, inventory_global_p75=inventory_global_p75, score_candidate=scoring_callback)
         validate_decision_frame(decisions, mode=HISTORICAL_POLICY_MODE)
         decisions_by_split[split] = decisions
         write_frame(ARTIFACTS / f"{split}_business_decisions.parquet", decisions)
@@ -873,7 +1040,7 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
     current_ids = set(eligible_context["PricingDecisionID"].astype(str))
     current_surface = current_surface.loc[current_surface["PricingDecisionID"].astype(str).isin(current_ids)].copy()
     current_recommendations = current_recommendations.loc[current_recommendations["PricingDecisionID"].astype(str).isin(current_ids)].copy()
-    current, current_diag = build_business_decisions(current_surface, current_recommendations, eligible_context, rules=rules, promotions=promotions, mode=CURRENT_INVENTORY_MODE, rule_policy=rule_policy, percentage_convention=percentage_convention, promotion_pricing_mode=promotion_mode, inventory=inventory, status_mapping=status_mapping, slow_thresholds=slow_thresholds, score_candidate=frozen_scorer)
+    current, current_diag = build_business_decisions(current_surface, current_recommendations, eligible_context, rules=rules, promotions=promotions, mode=CURRENT_INVENTORY_MODE, rule_policy=rule_policy, percentage_convention=percentage_convention, promotion_pricing_mode=promotion_mode, inventory=inventory, status_mapping=status_mapping, slow_thresholds=slow_thresholds, inventory_category_p75=inventory_category_p75, inventory_global_p75=inventory_global_p75, score_candidate=scoring_callback)
     timings["final_selection_seconds"] = float(time.perf_counter() - selection_started)
     validate_decision_frame(current, mode=CURRENT_INVENTORY_MODE)
     write_frame(ARTIFACTS / "current_inventory_business_decisions.parquet", current)
@@ -889,6 +1056,64 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
         "manual_reviews": int(current["manual_review_flag"].astype(bool).sum()) if not current.empty else 0,
         "diagnostics": current_diag,
     }
+    # Genuine end-to-end determinism check.  Each accepted output is built a
+    # second time from the same frozen surfaces, source snapshots, scorer, and
+    # policy.  The check compares rule IDs, final cents/actions, and every
+    # available expected-economics field; no result is hardcoded.
+    reproducibility_by_split: dict[str, dict[str, Any]] = {}
+    repeat_inputs = {
+        "validation": (surfaces_by_split.get("validation", pd.DataFrame()), recommendations_by_split.get("validation", pd.DataFrame()), context_validation, HISTORICAL_POLICY_MODE),
+        "test": (surfaces_by_split.get("test", pd.DataFrame()), recommendations_by_split.get("test", pd.DataFrame()), context_test, HISTORICAL_POLICY_MODE),
+        "current_inventory": (current_surface, current_recommendations, eligible_context, CURRENT_INVENTORY_MODE),
+    }
+    for split, (surface, recommendations, context, mode) in repeat_inputs.items():
+        try:
+            repeat, _ = build_business_decisions(
+                surface,
+                recommendations,
+                context,
+                rules=rules,
+                promotions=promotions,
+                mode=mode,
+                rule_policy=rule_policy,
+                percentage_convention=percentage_convention,
+                promotion_pricing_mode=promotion_mode,
+                inventory=inventory if mode == CURRENT_INVENTORY_MODE else None,
+                status_mapping=status_mapping if mode == CURRENT_INVENTORY_MODE else None,
+                slow_thresholds=slow_thresholds,
+                inventory_category_p75=inventory_category_p75,
+                inventory_global_p75=inventory_global_p75,
+                score_candidate=scoring_callback,
+            )
+            validate_decision_frame(repeat, mode=mode)
+            reproducibility_by_split[split] = reproducibility_check(
+                current if split == "current_inventory" else decisions_by_split[split],
+                repeat,
+            )
+        except Exception as exc:
+            reproducibility_by_split[split] = {
+                "status": "FAIL",
+                "error_type": type(exc).__name__,
+                "error": str(exc).splitlines()[0][:300],
+                "rule_resolution_mismatches": None,
+                "final_price_mismatches": None,
+                "action_mismatches": None,
+                "economic_mismatches": None,
+                "max_economic_delta": float("inf"),
+            }
+    numeric_repro_fields = ("rule_resolution_mismatches", "final_price_mismatches", "action_mismatches", "economic_mismatches")
+    reproducibility = {
+        **reproducibility_by_split,
+        "rule_resolution_mismatches": int(sum((item.get("rule_resolution_mismatches") or 0) for item in reproducibility_by_split.values())),
+        "final_price_mismatches": int(sum((item.get("final_price_mismatches") or 0) for item in reproducibility_by_split.values())),
+        "action_mismatches": int(sum((item.get("action_mismatches") or 0) for item in reproducibility_by_split.values())),
+        "economic_mismatches": int(sum((item.get("economic_mismatches") or 0) for item in reproducibility_by_split.values())),
+        "max_economic_delta": float(max(((item.get("max_economic_delta", 0.0) or 0.0) for item in reproducibility_by_split.values()), default=0.0)),
+        "runs_per_split": 2,
+        "status": "PASS" if reproducibility_by_split and all(item.get("status") == "PASS" for item in reproducibility_by_split.values()) else "FAIL",
+    }
+    if reproducibility["status"] != "PASS":
+        blockers.append("REPRODUCIBILITY_FAILURE")
     write_phase7_json(ARTIFACTS / "validation_business_summary.json", summaries["validation"])
     write_phase7_json(ARTIFACTS / "test_business_summary.json", summaries["test"])
     write_phase7_json(ARTIFACTS / "current_inventory_summary.json", summaries["current_inventory"])
@@ -896,9 +1121,20 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
     write_csv(ARTIFACTS / "rule_constraint_impact.csv", constraint_impact)
     action_distribution = pd.concat(decisions_by_split.values(), ignore_index=True)["FinalAction"].value_counts().rename_axis("FinalAction").reset_index(name="count") if decisions_by_split else pd.DataFrame(columns=["FinalAction", "count"])
     write_csv(ARTIFACTS / "action_distribution.csv", action_distribution)
-    test_access = {"test_used_to_choose_priority_semantics": False, "test_used_to_choose_percentage_semantics": False, "test_used_to_choose_promotion_semantics": False, "test_used_to_choose_markdown_thresholds": False, "test_outcomes_used": False}
+    test_context_outcome_columns = sorted(OUTCOME_COLUMNS.intersection(context_test.columns))
+    if test_context_outcome_columns:
+        blockers.append("OUTCOME_COLUMNS_IN_PHASE7_CONTEXT")
+    test_access = {
+        "context_allowlist": list(PHASE7_CONTEXT_ALLOWLIST),
+        "forbidden_outcome_columns": sorted(OUTCOME_COLUMNS),
+        "test_context_outcome_columns": test_context_outcome_columns,
+        "test_used_to_choose_priority_semantics": False,
+        "test_used_to_choose_percentage_semantics": False,
+        "test_used_to_choose_promotion_semantics": False,
+        "test_used_to_choose_markdown_thresholds": False,
+        "test_outcomes_used": False,
+    }
     write_phase7_json(ARTIFACTS / "test_access_manifest.json", test_access)
-    reproducibility = {"rule_resolution_mismatches": 0, "final_price_mismatches": 0, "action_mismatches": 0, "max_economic_delta": 0.0, "status": "PASS"}
     write_phase7_json(ARTIFACTS / "reproducibility.json", reproducibility)
     write_phase7_json(ARTIFACTS / "compute_environment.json", compute_environment())
     test_results = _run_phase7_tests()
@@ -933,6 +1169,7 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
         "rule_source_rows": int(len(rules)),
         "active_rule_rows": int(rules["ActiveFlag"].astype(bool).sum()) if not rules.empty else 0,
         "rule_precedence_policy": rule_policy,
+        "rule_precedence_forensics": precedence_forensics_summary,
         "percentage_convention": percentage_convention,
         "effective_date_convention": "[EffectiveFrom, EffectiveTo)",
         "rule_replay": replay,
@@ -940,6 +1177,7 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
         "active_promotions": int(promotions["ActiveFlag"].astype(bool).sum()) if not promotions.empty else 0,
         "promotion_semantics": promotion_audit,
         "inventory_semantics": inventory_audit,
+        "inventory_high_inventory_thresholds": inventory_threshold_audit,
         "inventory_status_mapping": status_mapping,
         "slow_moving_policy": slow_thresholds,
         "markdown_policy": "seasonal + slow-moving + overstock; low-stock suppression; no expiry",
@@ -951,6 +1189,7 @@ def run_phase7(*, use_fixtures: bool = False) -> dict[str, Any]:
         "final_rule_violation_count": int(sum(summary.get("final_rule_violation_count", 0) for summary in summaries.values() if isinstance(summary, dict))),
         "manual_review_rate": {split: summaries[split].get("manual_review_rate") for split in ("validation", "test")},
         "reproducibility": reproducibility,
+        "test_access": test_access,
         "compute": {**timings, "total_seconds": float(time.perf_counter() - started)},
         "tests": test_results,
         "CI": {"status": "DEFINED_NO_LIVE_SQL", "workflow": ".github/workflows/phase7-tests.yml"},

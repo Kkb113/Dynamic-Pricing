@@ -11,6 +11,73 @@ from .rule_constraints import derive_rule_bounds, round_price_half_up
 from .rule_resolver import resolve_pricing_rule
 
 
+def replay_historical_rule_id_application(
+    historical: pd.DataFrame,
+    rules: pd.DataFrame,
+    *,
+    percentage_convention: str = "PERCENT_POINTS",
+) -> pd.DataFrame:
+    """Replay the historical ``PricingRuleID`` directly, without resolving.
+
+    This is deliberately separate from :func:`replay_historical_rule_application`.
+    It answers the forensic question "does the recorded rule ID plus the
+    canonical constraint math reproduce AppliedPrice?" independently of any
+    hypothesis about how the source selected that rule.
+    """
+
+    required = {
+        "PricingDecisionID", "PricingRuleID", "BasePrice", "CurrentPrice",
+        "CostPrice", "RecommendedPrice", "AppliedPrice",
+    }
+    missing = sorted(required.difference(historical.columns))
+    if missing:
+        raise ValueError(f"HISTORICAL_RULE_ID_REPLAY_COLUMNS_MISSING: {missing}")
+    rule_lookup = {
+        str(record.get("PricingRuleID")): record
+        for record in rules.to_dict("records")
+        if record.get("PricingRuleID") is not None
+    }
+    rows: list[dict[str, Any]] = []
+    for source in historical.to_dict("records"):
+        historical_id = source.get("PricingRuleID")
+        rule = None if pd.isna(historical_id) else rule_lookup.get(str(historical_id))
+        if rule is None:
+            replayed = np.nan
+            conflict = False
+            missing_rule = True
+        else:
+            bounds = derive_rule_bounds(
+                rule,
+                base_price=source["BasePrice"],
+                current_price=source["CurrentPrice"],
+                cost_price=source["CostPrice"],
+                percentage_convention=percentage_convention,
+            )
+            conflict = bool(bounds["conflict"])
+            missing_rule = False
+            replayed = float(source["RecommendedPrice"])
+            if conflict:
+                replayed = np.nan
+            else:
+                if bounds["effective_price_floor"] is not None:
+                    replayed = max(replayed, float(bounds["effective_price_floor"]))
+                if bounds["effective_price_ceiling"] is not None:
+                    replayed = min(replayed, float(bounds["effective_price_ceiling"]))
+                replayed = round_price_half_up(replayed)
+        historical_applied = float(source["AppliedPrice"])
+        rows.append({
+            "PricingDecisionID": source.get("PricingDecisionID"),
+            "PricingRuleID": historical_id,
+            "replayed_AppliedPrice": replayed,
+            "historical_AppliedPrice": historical_applied,
+            "absolute_delta": np.nan if pd.isna(replayed) else abs(float(replayed) - historical_applied),
+            "constrained": bool(not np.isclose(float(source["RecommendedPrice"]), historical_applied, atol=0.005, rtol=0.0)),
+            "rule_violation_count": int(1 if conflict else 0),
+            "historical_rule_missing": bool(missing_rule),
+        })
+    return pd.DataFrame(rows)
+
+
 def replay_historical_rule_application(
     historical: pd.DataFrame,
     rules: pd.DataFrame,
@@ -31,7 +98,15 @@ def replay_historical_rule_application(
         raise ValueError(f"HISTORICAL_RULE_REPLAY_COLUMNS_MISSING: {missing}")
     rows: list[dict[str, Any]] = []
     for source in historical.to_dict("records"):
-        resolution = resolve_pricing_rule(source, rules, as_of=source["DecisionTime"], category_id=source.get(category_column), policy=policy)
+        resolution = resolve_pricing_rule(
+            source,
+            rules,
+            as_of=source["DecisionTime"],
+            category_id=source.get(category_column),
+            policy=policy,
+            reference_price=source.get("RecommendedPrice"),
+            percentage_convention=percentage_convention,
+        )
         rule = resolution.get("rule")
         bounds = derive_rule_bounds(rule, base_price=source["BasePrice"], current_price=source["CurrentPrice"], cost_price=source["CostPrice"], percentage_convention=percentage_convention)
         recommended = float(source["RecommendedPrice"])
@@ -72,7 +147,8 @@ def replay_metrics(replay: pd.DataFrame) -> dict[str, Any]:
         "constrained_decision_count": int(replay["constrained"].sum()),
         "constrained_decision_rate": float(replay["constrained"].mean()),
         "rule_violation_count": int(replay["rule_violation_count"].sum()),
+        "historical_rule_missing_count": int(replay.get("historical_rule_missing", pd.Series(False, index=replay.index)).astype(bool).sum()),
     }
 
 
-__all__ = ["replay_historical_rule_application", "replay_metrics"]
+__all__ = ["replay_historical_rule_application", "replay_historical_rule_id_application", "replay_metrics"]

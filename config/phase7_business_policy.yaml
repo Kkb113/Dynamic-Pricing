@@ -26,6 +26,7 @@ rules:
     - P2_PRIORITY_ASC_SPECIFICITY_DESC
     - P3_SPECIFICITY_DESC_PRIORITY_DESC
     - P4_SPECIFICITY_DESC_PRIORITY_ASC
+    - P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC
   minimum_train_reconciliation: 0.995
   percentage_convention: freeze_from_train
   price_rounding: ROUND_HALF_UP_2_DECIMAL

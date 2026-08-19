@@ -1,6 +1,6 @@
 {
-  "best_reconciliation_rate": 0.9343265306122449,
-  "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED",
+  "best_reconciliation_rate": 0.9999591836734694,
+  "blocker": null,
   "false_negative_rule_assignments": 0,
   "false_positive_rule_assignments": 0,
   "historical_null_rule_rows": 0,
@@ -29,11 +29,17 @@
       "no_applicable_rule_rows": 0,
       "reconciliation_rate": 0.9333061224489796,
       "rows_evaluated": 24500
+    },
+    "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC": {
+      "matched_rows": 24499,
+      "no_applicable_rule_rows": 0,
+      "reconciliation_rate": 0.9999591836734694,
+      "rows_evaluated": 24500
     }
   },
   "resolver_null_rule_rows": 0,
   "rows_evaluated": 24500,
-  "selected_policy": null,
-  "status": "BLOCKED",
+  "selected_policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+  "status": "PASS",
   "unique_best_policy": true
 }

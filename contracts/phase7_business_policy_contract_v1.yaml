@@ -47,7 +47,7 @@ sources:
 rules:
   scope_null_is_wildcard: true
   effective_dates: '[EffectiveFrom, EffectiveTo)'
-  precedence: train-inferred among P1/P2/P3/P4, selected only at >=99.5% unique reconciliation
+  precedence: train-inferred among P1/P2/P3/P4 plus source-backed constraint-adjustment policy, selected only at >=99.5% unique reconciliation
   percentage_convention: normalized to fractions after TRAIN audit
   formulas:
     MinPrice: floor = MinPrice

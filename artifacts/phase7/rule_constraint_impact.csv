@@ -1,6 +1,6 @@
 constraint_type,decisions_affected,candidate_rows_filtered,price_delta_mean
-MinPrice,0,0,0.0
-MaxPrice,0,0,0.0
-MinMarginPct,0,0,0.0
-MaxDiscountPct,0,0,0.0
-MaxPriceChangePct,0,0,0.0
+MinPrice,3,4,-4.693333333333334
+MaxPrice,55,103,14.120011904761903
+MinMarginPct,139,249,-9.944321386603994
+MaxDiscountPct,525,1056,-8.437652932998716
+MaxPriceChangePct,3047,6462,0.0005244797513998659

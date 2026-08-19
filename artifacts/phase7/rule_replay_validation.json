@@ -1,21 +1,56 @@
 {
   "acceptance_threshold": 0.995,
-  "blocker": "PRICING_RULE_PRIORITY_SEMANTICS_UNRESOLVED",
+  "blocker": null,
+  "historical_rule_id_replay": {
+    "blocker": null,
+    "metrics": {
+      "absolute_delta_max": 0.009999999999990905,
+      "absolute_delta_mean": 1.9047619047601723e-06,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "constrained_decision_count": 896,
+      "constrained_decision_rate": 0.17066666666666666,
+      "exact_cent_match_rate": 0.9998095238095238,
+      "historical_rule_missing_count": 0,
+      "rows": 5250,
+      "rule_violation_count": 0
+    },
+    "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT",
+    "status": "PASS"
+  },
   "metrics": {
-    "absolute_delta_max": 13.860000000000014,
-    "absolute_delta_mean": 0.07673714285714288,
+    "absolute_delta_max": 0.009999999999990905,
+    "absolute_delta_mean": 1.9047619047601723e-06,
     "absolute_delta_median": 0.0,
-    "absolute_delta_p95": 0.21550000000000477,
+    "absolute_delta_p95": 0.0,
     "constrained_decision_count": 896,
     "constrained_decision_rate": 0.17066666666666666,
-    "exact_cent_match_rate": 0.9363809523809524,
+    "exact_cent_match_rate": 0.9998095238095238,
+    "historical_rule_missing_count": 0,
     "rows": 5250,
     "rule_violation_count": 0
   },
-  "policy_used_for_diagnostic_replay": "P2_PRIORITY_ASC_SPECIFICITY_DESC",
+  "policy_used_for_diagnostic_replay": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
   "reference_full_historical_constrained_rate": 0.173,
   "reference_historical_rule_violations": 0,
-  "semantics_status": "BLOCKED",
+  "resolver_replay": {
+    "blocker": null,
+    "metrics": {
+      "absolute_delta_max": 0.009999999999990905,
+      "absolute_delta_mean": 1.9047619047601723e-06,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "constrained_decision_count": 896,
+      "constrained_decision_rate": 0.17066666666666666,
+      "exact_cent_match_rate": 0.9998095238095238,
+      "historical_rule_missing_count": 0,
+      "rows": 5250,
+      "rule_violation_count": 0
+    },
+    "policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+    "status": "PASS"
+  },
+  "semantics_status": "PASS",
   "split": "validation",
-  "status": "BLOCKED"
+  "status": "PASS"
 }
