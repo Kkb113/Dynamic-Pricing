@@ -1,0 +1,30 @@
+name: phase9-10-tests
+
+on:
+  push:
+    branches:
+      - codex/phase9-10-local-ai-pricing-app
+  pull_request:
+    paths:
+      - 'src/app_services/**'
+      - 'src/ai_agent/**'
+      - 'src/phase9_10/**'
+      - 'app/**'
+      - 'tests/phase9_10/**'
+      - 'artifacts/phase9_10/**'
+      - 'config/explanation_feature_labels.yaml'
+      - 'pyproject.toml'
+      - '.github/workflows/phase9-10-tests.yml'
+
+jobs:
+  deterministic-application-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e ".[test]"
+      - run: pytest -q tests/phase9_10
+      - run: pytest -q

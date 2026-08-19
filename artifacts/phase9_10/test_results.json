@@ -1,0 +1,9 @@
+{
+  "command": "pytest -q tests/phase9_10",
+  "duration_seconds": 2.054,
+  "failed": 0,
+  "output_tail": ".....................                                                    [100%]\n============================== warnings summary ===============================\n..\\.venv\\Lib\\site-packages\\_pytest\\config\\__init__.py:1464\n  C:\\Users\\karth\\OneDrive\\Documents\\Intellify\\dynamic-pricing\\.venv\\Lib\\site-packages\\_pytest\\config\\__init__.py:1464: PytestConfigWarning: Unknown config option: asyncio_default_fixture_loop_scope\n  \n    self._warn_or_fail_if_strict(f\"Unknown config option: {key}\\n\")\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n21 passed, 1 warning in 0.88s",
+  "passed": 21,
+  "status": "PASS",
+  "total": 21
+}

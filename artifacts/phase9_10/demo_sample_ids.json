@@ -1,0 +1,15 @@
+{
+  "categories_available": [
+    "manual_review",
+    "price_decrease",
+    "price_increase",
+    "seasonal_markdown_current_inventory"
+  ],
+  "ids": {
+    "manual_review": "PDL000000000005460",
+    "price_decrease": "PDL000000000000506",
+    "price_increase": "PDL000000000000011",
+    "seasonal_markdown_current_inventory": "PDL000000000000064"
+  },
+  "status": "PASS"
+}

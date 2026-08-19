@@ -1,0 +1,157 @@
+{
+  "API_key_exposed": false,
+  "PII_fields_exposed": [],
+  "SQL_write_paths": [],
+  "historical_outcome_row_fields_exposed": [],
+  "prompt_minimization": true,
+  "tools": [
+    {
+      "PII_fields_exposed": [],
+      "fields_that_can_reach_llm": [
+        "PricingDecisionID",
+        "ProductID",
+        "StoreID",
+        "Channel",
+        "CategoryID",
+        "CurrentPrice",
+        "FinalRecommendedPrice",
+        "ExpectedUnits",
+        "ExpectedRevenue",
+        "ExpectedGrossProfit",
+        "FinalAction",
+        "reason_codes",
+        "warnings"
+      ],
+      "historical_outcome_row_fields_exposed": [],
+      "outcome_access": false,
+      "tool_name": "get_pricing_recommendation"
+    },
+    {
+      "PII_fields_exposed": [],
+      "fields_that_can_reach_llm": [
+        "current_price",
+        "model_optimal_price",
+        "final_price",
+        "purchase_probability",
+        "expected_demand",
+        "expected_revenue",
+        "expected_gross_profit",
+        "reason_codes",
+        "warnings"
+      ],
+      "historical_outcome_row_fields_exposed": [],
+      "outcome_access": false,
+      "tool_name": "explain_pricing_recommendation"
+    },
+    {
+      "PII_fields_exposed": [],
+      "fields_that_can_reach_llm": [
+        "CandidatePrice",
+        "purchase_probability",
+        "expected_quantity_if_purchase",
+        "expected_units",
+        "expected_revenue",
+        "expected_gross_profit",
+        "candidate_margin_pct",
+        "business_rule_compliance",
+        "rule_violations"
+      ],
+      "historical_outcome_row_fields_exposed": [],
+      "outcome_access": false,
+      "tool_name": "simulate_price"
+    },
+    {
+      "PII_fields_exposed": [],
+      "fields_that_can_reach_llm": [
+        "scenario",
+        "CandidatePrice",
+        "purchase_probability",
+        "expected_units",
+        "expected_revenue",
+        "expected_gross_profit"
+      ],
+      "historical_outcome_row_fields_exposed": [],
+      "outcome_access": false,
+      "tool_name": "compare_price_scenarios"
+    },
+    {
+      "PII_fields_exposed": [],
+      "fields_that_can_reach_llm": [
+        "PricingDecisionID",
+        "ProductID",
+        "StoreID",
+        "Channel",
+        "CategoryID",
+        "FinalAction",
+        "FinalRecommendedPrice"
+      ],
+      "historical_outcome_row_fields_exposed": [],
+      "outcome_access": false,
+      "tool_name": "search_recommendations"
+    },
+    {
+      "PII_fields_exposed": [],
+      "fields_that_can_reach_llm": [
+        "ROC-AUC",
+        "Average Precision",
+        "Log Loss",
+        "Brier Score",
+        "Top-Decile Lift",
+        "aggregate metrics"
+      ],
+      "historical_outcome_row_fields_exposed": [],
+      "outcome_access": false,
+      "tool_name": "get_model_performance"
+    },
+    {
+      "PII_fields_exposed": [],
+      "fields_that_can_reach_llm": [
+        "PricingRuleID",
+        "RuleName",
+        "effective_price_floor",
+        "effective_price_ceiling",
+        "compliance"
+      ],
+      "historical_outcome_row_fields_exposed": [],
+      "outcome_access": false,
+      "tool_name": "get_business_rule_details"
+    },
+    {
+      "PII_fields_exposed": [],
+      "fields_that_can_reach_llm": [
+        "ProductID",
+        "StoreID",
+        "CategoryID",
+        "AvailableQty",
+        "StockStatus",
+        "slow_moving",
+        "seasonal",
+        "MarkdownAction",
+        "FinalRecommendedPrice"
+      ],
+      "historical_outcome_row_fields_exposed": [],
+      "outcome_access": false,
+      "tool_name": "get_current_inventory_insight"
+    },
+    {
+      "PII_fields_exposed": [],
+      "fields_that_can_reach_llm": [
+        "use_case",
+        "business_question",
+        "signals"
+      ],
+      "historical_outcome_row_fields_exposed": [],
+      "outcome_access": false,
+      "tool_name": "get_use_case_summary"
+    },
+    {
+      "PII_fields_exposed": [],
+      "fields_that_can_reach_llm": [
+        "supported_questions"
+      ],
+      "historical_outcome_row_fields_exposed": [],
+      "outcome_access": false,
+      "tool_name": "get_agent_capabilities"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "GP_max_delta": 0.0,
+  "expected_units_max_delta": 0.0,
+  "failures": 0,
+  "probability_max_delta": 0.0,
+  "revenue_max_delta": 0.0,
+  "rows": 100,
+  "status": "PASS",
+  "tolerance": 1e-10
+}
