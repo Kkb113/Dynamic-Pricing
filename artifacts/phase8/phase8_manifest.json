@@ -113,7 +113,7 @@
     "test_outcome_access_count": 1,
     "test_outcomes_loaded_at": "2026-08-19T07:09:48.189523+00:00"
   },
-  "evidence_git_sha": "3549021f08f869be4bd18f1af15b6056ad10e7dc",
+  "evidence_git_sha": "5a166d38f7bfcfc9ee90441423f6facaa97f70a3",
   "final_margin_safety": {
     "automatic_rows": 5175,
     "final_rule_violation_count": 0,
@@ -127,7 +127,7 @@
     "test": "NOT_AVAILABLE_NO_HISTORICAL_INVENTORY",
     "validation": "NOT_AVAILABLE_NO_HISTORICAL_INVENTORY"
   },
-  "implementation_git_sha": "3549021f08f869be4bd18f1af15b6056ad10e7dc",
+  "implementation_git_sha": "5a166d38f7bfcfc9ee90441423f6facaa97f70a3",
   "major_blockers": [],
   "nonfinite_economics": {
     "scored_value_count": 0,
