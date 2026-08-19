@@ -113,7 +113,7 @@
     "test_outcome_access_count": 1,
     "test_outcomes_loaded_at": "2026-08-19T06:19:32.969246+00:00"
   },
-  "evidence_git_sha": "1fadf3d6ee4c180e12aceef4f63a80a7e5b516b7",
+  "evidence_git_sha": "4541564530462fcefdbe2e58d1be0db3b65c1c98",
   "final_margin_safety": {
     "automatic_rows": 5175,
     "final_rule_violation_count": 0,
@@ -127,7 +127,7 @@
     "test": "NOT_AVAILABLE_NO_HISTORICAL_INVENTORY",
     "validation": "NOT_AVAILABLE_NO_HISTORICAL_INVENTORY"
   },
-  "implementation_git_sha": "fdbaa53b695caaab29415defdb4ef37c8d87605a",
+  "implementation_git_sha": "4541564530462fcefdbe2e58d1be0db3b65c1c98",
   "major_blockers": [
     "MATERIAL_GRID_GRANULARITY_GAP"
   ],
