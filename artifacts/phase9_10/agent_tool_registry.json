@@ -1,0 +1,147 @@
+{
+  "agent_name": "Retail Pricing Intelligence Agent",
+  "sdk": "openai-agents",
+  "tool_count": 10,
+  "tools": [
+    {
+      "input_schema": "(PricingDecisionID: 'str') -> 'dict[str, Any]'",
+      "model_inference": false,
+      "outcome_access": false,
+      "output_fields": "compact JSON object/list; see implementation contract",
+      "purpose": "Authoritative Phase 7 final decision lookup",
+      "source_artifacts": [
+        "artifacts/phase7/*",
+        "artifacts/phase6/*",
+        "artifacts/phase8/*"
+      ],
+      "sql": false,
+      "tool_name": "get_pricing_recommendation"
+    },
+    {
+      "input_schema": "(PricingDecisionID: 'str') -> 'dict[str, Any]'",
+      "model_inference": false,
+      "outcome_access": false,
+      "output_fields": "compact JSON object/list; see implementation contract",
+      "purpose": "Deterministic business explanation",
+      "source_artifacts": [
+        "artifacts/phase7/*",
+        "artifacts/phase6/*",
+        "artifacts/phase8/*"
+      ],
+      "sql": false,
+      "tool_name": "explain_pricing_recommendation"
+    },
+    {
+      "input_schema": "(PricingDecisionID: 'str', CandidatePrice: 'float') -> 'dict[str, Any]'",
+      "model_inference": true,
+      "outcome_access": false,
+      "output_fields": "compact JSON object/list; see implementation contract",
+      "purpose": "Frozen Phase 6/7 candidate-price economics",
+      "source_artifacts": [
+        "artifacts/phase7/*",
+        "artifacts/phase6/*",
+        "artifacts/phase8/*"
+      ],
+      "sql": false,
+      "tool_name": "simulate_price"
+    },
+    {
+      "input_schema": "(PricingDecisionID: 'str') -> 'list[dict[str, Any]]'",
+      "model_inference": true,
+      "outcome_access": false,
+      "output_fields": "compact JSON object/list; see implementation contract",
+      "purpose": "Historical/current/model-optimal/final comparison",
+      "source_artifacts": [
+        "artifacts/phase7/*",
+        "artifacts/phase6/*",
+        "artifacts/phase8/*"
+      ],
+      "sql": false,
+      "tool_name": "compare_price_scenarios"
+    },
+    {
+      "input_schema": "(ProductID: 'str | None' = None, StoreID: 'str | None' = None, Channel: 'str | None' = None, CategoryID: 'str | None' = None, FinalAction: 'str | None' = None, manual_review_flag: 'bool | None' = None, limit: 'int' = 20) -> 'list[dict[str, Any]]'",
+      "model_inference": false,
+      "outcome_access": false,
+      "output_fields": "compact JSON object/list; see implementation contract",
+      "purpose": "Compact filtered Phase 7 search",
+      "source_artifacts": [
+        "artifacts/phase7/*",
+        "artifacts/phase6/*",
+        "artifacts/phase8/*"
+      ],
+      "sql": false,
+      "tool_name": "search_recommendations"
+    },
+    {
+      "input_schema": "() -> 'dict[str, Any]'",
+      "model_inference": false,
+      "outcome_access": false,
+      "output_fields": "compact JSON object/list; see implementation contract",
+      "purpose": "Phase 8 aggregate evidence projection",
+      "source_artifacts": [
+        "artifacts/phase7/*",
+        "artifacts/phase6/*",
+        "artifacts/phase8/*"
+      ],
+      "sql": false,
+      "tool_name": "get_model_performance"
+    },
+    {
+      "input_schema": "(PricingDecisionID: 'str') -> 'dict[str, Any]'",
+      "model_inference": false,
+      "outcome_access": false,
+      "output_fields": "compact JSON object/list; see implementation contract",
+      "purpose": "Effective rule constraints",
+      "source_artifacts": [
+        "artifacts/phase7/*",
+        "artifacts/phase6/*",
+        "artifacts/phase8/*"
+      ],
+      "sql": false,
+      "tool_name": "get_business_rule_details"
+    },
+    {
+      "input_schema": "(ProductID: 'str | None' = None, StoreID: 'str | None' = None, CategoryID: 'str | None' = None, action: 'str | None' = None, limit: 'int' = 20) -> 'list[dict[str, Any]]'",
+      "model_inference": false,
+      "outcome_access": false,
+      "output_fields": "compact JSON object/list; see implementation contract",
+      "purpose": "Phase 7 current snapshot inventory context",
+      "source_artifacts": [
+        "artifacts/phase7/*",
+        "artifacts/phase6/*",
+        "artifacts/phase8/*"
+      ],
+      "sql": false,
+      "tool_name": "get_current_inventory_insight"
+    },
+    {
+      "input_schema": "() -> 'dict[str, Any]'",
+      "model_inference": false,
+      "outcome_access": false,
+      "output_fields": "compact JSON object/list; see implementation contract",
+      "purpose": "Official use-case summary",
+      "source_artifacts": [
+        "artifacts/phase7/*",
+        "artifacts/phase6/*",
+        "artifacts/phase8/*"
+      ],
+      "sql": false,
+      "tool_name": "get_use_case_summary"
+    },
+    {
+      "input_schema": "() -> 'dict[str, Any]'",
+      "model_inference": false,
+      "outcome_access": false,
+      "output_fields": "compact JSON object/list; see implementation contract",
+      "purpose": "Supported question examples",
+      "source_artifacts": [
+        "artifacts/phase7/*",
+        "artifacts/phase6/*",
+        "artifacts/phase8/*"
+      ],
+      "sql": false,
+      "tool_name": "get_agent_capabilities"
+    }
+  ]
+}

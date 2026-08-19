@@ -1,0 +1,11 @@
+{
+  "max_delta": 0.0,
+  "metrics": {
+    "Demand aggregate error %": -0.02741176452823888,
+    "GP aggregate error %": -0.04571949189703134,
+    "ROC-AUC": 0.6093393176304454,
+    "Revenue aggregate error %": -0.03916938526034357,
+    "Top-Decile Lift": 1.491769547325103
+  },
+  "status": "PASS"
+}
