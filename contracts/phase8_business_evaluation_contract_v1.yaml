@@ -1,0 +1,73 @@
+contract: phase8_business_evaluation_contract_v1
+version: 1
+purpose: Evaluate the frozen Phase 4-7 pricing stack against factual historical outcomes and clearly labelled model-implied scenarios.
+upstream_fingerprints:
+  phase2_dataset: artifacts/phase2/feature_dataset.parquet
+  phase3_splits: artifacts/phase3/split_assignments.parquet
+  phase4_model: artifacts/phase4/models/purchase_catboost.cbm
+  phase4_spec: artifacts/phase4/frozen_model_spec.json
+  phase5_spec: artifacts/phase5/frozen_quantity_spec.json
+  phase6_manifest: artifacts/phase6/phase6_manifest.json
+  phase7_manifest: artifacts/phase7/phase7_manifest.json
+  phase7_policy: artifacts/phase7/frozen_business_policy_spec.json
+immutability:
+  accepted_phase_artifacts: artifacts/phase[2-7]/**
+  recommendation_artifacts_must_not_change: true
+no_training:
+  allowed: false
+  forbidden_calls: [CatBoost.fit, Optuna, GridSearch, RandomizedSearch, calibration, feature_selection, hyperparameter_tuning, rule_tuning, price_grid_tuning]
+outcome_access:
+  phase8_first_allowed_phase: true
+  split_reads: separate_validation_then_test
+  test_read_count: 1
+  freeze_spec_before_test: true
+  sql_mode: SELECT_ONLY
+  join_key: PricingDecisionID
+  expected_rows: {validation: 5250, test: 5250}
+  model_context_forbidden: [PurchasedFlag, QuantityPurchased, ActualRevenue, OutcomeTime, OrderLineID]
+factual_definition:
+  price: AppliedPrice
+  observed_units: QuantityPurchased
+  observed_revenue: ActualRevenue
+  observed_gross_profit: ActualRevenue - (Product.CostPrice * QuantityPurchased)
+  cost_limitation: Static Product.CostPrice proxy; historical cost snapshots unavailable.
+counterfactual_definition:
+  scenarios_are_model_implied: true
+  causal_claims: forbidden
+scenarios:
+  S0_HISTORICAL_APPLIED: Historical AppliedPrice, factual prediction
+  S1_CURRENT_PRICE: CurrentPrice, model-implied
+  S2_PHASE6_MODEL_OPTIMAL: frozen Phase 6 recommendation, model-implied
+  S3_PHASE7_FINAL_AUTOMATIC: non-null frozen Phase 7 final price, model-implied
+  S4_PHASE7_WITH_HISTORICAL_FALLBACK: Phase 7 price or historical price for manual rows, model-implied
+metrics:
+  purchase: [ROC-AUC, Average Precision, Log Loss, Brier Score, ECE, Top-decile lift]
+  demand: [MAE, RMSE, Poisson deviance, aggregate units, aggregate units error %, WAPE, mean bias]
+  revenue: [MAE, RMSE, WAPE, mean bias, aggregate revenue, aggregate revenue error %]
+  gross_profit: [MAE, RMSE, WAPE, mean bias, aggregate gross profit, aggregate GP error %, margin rates]
+  segments: [Channel, Season, RegionID, CategoryID, StoreType]
+business_thresholds:
+  demand: {strong: 0.05, warning: 0.10, blocker: DEMAND_BACKTEST_FAILURE}
+  revenue: {strong: 0.075, warning: 0.15, blocker: REVENUE_BACKTEST_FAILURE}
+  gross_profit: {strong: 0.10, warning: 0.20, blocker: GROSS_PROFIT_BACKTEST_FAILURE}
+  economic_policy_regression: {blocker_below: -0.05, warning_below: 0.0}
+  exact_boundary_gap: {warning_above: 0.005, blocker_above: 0.02}
+  segment_support: {minimum_rows: 100, revenue_warning: 0.20, gp_warning: 0.25, major_share: 0.20, major_gp_failure: 0.30}
+bootstrap:
+  seed: 42
+  samples: 1000
+  confidence: 0.95
+boundary_analysis:
+  grid_boundary_tolerance: 0.005
+  neighbor_fragility: true
+  exact_rule_boundary_sensitivity: in_support_exact_cent_only
+  response_safety_recomputed: true
+historical_inventory_prohibition:
+  validation_test_inventory_constraint_applied: false
+  historical_markdown_backtest: NOT_AVAILABLE
+current_inventory_evaluation:
+  source: Phase7 current inventory artifact only
+  historical_outcomes_attached: false
+claim_language_restrictions:
+  required_for_alternative_prices: model-implied expected revenue/gross profit/units
+  prohibited: [causal uplift, causal elasticity, guaranteed revenue increase, realized profit uplift, will definitely increase sales]

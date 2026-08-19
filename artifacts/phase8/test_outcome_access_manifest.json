@@ -1,0 +1,20 @@
+{
+  "evaluation_spec_frozen_at": "2026-08-19T07:09:48.143058+00:00",
+  "evaluation_spec_frozen_before_test": true,
+  "source": {
+    "outcome_reread": false,
+    "rows": 5250,
+    "source_path": "artifacts\\phase8\\test_factual_backtest.parquet",
+    "source_sha256": "347aa556c7fa9a0f61748c80c890a09a4132fa2d3098ce83865873b9abaee9f4",
+    "sql_select_only": false,
+    "status": "FROZEN_ARTIFACT_REUSE"
+  },
+  "test_outcome_access_count": 1,
+  "test_outcomes_loaded_at": "2026-08-19T07:09:48.189523+00:00",
+  "test_used_for_candidate_grid_selection": false,
+  "test_used_for_hpo": false,
+  "test_used_for_model_selection": false,
+  "test_used_for_rule_selection": false,
+  "test_used_for_threshold_selection": false,
+  "test_used_for_training": false
+}

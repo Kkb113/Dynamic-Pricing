@@ -1,0 +1,11 @@
+{
+  "automatic_cohort_identical": true,
+  "bootstrap_identical": true,
+  "factual_metrics_identical": true,
+  "joined_outcomes_identical": true,
+  "max_numeric_delta": 0.0,
+  "mismatches": 0,
+  "scenario_economics_identical": true,
+  "status": "PASS",
+  "tolerance": 1e-10
+}

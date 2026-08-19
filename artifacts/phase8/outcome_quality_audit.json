@@ -1,0 +1,102 @@
+{
+  "cost_limitation": "Static Product.CostPrice is used because historical cost snapshots are unavailable.",
+  "observed_gross_profit_definition": "ActualRevenue - (Product.CostPrice * QuantityPurchased)",
+  "test": {
+    "gross_profit_formula": {
+      "exact_match_rate": 1.0,
+      "max_absolute_delta": 2.2737367544323206e-13,
+      "mean_delta": 9.000207986294602e-17,
+      "mismatch_count": 0,
+      "p95_absolute_delta": 0.0,
+      "rows": 5250,
+      "status": "PASS",
+      "tolerance": 1e-09
+    },
+    "join": {
+      "duplicate_ids": 0,
+      "expected_rows": 5250,
+      "missing_ids": 0,
+      "one_to_one": true,
+      "rows": 5250,
+      "unexpected_ids": 0,
+      "unique_ids": 5250
+    },
+    "quality": {
+      "contradictions": {
+        "nonpurchase_positive_quantity": 0,
+        "nonpurchase_positive_revenue": 0,
+        "purchase_zero_quantity": 0
+      },
+      "contradictory_rows": 0,
+      "invalid_applied_price_rows": 0,
+      "invalid_purchased_flag_rows": 0,
+      "invalid_quantity_rows": 0,
+      "invalid_revenue_rows": 0,
+      "purchased_flag_values": [
+        0,
+        1
+      ],
+      "rows": 5250,
+      "status": "PASS"
+    },
+    "revenue": {
+      "exact_cent_match_rate": 1.0,
+      "max_absolute_delta": 2.2737367544323206e-13,
+      "mean_delta": -5.413658939124573e-17,
+      "mismatch_count": 0,
+      "mismatch_rate": 0.0,
+      "p95_absolute_delta": 0.0,
+      "status": "PASS",
+      "tolerance": 0.01
+    }
+  },
+  "validation": {
+    "gross_profit_formula": {
+      "exact_match_rate": 1.0,
+      "max_absolute_delta": 5.684341886080802e-14,
+      "mean_delta": -3.315866100213801e-17,
+      "mismatch_count": 0,
+      "p95_absolute_delta": 0.0,
+      "rows": 5250,
+      "status": "PASS",
+      "tolerance": 1e-09
+    },
+    "join": {
+      "duplicate_ids": 0,
+      "expected_rows": 5250,
+      "missing_ids": 0,
+      "one_to_one": true,
+      "rows": 5250,
+      "unexpected_ids": 0,
+      "unique_ids": 5250
+    },
+    "quality": {
+      "contradictions": {
+        "nonpurchase_positive_quantity": 0,
+        "nonpurchase_positive_revenue": 0,
+        "purchase_zero_quantity": 0
+      },
+      "contradictory_rows": 0,
+      "invalid_applied_price_rows": 0,
+      "invalid_purchased_flag_rows": 0,
+      "invalid_quantity_rows": 0,
+      "invalid_revenue_rows": 0,
+      "purchased_flag_values": [
+        0,
+        1
+      ],
+      "rows": 5250,
+      "status": "PASS"
+    },
+    "revenue": {
+      "exact_cent_match_rate": 1.0,
+      "max_absolute_delta": 1.1368683772161603e-13,
+      "mean_delta": 3.248195363474744e-17,
+      "mismatch_count": 0,
+      "mismatch_rate": 0.0,
+      "p95_absolute_delta": 0.0,
+      "status": "PASS",
+      "tolerance": 0.01
+    }
+  }
+}

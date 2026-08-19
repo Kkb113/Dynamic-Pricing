@@ -1,0 +1,238 @@
+{
+  "automatic_summaries": {
+    "S0_HISTORICAL_APPLIED": {
+      "aggregate_expected_gross_profit": 78157.65913365793,
+      "aggregate_expected_revenue": 183388.0098549761,
+      "aggregate_expected_units": 1224.9544926038425,
+      "factual_or_counterfactual": "factual_prediction",
+      "gross_margin_rate": 0.42618740012209794,
+      "hold_rate": 1.0,
+      "label": "historical factual prediction at observed price",
+      "mean_price": 149.28419163962587,
+      "mean_price_change_pct": 0.0,
+      "median_price": 130.36,
+      "median_price_change_pct": 0.0,
+      "missing_price_rows": 0,
+      "price_decrease_rate": 0.0,
+      "price_increase_rate": 0.0,
+      "rows": 5239,
+      "scenario": "S0_HISTORICAL_APPLIED"
+    },
+    "S1_CURRENT_PRICE": {
+      "aggregate_expected_gross_profit": 73104.68286821345,
+      "aggregate_expected_revenue": 176117.12021583557,
+      "aggregate_expected_units": 1203.153668714533,
+      "factual_or_counterfactual": "counterfactual_model_implied",
+      "gross_margin_rate": 0.41509129140098355,
+      "hold_rate": 0.14621110899026532,
+      "label": "model-implied scenario estimate",
+      "mean_price": 147.29884329070433,
+      "mean_price_change_pct": -0.016042436667355126,
+      "median_price": 128.6,
+      "median_price_change_pct": -0.01641898370086295,
+      "missing_price_rows": 0,
+      "price_decrease_rate": 0.5346440160335942,
+      "price_increase_rate": 0.31914487497614047,
+      "rows": 5239,
+      "scenario": "S1_CURRENT_PRICE"
+    },
+    "S2_PHASE6_MODEL_OPTIMAL": {
+      "aggregate_expected_gross_profit": 86841.88329591775,
+      "aggregate_expected_revenue": 185412.83464146155,
+      "aggregate_expected_units": 1154.5265052632126,
+      "factual_or_counterfactual": "counterfactual_model_implied",
+      "gross_margin_rate": 0.46837039875824427,
+      "hold_rate": 0.0005726283641916397,
+      "label": "model-implied scenario estimate",
+      "mean_price": 161.84263027295287,
+      "mean_price_change_pct": 0.08152386191648232,
+      "median_price": 141.46,
+      "median_price_change_pct": 0.08145960767770513,
+      "missing_price_rows": 0,
+      "price_decrease_rate": 0.12979576255010497,
+      "price_increase_rate": 0.8696316090857034,
+      "rows": 5239,
+      "scenario": "S2_PHASE6_MODEL_OPTIMAL"
+    },
+    "S3_PHASE7_FINAL_AUTOMATIC": {
+      "aggregate_expected_gross_profit": 85760.20812471556,
+      "aggregate_expected_revenue": 184730.59670119127,
+      "aggregate_expected_units": 1158.3226150127766,
+      "factual_or_counterfactual": "counterfactual_model_implied",
+      "gross_margin_rate": 0.4642447415651233,
+      "hold_rate": 0.0015270089711777056,
+      "label": "model-implied scenario estimate",
+      "mean_price": 160.60786409620155,
+      "mean_price_change_pct": 0.07368801522217919,
+      "median_price": 140.29,
+      "median_price_change_pct": 0.06987629555332664,
+      "missing_price_rows": 0,
+      "price_decrease_rate": 0.22847871731246422,
+      "price_increase_rate": 0.7699942737163581,
+      "rows": 5239,
+      "scenario": "S3_PHASE7_FINAL_AUTOMATIC"
+    },
+    "S4_PHASE7_WITH_HISTORICAL_FALLBACK": {
+      "aggregate_expected_gross_profit": 85760.20812471556,
+      "aggregate_expected_revenue": 184730.59670119127,
+      "aggregate_expected_units": 1158.3226150127766,
+      "factual_or_counterfactual": "counterfactual_model_implied",
+      "gross_margin_rate": 0.4642447415651233,
+      "hold_rate": 0.0015270089711777056,
+      "label": "model-implied scenario estimate",
+      "mean_price": 160.60786409620155,
+      "mean_price_change_pct": 0.07368801522217919,
+      "median_price": 140.29,
+      "median_price_change_pct": 0.06987629555332664,
+      "missing_price_rows": 0,
+      "price_decrease_rate": 0.22847871731246422,
+      "price_increase_rate": 0.7699942737163581,
+      "rows": 5239,
+      "scenario": "S4_PHASE7_WITH_HISTORICAL_FALLBACK"
+    }
+  },
+  "delta_cohorts": {
+    "S1_CURRENT_PRICE": {
+      "cohort": "S3_PHASE7_FINAL_AUTOMATIC",
+      "rows": 5239
+    },
+    "S2_PHASE6_MODEL_OPTIMAL": {
+      "cohort": "S3_PHASE7_FINAL_AUTOMATIC",
+      "rows": 5239
+    },
+    "S3_PHASE7_FINAL_AUTOMATIC": {
+      "cohort": "S3_PHASE7_FINAL_AUTOMATIC",
+      "rows": 5239
+    },
+    "S4_PHASE7_WITH_HISTORICAL_FALLBACK": {
+      "cohort": "ALL_DECISION_ROWS",
+      "rows": 5250
+    }
+  },
+  "deltas": {
+    "S1_CURRENT_PRICE": {
+      "expected_gross_profit_delta": -5052.9762654444785,
+      "expected_gross_profit_delta_pct": -0.06465106966424558,
+      "expected_revenue_delta": -7270.889639140514,
+      "expected_revenue_delta_pct": -0.03964757371482661,
+      "expected_units_delta": -21.800823889309413,
+      "expected_units_delta_pct": -0.017797252078294086
+    },
+    "S2_PHASE6_MODEL_OPTIMAL": {
+      "expected_gross_profit_delta": 8684.224162259823,
+      "expected_gross_profit_delta_pct": 0.11111162051832789,
+      "expected_revenue_delta": 2024.8247864854638,
+      "expected_revenue_delta_pct": 0.01104120595499511,
+      "expected_units_delta": -70.4279873406299,
+      "expected_units_delta_pct": -0.05749437041609898
+    },
+    "S3_PHASE7_FINAL_AUTOMATIC": {
+      "expected_gross_profit_delta": 7602.548991057629,
+      "expected_gross_profit_delta_pct": 0.09727196381427519,
+      "expected_revenue_delta": 1342.5868462151848,
+      "expected_revenue_delta_pct": 0.007321017591482166,
+      "expected_units_delta": -66.63187759106586,
+      "expected_units_delta_pct": -0.0543953901907236
+    },
+    "S4_PHASE7_WITH_HISTORICAL_FALLBACK": {
+      "expected_gross_profit_delta": 7602.548991057629,
+      "expected_gross_profit_delta_pct": 0.09707305725865308,
+      "expected_revenue_delta": 1342.5868462151848,
+      "expected_revenue_delta_pct": 0.007307542723257569,
+      "expected_units_delta": -66.63187759106563,
+      "expected_units_delta_pct": -0.05426936487295708
+    }
+  },
+  "summaries": {
+    "S0_HISTORICAL_APPLIED": {
+      "aggregate_expected_gross_profit": 78317.80728611944,
+      "aggregate_expected_revenue": 183726.1713081965,
+      "aggregate_expected_units": 1227.799104468033,
+      "factual_or_counterfactual": "factual_prediction",
+      "gross_margin_rate": 0.42627463865636805,
+      "hold_rate": 1.0,
+      "label": "historical factual prediction at observed price",
+      "mean_price": 149.22466095238096,
+      "mean_price_change_pct": 0.0,
+      "median_price": 130.29500000000002,
+      "median_price_change_pct": 0.0,
+      "missing_price_rows": 0,
+      "price_decrease_rate": 0.0,
+      "price_increase_rate": 0.0,
+      "rows": 5250,
+      "scenario": "S0_HISTORICAL_APPLIED"
+    },
+    "S1_CURRENT_PRICE": {
+      "aggregate_expected_gross_profit": 73260.12327167034,
+      "aggregate_expected_revenue": 176453.40453904253,
+      "aggregate_expected_units": 1206.004974152754,
+      "factual_or_counterfactual": "counterfactual_model_implied",
+      "gross_margin_rate": 0.4151811265022127,
+      "hold_rate": 0.14609523809523808,
+      "label": "model-implied scenario estimate",
+      "mean_price": 147.23921904761906,
+      "mean_price_change_pct": -0.01602667605551463,
+      "median_price": 128.6,
+      "median_price_change_pct": -0.01643733995169721,
+      "missing_price_rows": 0,
+      "price_decrease_rate": 0.5348571428571428,
+      "price_increase_rate": 0.319047619047619,
+      "rows": 5250,
+      "scenario": "S1_CURRENT_PRICE"
+    },
+    "S2_PHASE6_MODEL_OPTIMAL": {
+      "aggregate_expected_gross_profit": 87015.10231626547,
+      "aggregate_expected_revenue": 185751.57213820773,
+      "aggregate_expected_units": 1157.1155886821125,
+      "factual_or_counterfactual": "counterfactual_model_implied",
+      "gross_margin_rate": 0.4684488067294646,
+      "hold_rate": 0.0005714285714285715,
+      "label": "model-implied scenario estimate",
+      "mean_price": 161.77709714285714,
+      "mean_price_change_pct": 0.08153820294368819,
+      "median_price": 141.46,
+      "median_price_change_pct": 0.08145932849093328,
+      "missing_price_rows": 0,
+      "price_decrease_rate": 0.1300952380952381,
+      "price_increase_rate": 0.8693333333333333,
+      "rows": 5250,
+      "scenario": "S2_PHASE6_MODEL_OPTIMAL"
+    },
+    "S3_PHASE7_FINAL_AUTOMATIC": {
+      "aggregate_expected_gross_profit": 85760.20812471556,
+      "aggregate_expected_revenue": 184730.59670119127,
+      "aggregate_expected_units": 1158.3226150127766,
+      "factual_or_counterfactual": "counterfactual_model_implied",
+      "gross_margin_rate": 0.4642447415651233,
+      "hold_rate": 0.0015270089711777056,
+      "label": "model-implied scenario estimate",
+      "mean_price": 160.60786409620155,
+      "mean_price_change_pct": 0.07368801522217919,
+      "median_price": 140.29,
+      "median_price_change_pct": 0.06987629555332664,
+      "missing_price_rows": 11,
+      "price_decrease_rate": 0.22847871731246422,
+      "price_increase_rate": 0.7699942737163581,
+      "rows": 5239,
+      "scenario": "S3_PHASE7_FINAL_AUTOMATIC"
+    },
+    "S4_PHASE7_WITH_HISTORICAL_FALLBACK": {
+      "aggregate_expected_gross_profit": 85920.35627717707,
+      "aggregate_expected_revenue": 185068.75815441168,
+      "aggregate_expected_units": 1161.1672268769673,
+      "factual_or_counterfactual": "counterfactual_model_implied",
+      "gross_margin_rate": 0.46426180806535494,
+      "hold_rate": 0.003619047619047619,
+      "label": "model-implied scenario estimate",
+      "mean_price": 160.5246076190476,
+      "mean_price_change_pct": 0.0735336212855232,
+      "median_price": 140.29,
+      "median_price_change_pct": 0.06974475497356754,
+      "missing_price_rows": 0,
+      "price_decrease_rate": 0.228,
+      "price_increase_rate": 0.7683809523809524,
+      "rows": 5250,
+      "scenario": "S4_PHASE7_WITH_HISTORICAL_FALLBACK"
+    }
+  }
+}

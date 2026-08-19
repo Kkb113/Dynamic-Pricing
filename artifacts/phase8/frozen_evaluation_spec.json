@@ -1,0 +1,144 @@
+{
+  "bootstrap": {
+    "confidence": 0.95,
+    "samples": 1000,
+    "seed": 42
+  },
+  "boundary_diagnostics": {
+    "exact_boundary_support_source": "PHASE6_EFFECTIVE_SUPPORT_ENVELOPE",
+    "fragility_rate": 0.8,
+    "grid_tolerance": 0.005,
+    "near_tie_relative_gp": 0.005,
+    "near_tie_share": 0.5,
+    "policywide_automatic_gap_blocker": 0.02,
+    "policywide_automatic_gap_warning": 0.005
+  },
+  "business_thresholds": {
+    "demand_strong": 0.05,
+    "demand_warning": 0.1,
+    "economic_policy_regression_blocker": -0.05,
+    "gross_profit_strong": 0.1,
+    "gross_profit_warning": 0.2,
+    "material_grid_gap_blocker": 0.02,
+    "revenue_strong": 0.075,
+    "revenue_warning": 0.15
+  },
+  "claim_language_restrictions": [
+    "Do not describe alternative-price economics as observed, realized, or causal."
+  ],
+  "current_inventory_policy": "PHASE7_CURRENT_INVENTORY_ARTIFACT_ONLY",
+  "factual_counterfactual_terminology": {
+    "alternative": "model-implied/scenario estimate",
+    "historical": "observed/factual"
+  },
+  "failure_thresholds": [
+    "UPSTREAM_ARTIFACT_INTEGRITY_FAILURE",
+    "PHASE8_MODEL_MUTATION",
+    "TEST_OUTCOMES_BEFORE_EVALUATION_FREEZE",
+    "OUTCOME_JOIN_INTEGRITY_FAILURE",
+    "ACTUAL_REVENUE_INTEGRITY_FAILURE",
+    "PHASE4_PREDICTION_DRIFT",
+    "PHASE5_EXPECTED_DEMAND_DRIFT",
+    "DEMAND_BACKTEST_FAILURE",
+    "REVENUE_BACKTEST_FAILURE",
+    "GROSS_PROFIT_BACKTEST_FAILURE",
+    "ECONOMIC_POLICY_REGRESSION",
+    "MATERIAL_GRID_GRANULARITY_GAP",
+    "MAJOR_SEGMENT_ECONOMIC_CALIBRATION_FAILURE",
+    "NEGATIVE_MARGIN_AUTOMATIC_RECOMMENDATION",
+    "PHASE7_RULE_COMPLIANCE_REGRESSION",
+    "HISTORICAL_INVENTORY_LEAKAGE",
+    "NONFINITE_ECONOMICS",
+    "REPRODUCIBILITY_FAILURE",
+    "TESTS_FAILED"
+  ],
+  "frozen_at": "2026-08-19T07:09:48.143058+00:00",
+  "historical_inventory_policy": "NOT_AVAILABLE_FOR_VALIDATION_OR_TEST",
+  "metrics": {
+    "demand": [
+      "MAE",
+      "RMSE",
+      "Poisson deviance",
+      "aggregate units",
+      "aggregate units error %",
+      "WAPE",
+      "mean bias"
+    ],
+    "gross_profit": [
+      "MAE",
+      "RMSE",
+      "WAPE",
+      "mean bias",
+      "aggregate GP error %",
+      "observed margin rate",
+      "predicted margin rate"
+    ],
+    "purchase": [
+      "ROC-AUC",
+      "Average Precision",
+      "Log Loss",
+      "Brier Score",
+      "ECE",
+      "Top-decile lift"
+    ],
+    "revenue": [
+      "MAE",
+      "RMSE",
+      "WAPE",
+      "mean bias",
+      "aggregate revenue error %"
+    ]
+  },
+  "no_training": true,
+  "phase": 8,
+  "protocol_version": "phase8_business_backtesting_v1",
+  "scenario_cohort_policy": {
+    "automatic_cohort_definition": "S3_PHASE7_FINAL_AUTOMATIC_price.notna()",
+    "automatic_only_scenarios": [
+      "S0_HISTORICAL_APPLIED",
+      "S1_CURRENT_PRICE",
+      "S2_PHASE6_MODEL_OPTIMAL",
+      "S3_PHASE7_FINAL_AUTOMATIC"
+    ],
+    "fallback_scenario": "S4_PHASE7_WITH_HISTORICAL_FALLBACK uses all decision rows"
+  },
+  "scenario_definitions": {
+    "S0_HISTORICAL_APPLIED": "historical observed AppliedPrice",
+    "S1_CURRENT_PRICE": "model-implied expected economics",
+    "S2_PHASE6_MODEL_OPTIMAL": "model-implied expected economics",
+    "S3_PHASE7_FINAL_AUTOMATIC": "model-implied expected economics",
+    "S4_PHASE7_WITH_HISTORICAL_FALLBACK": "model-implied expected economics"
+  },
+  "segment_definitions": {
+    "columns": [
+      "Channel",
+      "Season",
+      "RegionID",
+      "CategoryID",
+      "StoreType"
+    ],
+    "gp_warning_abs": 0.25,
+    "major_gp_failure_abs": 0.3,
+    "major_revenue_share": 0.2,
+    "minimum_rows": 100,
+    "revenue_warning_abs": 0.2
+  },
+  "training_calls_forbidden": [
+    "CatBoost.fit",
+    "Optuna",
+    "GridSearch",
+    "RandomizedSearch",
+    "calibration",
+    "feature_selection",
+    "hyperparameter_tuning",
+    "rule_tuning",
+    "price_grid_tuning"
+  ],
+  "upstream_phase7_fingerprints": {
+    "current_decisions_sha256": "71c3a73e93c78611c4d6af09ce3105981bd00be4900aee53babbd55b9a3d8563",
+    "frozen_policy_sha256": "74ee5dc91242ad14e2afa65088ffb6f342483816ca2da2e7810801aa20f1cf8c",
+    "manifest_sha256": "8d79b5bee6a8b073f06508550cce2e2f35747a157d891c8cddaf45e9ab3050c6",
+    "test_decisions_sha256": "4b81635f2794488c923a2334db2d93759abed6e5fdd78e2f9fa7a718135c48fa",
+    "validation_decisions_sha256": "339c95141eda615175a52470244ad95608c71ea389cd21ae9702776a452dde56"
+  }
+}
