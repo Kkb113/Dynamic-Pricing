@@ -1,0 +1,29 @@
+{
+  "bootstrap_samples": 1000,
+  "confidence": 0.95,
+  "interpretation": "Sample uncertainty only; intervals do not make counterfactual comparisons causal.",
+  "intervals": {
+    "aggregate_gp_error_pct": {
+      "lower_2_5_pct": -0.11137137178425276,
+      "mean": -0.04593698881804898,
+      "upper_97_5_pct": 0.028981591257943078
+    },
+    "aggregate_revenue_error_pct": {
+      "lower_2_5_pct": -0.10972360311356681,
+      "mean": -0.03919513882535475,
+      "upper_97_5_pct": 0.03846038538486725
+    },
+    "aggregate_units_error_pct": {
+      "lower_2_5_pct": -0.08482607578100819,
+      "mean": -0.027306257863473918,
+      "upper_97_5_pct": 0.03601064022899703
+    },
+    "phase7_model_implied_gp_delta_pct": {
+      "lower_2_5_pct": 0.0659634982304701,
+      "mean": 0.07208562024826802,
+      "upper_97_5_pct": 0.07821837331642315
+    }
+  },
+  "seed": 42,
+  "status": "PASS"
+}

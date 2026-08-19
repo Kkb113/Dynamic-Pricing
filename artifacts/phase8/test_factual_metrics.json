@@ -1,0 +1,87 @@
+{
+  "aggregate_gross_profit_error_pct": -0.04571949189703134,
+  "aggregate_revenue_error_pct": -0.03916938526034357,
+  "aggregate_units_error_pct": -0.02741176452823888,
+  "demand": {
+    "aggregate_delta": -34.53882330558099,
+    "aggregate_error_pct": -0.02741176452823888,
+    "aggregate_observed": 1260.0,
+    "aggregate_predicted": 1225.461176694419,
+    "mae": 0.37985884280541526,
+    "mean_bias": -0.006578823486777299,
+    "poisson_deviance": 0.8349210360449312,
+    "rmse": 0.5694084073253828,
+    "wape": 1.582745178355897
+  },
+  "gates": {
+    "blockers": [],
+    "demand": "STRONG",
+    "gross_profit": "STRONG",
+    "revenue": "STRONG",
+    "status": "PASS"
+  },
+  "gross_profit": {
+    "aggregate_delta": -3796.8652719880047,
+    "aggregate_error_pct": -0.04571949189703134,
+    "aggregate_observed": 83046.97,
+    "aggregate_predicted": 79250.104728012,
+    "mae": 24.710188804153457,
+    "mean_bias": -0.7232124327596203,
+    "rmse": 44.40484921452553,
+    "wape": 1.5621098665225914
+  },
+  "observed_gross_margin_rate": 0.43181407056000554,
+  "parity": {
+    "phase4_pass": true,
+    "phase4_probability_max_delta": 0.0,
+    "phase5_expected_units_max_delta": 0.0,
+    "phase5_pass": true
+  },
+  "predicted_historical_gross_margin_rate": 0.4288703381622232,
+  "purchase": {
+    "average_precision": 0.24523451977509367,
+    "brier_score": 0.14786924715837632,
+    "calibration_rows": [
+      {
+        "decile": 1,
+        "decision_count": 3,
+        "mean_predicted_probability": 0.09707152172777168,
+        "observed_purchase_rate": 0.3333333333333333
+      },
+      {
+        "decile": 2,
+        "decision_count": 3674,
+        "mean_predicted_probability": 0.15028034842969323,
+        "observed_purchase_rate": 0.15568862275449102
+      },
+      {
+        "decile": 3,
+        "decision_count": 1522,
+        "mean_predicted_probability": 0.24298149663370366,
+        "observed_purchase_rate": 0.25492772667542707
+      },
+      {
+        "decile": 4,
+        "decision_count": 51,
+        "mean_predicted_probability": 0.3184005908781325,
+        "observed_purchase_rate": 0.21568627450980393
+      }
+    ],
+    "ece": 0.008380833821411722,
+    "log_loss": 0.46908721778657386,
+    "positive_rate": 0.18514285714285714,
+    "roc_auc": 0.6093393176304454,
+    "rows": 5250,
+    "top_decile_lift": 1.491769547325103
+  },
+  "revenue": {
+    "aggregate_delta": -7533.1004346746195,
+    "aggregate_error_pct": -0.03916938526034357,
+    "aggregate_observed": 192321.13,
+    "aggregate_predicted": 184788.02956532539,
+    "mae": 57.58664659313121,
+    "mean_bias": -1.434876273271355,
+    "rmse": 104.01525649413237,
+    "wape": 1.5720056065287202
+  }
+}

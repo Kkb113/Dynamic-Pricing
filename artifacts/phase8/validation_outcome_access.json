@@ -1,0 +1,74 @@
+{
+  "join": {
+    "duplicate_ids": 0,
+    "expected_rows": 5250,
+    "missing_ids": 0,
+    "one_to_one": true,
+    "rows": 5250,
+    "unexpected_ids": 0,
+    "unique_ids": 5250
+  },
+  "quality": {
+    "contradictions": {
+      "nonpurchase_positive_quantity": 0,
+      "nonpurchase_positive_revenue": 0,
+      "purchase_zero_quantity": 0
+    },
+    "contradictory_rows": 0,
+    "invalid_applied_price_rows": 0,
+    "invalid_purchased_flag_rows": 0,
+    "invalid_quantity_rows": 0,
+    "invalid_revenue_rows": 0,
+    "purchased_flag_values": [
+      0,
+      1
+    ],
+    "rows": 5250,
+    "status": "PASS"
+  },
+  "revenue": {
+    "exact_cent_match_rate": 1.0,
+    "max_absolute_delta": 1.1368683772161603e-13,
+    "mean_delta": 3.248195363474744e-17,
+    "mismatch_count": 0,
+    "mismatch_rate": 0.0,
+    "p95_absolute_delta": 0.0,
+    "status": "PASS",
+    "tolerance": 0.01
+  },
+  "source": {
+    "chunk_size": 1000,
+    "driver": "pymssql_tds",
+    "query_count": 6,
+    "query_shapes": [
+      {
+        "has_outcome_columns": true,
+        "row_count": 1000
+      },
+      {
+        "has_outcome_columns": true,
+        "row_count": 1000
+      },
+      {
+        "has_outcome_columns": true,
+        "row_count": 1000
+      },
+      {
+        "has_outcome_columns": true,
+        "row_count": 1000
+      },
+      {
+        "has_outcome_columns": true,
+        "row_count": 1000
+      },
+      {
+        "has_outcome_columns": true,
+        "row_count": 250
+      }
+    ],
+    "requested_ids": 5250,
+    "rows": 5250,
+    "sql_select_only": true,
+    "status": "CONNECTED_READ_ONLY"
+  }
+}

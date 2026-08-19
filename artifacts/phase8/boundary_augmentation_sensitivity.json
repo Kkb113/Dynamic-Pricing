@@ -1,0 +1,16 @@
+{
+  "aggregate_model_implied_gp_delta": 974.9540889714186,
+  "blockers": [
+    "MATERIAL_GRID_GRANULARITY_GAP"
+  ],
+  "boundaries_scored": 3195,
+  "change_rate": 0.8708357685563998,
+  "decision_rows_with_scored_boundaries": 1711,
+  "decisions_where_augmented_optimum_differs": 1490,
+  "in_support_unsimulated_boundaries": 3195,
+  "mean_price_delta": 3.532817066043249,
+  "relative_aggregate_gp_delta": 0.035584990155558174,
+  "warning_codes": [
+    "COARSE_GRID_VALUE_WARNING"
+  ]
+}

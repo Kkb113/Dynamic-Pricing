@@ -1,0 +1,47 @@
+{
+  "evaluation_spec_frozen_at": "2026-08-19T06:19:32.822911+00:00",
+  "evaluation_spec_frozen_before_test": true,
+  "source": {
+    "chunk_size": 1000,
+    "driver": "pymssql_tds",
+    "query_count": 6,
+    "query_shapes": [
+      {
+        "has_outcome_columns": true,
+        "row_count": 1000
+      },
+      {
+        "has_outcome_columns": true,
+        "row_count": 1000
+      },
+      {
+        "has_outcome_columns": true,
+        "row_count": 1000
+      },
+      {
+        "has_outcome_columns": true,
+        "row_count": 1000
+      },
+      {
+        "has_outcome_columns": true,
+        "row_count": 1000
+      },
+      {
+        "has_outcome_columns": true,
+        "row_count": 250
+      }
+    ],
+    "requested_ids": 5250,
+    "rows": 5250,
+    "sql_select_only": true,
+    "status": "CONNECTED_READ_ONLY"
+  },
+  "test_outcome_access_count": 1,
+  "test_outcomes_loaded_at": "2026-08-19T06:19:32.969246+00:00",
+  "test_used_for_candidate_grid_selection": false,
+  "test_used_for_hpo": false,
+  "test_used_for_model_selection": false,
+  "test_used_for_rule_selection": false,
+  "test_used_for_threshold_selection": false,
+  "test_used_for_training": false
+}

@@ -1,0 +1,10 @@
+{
+  "exact_match_rate": 0.0030917874396135265,
+  "exact_matches": 16,
+  "observed_gross_profit": 86.39000000000001,
+  "observed_revenue": 169.08,
+  "observed_units": 1.0,
+  "predicted_gross_profit": 132.14082872379646,
+  "predicted_revenue": 276.8203721139847,
+  "predicted_units": 4.43862424344971
+}
