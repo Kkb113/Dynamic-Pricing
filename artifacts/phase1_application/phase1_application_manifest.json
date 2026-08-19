@@ -6,7 +6,8 @@
   "base_branch": "codex/phase9-10-local-ai-pricing-app",
   "base_git_sha": "8c06b3280d0802065cb5a699f3d9dc9d9689f692",
   "implementation_branch": "codex/app-phase1-contract-architecture",
-  "implementation_git_sha": "CURRENT_HEAD",
+  "implementation_git_sha": "ce4690b21e9467fb53c19f7df3e4d21f8f4fdd03",
+  "evidence_git_sha": "ce4690b21e9467fb53c19f7df3e4d21f8f4fdd03",
   "gates": {
     "architecture_and_trust_boundary": true,
     "versioned_schemas": true,
@@ -28,13 +29,13 @@
   },
   "targeted_tests": {
     "status": "PASS",
-    "passed": 14,
+    "passed": 15,
     "failed": 0,
     "command": "pytest -q tests/application_contract"
   },
   "full_suite": {
     "status": "PASS",
-    "passed": 209,
+    "passed": 210,
     "failed": 0,
     "command": "pytest -q"
   },

@@ -17,13 +17,13 @@ This report covers **Application Contract & Local Architecture** only. It establ
 | React state/component/JSON viewer contract | `docs/PHASE1_REACT_STATE_CONTRACT.md` | Pass |
 | Required ADRs | `docs/adr/ADR-00*.md` | Pass |
 | Secret-free local environment example | `.env.example` | Pass |
-| Automated contract tests | `tests/application_contract/` | Pass — 14 targeted tests; 209 full-suite tests |
+| Automated contract tests | `tests/application_contract/` | Pass — 15 targeted tests; 210 full-suite tests |
 
 ## Verification record
 
 ```text
-pytest -q tests/application_contract  -> 14 passed
-pytest -q                            -> 209 passed
+pytest -q tests/application_contract  -> 15 passed
+pytest -q                            -> 210 passed
 ```
 
 Both runs used `TEST_EVIDENCE_PATH=artifacts/phase1_application/pytest_hook_results.json`; accepted upstream Phase 1 evidence was not rewritten. The only observed test warning is an existing pytest configuration warning for `asyncio_default_fixture_loop_scope` in the frozen environment.

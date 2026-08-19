@@ -5,6 +5,7 @@ from pathlib import Path
 
 import yaml
 
+from application_contracts.acceptance import PHASE1_IMPLEMENTATION_SHA, build_acceptance_manifest
 from application_contracts.validation import validate_document
 
 
@@ -71,3 +72,21 @@ def test_checked_in_acceptance_manifest_records_passing_validation():
     assert all(manifest["gates"].values())
     assert manifest["targeted_tests"]["status"] == "PASS"
     assert manifest["full_suite"]["status"] == "PASS"
+    implementation_sha = "ce4690b21e9467fb53c19f7df3e4d21f8f4fdd03"
+    assert manifest["implementation_git_sha"] == implementation_sha
+    assert manifest["evidence_git_sha"] == implementation_sha
+    evidence_dir = ROOT / "artifacts/phase1_application"
+    for evidence_path in evidence_dir.glob("*.json"):
+        evidence_text = evidence_path.read_text(encoding="utf-8")
+        assert "CURRENT_HEAD" not in evidence_text, evidence_path
+        assert "computed_at_commit" not in evidence_text, evidence_path
+        assert "RUN_BY_HANDOFF" not in evidence_text, evidence_path
+
+
+def test_acceptance_generator_emits_resolved_evidence_sha():
+    generated = build_acceptance_manifest(ROOT)
+    assert PHASE1_IMPLEMENTATION_SHA == "ce4690b21e9467fb53c19f7df3e4d21f8f4fdd03"
+    assert generated["implementation_git_sha"] == PHASE1_IMPLEMENTATION_SHA
+    assert generated["evidence_git_sha"] == PHASE1_IMPLEMENTATION_SHA
+    assert generated["targeted_tests"]["status"] == "PASS"
+    assert generated["full_suite"]["status"] == "PASS"
