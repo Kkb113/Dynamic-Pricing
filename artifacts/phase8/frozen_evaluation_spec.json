@@ -49,7 +49,7 @@
     "REPRODUCIBILITY_FAILURE",
     "TESTS_FAILED"
   ],
-  "frozen_at": "2026-08-19T06:16:47.963477+00:00",
+  "frozen_at": "2026-08-19T06:19:32.822911+00:00",
   "historical_inventory_policy": "NOT_AVAILABLE_FOR_VALIDATION_OR_TEST",
   "metrics": {
     "demand": [

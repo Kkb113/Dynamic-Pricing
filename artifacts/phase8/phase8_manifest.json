@@ -56,35 +56,35 @@
     "policy": "Batched frozen CatBoost inference; no nested outer parallel loop.",
     "rows_evaluated": 10500,
     "timings_seconds": {
-      "bootstrap_seconds": 9.246694000001298,
-      "boundary_analysis_seconds": 33.18757690000348,
-      "current_price_scoring_seconds": 0.26759560000209603,
-      "factual_metrics_seconds": 0.04567039999528788,
-      "historical_scoring_seconds": 0.33578570000099717,
-      "outcome_loading_seconds": 0.3300907000011648,
-      "scenario_assembly_seconds": 0.0576974999930826,
-      "segment_analysis_seconds": 0.11882039999909466,
-      "test_factual_metrics_seconds": 0.023999999997613486,
-      "test_historical_scoring_seconds": 0.20937090000370517,
-      "test_outcome_loading_seconds": 0.13956920000055106,
-      "test_s0_historical_applied_scoring_seconds": 0.03734149999945657,
-      "test_s1_current_price_scoring_seconds": 0.1526640000010957,
-      "test_s2_phase6_model_optimal_scoring_seconds": 0.12263890000031097,
-      "test_s3_phase7_final_automatic_scoring_seconds": 0.13573890000407118,
-      "test_s4_phase7_with_historical_fallback_scoring_seconds": 0.05437680000613909,
-      "test_scenario_assembly_seconds": 0.0392606999957934,
-      "test_scenario_scoring_seconds": 0.5430342000036035,
-      "total": 58.03513270000258,
-      "validation_factual_metrics_seconds": 0.021670399997674394,
-      "validation_historical_scoring_seconds": 0.126414799997292,
-      "validation_outcome_loading_seconds": 0.19052150000061374,
-      "validation_s0_historical_applied_scoring_seconds": 0.021140400000149384,
-      "validation_s1_current_price_scoring_seconds": 0.11493160000100033,
-      "validation_s2_phase6_model_optimal_scoring_seconds": 0.09361360000184504,
-      "validation_s3_phase7_final_automatic_scoring_seconds": 0.06325250000372762,
-      "validation_s4_phase7_with_historical_fallback_scoring_seconds": 0.02146570000331849,
-      "validation_scenario_assembly_seconds": 0.0184367999972892,
-      "validation_scenario_scoring_seconds": 0.33473319999757223
+      "bootstrap_seconds": 8.990065400001185,
+      "boundary_analysis_seconds": 25.13742320000165,
+      "current_price_scoring_seconds": 0.19729919999372214,
+      "factual_metrics_seconds": 0.03116569999838248,
+      "historical_scoring_seconds": 0.24997419999999693,
+      "outcome_loading_seconds": 0.3337647000007564,
+      "scenario_assembly_seconds": 0.035472900002787355,
+      "segment_analysis_seconds": 0.0937978000001749,
+      "test_factual_metrics_seconds": 0.012917200001538731,
+      "test_historical_scoring_seconds": 0.12376490000315243,
+      "test_outcome_loading_seconds": 0.14249019999988377,
+      "test_s0_historical_applied_scoring_seconds": 0.02014999999664724,
+      "test_s1_current_price_scoring_seconds": 0.08020079999550944,
+      "test_s2_phase6_model_optimal_scoring_seconds": 0.08934040000167442,
+      "test_s3_phase7_final_automatic_scoring_seconds": 0.05981759999849601,
+      "test_s4_phase7_with_historical_fallback_scoring_seconds": 0.020683299997472204,
+      "test_scenario_assembly_seconds": 0.017826000002969522,
+      "test_scenario_scoring_seconds": 0.2909639999998035,
+      "total": 47.266520799996215,
+      "validation_factual_metrics_seconds": 0.018248499996843748,
+      "validation_historical_scoring_seconds": 0.1262092999968445,
+      "validation_outcome_loading_seconds": 0.19127450000087265,
+      "validation_s0_historical_applied_scoring_seconds": 0.021508400001039263,
+      "validation_s1_current_price_scoring_seconds": 0.1170983999982127,
+      "validation_s2_phase6_model_optimal_scoring_seconds": 0.07873639999888837,
+      "validation_s3_phase7_final_automatic_scoring_seconds": 0.05562540000391891,
+      "validation_s4_phase7_with_historical_fallback_scoring_seconds": 0.01978850000159582,
+      "validation_scenario_assembly_seconds": 0.017646899999817833,
+      "validation_scenario_scoring_seconds": 0.3163023999950383
     },
     "usable_threads": 22
   },
@@ -109,11 +109,11 @@
     ]
   },
   "evaluation_freeze": {
-    "evaluation_spec_frozen_at": "2026-08-19T06:16:47.963477+00:00",
+    "evaluation_spec_frozen_at": "2026-08-19T06:19:32.822911+00:00",
     "test_outcome_access_count": 1,
-    "test_outcomes_loaded_at": "2026-08-19T06:16:48.126979+00:00"
+    "test_outcomes_loaded_at": "2026-08-19T06:19:32.969246+00:00"
   },
-  "evidence_git_sha": "f5aab959910916086a6a87b708d834cd87696e60",
+  "evidence_git_sha": "fdbaa53b695caaab29415defdb4ef37c8d87605a",
   "final_margin_safety": {
     "automatic_rows": 5175,
     "final_rule_violation_count": 0,
@@ -121,13 +121,13 @@
     "nonpositive_price_automatic_count": 0,
     "outside_model_support_count": 0
   },
-  "frozen_evaluation_spec_sha256": "705efd42ce2d2004e6f798be2e0275549cdf03d1ce7532657ee18e43c37a7d23",
+  "frozen_evaluation_spec_sha256": "6c69beb6de9ef92be4a6f79f7c1a247444ab31be9283b65a8b16c9412da6f1f4",
   "historical_inventory": {
     "inventory_constraint_applied": false,
     "test": "NOT_AVAILABLE_NO_HISTORICAL_INVENTORY",
     "validation": "NOT_AVAILABLE_NO_HISTORICAL_INVENTORY"
   },
-  "implementation_git_sha": "f5aab959910916086a6a87b708d834cd87696e60",
+  "implementation_git_sha": "fdbaa53b695caaab29415defdb4ef37c8d87605a",
   "major_blockers": [
     "MATERIAL_GRID_GRANULARITY_GAP"
   ],
@@ -746,7 +746,7 @@
   },
   "test_business_decision_fingerprint": "4b81635f2794488c923a2334db2d93759abed6e5fdd78e2f9fa7a718135c48fa",
   "test_outcome_access": {
-    "evaluation_spec_frozen_at": "2026-08-19T06:16:47.963477+00:00",
+    "evaluation_spec_frozen_at": "2026-08-19T06:19:32.822911+00:00",
     "evaluation_spec_frozen_before_test": true,
     "source": {
       "chunk_size": 1000,
@@ -784,7 +784,7 @@
       "status": "CONNECTED_READ_ONLY"
     },
     "test_outcome_access_count": 1,
-    "test_outcomes_loaded_at": "2026-08-19T06:16:48.126979+00:00",
+    "test_outcomes_loaded_at": "2026-08-19T06:19:32.969246+00:00",
     "test_used_for_candidate_grid_selection": false,
     "test_used_for_hpo": false,
     "test_used_for_model_selection": false,
@@ -796,7 +796,7 @@
   "tests": {
     "command": "pytest -q tests/phase8",
     "failed": 0,
-    "output_tail": "................                                                         [100%]\n============================== warnings summary ===============================\n..\\.phase7-work\\.venv\\Lib\\site-packages\\_pytest\\config\\__init__.py:1464\n  C:\\Users\\karth\\OneDrive\\Documents\\Intellify\\dynamic-pricing\\.phase7-work\\.venv\\Lib\\site-packages\\_pytest\\config\\__init__.py:1464: PytestConfigWarning: Unknown config option: asyncio_default_fixture_loop_scope\n  \n    self._warn_or_fail_if_strict(f\"Unknown config option: {key}\\n\")\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n16 passed, 1 warning in 1.72s\n",
+    "output_tail": "................                                                         [100%]\n============================== warnings summary ===============================\n..\\.phase7-work\\.venv\\Lib\\site-packages\\_pytest\\config\\__init__.py:1464\n  C:\\Users\\karth\\OneDrive\\Documents\\Intellify\\dynamic-pricing\\.phase7-work\\.venv\\Lib\\site-packages\\_pytest\\config\\__init__.py:1464: PytestConfigWarning: Unknown config option: asyncio_default_fixture_loop_scope\n  \n    self._warn_or_fail_if_strict(f\"Unknown config option: {key}\\n\")\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n16 passed, 1 warning in 1.65s\n",
     "passed": 16,
     "status": "PASS",
     "total": 16

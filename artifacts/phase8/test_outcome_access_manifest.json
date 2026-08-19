@@ -1,5 +1,5 @@
 {
-  "evaluation_spec_frozen_at": "2026-08-19T06:16:47.963477+00:00",
+  "evaluation_spec_frozen_at": "2026-08-19T06:19:32.822911+00:00",
   "evaluation_spec_frozen_before_test": true,
   "source": {
     "chunk_size": 1000,
@@ -37,7 +37,7 @@
     "status": "CONNECTED_READ_ONLY"
   },
   "test_outcome_access_count": 1,
-  "test_outcomes_loaded_at": "2026-08-19T06:16:48.126979+00:00",
+  "test_outcomes_loaded_at": "2026-08-19T06:19:32.969246+00:00",
   "test_used_for_candidate_grid_selection": false,
   "test_used_for_hpo": false,
   "test_used_for_model_selection": false,
