@@ -11,7 +11,7 @@
   "base_branch": "codex/phase1-data-audit",
   "base_git_sha": "6b0f4c990b3abcb28c5b60c11551ec6f6554c1a0",
   "boundary_scoring_enabled": false,
-  "frozen_business_policy_spec_sha256": "70e0f0d95d9b0e0f1aabf47a507bd4ceec815d3ee35d2c140e3e4560c0762f3c",
+  "frozen_business_policy_spec_sha256": "6df7c65d274ce338b82526b464fd18b101cd660ebb56c45df5463007fb529f57",
   "high_inventory_category_p75": {
     "CAT000011": 87.0,
     "CAT000012": 86.0,
@@ -103,7 +103,7 @@
     ],
     "relative": 0.001
   },
-  "phase7_implementation_git_sha": "2b7ae83a3eead816e41e12bde0ad2ea6dc78722d",
+  "phase7_implementation_git_sha": "1518eeb619db1d4ebda8208eb0fa9601829d0fb4",
   "promotion_pricing_mode": "CONTEXT_ONLY",
   "promotion_season_semantics": {
     "calendar_mapping_used": false,

@@ -604,7 +604,7 @@ Rules use the half-open `[EffectiveFrom, EffectiveTo)` interval.
 
 ## 7. Priority/specificity resolution
 
-Selected policy: **P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC**. An unresolved policy is a hard blocker; no fallback precedence is used for automatic prices.
+Selected policy: **P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC**. The unchanged 99.5% gate is evaluated on TRAIN only; the P2 mismatch forensic dataset contains **1609** rows and is retained at `artifacts/phase7/rule_precedence_mismatch_forensics.parquet`. An unresolved policy is a hard blocker; no fallback precedence is used for automatic prices.
 
 ## 8. TRAIN rule-ID reconciliation
 
@@ -818,7 +818,7 @@ Overlapping discounts never select the larger discount implicitly; conflicting o
 
 ## 15. Candidate augmentation
 
-Only exact-cent rule/promotion boundaries inside the Phase 6 support envelope may be added, and they require a frozen-model scoring callback. No unsimulated boundary is written.
+Only exact-cent rule/promotion boundaries inside the Phase 6 support envelope may be added, and they require a frozen-model scoring callback. Canonical acceptance boundary scoring enabled: **False**; the accepted Phase 6 surface remains the model-scored input when disabled. No unsimulated boundary is written.
 
 ## 16. Business candidate filtering
 
@@ -901,7 +901,7 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "phase": 7,
   "base_branch": "codex/phase1-data-audit",
   "base_git_sha": "6b0f4c990b3abcb28c5b60c11551ec6f6554c1a0",
-  "phase7_implementation_git_sha": "2b7ae83a3eead816e41e12bde0ad2ea6dc78722d",
+  "phase7_implementation_git_sha": "1518eeb619db1d4ebda8208eb0fa9601829d0fb4",
   "upstream": {
     "phase2_dataset_sha": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
     "phase3_split_sha": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
@@ -1205,7 +1205,7 @@ Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 ob
   "max_current_context_age_days": 30,
   "ADVISORY_ONLY": true,
   "AUTO_WRITEBACK": false,
-  "frozen_business_policy_spec_sha256": "70e0f0d95d9b0e0f1aabf47a507bd4ceec815d3ee35d2c140e3e4560c0762f3c"
+  "frozen_business_policy_spec_sha256": "6df7c65d274ce338b82526b464fd18b101cd660ebb56c45df5463007fb529f57"
 }
 
 ## 19. TEST policy replay
@@ -1843,15 +1843,135 @@ See `current_inventory_summary.json` and the current decision Parquet artifact.
   "status": "PASS"
 }
 
+## 31a. TEST context boundary
+
+{
+  "context_allowlist": [
+    "PricingDecisionID",
+    "DecisionTime",
+    "CustomerID",
+    "SessionID",
+    "ProductID",
+    "StoreID",
+    "Channel",
+    "CurrentPrice",
+    "AppliedPrice",
+    "CategoryID",
+    "BrandID",
+    "BasePrice",
+    "Season",
+    "RegionID",
+    "StoreType",
+    "ClimateZone",
+    "LoyaltyTier",
+    "CustomerSegment",
+    "PreferredChannel",
+    "FavoriteCategoryID",
+    "FavoriteBrandID",
+    "PriceSensitivity",
+    "CategoryAffinityScore",
+    "BrandAffinityScore",
+    "active_history_selling_price",
+    "history_discount_pct",
+    "days_since_current_price_started",
+    "previous_selling_price",
+    "previous_price_change_pct",
+    "active_history_promotion_id",
+    "active_price_history_id",
+    "selected_price_effective_from",
+    "selected_price_effective_to",
+    "price_history_current_price_delta",
+    "price_history_current_price_mismatch",
+    "selected_promotion_start_date",
+    "selected_promotion_end_date",
+    "active_promotion_id",
+    "active_promotion_flag",
+    "active_promotion_discount_pct",
+    "selected_sales_order_date",
+    "product_store_sales_7d",
+    "product_store_sales_14d",
+    "product_store_sales_30d",
+    "product_region_sales_7d",
+    "product_region_sales_14d",
+    "product_region_sales_30d",
+    "product_sales_7d",
+    "product_sales_14d",
+    "product_sales_30d",
+    "product_sales_60d",
+    "product_sales_90d",
+    "category_store_sales_7d",
+    "category_store_sales_14d",
+    "category_store_sales_30d",
+    "category_sales_7d",
+    "category_sales_14d",
+    "category_sales_30d",
+    "product_sales_velocity_7d",
+    "product_sales_velocity_30d",
+    "product_sales_velocity_90d",
+    "product_sales_velocity_ratio_7d_30d",
+    "days_since_last_product_sale",
+    "competitor_price_exact_channel",
+    "competitor_price_region_fallback",
+    "competitor_price_product_fallback",
+    "competitor_price_available",
+    "competitor_price_age_days",
+    "selected_competitor_observed_at",
+    "competitor_match_level",
+    "competitor_price",
+    "selected_behavior_event_at",
+    "product_views_1h",
+    "product_views_24h",
+    "product_views_168h",
+    "product_views_720h",
+    "cart_additions_1h",
+    "cart_additions_24h",
+    "cart_additions_168h",
+    "cart_additions_720h",
+    "search_clicks_1h",
+    "search_clicks_24h",
+    "search_clicks_168h",
+    "search_clicks_720h",
+    "decision_month",
+    "decision_quarter",
+    "decision_day_of_week",
+    "decision_is_weekend",
+    "weather_temperature",
+    "weather_condition",
+    "weather_precipitation",
+    "is_holiday",
+    "holiday_sales_impact_factor",
+    "holiday_count",
+    "price_change_amount",
+    "price_change_pct",
+    "price_vs_base_pct",
+    "discount_from_base_pct",
+    "price_vs_competitor_pct",
+    "current_vs_base_pct"
+  ],
+  "forbidden_outcome_columns": [
+    "ActualRevenue",
+    "OrderLineID",
+    "OutcomeTime",
+    "PurchasedFlag",
+    "QuantityPurchased"
+  ],
+  "test_context_outcome_columns": [],
+  "test_used_to_choose_priority_semantics": false,
+  "test_used_to_choose_percentage_semantics": false,
+  "test_used_to_choose_promotion_semantics": false,
+  "test_used_to_choose_markdown_thresholds": false,
+  "test_outcomes_used": false
+}
+
 ## 32. Compute
 
 {
-  "rule_resolution_seconds": 25.120595200001844,
-  "promotion_resolution_seconds": 64.57274440000037,
-  "inventory_policy_seconds": 0.020300399999541696,
+  "rule_resolution_seconds": 35.3749816999989,
+  "promotion_resolution_seconds": 75.04129380000086,
+  "inventory_policy_seconds": 0.021972099995764438,
   "model_augmentation_inference_seconds": 0.0,
-  "final_selection_seconds": 285.28749139999854,
-  "total_seconds": 620.7068776000015
+  "final_selection_seconds": 389.9417822999967,
+  "total_seconds": 860.618029600002
 }
 
 ## 33. Known limitations
