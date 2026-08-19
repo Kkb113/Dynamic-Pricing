@@ -1,0 +1,14 @@
+{
+  "schema_version": "pricing.chat.request.v1",
+  "request_id": "req_demo_001",
+  "message": "What governed price is recommended for PD-0001, and why?",
+  "context": {
+    "pricing_decision_id": "PD-0001",
+    "split": "validation"
+  },
+  "options": {
+    "stream": false,
+    "include_raw_json": true,
+    "max_charts": 4
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "duration_seconds": 27.669837,
+  "exit_code": 0,
+  "failed": 0,
+  "generated_at_utc": "2026-08-19T23:19:44.706381+00:00",
+  "invocation": [
+    "__main__.py",
+    "-q"
+  ],
+  "passed": 209,
+  "skipped": 0,
+  "source": "pytest_sessionfinish",
+  "source_tree_sha256": "61ee48930354a8ab204e4e9f832a9a0a77a95eba1e055646d90113e64cd507da",
+  "status": "PASS",
+  "total": 209,
+  "xfailed": 0,
+  "xpassed": 0
+}

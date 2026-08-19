@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dynamic-pricing.local/contracts/application/pricing_chat_request_v1.schema.json",
+  "title": "Dynamic Pricing Chat Request v1",
+  "description": "The only request body accepted by the local pricing chat API.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "message"],
+  "properties": {
+    "schema_version": {"const": "pricing.chat.request.v1"},
+    "request_id": {
+      "type": "string",
+      "description": "Optional client correlation id. The server always returns its own request_id.",
+      "pattern": "^req_[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "message": {
+      "type": "string",
+      "description": "One natural-language pricing question. Never place secrets in this field.",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "conversation": {
+      "type": "array",
+      "description": "Optional in-memory chat context. The server must not persist it.",
+      "maxItems": 20,
+      "items": {"$ref": "#/$defs/conversation_message"}
+    },
+    "context": {"$ref": "#/$defs/pricing_context"},
+    "options": {"$ref": "#/$defs/request_options"}
+  },
+  "$defs": {
+    "safe_identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+    },
+    "conversation_message": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "content"],
+      "properties": {
+        "role": {"type": "string", "enum": ["user", "assistant"]},
+        "content": {"type": "string", "minLength": 1, "maxLength": 4000}
+      }
+    },
+    "pricing_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional identifiers used to select an existing deterministic pricing context.",
+      "properties": {
+        "pricing_decision_id": {"$ref": "#/$defs/safe_identifier"},
+        "product_id": {"$ref": "#/$defs/safe_identifier"},
+        "store_id": {"$ref": "#/$defs/safe_identifier"},
+        "category_id": {"$ref": "#/$defs/safe_identifier"},
+        "channel": {"type": "string", "minLength": 1, "maxLength": 64},
+        "split": {"type": "string", "enum": ["validation", "current"]}
+      }
+    },
+    "request_options": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "stream": {"type": "boolean", "default": false},
+        "include_raw_json": {
+          "type": "boolean",
+          "description": "The UI always receives the validated response; this flag only controls UI presentation hints.",
+          "default": true
+        },
+        "max_charts": {"type": "integer", "minimum": 0, "maximum": 4, "default": 4}
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dynamic-pricing.local/contracts/application/pricing_chat_sse_event_v1.schema.json",
+  "title": "Dynamic Pricing Chat SSE Event v1",
+  "description": "One JSON data payload carried by a server-sent event from the local streaming endpoint.",
+  "oneOf": [
+    {"$ref": "#/$defs/started_event"},
+    {"$ref": "#/$defs/tool_event"},
+    {"$ref": "#/$defs/delta_event"},
+    {"$ref": "#/$defs/completed_event"},
+    {"$ref": "#/$defs/error_event"}
+  ],
+  "$defs": {
+    "base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "event", "request_id", "sequence", "payload"],
+      "properties": {
+        "schema_version": {"const": "pricing.chat.sse.v1"},
+        "event": {"type": "string", "enum": ["chat.started", "chat.tool", "chat.delta", "chat.completed", "chat.error"]},
+        "request_id": {"type": "string", "pattern": "^req_[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"},
+        "sequence": {"type": "integer", "minimum": 0},
+        "payload": {}
+      }
+    },
+    "started_event": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "type": "object",
+          "properties": {
+            "event": {"const": "chat.started"},
+            "payload": {"type": "object", "additionalProperties": false, "required": ["status"], "properties": {"status": {"const": "started"}}}
+          }
+        }
+      ]
+    },
+    "tool_event": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "type": "object",
+          "properties": {
+            "event": {"const": "chat.tool"},
+            "payload": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["tool_name", "status"],
+              "properties": {
+                "tool_name": {"type": "string", "enum": ["get_pricing_recommendation", "explain_pricing_recommendation", "simulate_price", "compare_price_scenarios", "search_recommendations", "get_model_performance", "get_business_rule_details", "get_current_inventory_insight", "get_use_case_summary", "get_agent_capabilities"]},
+                "status": {"type": "string", "enum": ["started", "completed", "failed"]},
+                "record_count": {"type": "integer", "minimum": 0, "maximum": 100},
+                "error_code": {"type": "string", "pattern": "^[A-Z0-9_]{1,80}$"}
+              }
+            }
+          }
+        }
+      ]
+    },
+    "delta_event": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "type": "object",
+          "properties": {
+            "event": {"const": "chat.delta"},
+            "payload": {"type": "object", "additionalProperties": false, "required": ["text"], "properties": {"text": {"type": "string", "minLength": 1, "maxLength": 2000, "description": "Only sanitized narrative fragments. Numeric pricing claims are sent in chat.completed after validation."}}}
+          }
+        }
+      ]
+    },
+    "completed_event": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "type": "object",
+          "properties": {
+            "event": {"const": "chat.completed"},
+            "payload": {"type": "object", "additionalProperties": false, "required": ["response"], "properties": {"response": {"$ref": "pricing_chat_response_v1.schema.json"}}}
+          }
+        }
+      ]
+    },
+    "error_event": {
+      "allOf": [
+        {"$ref": "#/$defs/base"},
+        {
+          "type": "object",
+          "properties": {
+            "event": {"const": "chat.error"},
+            "payload": {"type": "object", "additionalProperties": false, "required": ["error"], "properties": {"error": {"$ref": "pricing_chat_error_v1.schema.json#/$defs/error_detail"}}}
+          }
+        }
+      ]
+    }
+  }
+}

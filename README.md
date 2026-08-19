@@ -2,6 +2,23 @@
 
 This repository contains a read-only, frozen dynamic-pricing intelligence stack and a local Streamlit application for business demonstration. The application exposes accepted Phase 4–8 artifacts through governed recommendation, simulation, audit, and model-intelligence views. It does not retrain models, write to SQL Server, or write prices back to an operational system.
 
+## React/FastAPI application track — Phase 1 complete
+
+The new product track is a local-only React + FastAPI application with one natural-language pricing chat screen. The browser renders the natural-language answer, backend-authored charts, warnings, and an expandable raw JSON response viewer. FastAPI owns all OpenAI calls, local ML/service access, request validation, chart construction, and response normalization; React is presentation-only. There is no authentication, hosting, deployment, persistence, or price writeback.
+
+Phase 1 delivers the implementation-ready application contract and local architecture. Read [docs/PHASE1_APPLICATION_ACCEPTANCE_REPORT.md](docs/PHASE1_APPLICATION_ACCEPTANCE_REPORT.md), [docs/PHASE1_APPLICATION_ARCHITECTURE.md](docs/PHASE1_APPLICATION_ARCHITECTURE.md), [docs/PHASE1_API_CONTRACT.md](docs/PHASE1_API_CONTRACT.md), and [contracts/application/README.md](contracts/application/README.md). The JSON schemas and fixtures are under `contracts/application/` and `tests/application_contract/`. Phase 2 will implement FastAPI and the OpenAI agent adapter; Phase 3 will implement React and chart rendering.
+
+`OPENAI_API_KEY` is supplied only to FastAPI through the ignored local `.env` file. It must never appear in React, browser storage, prompts, responses, logs, artifacts, or Git. Copy [.env.example](.env.example) without adding a real key to source control. Deterministic local tools remain available when the key/model is absent.
+
+Validate the Phase 1 contract foundation with:
+
+```powershell
+$env:TEST_EVIDENCE_PATH = "artifacts/phase1_application/pytest_hook_results.json"
+python -m pytest -q tests/application_contract
+```
+
+The existing Streamlit application remains the validated Phase 9–10 demonstration surface; it is not part of the React/FastAPI runtime handoff.
+
 ## Run the local application
 
 1. Create and activate a virtual environment.

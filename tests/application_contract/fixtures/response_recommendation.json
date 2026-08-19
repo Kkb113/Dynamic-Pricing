@@ -1,0 +1,114 @@
+{
+  "schema_version": "pricing.chat.response.v1",
+  "request_id": "req_demo_001",
+  "status": "completed",
+  "answer": "The governed recommendation for PD-0001 is $109.99. It is a model-informed recommendation constrained by the frozen pricing rules; the plotted alternatives are model-implied estimates.",
+  "answer_source": "deterministic_fallback",
+  "authoritative": {
+    "numeric_claims_source": "deterministic_local_tools",
+    "recommendations": [
+      {
+        "source_tool": "get_pricing_recommendation",
+        "decision_id": "PD-0001",
+        "product_id": "P-100",
+        "store_id": "S-10",
+        "channel": "web",
+        "category_id": "C-7",
+        "decision_time": "2025-12-01T10:00:00Z",
+        "current_price": 99.99,
+        "model_optimal_candidate_price": 111.99,
+        "final_recommended_price": 109.99,
+        "final_action": "INCREASE_PRICE",
+        "expected_units": 18.4,
+        "expected_revenue": 2023.82,
+        "expected_gross_profit": 741.12,
+        "pricing_rule_id": "RULE-01",
+        "rule_name": "Standard margin guardrail",
+        "promotion_action": "NO_CHANGE",
+        "markdown_action": "NO_CHANGE",
+        "manual_review_required": false,
+        "reason_codes": ["MODEL_OPTIMAL_PRICE", "RULE_CONSTRAINED"],
+        "warnings": []
+      }
+    ],
+    "scenario_comparisons": [
+      {
+        "source_tool": "compare_price_scenarios",
+        "scenario": "CurrentPrice",
+        "candidate_price": 99.99,
+        "purchase_probability": 0.18,
+        "expected_quantity_if_purchase": 2.0,
+        "expected_units": 18.1,
+        "expected_revenue": 1809.82,
+        "expected_gross_profit": 601.12,
+        "candidate_margin_pct": 0.33,
+        "within_model_support": true,
+        "business_rule_compliance": true,
+        "rule_violations": [],
+        "model_implied": true
+      },
+      {
+        "source_tool": "compare_price_scenarios",
+        "scenario": "Phase7FinalRecommendedPrice",
+        "candidate_price": 109.99,
+        "purchase_probability": 0.17,
+        "expected_quantity_if_purchase": 2.0,
+        "expected_units": 18.4,
+        "expected_revenue": 2023.82,
+        "expected_gross_profit": 741.12,
+        "candidate_margin_pct": 0.37,
+        "within_model_support": true,
+        "business_rule_compliance": true,
+        "rule_violations": [],
+        "model_implied": true
+      }
+    ],
+    "model_performance": null,
+    "inventory_insights": [],
+    "business_rule": null,
+    "capabilities": null
+  },
+  "charts": [
+    {
+      "schema_version": "pricing.chart.v1",
+      "chart_id": "chart_gp_by_price_001",
+      "type": "line",
+      "title": "Expected gross profit by candidate price",
+      "description": "Model-implied gross-profit estimates from the validated candidate surface.",
+      "x_axis": {
+        "field": "candidate_price",
+        "label": "Candidate price",
+        "value_type": "number",
+        "unit": "currency"
+      },
+      "series": [
+        {"field": "expected_gross_profit", "label": "Expected gross profit", "unit": "currency", "color": "#2563EB"}
+      ],
+      "points": [
+        {"x": 99.99, "values": [{"field": "expected_gross_profit", "value": 601.12}]},
+        {"x": 109.99, "values": [{"field": "expected_gross_profit", "value": 741.12}]}
+      ],
+      "source": {
+        "tool_name": "compare_price_scenarios",
+        "record_path": "authoritative.scenario_comparisons",
+        "data_status": "model_implied"
+      },
+      "model_implied": true
+    }
+  ],
+  "tools_used": ["get_pricing_recommendation", "compare_price_scenarios"],
+  "tool_trace": [
+    {"tool_name": "get_pricing_recommendation", "status": "called", "record_count": 1},
+    {"tool_name": "compare_price_scenarios", "status": "called", "record_count": 2}
+  ],
+  "warnings": [
+    {"code": "MODEL_IMPLIED_SCENARIO", "message": "Alternative-price chart values are model-implied estimates, not observed outcomes.", "severity": "notice"}
+  ],
+  "errors": [],
+  "metadata": {
+    "runtime": "local",
+    "agent_available": false,
+    "contract_version": "1",
+    "duration_ms": 42
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dynamic-pricing.local/contracts/application/pricing_chat_response_v1.schema.json",
+  "title": "Dynamic Pricing Chat Response v1",
+  "description": "Validated response envelope returned by FastAPI. answer is narrative text; authoritative contains only deterministic local tool data.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request_id", "status", "answer", "answer_source", "authoritative", "charts", "tools_used", "tool_trace", "warnings", "errors", "metadata"],
+  "properties": {
+    "schema_version": {"const": "pricing.chat.response.v1"},
+    "request_id": {"type": "string", "pattern": "^req_[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"},
+    "status": {"type": "string", "enum": ["completed", "partial", "rejected", "failed"]},
+    "answer": {"type": "string", "maxLength": 12000, "description": "Natural-language presentation text only. It is never the source of numeric pricing authority."},
+    "answer_source": {"type": "string", "enum": ["agent", "deterministic_fallback", "policy"]},
+    "authoritative": {"$ref": "#/$defs/authoritative_data"},
+    "charts": {"type": "array", "maxItems": 4, "items": {"$ref": "chart_spec_v1.schema.json"}},
+    "tools_used": {"type": "array", "maxItems": 10, "uniqueItems": true, "items": {"$ref": "#/$defs/tool_name"}},
+    "tool_trace": {"type": "array", "maxItems": 20, "items": {"$ref": "#/$defs/tool_trace_entry"}},
+    "warnings": {"type": "array", "maxItems": 20, "items": {"$ref": "pricing_chat_error_v1.schema.json#/$defs/warning"}},
+    "errors": {"type": "array", "maxItems": 20, "items": {"$ref": "pricing_chat_error_v1.schema.json#/$defs/error_detail"}},
+    "metadata": {"$ref": "#/$defs/response_metadata"}
+  },
+  "$defs": {
+    "tool_name": {
+      "type": "string",
+      "enum": ["get_pricing_recommendation", "explain_pricing_recommendation", "simulate_price", "compare_price_scenarios", "search_recommendations", "get_model_performance", "get_business_rule_details", "get_current_inventory_insight", "get_use_case_summary", "get_agent_capabilities"]
+    },
+    "tool_trace_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_name", "status", "record_count"],
+      "properties": {
+        "tool_name": {"$ref": "#/$defs/tool_name"},
+        "status": {"type": "string", "enum": ["called", "skipped", "failed"]},
+        "record_count": {"type": "integer", "minimum": 0, "maximum": 100},
+        "error_code": {"type": "string", "pattern": "^[A-Z0-9_]{1,80}$"}
+      }
+    },
+    "nullable_string": {"type": ["string", "null"]},
+    "nullable_number": {"type": ["number", "null"]},
+    "authoritative_data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["numeric_claims_source", "recommendations", "scenario_comparisons", "model_performance", "inventory_insights", "business_rule", "capabilities"],
+      "properties": {
+        "numeric_claims_source": {"const": "deterministic_local_tools"},
+        "recommendations": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/recommendation"}},
+        "scenario_comparisons": {"type": "array", "maxItems": 200, "items": {"$ref": "#/$defs/scenario"}},
+        "model_performance": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/model_performance"}]},
+        "inventory_insights": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/inventory_insight"}},
+        "business_rule": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/business_rule"}]},
+        "capabilities": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/capabilities"}]}
+      }
+    },
+    "recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_tool", "decision_id", "current_price", "model_optimal_candidate_price", "final_recommended_price", "final_action", "expected_units", "expected_revenue", "expected_gross_profit", "manual_review_required", "reason_codes", "warnings"],
+      "properties": {
+        "source_tool": {"const": "get_pricing_recommendation"},
+        "decision_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]{1,128}$"},
+        "product_id": {"$ref": "#/$defs/nullable_string"}, "store_id": {"$ref": "#/$defs/nullable_string"},
+        "channel": {"$ref": "#/$defs/nullable_string"}, "category_id": {"$ref": "#/$defs/nullable_string"},
+        "decision_time": {"$ref": "#/$defs/nullable_string"},
+        "current_price": {"type": "number", "exclusiveMinimum": 0},
+        "model_optimal_candidate_price": {"$ref": "#/$defs/nullable_number"},
+        "final_recommended_price": {"$ref": "#/$defs/nullable_number"},
+        "final_action": {"type": "string", "minLength": 1, "maxLength": 80},
+        "expected_units": {"$ref": "#/$defs/nullable_number"},
+        "expected_revenue": {"$ref": "#/$defs/nullable_number"},
+        "expected_gross_profit": {"$ref": "#/$defs/nullable_number"},
+        "pricing_rule_id": {"$ref": "#/$defs/nullable_string"}, "rule_name": {"$ref": "#/$defs/nullable_string"},
+        "promotion_action": {"$ref": "#/$defs/nullable_string"}, "markdown_action": {"$ref": "#/$defs/nullable_string"},
+        "manual_review_required": {"type": "boolean"},
+        "reason_codes": {"type": "array", "maxItems": 30, "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z0-9_:-]{1,80}$"}},
+        "warnings": {"type": "array", "maxItems": 20, "items": {"type": "string", "pattern": "^[A-Z0-9_:-]{1,80}$"}}
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_tool", "scenario", "candidate_price", "model_implied"],
+      "properties": {
+        "source_tool": {"type": "string", "enum": ["simulate_price", "compare_price_scenarios"]},
+        "scenario": {"type": "string", "minLength": 1, "maxLength": 100},
+        "candidate_price": {"$ref": "#/$defs/nullable_number"}, "purchase_probability": {"$ref": "#/$defs/nullable_number"},
+        "expected_quantity_if_purchase": {"$ref": "#/$defs/nullable_number"}, "expected_units": {"$ref": "#/$defs/nullable_number"},
+        "expected_revenue": {"$ref": "#/$defs/nullable_number"}, "expected_gross_profit": {"$ref": "#/$defs/nullable_number"},
+        "candidate_margin_pct": {"$ref": "#/$defs/nullable_number"},
+        "within_model_support": {"type": ["boolean", "null"]}, "business_rule_compliance": {"type": ["boolean", "null"]},
+        "rule_violations": {"type": "array", "maxItems": 30, "items": {"type": "string", "pattern": "^[A-Z0-9_:-]{1,80}$"}},
+        "model_implied": {"type": "boolean"}
+      }
+    },
+    "model_performance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_tool", "metrics", "business_interpretation", "caveat"],
+      "properties": {
+        "source_tool": {"const": "get_model_performance"},
+        "metrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["roc_auc", "average_precision", "log_loss", "brier_score", "top_decile_lift", "demand_aggregate_error_pct", "revenue_aggregate_error_pct", "gp_aggregate_error_pct"],
+          "properties": {
+            "roc_auc": {"type": ["number", "null"]}, "average_precision": {"type": ["number", "null"]},
+            "log_loss": {"type": ["number", "null"]}, "brier_score": {"type": ["number", "null"]},
+            "top_decile_lift": {"type": ["number", "null"]}, "demand_aggregate_error_pct": {"type": ["number", "null"]},
+            "revenue_aggregate_error_pct": {"type": ["number", "null"]}, "gp_aggregate_error_pct": {"type": ["number", "null"]}
+          }
+        },
+        "business_interpretation": {"type": "array", "maxItems": 10, "items": {"type": "string", "minLength": 1, "maxLength": 500}},
+        "caveat": {"type": "string", "minLength": 1, "maxLength": 1000}
+      }
+    },
+    "inventory_insight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_tool", "decision_id", "available_qty", "stock_status", "slow_moving", "seasonal", "final_action", "model_implied_context"],
+      "properties": {
+        "source_tool": {"const": "get_current_inventory_insight"}, "decision_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]{1,128}$"},
+        "product_id": {"$ref": "#/$defs/nullable_string"}, "store_id": {"$ref": "#/$defs/nullable_string"}, "category_id": {"$ref": "#/$defs/nullable_string"},
+        "available_qty": {"type": ["number", "null"]}, "stock_status": {"$ref": "#/$defs/nullable_string"},
+        "slow_moving": {"type": "boolean"}, "seasonal": {"type": "boolean"}, "markdown_action": {"$ref": "#/$defs/nullable_string"},
+        "final_recommended_price": {"$ref": "#/$defs/nullable_number"}, "final_action": {"type": "string", "minLength": 1, "maxLength": 80},
+        "model_implied_context": {"const": false}
+      }
+    },
+    "business_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_tool", "pricing_rule_id", "rule_name", "final_price_compliant"],
+      "properties": {
+        "source_tool": {"const": "get_business_rule_details"}, "pricing_rule_id": {"$ref": "#/$defs/nullable_string"}, "rule_name": {"$ref": "#/$defs/nullable_string"},
+        "priority": {"type": ["number", "null"]}, "specificity": {"type": ["number", "null"]}, "min_price": {"$ref": "#/$defs/nullable_number"}, "max_price": {"$ref": "#/$defs/nullable_number"},
+        "min_margin_pct": {"type": ["number", "null"]}, "max_discount_pct": {"type": ["number", "null"]}, "max_price_change_pct": {"type": ["number", "null"]},
+        "final_price_compliant": {"type": "boolean"}
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_tool", "supported_questions"],
+      "properties": {
+        "source_tool": {"type": "string", "enum": ["get_use_case_summary", "get_agent_capabilities"]},
+        "supported_questions": {"type": "array", "minItems": 1, "maxItems": 20, "items": {"type": "string", "minLength": 1, "maxLength": 300}},
+        "use_case": {"type": "string", "maxLength": 500}, "business_question": {"type": "string", "maxLength": 500}
+      }
+    },
+    "response_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime", "agent_available", "contract_version"],
+      "properties": {
+        "runtime": {"const": "local"}, "agent_available": {"type": "boolean"}, "contract_version": {"const": "1"}, "duration_ms": {"type": "number", "minimum": 0}
+      }
+    }
+  }
+}

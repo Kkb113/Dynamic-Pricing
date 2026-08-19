@@ -1,0 +1,32 @@
+{
+  "schema_version": "pricing.chat.sse.v1",
+  "event": "chat.completed",
+  "request_id": "req_demo_completed",
+  "sequence": 0,
+  "payload": {
+    "response": {
+      "schema_version": "pricing.chat.response.v1",
+      "request_id": "req_demo_completed",
+      "status": "rejected",
+      "answer": "Please provide a supported pricing question.",
+      "answer_source": "policy",
+      "authoritative": {
+        "numeric_claims_source": "deterministic_local_tools",
+        "recommendations": [],
+        "scenario_comparisons": [],
+        "model_performance": null,
+        "inventory_insights": [],
+        "business_rule": null,
+        "capabilities": null
+      },
+      "charts": [],
+      "tools_used": [],
+      "tool_trace": [],
+      "warnings": [],
+      "errors": [
+        {"code": "UNSUPPORTED_INTENT", "message": "This question is outside the supported pricing scope.", "retryable": false}
+      ],
+      "metadata": {"runtime": "local", "agent_available": false, "contract_version": "1"}
+    }
+  }
+}
