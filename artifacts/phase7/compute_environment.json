@@ -1,0 +1,8 @@
+{
+  "advisory_only": true,
+  "auto_writeback": false,
+  "phase7_read_only_sql": true,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+  "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]"
+}

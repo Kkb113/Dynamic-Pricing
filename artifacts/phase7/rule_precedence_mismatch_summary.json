@@ -1,0 +1,9 @@
+{
+  "artifact": "artifacts/phase7/rule_precedence_mismatch_forensics.parquet",
+  "artifact_sha256": "c8176d6e4ad61afa59598833e9bc06cf9523444769cabde1359b9c7779671ffe",
+  "mismatch_rate": 0.0656734693877551,
+  "mismatch_rows": 1609,
+  "policy": "P2_PRIORITY_ASC_SPECIFICITY_DESC",
+  "rows_evaluated": 24500,
+  "status": "MISMATCHES_REPORTED"
+}

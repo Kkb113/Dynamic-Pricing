@@ -1,0 +1,1991 @@
+# Phase 7 Acceptance Report
+
+This report is generated from the read-only SQL acceptance run and the immutable Phase 1–6 artifacts. Phase 7 is advisory-only; it never writes back to SQL and it never retrains a model.
+
+## 1. Executive verdict
+
+**PASS_WITH_WARNINGS** — PROCEED_TO_PHASE_8.
+
+## 2. Upstream Phase 6 verification
+
+{
+  "manifest_path": "artifacts\\phase6\\phase6_manifest.json",
+  "manifest_sha256": "b0881cd6e13ae8aa16fea8163a46cbdc40a2fabe66f3ca346539523b7f737b8a",
+  "spec_path": "artifacts\\phase6\\frozen_optimizer_spec.json",
+  "spec_sha256": "d18bf5783aee43443709848f224ad6f6158638150f7272bf43ea1a371f86177e",
+  "candidate_surface_fingerprints": {
+    "validation": "4c2e1729736d429f9f0c7910d4c1fc7d82fc6c850255112d6cf4cc63d41bb610",
+    "test": "da959dac729757fe4cee76c309c92e85ae88948758c28ad3475b384c092e00ac"
+  },
+  "recommendation_fingerprints": {
+    "validation": "2db3bb58f18aa0d21dd68b52721556e845a5a92c5babbe89b353f9818948edab",
+    "test": "d7ec42c95eaa06766e0e2195d02d88fd4b1d56b1030fb23bcf130728aa834f52"
+  },
+  "phase6_manifest": {
+    "base_branch": "codex/phase1-data-audit",
+    "base_git_sha": "91cb9bff7e16fa845eac5b7abf4ddd945af40c78",
+    "candidate_counts": {
+      "test": 47250,
+      "validation": 47250
+    },
+    "candidate_grid": [
+      0.9,
+      0.925,
+      0.95,
+      0.975,
+      1.0,
+      1.025,
+      1.05,
+      1.075,
+      1.1
+    ],
+    "candidate_parity": {
+      "integrated_expected_unit_delta": 0.0,
+      "phase4_candidate_probability_delta": 0.0,
+      "phase4_feature_max_delta": 0.0,
+      "phase4_feature_violations": 0,
+      "phase4_test_prediction_delta": 0.0,
+      "phase5_artifact_quantity_delta": 0.0024325427332176908,
+      "phase5_artifact_scope": "PRE_FREEZE_TRAIN_ONLY",
+      "phase5_candidate_quantity_delta": 0.0,
+      "phase5_feature_max_delta": 0.0,
+      "phase5_test_expected_unit_delta": 0.0,
+      "rows": 5250,
+      "split": "validation",
+      "status": "PASS",
+      "tolerance": 1e-10
+    },
+    "ci_status": "PASS",
+    "compute": {
+      "Phase4_prediction_seconds": 0.41672309997375123,
+      "Phase5_quantity_seconds": 0.05409909997251816,
+      "candidate_generation_seconds": 0.3592678999702912,
+      "candidate_rows_per_second": 763.7041984662435,
+      "candidate_rows_scored": 94500,
+      "decisions_scored": 10500,
+      "economic_scoring_seconds": 0.02393679996021092,
+      "feature_generation_seconds": 1.1641711000120267,
+      "logical_threads": 22,
+      "optimizer_selection_seconds": 92.98281119999592,
+      "physical_cores": 16,
+      "threads_used": 22,
+      "total_seconds": 123.73900809997576
+    },
+    "cost_audit": {
+      "cost_gt_base_count": 0,
+      "cost_gt_base_rate": 0.0,
+      "cost_gt_current_count": 0,
+      "cost_gt_current_rate": 0.0,
+      "coverage_rate": 1.0,
+      "covered_rows": 35000,
+      "decision_rows": 35000,
+      "invalid_count": 0,
+      "max": 426.46,
+      "mean": 86.85882685714286,
+      "median": 74.365,
+      "min": 2.58,
+      "missing_count": 0,
+      "optimizer_only": true,
+      "sidecar_path": "artifacts/phase6/product_cost_sidecar.parquet",
+      "sidecar_sha256": "67207c07321025d19065fc3163af1ed38b032f633f06d091b800200a96dc18c4",
+      "source": "dbo.Product.CostPrice_read_only",
+      "static_cost_limitation": "Product.CostPrice is a static reference; historical cost variation is unavailable in Phase 2.",
+      "unique_products": 2671
+    },
+    "cost_coverage": 1.0,
+    "cost_source": "dbo.Product.CostPrice_read_only",
+    "evidence_git_sha": "e8fdd5acb14f5ac0435ff508ab21c286dcc881e2",
+    "implementation_git_sha": "408c87276d24dd34c6455cf60fbcb6967c2616d7",
+    "major_blockers": [],
+    "materiality_policy": {
+      "minimum_relative_expected_profit_uplift": 0.005
+    },
+    "official_objective": "EXPECTED_GROSS_PROFIT",
+    "outcome_blindness": {
+      "ActualRevenue_accessed": false,
+      "OrderLineID_accessed": false,
+      "OutcomeTime_accessed": false,
+      "PurchasedFlag_accessed": false,
+      "QuantityPurchased_accessed": false,
+      "frozen_optimizer_spec_sha256": "8a2361f145a93ae372311c5fe49d24ccb889dd87a7eee6523cd66a1d46d53ab8",
+      "test_feature_end": "2025-12-31T23:59:39",
+      "test_feature_start": "2025-11-15T23:57:30",
+      "test_outcomes_accessed": false,
+      "test_scenario_context_columns": [
+        "PricingDecisionID",
+        "DecisionTime",
+        "ProductID",
+        "StoreID",
+        "Channel",
+        "CurrentPrice",
+        "AppliedPrice",
+        "BasePrice",
+        "price_change_amount",
+        "price_change_pct",
+        "price_vs_base_pct",
+        "current_vs_base_pct",
+        "discount_from_base_pct",
+        "active_history_selling_price",
+        "history_discount_pct",
+        "days_since_current_price_started",
+        "previous_selling_price",
+        "previous_price_change_pct",
+        "decision_month",
+        "decision_quarter",
+        "decision_day_of_week",
+        "decision_is_weekend",
+        "CategoryID",
+        "BrandID",
+        "Season",
+        "StoreType",
+        "RegionID",
+        "ClimateZone",
+        "active_promotion_flag",
+        "active_promotion_discount_pct",
+        "product_store_sales_7d",
+        "product_store_sales_14d",
+        "product_store_sales_30d",
+        "product_region_sales_7d",
+        "product_region_sales_14d",
+        "product_region_sales_30d",
+        "product_sales_7d",
+        "product_sales_14d",
+        "product_sales_30d",
+        "product_sales_60d",
+        "product_sales_90d",
+        "category_store_sales_7d",
+        "category_store_sales_14d",
+        "category_store_sales_30d",
+        "category_sales_7d",
+        "category_sales_14d",
+        "category_sales_30d",
+        "product_sales_velocity_7d",
+        "product_sales_velocity_30d",
+        "product_sales_velocity_90d",
+        "product_sales_velocity_ratio_7d_30d",
+        "days_since_last_product_sale",
+        "is_holiday",
+        "holiday_sales_impact_factor",
+        "weather_temperature",
+        "weather_condition",
+        "weather_precipitation",
+        "product_views_1h",
+        "product_views_24h",
+        "product_views_168h",
+        "product_views_720h",
+        "cart_additions_1h",
+        "cart_additions_24h",
+        "cart_additions_168h",
+        "cart_additions_720h",
+        "search_clicks_1h",
+        "search_clicks_24h",
+        "search_clicks_168h",
+        "search_clicks_720h",
+        "CostPrice"
+      ],
+      "test_scenario_context_outcome_columns": [],
+      "test_scenario_outcomes_accessed": false,
+      "test_used_to_tune_candidate_grid": false,
+      "test_used_to_tune_materiality": false,
+      "test_used_to_tune_objective": false,
+      "test_used_to_tune_response_guard": false
+    },
+    "phase2_dataset_sha": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
+    "phase3_split_sha": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
+    "phase4_frozen_spec_sha": "87ffb4e56af455937a0c92b1be45be0e2c8082cc0efd6afa51eb62f9c05ba9d0",
+    "phase4_model_sha": "1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d",
+    "phase5_estimator_fingerprint": "481e7de3c4fa8113ee5fd13e5c318b8bc2cb7dc2c652883119ee8608975978ba",
+    "phase5_estimator_type": "CONSTANT_MEAN",
+    "phase5_frozen_spec_sha": "260354340c41fe8eaccaafc4e3388f7fb28c81ec4fbaba049504a25b7a487914",
+    "phase5_mean_value": 1.3057971014492753,
+    "price_support": {
+      "candidate_multiplier_template": [
+        0.9,
+        0.925,
+        0.95,
+        0.975,
+        1.0,
+        1.025,
+        1.05,
+        1.075,
+        1.1
+      ],
+      "count": 24500,
+      "effective_support_high": 1.1173885792710216,
+      "effective_support_low": 0.8929977619398718,
+      "max": 1.1201831362075543,
+      "mean": 1.019822843056361,
+      "min": 0.8799014576062409,
+      "p01": 0.8929977619398718,
+      "p05": 0.9050912024762382,
+      "p25": 0.9687779630179572,
+      "p50": 1.0152957836513834,
+      "p75": 1.0899782675217224,
+      "p95": 1.1070176241530623,
+      "p99": 1.1173885792710216,
+      "std": 0.06826214156631909,
+      "technical_multiplier_high": 1.2,
+      "technical_multiplier_low": 0.8,
+      "training_ratio_p01": 0.8929977619398718,
+      "training_ratio_p99": 1.1173885792710216,
+      "valid_positive_rate": 1.0
+    },
+    "recommendation": "PROCEED_TO_PHASE_7",
+    "reproducibility": {
+      "candidate_price_mismatch_count": 0,
+      "candidate_row_count_run1": 47250,
+      "candidate_row_count_run2": 47250,
+      "decision_status_mismatch_count": 0,
+      "max_expected_profit_delta": 0.0,
+      "max_expected_units_delta": 0.0,
+      "max_probability_delta": 0.0,
+      "max_revenue_delta": 0.0,
+      "selected_price_mismatch_count": 0,
+      "status": "PASS",
+      "tolerance": 1e-10
+    },
+    "response_guard_metrics": {
+      "test": {
+        "adjusted_decision_count": 1952,
+        "adjusted_decision_rate": 0.3718095238095238,
+        "candidate_adjustment_count": 3183,
+        "candidate_adjustment_rate": 0.06736507936507936,
+        "candidate_count": 47250,
+        "decision_count": 5250,
+        "max_adjustment": 0.039215312653799905,
+        "mean_adjustment": 0.00019594293743743028,
+        "median_adjustment": 0.0,
+        "p95_adjustment": 0.0006397710545302332,
+        "raw_non_monotonic_decision_count": 1952,
+        "raw_non_monotonic_decision_rate": 0.3718095238095238,
+        "safe_monotonic_violations": 0
+      },
+      "validation": {
+        "adjusted_decision_count": 1958,
+        "adjusted_decision_rate": 0.372952380952381,
+        "candidate_adjustment_count": 3216,
+        "candidate_adjustment_rate": 0.06806349206349206,
+        "candidate_count": 47250,
+        "decision_count": 5250,
+        "max_adjustment": 0.04187030097774669,
+        "mean_adjustment": 0.00019667536083375713,
+        "median_adjustment": 0.0,
+        "p95_adjustment": 0.0006123767676781108,
+        "raw_non_monotonic_decision_count": 1958,
+        "raw_non_monotonic_decision_rate": 0.372952380952381,
+        "safe_monotonic_violations": 0
+      }
+    },
+    "result": "PASS_WITH_WARNINGS",
+    "test_optimizer_summary": {
+      "all_candidates_negative_margin_rate": 0.0,
+      "any_boundary_selection_rate": 0.9758095238095238,
+      "candidate_negative_margin_rate": 0.0,
+      "candidate_rows": 47250,
+      "decision_count": 5250,
+      "decisions_where_all_candidates_negative_margin": 0,
+      "decisions_with_any_negative_margin_candidate": 0,
+      "lower_boundary_selection_rate": 0.00019047619047619048,
+      "max_candidate_count": 9,
+      "mean_candidate_count": 9.0,
+      "mean_expected_profit_uplift": 2.566393252582335,
+      "mean_expected_revenue_delta": 1.6340887086251197,
+      "mean_price_change_pct": 0.0989178324871371,
+      "median_expected_profit_uplift": 2.058202637178119,
+      "median_price_change_pct": 0.10000000000000009,
+      "median_recommended_multiplier": 1.1,
+      "min_candidate_count": 9,
+      "no_change_rate": 0.0,
+      "p05_price_change_pct": 0.09990890037343178,
+      "p25_price_change_pct": 0.09998384424088547,
+      "p75_price_change_pct": 0.10001979610016831,
+      "p95_price_change_pct": 0.10007225433526012,
+      "positive_uplift_rate": 1.0,
+      "price_decrease_rate": 0.0032380952380952383,
+      "price_increase_rate": 0.9967619047619047,
+      "raw_vs_safe_recommendation_change_rate": 0.00038095238095238096,
+      "revenue_profit_differ_rate": 0.6460952380952381,
+      "split": "test",
+      "upper_boundary_selection_rate": 0.9756190476190476
+    },
+    "test_stack_parity": {
+      "integrated_expected_unit_delta": 0.0,
+      "phase4_candidate_probability_delta": 0.0,
+      "phase4_feature_max_delta": 0.0,
+      "phase4_feature_violations": 0,
+      "phase4_test_prediction_delta": 0.0,
+      "phase5_artifact_quantity_delta": 0.0,
+      "phase5_artifact_scope": "POST_FREEZE_TRAIN_PLUS_VALIDATION",
+      "phase5_candidate_quantity_delta": 0.0,
+      "phase5_feature_max_delta": 0.0,
+      "phase5_test_expected_unit_delta": 0.0,
+      "rows": 5250,
+      "split": "test",
+      "status": "PASS",
+      "tolerance": 1e-10
+    },
+    "tests": {
+      "duration_seconds": 13.318926,
+      "exit_code": 0,
+      "failed": 0,
+      "generated_at_utc": "2026-08-17T01:34:29.991595+00:00",
+      "invocation": [
+        "__main__.py",
+        "-q",
+        "--basetemp=C:\\Users\\karth\\AppData\\Local\\Temp\\dynamic-pricing-phase4-publish-20260816\\.phase6-pytest-p69jcc1l"
+      ],
+      "passed": 134,
+      "runner_exit_code": 0,
+      "skipped": 0,
+      "source": "pytest_sessionfinish",
+      "source_tree_sha256": "a55c7f23a2c5e57190c9db01cefb77d8cc8daa350dbd1fbbbdb877d0311bc60a",
+      "status": "PASS",
+      "total": 134,
+      "xfailed": 0,
+      "xpassed": 0
+    },
+    "tie_policy": {
+      "band": {
+        "absolute": 1e-08,
+        "relative": 0.001
+      },
+      "break": [
+        "CLOSEST_TO_CURRENT_PRICE",
+        "LOWER_PRICE",
+        "DETERMINISTIC_CANDIDATE_ORDER"
+      ]
+    },
+    "validation_optimizer_summary": {
+      "all_candidates_negative_margin_rate": 0.0,
+      "any_boundary_selection_rate": 0.981904761904762,
+      "candidate_negative_margin_rate": 0.0,
+      "candidate_rows": 47250,
+      "decision_count": 5250,
+      "decisions_where_all_candidates_negative_margin": 0,
+      "decisions_with_any_negative_margin_candidate": 0,
+      "lower_boundary_selection_rate": 0.00038095238095238096,
+      "max_candidate_count": 9,
+      "mean_candidate_count": 9.0,
+      "mean_expected_profit_uplift": 2.572559924571292,
+      "mean_expected_revenue_delta": 1.6735719533616142,
+      "mean_price_change_pct": 0.09919008630929192,
+      "median_expected_profit_uplift": 2.0317082524480004,
+      "median_price_change_pct": 0.10000000000000009,
+      "median_recommended_multiplier": 1.1,
+      "min_candidate_count": 9,
+      "no_change_rate": 0.0,
+      "p05_price_change_pct": 0.09991603694374485,
+      "p25_price_change_pct": 0.09998306806233026,
+      "p75_price_change_pct": 0.10002020817416674,
+      "p95_price_change_pct": 0.10008240764677818,
+      "positive_uplift_rate": 1.0,
+      "price_decrease_rate": 0.002476190476190476,
+      "price_increase_rate": 0.9975238095238095,
+      "raw_vs_safe_recommendation_change_rate": 0.001142857142857143,
+      "revenue_profit_differ_rate": 0.6426666666666667,
+      "split": "validation",
+      "upper_boundary_selection_rate": 0.9815238095238096
+    },
+    "warnings": [
+      "OPTIMIZER_BOUNDARY_HEAVY",
+      "OPTIMIZER_STRONGLY_BOUNDARY_SEEKING",
+      "HIGH_RESPONSE_GUARD_USAGE"
+    ]
+  },
+  "frozen_optimizer_spec": {
+    "candidate_multiplier_template": [
+      0.9,
+      0.925,
+      0.95,
+      0.975,
+      1.0,
+      1.025,
+      1.05,
+      1.075,
+      1.1
+    ],
+    "candidate_prediction_batch_size": 250000,
+    "cost_sidecar_sha": "67207c07321025d19065fc3163af1ed38b032f633f06d091b800200a96dc18c4",
+    "cost_source": "dbo.Product.CostPrice_read_only",
+    "effective_support_high": 1.1173885792710216,
+    "effective_support_low": 0.8929977619398718,
+    "frozen_optimizer_spec_sha256": "8a2361f145a93ae372311c5fe49d24ccb889dd87a7eee6523cd66a1d46d53ab8",
+    "inventory_constraint_applied": false,
+    "minimum_relative_profit_uplift": 0.005,
+    "official_objective": "EXPECTED_GROSS_PROFIT",
+    "outcome_blind_policy": true,
+    "phase2_dataset_sha": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
+    "phase3_split_sha": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
+    "phase4_calibration": "NATIVE",
+    "phase4_frozen_spec_sha": "87ffb4e56af455937a0c92b1be45be0e2c8082cc0efd6afa51eb62f9c05ba9d0",
+    "phase4_model_sha": "1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d",
+    "phase4_ordered_feature_names": [
+      "CurrentPrice",
+      "AppliedPrice",
+      "BasePrice",
+      "price_change_amount",
+      "price_change_pct",
+      "price_vs_base_pct",
+      "current_vs_base_pct",
+      "discount_from_base_pct",
+      "active_history_selling_price",
+      "history_discount_pct",
+      "days_since_current_price_started",
+      "previous_selling_price",
+      "previous_price_change_pct",
+      "decision_month",
+      "decision_quarter",
+      "decision_day_of_week",
+      "decision_is_weekend",
+      "CategoryID",
+      "BrandID",
+      "Season",
+      "StoreType",
+      "RegionID",
+      "ClimateZone",
+      "Channel",
+      "active_promotion_flag",
+      "active_promotion_discount_pct",
+      "product_store_sales_7d",
+      "product_store_sales_14d",
+      "product_store_sales_30d",
+      "product_region_sales_7d",
+      "product_region_sales_14d",
+      "product_region_sales_30d",
+      "product_sales_7d",
+      "product_sales_14d",
+      "product_sales_30d",
+      "product_sales_60d",
+      "product_sales_90d",
+      "category_store_sales_7d",
+      "category_store_sales_14d",
+      "category_store_sales_30d",
+      "category_sales_7d",
+      "category_sales_14d",
+      "category_sales_30d",
+      "product_sales_velocity_7d",
+      "product_sales_velocity_30d",
+      "product_sales_velocity_90d",
+      "product_sales_velocity_ratio_7d_30d",
+      "days_since_last_product_sale",
+      "is_holiday",
+      "holiday_sales_impact_factor",
+      "weather_temperature",
+      "weather_condition",
+      "weather_precipitation",
+      "product_views_1h",
+      "product_views_24h",
+      "product_views_168h",
+      "product_views_720h",
+      "cart_additions_1h",
+      "cart_additions_24h",
+      "cart_additions_168h",
+      "cart_additions_720h",
+      "search_clicks_1h",
+      "search_clicks_24h",
+      "search_clicks_168h",
+      "search_clicks_720h"
+    ],
+    "phase5_estimator_fingerprint": "481e7de3c4fa8113ee5fd13e5c318b8bc2cb7dc2c652883119ee8608975978ba",
+    "phase5_estimator_type": "CONSTANT_MEAN",
+    "phase5_frozen_quantity_spec_sha": "260354340c41fe8eaccaafc4e3388f7fb28c81ec4fbaba049504a25b7a487914",
+    "phase5_mean_value": 1.3057971014492753,
+    "phase5_ordered_feature_names": [
+      "CurrentPrice",
+      "AppliedPrice",
+      "BasePrice",
+      "price_change_amount",
+      "price_change_pct",
+      "price_vs_base_pct",
+      "current_vs_base_pct",
+      "discount_from_base_pct",
+      "active_history_selling_price",
+      "history_discount_pct",
+      "days_since_current_price_started",
+      "previous_selling_price",
+      "previous_price_change_pct",
+      "decision_month",
+      "decision_quarter",
+      "decision_day_of_week",
+      "decision_is_weekend",
+      "CategoryID",
+      "BrandID",
+      "Season",
+      "StoreType",
+      "RegionID",
+      "ClimateZone",
+      "Channel",
+      "active_promotion_flag",
+      "active_promotion_discount_pct",
+      "product_store_sales_7d",
+      "product_store_sales_14d",
+      "product_store_sales_30d",
+      "product_region_sales_7d",
+      "product_region_sales_14d",
+      "product_region_sales_30d",
+      "product_sales_7d",
+      "product_sales_14d",
+      "product_sales_30d",
+      "product_sales_60d",
+      "product_sales_90d",
+      "category_store_sales_7d",
+      "category_store_sales_14d",
+      "category_store_sales_30d",
+      "category_sales_7d",
+      "category_sales_14d",
+      "category_sales_30d",
+      "product_sales_velocity_7d",
+      "product_sales_velocity_30d",
+      "product_sales_velocity_90d",
+      "product_sales_velocity_ratio_7d_30d",
+      "days_since_last_product_sale",
+      "is_holiday",
+      "holiday_sales_impact_factor",
+      "weather_temperature",
+      "weather_condition",
+      "weather_precipitation",
+      "product_views_1h",
+      "product_views_24h",
+      "product_views_168h",
+      "product_views_720h",
+      "cart_additions_1h",
+      "cart_additions_24h",
+      "cart_additions_168h",
+      "cart_additions_720h",
+      "search_clicks_1h",
+      "search_clicks_24h",
+      "search_clicks_168h",
+      "search_clicks_720h"
+    ],
+    "price_rounding_policy": "ROUND_HALF_UP_2_DECIMAL",
+    "pricing_rules_applied": false,
+    "promotion_actions_generated": false,
+    "random_seed": 42,
+    "response_safety_policy": "LOW_TO_HIGH_CUMULATIVE_MINIMUM",
+    "response_safety_tolerance": 1e-12,
+    "technical_multiplier_high": 1.2,
+    "technical_multiplier_low": 0.8,
+    "thread_count": 22,
+    "tie_band": {
+      "absolute": 1e-08,
+      "relative": 0.001
+    },
+    "tie_break_policy": [
+      "CLOSEST_TO_CURRENT_PRICE",
+      "LOWER_PRICE",
+      "DETERMINISTIC_CANDIDATE_ORDER"
+    ],
+    "training_ratio_p01": 0.8929977619398718,
+    "training_ratio_p99": 1.1173885792710216
+  },
+  "warnings_preserved": [
+    "OPTIMIZER_BOUNDARY_HEAVY",
+    "OPTIMIZER_STRONGLY_BOUNDARY_SEEKING",
+    "HIGH_RESPONSE_GUARD_USAGE"
+  ],
+  "status": "PASS"
+}
+
+## 3. Rule source audit
+
+Rows: **200**; active rows: **200**. Source is `dbo.Pricing_Rules` through a SELECT-only connector.
+
+## 4. Percentage semantics
+
+Canonical convention: **PERCENT_POINTS**.
+
+## 5. Rule scope semantics
+
+NULL ProductID/CategoryID/StoreID/Channel values are wildcards; CategoryID is joined from dbo.Product.
+
+## 6. Effective-date semantics
+
+Rules use the half-open `[EffectiveFrom, EffectiveTo)` interval.
+
+## 7. Priority/specificity resolution
+
+Selected policy: **P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC**. The unchanged 99.5% gate is evaluated on TRAIN only; the P2 mismatch forensic dataset contains **1609** rows and is retained at `artifacts/phase7/rule_precedence_mismatch_forensics.parquet`. An unresolved policy is a hard blocker; no fallback precedence is used for automatic prices.
+
+## 8. TRAIN rule-ID reconciliation
+
+{
+  "split": "train",
+  "status": "PASS",
+  "blocker": null,
+  "policy_used_for_diagnostic_replay": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+  "semantics_status": "PASS",
+  "acceptance_threshold": 0.995,
+  "historical_rule_id_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "metrics": {
+      "rows": 24500,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 4373,
+      "constrained_decision_rate": 0.17848979591836733,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    },
+    "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT"
+  },
+  "resolver_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+    "metrics": {
+      "rows": 24500,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 4373,
+      "constrained_decision_rate": 0.17848979591836733,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    }
+  },
+  "metrics": {
+    "rows": 24500,
+    "exact_cent_match_rate": 1.0,
+    "absolute_delta_mean": 0.0,
+    "absolute_delta_median": 0.0,
+    "absolute_delta_p95": 0.0,
+    "absolute_delta_max": 0.0,
+    "constrained_decision_count": 4373,
+    "constrained_decision_rate": 0.17848979591836733,
+    "rule_violation_count": 0,
+    "historical_rule_missing_count": 0
+  },
+  "reference_full_historical_constrained_rate": 0.173,
+  "reference_historical_rule_violations": 0
+}
+
+## 9. Rule constraint formulas
+
+MinPrice, MaxPrice, minimum margin, maximum discount, and maximum movement are evaluated independently and intersected; invalid intervals require manual review.
+
+## 10. Historical TRAIN replay
+
+{
+  "split": "train",
+  "status": "PASS",
+  "blocker": null,
+  "policy_used_for_diagnostic_replay": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+  "semantics_status": "PASS",
+  "acceptance_threshold": 0.995,
+  "historical_rule_id_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "metrics": {
+      "rows": 24500,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 4373,
+      "constrained_decision_rate": 0.17848979591836733,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    },
+    "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT"
+  },
+  "resolver_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+    "metrics": {
+      "rows": 24500,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 4373,
+      "constrained_decision_rate": 0.17848979591836733,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    }
+  },
+  "metrics": {
+    "rows": 24500,
+    "exact_cent_match_rate": 1.0,
+    "absolute_delta_mean": 0.0,
+    "absolute_delta_median": 0.0,
+    "absolute_delta_p95": 0.0,
+    "absolute_delta_max": 0.0,
+    "constrained_decision_count": 4373,
+    "constrained_decision_rate": 0.17848979591836733,
+    "rule_violation_count": 0,
+    "historical_rule_missing_count": 0
+  },
+  "reference_full_historical_constrained_rate": 0.173,
+  "reference_historical_rule_violations": 0
+}
+
+## 11. Historical VALIDATION replay
+
+{
+  "split": "validation",
+  "status": "PASS",
+  "blocker": null,
+  "policy_used_for_diagnostic_replay": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+  "semantics_status": "PASS",
+  "acceptance_threshold": 0.995,
+  "historical_rule_id_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "metrics": {
+      "rows": 5250,
+      "exact_cent_match_rate": 0.9998095238095238,
+      "absolute_delta_mean": 1.9047619047601723e-06,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.009999999999990905,
+      "constrained_decision_count": 896,
+      "constrained_decision_rate": 0.17066666666666666,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    },
+    "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT"
+  },
+  "resolver_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+    "metrics": {
+      "rows": 5250,
+      "exact_cent_match_rate": 0.9998095238095238,
+      "absolute_delta_mean": 1.9047619047601723e-06,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.009999999999990905,
+      "constrained_decision_count": 896,
+      "constrained_decision_rate": 0.17066666666666666,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    }
+  },
+  "metrics": {
+    "rows": 5250,
+    "exact_cent_match_rate": 0.9998095238095238,
+    "absolute_delta_mean": 1.9047619047601723e-06,
+    "absolute_delta_median": 0.0,
+    "absolute_delta_p95": 0.0,
+    "absolute_delta_max": 0.009999999999990905,
+    "constrained_decision_count": 896,
+    "constrained_decision_rate": 0.17066666666666666,
+    "rule_violation_count": 0,
+    "historical_rule_missing_count": 0
+  },
+  "reference_full_historical_constrained_rate": 0.173,
+  "reference_historical_rule_violations": 0
+}
+
+## 12. Promotion semantics
+
+{
+  "status": "PASS",
+  "rows_evaluated": 24500,
+  "zero_active_rate": 0.8534693877551021,
+  "one_active_rate": 0.13844897959183675,
+  "overlap_rate": 0.008081632653061225,
+  "conflict_rate": 0.008081632653061225,
+  "overlap_count_distribution": {
+    "0": 20910,
+    "1": 3392,
+    "2": 185,
+    "3": 13
+  },
+  "season_match_rate": 0.645093396474612,
+  "season_semantics": "AUDIT_ONLY_DESCRIPTIVE",
+  "defined_price_exact_cent_agreement": 0.0,
+  "promotion_pricing_mode": "CONTEXT_ONLY"
+}
+
+## 13. Promotion overlap/conflicts
+
+Overlapping discounts never select the larger discount implicitly; conflicting overlaps produce review.
+
+## 14. Promotion pricing mode
+
+**CONTEXT_ONLY**.
+
+## 15. Candidate augmentation
+
+Only exact-cent rule/promotion boundaries inside the Phase 6 support envelope may be added, and they require a frozen-model scoring callback. Canonical acceptance boundary scoring enabled: **False**; the accepted Phase 6 surface remains the model-scored input when disabled. No unsimulated boundary is written.
+
+## 16. Business candidate filtering
+
+Only candidates with `passes_all_pricing_rules == true` are eligible; Phase 6 objective and tie/materiality policy are preserved.
+
+## 17. VALIDATION final recommendations
+
+{
+  "split": "validation",
+  "decision_count": 5250,
+  "candidate_rows": 47250,
+  "same_price_rate": 0.0020952380952380953,
+  "changed_price_rate": 0.9979047619047619,
+  "price_increase_rate": 0.9935238095238095,
+  "price_decrease_rate": 0.004380952380952381,
+  "hold_rate": 0.0,
+  "rule_forced_change_rate": 0.0,
+  "promotion_action_rate": 0.0,
+  "markdown_action_rate": 0.0,
+  "manual_review_rate": 0.0020952380952380953,
+  "mean_price_change_pct": 0.09124178323898371,
+  "median_price_change_pct": 0.09998468840912578,
+  "phase6_upper_boundary_rate": 0.981904761904762,
+  "phase7_upper_boundary_rate": 0.9935238095238095,
+  "phase7_minus_phase6_upper_boundary_delta": 0.011619047619047529,
+  "mean_expected_gross_profit_after": 16.33019251588467,
+  "final_rule_violation_count": 0,
+  "outcomes_used": false,
+  "diagnostics": {
+    "rule": {
+      "candidate_rows": 47250,
+      "decisions": 5250,
+      "rule_violation_rows": 3817,
+      "rule_resolution_null_rate": 0.0
+    },
+    "decisions": 5250,
+    "action_counts": {
+      "PRICE_INCREASE": 5216,
+      "PRICE_DECREASE": 23,
+      "PROMOTION_REVIEW": 11
+    },
+    "constraint_impact": {
+      "RULE_MIN_PRICE": {
+        "decisions_affected": 2,
+        "candidate_rows_filtered": 3,
+        "price_delta_mean": -3.896666666666667
+      },
+      "RULE_MAX_PRICE": {
+        "decisions_affected": 23,
+        "candidate_rows_filtered": 40,
+        "price_delta_mean": 14.180499999999999
+      },
+      "RULE_MIN_MARGIN": {
+        "decisions_affected": 57,
+        "candidate_rows_filtered": 111,
+        "price_delta_mean": -9.639729729729728
+      },
+      "RULE_MAX_DISCOUNT": {
+        "decisions_affected": 289,
+        "candidate_rows_filtered": 571,
+        "price_delta_mean": -8.814728546409805
+      },
+      "RULE_MAX_PRICE_CHANGE": {
+        "decisions_affected": 1519,
+        "candidate_rows_filtered": 3220,
+        "price_delta_mean": 0.0004875776397518949
+      }
+    },
+    "candidate_augmentation": {
+      "status": "NOT_RUN",
+      "added_candidates": 0,
+      "out_of_support_boundaries": []
+    }
+  }
+}
+
+## 18. Frozen Phase 7 policy
+
+{
+  "phase": 7,
+  "base_branch": "codex/phase1-data-audit",
+  "base_git_sha": "6b0f4c990b3abcb28c5b60c11551ec6f6554c1a0",
+  "phase7_implementation_git_sha": "1518eeb619db1d4ebda8208eb0fa9601829d0fb4",
+  "upstream": {
+    "phase2_dataset_sha": "7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2",
+    "phase3_split_sha": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
+    "phase4_model_sha": "1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d",
+    "phase4_spec_sha": "6746428e9875726202e28a6adfc498421c09f4c129cf91d75b3ad2c0412a1f8d",
+    "phase5_estimator_sha": "481e7de3c4fa8113ee5fd13e5c318b8bc2cb7dc2c652883119ee8608975978ba",
+    "phase5_spec_sha": "cd7e8aa198fcbc886b893b5319439dfa381c192ede31b1f27ea11a93d14712f0",
+    "phase6_manifest_sha": "b0881cd6e13ae8aa16fea8163a46cbdc40a2fabe66f3ca346539523b7f737b8a",
+    "phase6_optimizer_spec_sha": "d18bf5783aee43443709848f224ad6f6158638150f7272bf43ea1a371f86177e",
+    "candidate_surface_fingerprints": {
+      "validation": "4c2e1729736d429f9f0c7910d4c1fc7d82fc6c850255112d6cf4cc63d41bb610",
+      "test": "da959dac729757fe4cee76c309c92e85ae88948758c28ad3475b384c092e00ac"
+    },
+    "recommendation_fingerprints": {
+      "validation": "2db3bb58f18aa0d21dd68b52721556e845a5a92c5babbe89b353f9818948edab",
+      "test": "d7ec42c95eaa06766e0e2195d02d88fd4b1d56b1030fb23bcf130728aa834f52"
+    }
+  },
+  "rule_percentage_convention": "PERCENT_POINTS",
+  "rule_effective_date_convention": "[EffectiveFrom, EffectiveTo)",
+  "rule_precedence_policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+  "scope_wildcard_policy": "NULL_APPLIES_TO_ALL",
+  "rule_formulas": {
+    "MinPrice": "floor",
+    "MaxPrice": "ceiling",
+    "MinMarginPct": "CostPrice/(1-MinMarginFraction)",
+    "MaxDiscountPct": "BasePrice*(1-MaxDiscountFraction)",
+    "MaxPriceChangePct": "CurrentPrice*(1 +/- MaxPriceChangeFraction)"
+  },
+  "promotion_pricing_mode": "CONTEXT_ONLY",
+  "promotion_season_semantics": {
+    "observed_values": [
+      "All",
+      "Fall",
+      "Spring",
+      "Summer",
+      "Winter"
+    ],
+    "generic_values": [
+      "All"
+    ],
+    "seasonal_values": [
+      "Fall",
+      "Spring",
+      "Summer",
+      "Winter"
+    ],
+    "semantics": "SOURCE_NON_GENERIC_VALUES",
+    "calendar_mapping_used": false
+  },
+  "inventory_snapshot_policy": "CURRENT_ONLY",
+  "inventory_status_map": {
+    "In Stock": "NORMAL"
+  },
+  "high_inventory_policy": "CATEGORY_SPECIFIC_SNAPSHOT_AVAILABLE_QTY_P75",
+  "high_inventory_category_p75": {
+    "CAT000011": 87.0,
+    "CAT000012": 86.0,
+    "CAT000013": 89.5,
+    "CAT000014": 87.0,
+    "CAT000015": 88.0,
+    "CAT000016": 90.5,
+    "CAT000017": 88.0,
+    "CAT000018": 85.0,
+    "CAT000019": 88.0,
+    "CAT000020": 86.0,
+    "CAT000021": 89.0,
+    "CAT000022": 88.0,
+    "CAT000023": 89.0,
+    "CAT000024": 87.0,
+    "CAT000025": 87.75,
+    "CAT000026": 88.0,
+    "CAT000027": 88.0,
+    "CAT000028": 92.0,
+    "CAT000029": 88.0,
+    "CAT000030": 86.75,
+    "CAT000031": 83.75,
+    "CAT000032": 86.0,
+    "CAT000033": 87.0,
+    "CAT000034": 89.0,
+    "CAT000035": 90.25,
+    "CAT000036": 83.0,
+    "CAT000037": 91.0,
+    "CAT000038": 88.75,
+    "CAT000039": 93.0,
+    "CAT000040": 88.0,
+    "CAT000041": 87.0,
+    "CAT000042": 88.75,
+    "CAT000043": 89.0,
+    "CAT000044": 86.0,
+    "CAT000045": 91.0,
+    "CAT000046": 87.0,
+    "CAT000047": 82.5,
+    "CAT000048": 91.0,
+    "CAT000049": 88.0,
+    "CAT000050": 89.0,
+    "CAT000051": 88.0,
+    "CAT000052": 87.0,
+    "CAT000053": 87.0,
+    "CAT000054": 85.0,
+    "CAT000055": 91.0,
+    "CAT000056": 89.0,
+    "CAT000057": 91.0,
+    "CAT000058": 91.75,
+    "CAT000059": 88.0,
+    "CAT000060": 88.0,
+    "CAT000061": 84.0,
+    "CAT000062": 91.75,
+    "CAT000063": 90.0,
+    "CAT000064": 83.0,
+    "CAT000065": 85.25,
+    "CAT000066": 91.0,
+    "CAT000067": 93.0,
+    "CAT000068": 90.5,
+    "CAT000069": 86.25,
+    "CAT000070": 89.75,
+    "CAT000071": 88.5,
+    "CAT000072": 86.5,
+    "CAT000073": 98.0,
+    "CAT000074": 82.5,
+    "CAT000075": 90.25,
+    "CAT000076": 83.25,
+    "CAT000077": 87.0,
+    "CAT000078": 92.75,
+    "CAT000079": 87.5,
+    "CAT000080": 93.25
+  },
+  "high_inventory_global_p75_fallback": 88.0,
+  "boundary_scoring_enabled": false,
+  "slow_moving_thresholds": {
+    "metric": "product_store_sales_30d",
+    "fallback_metric": "product_sales_30d",
+    "quantile": 0.25,
+    "minimum_category_rows": 100,
+    "global_threshold": 0.0,
+    "category_thresholds": {
+      "CAT000011": 0.0,
+      "CAT000012": 0.0,
+      "CAT000013": 0.0,
+      "CAT000014": 0.0,
+      "CAT000015": 0.0,
+      "CAT000016": 0.0,
+      "CAT000017": 0.0,
+      "CAT000018": 0.0,
+      "CAT000019": 0.0,
+      "CAT000020": 0.0,
+      "CAT000021": 0.0,
+      "CAT000022": 0.0,
+      "CAT000023": 0.0,
+      "CAT000024": 0.0,
+      "CAT000025": 0.0,
+      "CAT000026": 0.0,
+      "CAT000027": 0.0,
+      "CAT000028": 0.0,
+      "CAT000029": 0.0,
+      "CAT000030": 0.0,
+      "CAT000031": 0.0,
+      "CAT000032": 0.0,
+      "CAT000033": 0.0,
+      "CAT000034": 0.0,
+      "CAT000035": 0.0,
+      "CAT000036": 0.0,
+      "CAT000037": 0.0,
+      "CAT000038": 0.0,
+      "CAT000039": 0.0,
+      "CAT000040": 0.0,
+      "CAT000041": 0.0,
+      "CAT000042": 0.0,
+      "CAT000043": 0.0,
+      "CAT000044": 0.0,
+      "CAT000045": 0.0,
+      "CAT000046": 0.0,
+      "CAT000047": 0.0,
+      "CAT000048": 0.0,
+      "CAT000049": 0.0,
+      "CAT000050": 0.0,
+      "CAT000051": 0.0,
+      "CAT000052": 0.0,
+      "CAT000053": 0.0,
+      "CAT000054": 0.0,
+      "CAT000055": 0.0,
+      "CAT000056": 0.0,
+      "CAT000057": 0.0,
+      "CAT000058": 0.0,
+      "CAT000059": 0.0,
+      "CAT000060": 0.0,
+      "CAT000061": 0.0,
+      "CAT000062": 0.0,
+      "CAT000063": 0.0,
+      "CAT000064": 0.0,
+      "CAT000065": 0.0,
+      "CAT000066": 0.0,
+      "CAT000067": 0.0,
+      "CAT000068": 0.0,
+      "CAT000069": 0.0,
+      "CAT000070": 0.0,
+      "CAT000071": 0.0,
+      "CAT000072": 0.0,
+      "CAT000073": 0.0,
+      "CAT000074": 0.0,
+      "CAT000075": 0.0,
+      "CAT000076": 0.0,
+      "CAT000077": 0.0,
+      "CAT000078": 0.0,
+      "CAT000079": 0.0,
+      "CAT000080": 0.0
+    },
+    "category_support": {
+      "CAT000011": 665,
+      "CAT000012": 703,
+      "CAT000013": 457,
+      "CAT000014": 648,
+      "CAT000015": 470,
+      "CAT000016": 474,
+      "CAT000017": 607,
+      "CAT000018": 481,
+      "CAT000019": 688,
+      "CAT000020": 386,
+      "CAT000021": 610,
+      "CAT000022": 424,
+      "CAT000023": 315,
+      "CAT000024": 623,
+      "CAT000025": 262,
+      "CAT000026": 276,
+      "CAT000027": 300,
+      "CAT000028": 263,
+      "CAT000029": 277,
+      "CAT000030": 334,
+      "CAT000031": 243,
+      "CAT000032": 226,
+      "CAT000033": 253,
+      "CAT000034": 346,
+      "CAT000035": 222,
+      "CAT000036": 235,
+      "CAT000037": 403,
+      "CAT000038": 369,
+      "CAT000039": 354,
+      "CAT000040": 289,
+      "CAT000041": 426,
+      "CAT000042": 332,
+      "CAT000043": 519,
+      "CAT000044": 336,
+      "CAT000045": 499,
+      "CAT000046": 405,
+      "CAT000047": 459,
+      "CAT000048": 510,
+      "CAT000049": 384,
+      "CAT000050": 485,
+      "CAT000051": 358,
+      "CAT000052": 560,
+      "CAT000053": 145,
+      "CAT000054": 161,
+      "CAT000055": 101,
+      "CAT000056": 184,
+      "CAT000057": 500,
+      "CAT000058": 235,
+      "CAT000059": 222,
+      "CAT000060": 163,
+      "CAT000061": 235,
+      "CAT000062": 279,
+      "CAT000063": 181,
+      "CAT000064": 602,
+      "CAT000065": 600,
+      "CAT000066": 254,
+      "CAT000067": 171,
+      "CAT000068": 112,
+      "CAT000069": 186,
+      "CAT000070": 174,
+      "CAT000071": 102,
+      "CAT000072": 132,
+      "CAT000073": 258,
+      "CAT000074": 443,
+      "CAT000075": 275,
+      "CAT000076": 147,
+      "CAT000077": 419,
+      "CAT000078": 200,
+      "CAT000079": 277,
+      "CAT000080": 266
+    },
+    "source_split": "TRAIN",
+    "policy_type": "RELATIVE_SYNTHETIC_POC_POLICY"
+  },
+  "markdown_policy": "seasonal + slow-moving + overstock + positive available; no expiry logic",
+  "action_precedence": [
+    "OUT_OF_STOCK / INVENTORY UNAVAILABLE",
+    "RULE CONFLICT / NO COMPLIANT CANDIDATE",
+    "ACTIVE PROMOTION COMMITMENT / PROMOTION CONFLICT",
+    "CURRENT seasonal slow-moving markdown policy",
+    "NORMAL rule-compliant model pricing"
+  ],
+  "phase6_tie_policy": {
+    "absolute": 1e-08,
+    "relative": 0.001,
+    "break": [
+      "CLOSEST_TO_CURRENT_PRICE",
+      "LOWER_PRICE",
+      "DETERMINISTIC_CANDIDATE_ORDER"
+    ]
+  },
+  "materiality_relative_expected_profit_uplift": 0.005,
+  "max_current_context_age_days": 30,
+  "ADVISORY_ONLY": true,
+  "AUTO_WRITEBACK": false,
+  "frozen_business_policy_spec_sha256": "6df7c65d274ce338b82526b464fd18b101cd660ebb56c45df5463007fb529f57"
+}
+
+## 19. TEST policy replay
+
+{
+  "split": "test",
+  "status": "PASS",
+  "blocker": null,
+  "policy_used_for_diagnostic_replay": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+  "semantics_status": "PASS",
+  "acceptance_threshold": 0.995,
+  "historical_rule_id_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "metrics": {
+      "rows": 5250,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 886,
+      "constrained_decision_rate": 0.16876190476190475,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    },
+    "policy": "HISTORICAL_PRICING_RULE_ID_DIRECT"
+  },
+  "resolver_replay": {
+    "status": "PASS",
+    "blocker": null,
+    "policy": "P5_MAX_ABSOLUTE_CONSTRAINT_ADJUSTMENT_PRIORITY_DESC",
+    "metrics": {
+      "rows": 5250,
+      "exact_cent_match_rate": 1.0,
+      "absolute_delta_mean": 0.0,
+      "absolute_delta_median": 0.0,
+      "absolute_delta_p95": 0.0,
+      "absolute_delta_max": 0.0,
+      "constrained_decision_count": 886,
+      "constrained_decision_rate": 0.16876190476190475,
+      "rule_violation_count": 0,
+      "historical_rule_missing_count": 0
+    }
+  },
+  "metrics": {
+    "rows": 5250,
+    "exact_cent_match_rate": 1.0,
+    "absolute_delta_mean": 0.0,
+    "absolute_delta_median": 0.0,
+    "absolute_delta_p95": 0.0,
+    "absolute_delta_max": 0.0,
+    "constrained_decision_count": 886,
+    "constrained_decision_rate": 0.16876190476190475,
+    "rule_violation_count": 0,
+    "historical_rule_missing_count": 0
+  },
+  "reference_full_historical_constrained_rate": 0.173,
+  "reference_historical_rule_violations": 0
+}
+
+## 20. TEST final recommendations
+
+{
+  "split": "test",
+  "decision_count": 5250,
+  "candidate_rows": 47250,
+  "same_price_rate": 0.015238095238095238,
+  "changed_price_rate": 0.9847619047619047,
+  "price_increase_rate": 0.9801904761904762,
+  "price_decrease_rate": 0.004571428571428572,
+  "hold_rate": 0.0009523809523809524,
+  "rule_forced_change_rate": 0.0,
+  "promotion_action_rate": 0.0,
+  "markdown_action_rate": 0.0,
+  "manual_review_rate": 0.014285714285714285,
+  "mean_price_change_pct": 0.09100111515245198,
+  "median_price_change_pct": 0.09998472738380082,
+  "phase6_upper_boundary_rate": 0.9758095238095238,
+  "phase7_upper_boundary_rate": 0.9801904761904762,
+  "phase7_minus_phase6_upper_boundary_delta": 0.004380952380952374,
+  "mean_expected_gross_profit_after": 16.388466245148646,
+  "final_rule_violation_count": 0,
+  "outcomes_used": false,
+  "diagnostics": {
+    "rule": {
+      "candidate_rows": 47250,
+      "decisions": 5250,
+      "rule_violation_rows": 3792,
+      "rule_resolution_null_rate": 0.0
+    },
+    "decisions": 5250,
+    "action_counts": {
+      "PRICE_INCREASE": 5146,
+      "PROMOTION_REVIEW": 75,
+      "PRICE_DECREASE": 24,
+      "HOLD_PRICE": 5
+    },
+    "constraint_impact": {
+      "RULE_MIN_PRICE": {
+        "decisions_affected": 1,
+        "candidate_rows_filtered": 1,
+        "price_delta_mean": -5.490000000000002
+      },
+      "RULE_MAX_PRICE": {
+        "decisions_affected": 32,
+        "candidate_rows_filtered": 63,
+        "price_delta_mean": 14.059523809523807
+      },
+      "RULE_MIN_MARGIN": {
+        "decisions_affected": 82,
+        "candidate_rows_filtered": 138,
+        "price_delta_mean": -10.24891304347826
+      },
+      "RULE_MAX_DISCOUNT": {
+        "decisions_affected": 236,
+        "candidate_rows_filtered": 485,
+        "price_delta_mean": -8.060577319587628
+      },
+      "RULE_MAX_PRICE_CHANGE": {
+        "decisions_affected": 1528,
+        "candidate_rows_filtered": 3242,
+        "price_delta_mean": 0.000561381863047837
+      }
+    },
+    "candidate_augmentation": {
+      "status": "NOT_RUN",
+      "added_candidates": 0,
+      "out_of_support_boundaries": []
+    }
+  }
+}
+
+## 21. Final rule violations
+
+Count: **0**.
+
+## 22. Phase 6 vs Phase 7 comparison
+
+Validation/test comparison is retained in each business summary, including Phase 6 and Phase 7 support-boundary rates.
+
+## 23. Boundary behavior
+
+The live source run records the boundary-heavy behavior rather than tuning it away.
+
+## 24. Inventory snapshot audit
+
+{
+  "rows": 15000,
+  "unique_product_count": 2860,
+  "unique_store_count": 50,
+  "snapshot_dates": [
+    "2025-12-31"
+  ],
+  "latest_snapshot_date": "2025-12-31",
+  "duplicate_product_store_snapshot_rows": 0,
+  "available_qty": {
+    "min": 7.0,
+    "max": 130.0,
+    "mean": 71.6464,
+    "median": 72.0,
+    "zero_rate": 0.0
+  },
+  "stock_status_counts": {
+    "In Stock": 15000
+  },
+  "high_inventory_thresholds": {
+    "status": "PASS",
+    "method": "Inventory.ProductID -> Product.CategoryID; AvailableQty.quantile(0.75)",
+    "category_count": 70,
+    "category_support": {
+      "CAT000011": 248,
+      "CAT000012": 347,
+      "CAT000013": 327,
+      "CAT000014": 344,
+      "CAT000015": 317,
+      "CAT000016": 287,
+      "CAT000017": 272,
+      "CAT000018": 245,
+      "CAT000019": 244,
+      "CAT000020": 174,
+      "CAT000021": 313,
+      "CAT000022": 213,
+      "CAT000023": 275,
+      "CAT000024": 215,
+      "CAT000025": 274,
+      "CAT000026": 224,
+      "CAT000027": 273,
+      "CAT000028": 281,
+      "CAT000029": 213,
+      "CAT000030": 254,
+      "CAT000031": 238,
+      "CAT000032": 188,
+      "CAT000033": 212,
+      "CAT000034": 265,
+      "CAT000035": 200,
+      "CAT000036": 201,
+      "CAT000037": 213,
+      "CAT000038": 262,
+      "CAT000039": 227,
+      "CAT000040": 237,
+      "CAT000041": 309,
+      "CAT000042": 246,
+      "CAT000043": 313,
+      "CAT000044": 266,
+      "CAT000045": 330,
+      "CAT000046": 205,
+      "CAT000047": 143,
+      "CAT000048": 325,
+      "CAT000049": 237,
+      "CAT000050": 340,
+      "CAT000051": 242,
+      "CAT000052": 367,
+      "CAT000053": 157,
+      "CAT000054": 166,
+      "CAT000055": 140,
+      "CAT000056": 188,
+      "CAT000057": 227,
+      "CAT000058": 190,
+      "CAT000059": 194,
+      "CAT000060": 104,
+      "CAT000061": 129,
+      "CAT000062": 178,
+      "CAT000063": 135,
+      "CAT000064": 150,
+      "CAT000065": 204,
+      "CAT000066": 154,
+      "CAT000067": 158,
+      "CAT000068": 106,
+      "CAT000069": 144,
+      "CAT000070": 98,
+      "CAT000071": 139,
+      "CAT000072": 103,
+      "CAT000073": 109,
+      "CAT000074": 94,
+      "CAT000075": 116,
+      "CAT000076": 108,
+      "CAT000077": 162,
+      "CAT000078": 150,
+      "CAT000079": 123,
+      "CAT000080": 168
+    },
+    "category_p75": {
+      "CAT000011": 87.0,
+      "CAT000012": 86.0,
+      "CAT000013": 89.5,
+      "CAT000014": 87.0,
+      "CAT000015": 88.0,
+      "CAT000016": 90.5,
+      "CAT000017": 88.0,
+      "CAT000018": 85.0,
+      "CAT000019": 88.0,
+      "CAT000020": 86.0,
+      "CAT000021": 89.0,
+      "CAT000022": 88.0,
+      "CAT000023": 89.0,
+      "CAT000024": 87.0,
+      "CAT000025": 87.75,
+      "CAT000026": 88.0,
+      "CAT000027": 88.0,
+      "CAT000028": 92.0,
+      "CAT000029": 88.0,
+      "CAT000030": 86.75,
+      "CAT000031": 83.75,
+      "CAT000032": 86.0,
+      "CAT000033": 87.0,
+      "CAT000034": 89.0,
+      "CAT000035": 90.25,
+      "CAT000036": 83.0,
+      "CAT000037": 91.0,
+      "CAT000038": 88.75,
+      "CAT000039": 93.0,
+      "CAT000040": 88.0,
+      "CAT000041": 87.0,
+      "CAT000042": 88.75,
+      "CAT000043": 89.0,
+      "CAT000044": 86.0,
+      "CAT000045": 91.0,
+      "CAT000046": 87.0,
+      "CAT000047": 82.5,
+      "CAT000048": 91.0,
+      "CAT000049": 88.0,
+      "CAT000050": 89.0,
+      "CAT000051": 88.0,
+      "CAT000052": 87.0,
+      "CAT000053": 87.0,
+      "CAT000054": 85.0,
+      "CAT000055": 91.0,
+      "CAT000056": 89.0,
+      "CAT000057": 91.0,
+      "CAT000058": 91.75,
+      "CAT000059": 88.0,
+      "CAT000060": 88.0,
+      "CAT000061": 84.0,
+      "CAT000062": 91.75,
+      "CAT000063": 90.0,
+      "CAT000064": 83.0,
+      "CAT000065": 85.25,
+      "CAT000066": 91.0,
+      "CAT000067": 93.0,
+      "CAT000068": 90.5,
+      "CAT000069": 86.25,
+      "CAT000070": 89.75,
+      "CAT000071": 88.5,
+      "CAT000072": 86.5,
+      "CAT000073": 98.0,
+      "CAT000074": 82.5,
+      "CAT000075": 90.25,
+      "CAT000076": 83.25,
+      "CAT000077": 87.0,
+      "CAT000078": 92.75,
+      "CAT000079": 87.5,
+      "CAT000080": 93.25
+    },
+    "global_p75_fallback": 88.0
+  }
+}
+
+## 25. Current inventory mode
+
+{
+  "mode": "CURRENT_INVENTORY_MODE",
+  "as_of_date": "2025-12-31",
+  "eligible_current_contexts": 1829,
+  "stale_contexts": 595,
+  "inventory_matched": 1829,
+  "no_price_out_of_stock_decisions": 0,
+  "promotion_actions": 0,
+  "markdown_actions": 241,
+  "manual_reviews": 186,
+  "diagnostics": {
+    "rule": {
+      "candidate_rows": 16461,
+      "decisions": 1829,
+      "rule_violation_rows": 1367,
+      "rule_resolution_null_rate": 0.0
+    },
+    "decisions": 1829,
+    "action_counts": {
+      "PRICE_INCREASE": 1564,
+      "MARKDOWN_REVIEW_REQUIRED": 169,
+      "SEASONAL_SLOW_MOVING_MARKDOWN": 69,
+      "PROMOTION_REVIEW": 17,
+      "PRICE_DECREASE": 9,
+      "HOLD_PRICE": 1
+    },
+    "constraint_impact": {
+      "RULE_MIN_PRICE": {
+        "decisions_affected": 1,
+        "candidate_rows_filtered": 1,
+        "price_delta_mean": -5.490000000000002
+      },
+      "RULE_MAX_PRICE": {
+        "decisions_affected": 11,
+        "candidate_rows_filtered": 18,
+        "price_delta_mean": 15.879999999999995
+      },
+      "RULE_MIN_MARGIN": {
+        "decisions_affected": 29,
+        "candidate_rows_filtered": 57,
+        "price_delta_mean": -9.66
+      },
+      "RULE_MAX_DISCOUNT": {
+        "decisions_affected": 84,
+        "candidate_rows_filtered": 173,
+        "price_delta_mean": -8.393121387283236
+      },
+      "RULE_MAX_PRICE_CHANGE": {
+        "decisions_affected": 563,
+        "candidate_rows_filtered": 1172,
+        "price_delta_mean": 0.0003924914675770229
+      }
+    },
+    "candidate_augmentation": {
+      "status": "NOT_RUN",
+      "added_candidates": 0,
+      "out_of_support_boundaries": []
+    }
+  }
+}
+
+## 26. Slow-moving thresholds
+
+{
+  "metric": "product_store_sales_30d",
+  "fallback_metric": "product_sales_30d",
+  "quantile": 0.25,
+  "minimum_category_rows": 100,
+  "global_threshold": 0.0,
+  "category_thresholds": {
+    "CAT000011": 0.0,
+    "CAT000012": 0.0,
+    "CAT000013": 0.0,
+    "CAT000014": 0.0,
+    "CAT000015": 0.0,
+    "CAT000016": 0.0,
+    "CAT000017": 0.0,
+    "CAT000018": 0.0,
+    "CAT000019": 0.0,
+    "CAT000020": 0.0,
+    "CAT000021": 0.0,
+    "CAT000022": 0.0,
+    "CAT000023": 0.0,
+    "CAT000024": 0.0,
+    "CAT000025": 0.0,
+    "CAT000026": 0.0,
+    "CAT000027": 0.0,
+    "CAT000028": 0.0,
+    "CAT000029": 0.0,
+    "CAT000030": 0.0,
+    "CAT000031": 0.0,
+    "CAT000032": 0.0,
+    "CAT000033": 0.0,
+    "CAT000034": 0.0,
+    "CAT000035": 0.0,
+    "CAT000036": 0.0,
+    "CAT000037": 0.0,
+    "CAT000038": 0.0,
+    "CAT000039": 0.0,
+    "CAT000040": 0.0,
+    "CAT000041": 0.0,
+    "CAT000042": 0.0,
+    "CAT000043": 0.0,
+    "CAT000044": 0.0,
+    "CAT000045": 0.0,
+    "CAT000046": 0.0,
+    "CAT000047": 0.0,
+    "CAT000048": 0.0,
+    "CAT000049": 0.0,
+    "CAT000050": 0.0,
+    "CAT000051": 0.0,
+    "CAT000052": 0.0,
+    "CAT000053": 0.0,
+    "CAT000054": 0.0,
+    "CAT000055": 0.0,
+    "CAT000056": 0.0,
+    "CAT000057": 0.0,
+    "CAT000058": 0.0,
+    "CAT000059": 0.0,
+    "CAT000060": 0.0,
+    "CAT000061": 0.0,
+    "CAT000062": 0.0,
+    "CAT000063": 0.0,
+    "CAT000064": 0.0,
+    "CAT000065": 0.0,
+    "CAT000066": 0.0,
+    "CAT000067": 0.0,
+    "CAT000068": 0.0,
+    "CAT000069": 0.0,
+    "CAT000070": 0.0,
+    "CAT000071": 0.0,
+    "CAT000072": 0.0,
+    "CAT000073": 0.0,
+    "CAT000074": 0.0,
+    "CAT000075": 0.0,
+    "CAT000076": 0.0,
+    "CAT000077": 0.0,
+    "CAT000078": 0.0,
+    "CAT000079": 0.0,
+    "CAT000080": 0.0
+  },
+  "category_support": {
+    "CAT000011": 665,
+    "CAT000012": 703,
+    "CAT000013": 457,
+    "CAT000014": 648,
+    "CAT000015": 470,
+    "CAT000016": 474,
+    "CAT000017": 607,
+    "CAT000018": 481,
+    "CAT000019": 688,
+    "CAT000020": 386,
+    "CAT000021": 610,
+    "CAT000022": 424,
+    "CAT000023": 315,
+    "CAT000024": 623,
+    "CAT000025": 262,
+    "CAT000026": 276,
+    "CAT000027": 300,
+    "CAT000028": 263,
+    "CAT000029": 277,
+    "CAT000030": 334,
+    "CAT000031": 243,
+    "CAT000032": 226,
+    "CAT000033": 253,
+    "CAT000034": 346,
+    "CAT000035": 222,
+    "CAT000036": 235,
+    "CAT000037": 403,
+    "CAT000038": 369,
+    "CAT000039": 354,
+    "CAT000040": 289,
+    "CAT000041": 426,
+    "CAT000042": 332,
+    "CAT000043": 519,
+    "CAT000044": 336,
+    "CAT000045": 499,
+    "CAT000046": 405,
+    "CAT000047": 459,
+    "CAT000048": 510,
+    "CAT000049": 384,
+    "CAT000050": 485,
+    "CAT000051": 358,
+    "CAT000052": 560,
+    "CAT000053": 145,
+    "CAT000054": 161,
+    "CAT000055": 101,
+    "CAT000056": 184,
+    "CAT000057": 500,
+    "CAT000058": 235,
+    "CAT000059": 222,
+    "CAT000060": 163,
+    "CAT000061": 235,
+    "CAT000062": 279,
+    "CAT000063": 181,
+    "CAT000064": 602,
+    "CAT000065": 600,
+    "CAT000066": 254,
+    "CAT000067": 171,
+    "CAT000068": 112,
+    "CAT000069": 186,
+    "CAT000070": 174,
+    "CAT000071": 102,
+    "CAT000072": 132,
+    "CAT000073": 258,
+    "CAT000074": 443,
+    "CAT000075": 275,
+    "CAT000076": 147,
+    "CAT000077": 419,
+    "CAT000078": 200,
+    "CAT000079": 277,
+    "CAT000080": 266
+  },
+  "source_split": "TRAIN",
+  "policy_type": "RELATIVE_SYNTHETIC_POC_POLICY"
+}
+
+## 27. Seasonal semantics
+
+Season is treated as source metadata; no invented calendar mapping or promotion-season requirement is applied.
+
+## 28. Markdown decisions
+
+Markdown is seasonal + slow-moving + overstock with positive available quantity and low-stock suppression. Expiry/perishability logic is forbidden.
+
+## 29. Current snapshot recommendation distribution
+
+See `current_inventory_summary.json` and the current decision Parquet artifact.
+
+## 30. Manual review
+
+{
+  "validation": 0.0020952380952380953,
+  "test": 0.014285714285714285
+}
+
+## 31. Reproducibility
+
+{
+  "validation": {
+    "rows_compared": 5250,
+    "rule_resolution_mismatches": 0,
+    "final_price_mismatches": 0,
+    "action_mismatches": 0,
+    "economic_mismatches": 0,
+    "mismatches": {
+      "PricingRuleID": 0,
+      "RecommendedPromotionID": 0,
+      "MarkdownAction": 0,
+      "FinalRecommendedPrice": 0,
+      "FinalAction": 0,
+      "manual_review_flag": 0,
+      "expected_units": 0,
+      "expected_revenue": 0,
+      "expected_gross_profit": 0,
+      "inventory_capped_expected_units": 0,
+      "inventory_capped_expected_revenue": 0,
+      "inventory_capped_expected_gross_profit": 0
+    },
+    "max_economic_delta": 0.0,
+    "status": "PASS"
+  },
+  "test": {
+    "rows_compared": 5250,
+    "rule_resolution_mismatches": 0,
+    "final_price_mismatches": 0,
+    "action_mismatches": 0,
+    "economic_mismatches": 0,
+    "mismatches": {
+      "PricingRuleID": 0,
+      "RecommendedPromotionID": 0,
+      "MarkdownAction": 0,
+      "FinalRecommendedPrice": 0,
+      "FinalAction": 0,
+      "manual_review_flag": 0,
+      "expected_units": 0,
+      "expected_revenue": 0,
+      "expected_gross_profit": 0,
+      "inventory_capped_expected_units": 0,
+      "inventory_capped_expected_revenue": 0,
+      "inventory_capped_expected_gross_profit": 0
+    },
+    "max_economic_delta": 0.0,
+    "status": "PASS"
+  },
+  "current_inventory": {
+    "rows_compared": 1829,
+    "rule_resolution_mismatches": 0,
+    "final_price_mismatches": 0,
+    "action_mismatches": 0,
+    "economic_mismatches": 0,
+    "mismatches": {
+      "PricingRuleID": 0,
+      "RecommendedPromotionID": 0,
+      "MarkdownAction": 0,
+      "FinalRecommendedPrice": 0,
+      "FinalAction": 0,
+      "manual_review_flag": 0,
+      "expected_units": 0,
+      "expected_revenue": 0,
+      "expected_gross_profit": 0,
+      "inventory_capped_expected_units": 0,
+      "inventory_capped_expected_revenue": 0,
+      "inventory_capped_expected_gross_profit": 0
+    },
+    "max_economic_delta": 0.0,
+    "status": "PASS"
+  },
+  "rule_resolution_mismatches": 0,
+  "final_price_mismatches": 0,
+  "action_mismatches": 0,
+  "economic_mismatches": 0,
+  "max_economic_delta": 0.0,
+  "runs_per_split": 2,
+  "status": "PASS"
+}
+
+## 31a. TEST context boundary
+
+{
+  "context_allowlist": [
+    "PricingDecisionID",
+    "DecisionTime",
+    "CustomerID",
+    "SessionID",
+    "ProductID",
+    "StoreID",
+    "Channel",
+    "CurrentPrice",
+    "AppliedPrice",
+    "CategoryID",
+    "BrandID",
+    "BasePrice",
+    "Season",
+    "RegionID",
+    "StoreType",
+    "ClimateZone",
+    "LoyaltyTier",
+    "CustomerSegment",
+    "PreferredChannel",
+    "FavoriteCategoryID",
+    "FavoriteBrandID",
+    "PriceSensitivity",
+    "CategoryAffinityScore",
+    "BrandAffinityScore",
+    "active_history_selling_price",
+    "history_discount_pct",
+    "days_since_current_price_started",
+    "previous_selling_price",
+    "previous_price_change_pct",
+    "active_history_promotion_id",
+    "active_price_history_id",
+    "selected_price_effective_from",
+    "selected_price_effective_to",
+    "price_history_current_price_delta",
+    "price_history_current_price_mismatch",
+    "selected_promotion_start_date",
+    "selected_promotion_end_date",
+    "active_promotion_id",
+    "active_promotion_flag",
+    "active_promotion_discount_pct",
+    "selected_sales_order_date",
+    "product_store_sales_7d",
+    "product_store_sales_14d",
+    "product_store_sales_30d",
+    "product_region_sales_7d",
+    "product_region_sales_14d",
+    "product_region_sales_30d",
+    "product_sales_7d",
+    "product_sales_14d",
+    "product_sales_30d",
+    "product_sales_60d",
+    "product_sales_90d",
+    "category_store_sales_7d",
+    "category_store_sales_14d",
+    "category_store_sales_30d",
+    "category_sales_7d",
+    "category_sales_14d",
+    "category_sales_30d",
+    "product_sales_velocity_7d",
+    "product_sales_velocity_30d",
+    "product_sales_velocity_90d",
+    "product_sales_velocity_ratio_7d_30d",
+    "days_since_last_product_sale",
+    "competitor_price_exact_channel",
+    "competitor_price_region_fallback",
+    "competitor_price_product_fallback",
+    "competitor_price_available",
+    "competitor_price_age_days",
+    "selected_competitor_observed_at",
+    "competitor_match_level",
+    "competitor_price",
+    "selected_behavior_event_at",
+    "product_views_1h",
+    "product_views_24h",
+    "product_views_168h",
+    "product_views_720h",
+    "cart_additions_1h",
+    "cart_additions_24h",
+    "cart_additions_168h",
+    "cart_additions_720h",
+    "search_clicks_1h",
+    "search_clicks_24h",
+    "search_clicks_168h",
+    "search_clicks_720h",
+    "decision_month",
+    "decision_quarter",
+    "decision_day_of_week",
+    "decision_is_weekend",
+    "weather_temperature",
+    "weather_condition",
+    "weather_precipitation",
+    "is_holiday",
+    "holiday_sales_impact_factor",
+    "holiday_count",
+    "price_change_amount",
+    "price_change_pct",
+    "price_vs_base_pct",
+    "discount_from_base_pct",
+    "price_vs_competitor_pct",
+    "current_vs_base_pct"
+  ],
+  "forbidden_outcome_columns": [
+    "ActualRevenue",
+    "OrderLineID",
+    "OutcomeTime",
+    "PurchasedFlag",
+    "QuantityPurchased"
+  ],
+  "test_context_outcome_columns": [],
+  "test_used_to_choose_priority_semantics": false,
+  "test_used_to_choose_percentage_semantics": false,
+  "test_used_to_choose_promotion_semantics": false,
+  "test_used_to_choose_markdown_thresholds": false,
+  "test_outcomes_used": false
+}
+
+## 32. Compute
+
+{
+  "rule_resolution_seconds": 35.3749816999989,
+  "promotion_resolution_seconds": 75.04129380000086,
+  "inventory_policy_seconds": 0.021972099995764438,
+  "model_augmentation_inference_seconds": 0.0,
+  "final_selection_seconds": 389.9417822999967,
+  "total_seconds": 860.618029600002
+}
+
+## 33. Known limitations
+
+Historical inventory is unavailable by contract; current inventory is a single 2025-12-31 snapshot. Outcome backtesting is deferred to Phase 8.
+
+## 34. Phase 8 handoff
+
+Phase 8 must not begin until this Phase 7 verdict is independently reviewed and explicitly approved.
+
+## 35. PASS / PASS_WITH_WARNINGS / BLOCKED
+
+**PASS_WITH_WARNINGS**.
+
+## 36. Final recommendation
+
+**PROCEED_TO_PHASE_8**

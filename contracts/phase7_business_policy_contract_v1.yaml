@@ -1,0 +1,79 @@
+version: 1
+name: phase7_business_policy_contract_v1
+status: frozen-before-test
+upstream:
+  phase6_manifest: artifacts/phase6/phase6_manifest.json
+  phase6_optimizer_spec: artifacts/phase6/frozen_optimizer_spec.json
+  fingerprints:
+    phase2_dataset_sha256: 7cc4e4fe97c1b36f1d5ba5df7ad911c09fd82efcda9a37d6305ef7aaafac93b2
+    phase3_split_sha256: 9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d
+    phase4_model_sha256: 1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d
+    phase4_spec_sha256: 6746428e9875726202e28a6adfc498421c09f4c129cf91d75b3ad2c0412a1f8d
+    phase5_estimator_sha256: 481e7de3c4fa8113ee5fd13e5c318b8bc2cb7dc2c652883119ee8608975978ba
+    phase5_spec_sha256: cd7e8aa198fcbc886b893b5319439dfa381c192ede31b1f27ea11a93d14712f0
+    phase6_manifest_sha256: b0881cd6e13ae8aa16fea8163a46cbdc40a2fabe66f3ca346539523b7f737b8a
+    phase6_optimizer_spec_sha256: d18bf5783aee43443709848f224ad6f6158638150f7272bf43ea1a371f86177e
+    validation_candidate_surface_sha256: 4c2e1729736d429f9f0c7910d4c1fc7d82fc6c850255112d6cf4cc63d41bb610
+    test_candidate_surface_sha256: da959dac729757fe4cee76c309c92e85ae88948758c28ad3475b384c092e00ac
+sources:
+  pricing_rules:
+    table: dbo.Pricing_Rules
+    columns: [PricingRuleID, RuleName, ProductID, CategoryID, StoreID, Channel, MinPrice, MaxPrice, MinMarginPct, MaxDiscountPct, MaxPriceChangePct, Priority, EffectiveFrom, EffectiveTo, ActiveFlag]
+    read_only: true
+  promotions:
+    table: dbo.Promotions
+    columns: [PromotionID, PromotionName, CategoryID, DiscountPct, Season, StartDate, EndDate, ActiveFlag]
+    read_only: true
+  inventory:
+    table: dbo.Inventory
+    columns: [InventoryID, StoreID, ProductID, SnapshotDate, OpeningQty, ReceivedQty, SoldQty, ReturnedQty, AdjustmentQty, ReservedQty, OnHandQty, AvailableQty, StockStatus]
+    read_only: true
+  product:
+    table: dbo.Product
+    columns: [ProductID, CategoryID, Season, BasePrice, CostPrice]
+    read_only: true
+  product_category:
+    table: dbo.Product_Category
+    columns: [CategoryID, ParentCategoryID, CategoryName, CategoryLevel, DepartmentName]
+    read_only: true
+  price_history:
+    table: dbo.Product_Price_History
+    columns: [PriceHistoryID, ProductID, StoreID, Channel, BasePrice, SellingPrice, DiscountPct, PromotionID, EffectiveFrom, EffectiveTo, PriceReason]
+    read_only: true
+  decision_log:
+    table: dbo.Pricing_Decision_Log
+    columns: [PricingDecisionID, DecisionTime, ProductID, StoreID, Channel, CurrentPrice, RecommendedPrice, AppliedPrice, PricingRuleID]
+    read_only: true
+rules:
+  scope_null_is_wildcard: true
+  effective_dates: '[EffectiveFrom, EffectiveTo)'
+  precedence: train-inferred among P1/P2/P3/P4 plus source-backed constraint-adjustment policy, selected only at >=99.5% unique reconciliation
+  percentage_convention: normalized to fractions after TRAIN audit
+  formulas:
+    MinPrice: floor = MinPrice
+    MaxPrice: ceiling = MaxPrice
+    MinMarginPct: floor = CostPrice / (1 - MinMarginFraction)
+    MaxDiscountPct: floor = BasePrice * (1 - MaxDiscountFraction)
+    MaxPriceChangePct: bounds = CurrentPrice * (1 +/- MaxPriceChangeFraction)
+  conflict: RULE_CONSTRAINT_CONFLICT and manual review
+promotions:
+  eligibility: ActiveFlag=1, category match, StartDate <= DecisionDate <= EndDate
+  season: TRAIN-audited metadata; no invented calendar mapping
+  overlap: conflicting discounts require PROMOTION_CONFLICT_REVIEW
+  pricing_mode: ENFORCE_DEFINED_DISCOUNT only at >=99% exact-cent agreement, else CONTEXT_ONLY
+inventory:
+  historical_prohibition: InventorySnapshotDate and AvailableQty remain NULL in historical mode
+  current_grain: ProductID + StoreID at max SnapshotDate
+  out_of_stock: AvailableQty <= 0 or frozen source status => no price
+markdown:
+  source_metric: TRAIN product_store_sales_30d, fallback product_sales_30d
+  threshold: category p25 when >=100 TRAIN rows else global p25
+  eligibility: seasonal + slow-moving + overstock + AvailableQty > 0, current mode only
+  expiry_logic: forbidden; dataset has no expiry or perishability fields
+decisioning:
+  objective: EXPECTED_GROSS_PROFIT
+  final_price: model-scored Phase 6 candidates only, with exact supported boundary augmentation
+  tie_policy: closest to CurrentPrice, lower price, deterministic candidate order
+  materiality: 0.5% relative expected-gross-profit uplift when CurrentPrice is compliant
+  advisory_only: true
+  auto_writeback: false

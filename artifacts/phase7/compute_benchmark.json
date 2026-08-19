@@ -1,0 +1,14 @@
+{
+  "augmented_candidates_scored": 0,
+  "candidate_rows_processed": 94500,
+  "decisions_processed": 12329,
+  "final_selection_seconds": 389.9417822999967,
+  "inventory_policy_seconds": 0.021972099995764438,
+  "inventory_rows_loaded": 15000,
+  "model_augmentation_inference_seconds": 0.0,
+  "promotion_resolution_seconds": 75.04129380000086,
+  "promotions_loaded": 200,
+  "rule_resolution_seconds": 35.3749816999989,
+  "rules_loaded": 200,
+  "total_seconds": 855.9696779000005
+}

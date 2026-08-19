@@ -1,0 +1,43 @@
+{
+  "blocker": null,
+  "distributions": {
+    "DiscountPct": {
+      "count": 200,
+      "fraction_candidate": false,
+      "max": 55.87,
+      "min": 5.19,
+      "p01": 5.559699999999999,
+      "p50": 21.1,
+      "p99": 53.510499999999986
+    },
+    "MaxDiscountPct": {
+      "count": 200,
+      "fraction_candidate": false,
+      "max": 27.42,
+      "min": 8.16,
+      "p01": 8.3193,
+      "p50": 19.115000000000002,
+      "p99": 26.8403
+    },
+    "MaxPriceChangePct": {
+      "count": 200,
+      "fraction_candidate": false,
+      "max": 15.79,
+      "min": 5.04,
+      "p01": 5.6258,
+      "p50": 9.835,
+      "p99": 15.6608
+    },
+    "MinMarginPct": {
+      "count": 200,
+      "fraction_candidate": false,
+      "max": 23.83,
+      "min": 8.0,
+      "p01": 8.495,
+      "p50": 13.649999999999999,
+      "p99": 23.6405
+    }
+  },
+  "selected_convention": "PERCENT_POINTS",
+  "status": "PASS"
+}
