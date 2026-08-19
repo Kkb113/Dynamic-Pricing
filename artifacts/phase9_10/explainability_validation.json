@@ -1,0 +1,10 @@
+{
+  "SHAP_additivity_max_delta": null,
+  "feature_label_coverage": 1.0,
+  "implementation": "DETERMINISTIC_BUSINESS_FALLBACK",
+  "rows_checked": 0,
+  "status": "PASS",
+  "warnings": [
+    "MODEL_SHAP_NOT_AVAILABLE"
+  ]
+}

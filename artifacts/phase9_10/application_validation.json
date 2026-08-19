@@ -1,0 +1,16 @@
+{
+  "agent_tools": 10,
+  "entry_point": "app/streamlit_app.py",
+  "framework": "Streamlit",
+  "missing_pages": [],
+  "pages": [
+    "1_Executive_Dashboard.py",
+    "2_AI_Pricing_Agent.py",
+    "3_Recommendation_Explorer.py",
+    "4_Price_Scenario_Simulator.py",
+    "5_Model_Intelligence.py",
+    "6_Decision_Audit.py"
+  ],
+  "startup_without_openai_key": "PASS",
+  "status": "PASS"
+}

@@ -1,0 +1,66 @@
+# Human-readable labels for every frozen Phase 4 purchase feature.
+CurrentPrice: Current selling price
+AppliedPrice: Applied selling price context
+BasePrice: Product base price
+price_change_amount: Price change amount
+price_change_pct: Price change percentage
+price_vs_base_pct: Candidate price versus base price
+current_vs_base_pct: Current price versus base price
+discount_from_base_pct: Discount from base price
+active_history_selling_price: Active price-history selling price
+history_discount_pct: Price-history discount percentage
+days_since_current_price_started: Days since current price started
+previous_selling_price: Previous selling price
+previous_price_change_pct: Previous price-change percentage
+decision_month: Decision month
+decision_quarter: Decision quarter
+decision_day_of_week: Decision day of week
+decision_is_weekend: Weekend decision flag
+CategoryID: Product category
+BrandID: Product brand
+Season: Season
+StoreType: Store type
+RegionID: Region
+ClimateZone: Climate zone
+Channel: Sales channel
+active_promotion_flag: Active promotion flag
+active_promotion_discount_pct: Active promotion discount
+product_store_sales_7d: Product-store sales, 7 days
+product_store_sales_14d: Product-store sales, 14 days
+product_store_sales_30d: Product-store sales, 30 days
+product_region_sales_7d: Product-region sales, 7 days
+product_region_sales_14d: Product-region sales, 14 days
+product_region_sales_30d: Product-region sales, 30 days
+product_sales_7d: Product sales, 7 days
+product_sales_14d: Product sales, 14 days
+product_sales_30d: Product sales, 30 days
+product_sales_60d: Product sales, 60 days
+product_sales_90d: Product sales, 90 days
+category_store_sales_7d: Category-store sales, 7 days
+category_store_sales_14d: Category-store sales, 14 days
+category_store_sales_30d: Category-store sales, 30 days
+category_sales_7d: Category sales, 7 days
+category_sales_14d: Category sales, 14 days
+category_sales_30d: Category sales, 30 days
+product_sales_velocity_7d: Product sales velocity, 7 days
+product_sales_velocity_30d: Product sales velocity, 30 days
+product_sales_velocity_90d: Product sales velocity, 90 days
+product_sales_velocity_ratio_7d_30d: Product velocity ratio, 7 to 30 days
+days_since_last_product_sale: Days since last product sale
+is_holiday: Holiday flag
+holiday_sales_impact_factor: Holiday sales impact factor
+weather_temperature: Weather temperature
+weather_condition: Weather condition
+weather_precipitation: Weather precipitation
+product_views_1h: Product views, 1 hour
+product_views_24h: Product views, 24 hours
+product_views_168h: Product views, 7 days
+product_views_720h: Product views, 30 days
+cart_additions_1h: Cart additions, 1 hour
+cart_additions_24h: Cart additions, 24 hours
+cart_additions_168h: Cart additions, 7 days
+cart_additions_720h: Cart additions, 30 days
+search_clicks_1h: Search clicks, 1 hour
+search_clicks_24h: Search clicks, 24 hours
+search_clicks_168h: Search clicks, 7 days
+search_clicks_720h: Search clicks, 30 days

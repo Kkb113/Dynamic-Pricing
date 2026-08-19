@@ -1,0 +1,24 @@
+{
+  "base_branch": "codex/phase1-data-audit",
+  "base_git_sha": "c23bece2839c8c2e4ece5a474b28041daaf64e53",
+  "integrity": {
+    "code": "OK",
+    "hash_mismatches": [],
+    "major_blockers": [],
+    "missing": [],
+    "phase8_result": "PASS_WITH_WARNINGS",
+    "status": "PASS"
+  },
+  "major_blockers": [],
+  "phase7_decision_fingerprint": "339c95141eda615175a52470244ad95608c71ea389cd21ae9702776a452dde56",
+  "phase7_fingerprints": {
+    "current_decisions_sha256": "71c3a73e93c78611c4d6af09ce3105981bd00be4900aee53babbd55b9a3d8563",
+    "frozen_policy_sha256": "74ee5dc91242ad14e2afa65088ffb6f342483816ca2da2e7810801aa20f1cf8c",
+    "manifest_sha256": "8d79b5bee6a8b073f06508550cce2e2f35747a157d891c8cddaf45e9ab3050c6",
+    "test_decisions_sha256": "4b81635f2794488c923a2334db2d93759abed6e5fdd78e2f9fa7a718135c48fa",
+    "validation_decisions_sha256": "339c95141eda615175a52470244ad95608c71ea389cd21ae9702776a452dde56"
+  },
+  "phase8_manifest_sha256": "97786c42c0b1a73669f142fbba468187bee1504e67830be8e91f2a33a2eade40",
+  "phase8_result": "PASS_WITH_WARNINGS",
+  "status": "PASS"
+}
