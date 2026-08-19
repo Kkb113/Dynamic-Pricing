@@ -37,38 +37,11 @@
     "tolerance": 0.01
   },
   "source": {
-    "chunk_size": 1000,
-    "driver": "pymssql_tds",
-    "query_count": 6,
-    "query_shapes": [
-      {
-        "has_outcome_columns": true,
-        "row_count": 1000
-      },
-      {
-        "has_outcome_columns": true,
-        "row_count": 1000
-      },
-      {
-        "has_outcome_columns": true,
-        "row_count": 1000
-      },
-      {
-        "has_outcome_columns": true,
-        "row_count": 1000
-      },
-      {
-        "has_outcome_columns": true,
-        "row_count": 1000
-      },
-      {
-        "has_outcome_columns": true,
-        "row_count": 250
-      }
-    ],
-    "requested_ids": 5250,
+    "outcome_reread": false,
     "rows": 5250,
-    "sql_select_only": true,
-    "status": "CONNECTED_READ_ONLY"
+    "source_path": "artifacts\\phase8\\validation_factual_backtest.parquet",
+    "source_sha256": "abd509c74164fa0bb6125a0f19f8b97cee714e6383aba70f6d92ea1de139f453",
+    "sql_select_only": false,
+    "status": "FROZEN_ARTIFACT_REUSE"
   }
 }

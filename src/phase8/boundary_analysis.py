@@ -80,25 +80,68 @@ def neighbor_fragility(surface: pd.DataFrame, decisions: pd.DataFrame, boundary_
 
 
 def exact_boundary_candidates(surface: pd.DataFrame, decisions: pd.DataFrame) -> pd.DataFrame:
-    """List in-support rule boundaries not already represented on the grid."""
+    """List exact rule boundaries inside the frozen Phase 6 support envelope.
+
+    ``CandidatePrice`` grid extrema are deliberately retained as diagnostics,
+    but they are not the eligibility boundary for this sensitivity.  Phase 6
+    freezes support as a *multiplier* envelope on every candidate row, so the
+    absolute price envelope is ``CurrentPrice * support_low/high``.  A small
+    legacy fallback to grid extrema is kept for unit-test frames that predate
+    the Phase 6 support columns; the production artifact always takes the
+    explicit support path and records its source in the returned rows.
+    """
 
     columns = ["PricingDecisionID", "effective_price_floor", "effective_price_ceiling"]
     bounds = decisions[[column for column in columns if column in decisions.columns]].drop_duplicates("PricingDecisionID")
-    grid = surface.groupby("PricingDecisionID", sort=False)["CandidatePrice"].agg(grid_min_price="min", grid_max_price="max").reset_index()
-    merged = bounds.merge(grid, on="PricingDecisionID", how="left", validate="one_to_one")
+    grouped = surface.groupby("PricingDecisionID", sort=False)
+    grid = grouped["CandidatePrice"].agg(grid_min_price="min", grid_max_price="max").reset_index()
+    if {"support_low", "support_high", "CurrentPrice"}.issubset(surface.columns):
+        support = grouped[["support_low", "support_high", "CurrentPrice"]].first().reset_index()
+        support["support_low_multiplier"] = pd.to_numeric(support["support_low"], errors="coerce")
+        support["support_high_multiplier"] = pd.to_numeric(support["support_high"], errors="coerce")
+        support["support_low_price"] = pd.to_numeric(support["CurrentPrice"], errors="coerce") * support["support_low_multiplier"]
+        support["support_high_price"] = pd.to_numeric(support["CurrentPrice"], errors="coerce") * support["support_high_multiplier"]
+        merged = bounds.merge(grid, on="PricingDecisionID", how="left", validate="one_to_one").merge(
+            support[["PricingDecisionID", "support_low_multiplier", "support_high_multiplier", "support_low_price", "support_high_price"]],
+            on="PricingDecisionID", how="left", validate="one_to_one",
+        )
+        envelope_source = "PHASE6_EFFECTIVE_SUPPORT_ENVELOPE"
+    else:
+        merged = bounds.merge(grid, on="PricingDecisionID", how="left", validate="one_to_one")
+        merged["support_low_price"] = merged["grid_min_price"]
+        merged["support_high_price"] = merged["grid_max_price"]
+        merged["support_low_multiplier"] = np.nan
+        merged["support_high_multiplier"] = np.nan
+        envelope_source = "GRID_FALLBACK_FOR_LEGACY_FRAME"
+
     rows: list[dict[str, Any]] = []
     for row in merged.to_dict("records"):
+        low = pd.to_numeric(pd.Series([row.get("support_low_price")]), errors="coerce").iloc[0]
+        high = pd.to_numeric(pd.Series([row.get("support_high_price")]), errors="coerce").iloc[0]
+        if pd.isna(low) or pd.isna(high):
+            continue
         for name in ("effective_price_floor", "effective_price_ceiling"):
             value = row.get(name)
             if value is None or pd.isna(value):
                 continue
             exact = round(float(value), 2)
-            if exact < float(row["grid_min_price"]) - 0.005 or exact > float(row["grid_max_price"]) + 0.005:
+            if exact < float(low) - 0.005 - 1e-12 or exact > float(high) + 0.005 + 1e-12:
                 continue
             existing = surface.loc[surface["PricingDecisionID"].astype(str).eq(str(row["PricingDecisionID"])), "CandidatePrice"]
             if not existing.empty and (pd.to_numeric(existing, errors="coerce") - exact).abs().le(0.005).any():
                 continue
-            rows.append({"PricingDecisionID": row["PricingDecisionID"], "boundary_type": "RULE_FLOOR" if name.endswith("floor") else "RULE_CEILING", "boundary_price": exact, "grid_min_price": row["grid_min_price"], "grid_max_price": row["grid_max_price"]})
+            rows.append({
+                "PricingDecisionID": row["PricingDecisionID"],
+                "boundary_type": "RULE_FLOOR" if name.endswith("floor") else "RULE_CEILING",
+                "boundary_price": exact,
+                "grid_min_price": row["grid_min_price"],
+                "grid_max_price": row["grid_max_price"],
+                "support_low_multiplier": row.get("support_low_multiplier"),
+                "support_high_multiplier": row.get("support_high_multiplier"),
+                "support_low_price": float(low),
+                "support_high_price": float(high),
+                "support_envelope_source": envelope_source,
+            })
     return pd.DataFrame(rows)
 
 

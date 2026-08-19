@@ -76,7 +76,8 @@ def scenario_summary(frame: pd.DataFrame, scenario: str) -> dict[str, Any]:
     units = pd.to_numeric(frame[f"{scenario}_expected_units"], errors="coerce")
     revenue = pd.to_numeric(frame[f"{scenario}_expected_revenue"], errors="coerce")
     gross_profit = pd.to_numeric(frame[f"{scenario}_expected_gross_profit"], errors="coerce")
-    historical = pd.to_numeric(frame["S0_HISTORICAL_APPLIED"], errors="coerce")
+    historical_column = "S0_HISTORICAL_APPLIED" if "S0_HISTORICAL_APPLIED" in frame.columns else "S0_HISTORICAL_APPLIED_price"
+    historical = pd.to_numeric(frame[historical_column], errors="coerce")
     valid = price.notna()
     change = price - historical
     increase = valid & (change > 0.005)
@@ -108,6 +109,29 @@ def all_scenario_summaries(frame: pd.DataFrame) -> dict[str, dict[str, Any]]:
     return {scenario: scenario_summary(frame, scenario) for scenario in SCENARIOS}
 
 
+def automatic_cohort(frame: pd.DataFrame) -> pd.DataFrame:
+    """Return the one frozen automatic Phase 7 cohort used for comparisons.
+
+    S3 intentionally has no price/economics for manual-review decisions.  All
+    automatic-only comparisons must use exactly the same decision IDs for S0,
+    S1, S2, and S3; filtering each scenario independently would silently
+    compare different denominators.
+    """
+
+    column = "S3_PHASE7_FINAL_AUTOMATIC_price"
+    if column not in frame.columns:
+        column = "S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit"
+    if column not in frame.columns:
+        return frame.iloc[0:0].copy()
+    return frame.loc[pd.to_numeric(frame[column], errors="coerce").notna()].copy()
+
+
+def automatic_scenario_summaries(frame: pd.DataFrame) -> dict[str, dict[str, Any]]:
+    """Summarize every scenario on the identical automatic Phase 7 cohort."""
+
+    return all_scenario_summaries(automatic_cohort(frame))
+
+
 def scenario_delta(summaries: dict[str, dict[str, Any]], scenario: str, baseline: str = "S0_HISTORICAL_APPLIED") -> dict[str, float]:
     current = summaries[scenario]
     base = summaries[baseline]
@@ -129,4 +153,4 @@ def guard_counterfactual_language(text: str) -> None:
         raise ValueError(f"UNSUPPORTED_COUNTERFACTUAL_LANGUAGE: {found}")
 
 
-__all__ = ["SCENARIOS", "all_scenario_summaries", "guard_counterfactual_language", "scenario_delta", "scenario_prices", "score_scenarios"]
+__all__ = ["SCENARIOS", "all_scenario_summaries", "automatic_cohort", "automatic_scenario_summaries", "guard_counterfactual_language", "scenario_delta", "scenario_prices", "score_scenarios"]

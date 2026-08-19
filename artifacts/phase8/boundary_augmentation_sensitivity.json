@@ -1,15 +1,29 @@
 {
-  "aggregate_model_implied_gp_delta": 974.9540889714186,
-  "blockers": [
-    "MATERIAL_GRID_GRANULARITY_GAP"
-  ],
-  "boundaries_scored": 3195,
-  "change_rate": 0.8708357685563998,
-  "decision_rows_with_scored_boundaries": 1711,
-  "decisions_where_augmented_optimum_differs": 1490,
-  "in_support_unsimulated_boundaries": 3195,
-  "mean_price_delta": 3.532817066043249,
-  "relative_aggregate_gp_delta": 0.035584990155558174,
+  "affected_subset_gp_gap_pct": 0.01950360905688137,
+  "affected_subset_phase7_automatic_gp": 48470.62116655262,
+  "aggregate_model_implied_gp_delta": 931.5944455800493,
+  "augmented_candidate_rows": 33923,
+  "augmented_surface_rows": 33923,
+  "blockers": [],
+  "boundaries_scored": 5384,
+  "change_rate": 0.9183222958057395,
+  "decision_rows_with_scored_boundaries": 3171,
+  "decisions_where_augmented_optimum_differs": 2912,
+  "in_support_unsimulated_boundaries": 5384,
+  "ineligible_augmented_candidate_rows": 3657,
+  "mean_price_delta": 1.8574929044465476,
+  "policywide_automatic_gp_gap_pct": 0.01096430730336892,
+  "policywide_automatic_phase7_gp": 84966.10135086284,
+  "relative_aggregate_gp_delta": 0.01096430730336892,
+  "selection_policy": {
+    "closest_to_current_price": true,
+    "lower_price_tie_break": true,
+    "materiality_relative_expected_profit_uplift": 0.005,
+    "objective": "EXPECTED_GROSS_PROFIT",
+    "tie_absolute": 1e-08,
+    "tie_relative": 0.001
+  },
+  "support_envelope_source": "PHASE6_EFFECTIVE_SUPPORT_ENVELOPE",
   "warning_codes": [
     "COARSE_GRID_VALUE_WARNING"
   ]

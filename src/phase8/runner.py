@@ -40,7 +40,16 @@ from phase8.outcome_validation import (
     revenue_consistency_audit,
     validate_outcome_join,
 )
-from phase8.scenario_evaluation import SCENARIOS, all_scenario_summaries, scenario_delta, scenario_prices, score_scenarios
+from decisioning.business_selector import select_business_candidates
+from phase8.scenario_evaluation import (
+    SCENARIOS,
+    all_scenario_summaries,
+    automatic_cohort,
+    automatic_scenario_summaries,
+    scenario_delta,
+    scenario_prices,
+    score_scenarios,
+)
 from phase8.segment_analysis import segment_metrics
 from phase8.validation import EvaluationFreeze, reproducibility_check, sha256_json, upstream_validation
 from phase7.validation import OUTCOME_COLUMNS
@@ -151,6 +160,34 @@ def _phase7_artifacts(root: Path, split: str) -> tuple[pd.DataFrame, pd.DataFram
     return surface, recommendations, decisions
 
 
+def _load_frozen_outcomes_or_sql(root: Path, split: str, decision_ids: list[str]) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Reuse the already-authorized outcome artifact before attempting SQL.
+
+    Reviewer remediation must regenerate derived evidence without rereading or
+    tuning against TEST.  The prior Phase 8 factual backtest is the frozen
+    outcome access record; it contains only the outcome columns needed for the
+    deterministic join.  A clean checkout without that record still follows
+    the original read-only SQL path.
+    """
+
+    cache = root / f"artifacts/phase8/{split}_factual_backtest.parquet"
+    required = ["PricingDecisionID", "PurchasedFlag", "QuantityPurchased", "ActualRevenue", "OutcomeTime", "AppliedPrice"]
+    if cache.exists():
+        cached_source = pd.read_parquet(cache)
+        cached = cached_source[[column for column in required if column in cached_source.columns]].copy()
+        if set(cached["PricingDecisionID"].astype(str)) == set(map(str, decision_ids)) and len(cached) == len(decision_ids):
+            return cached, {
+                "status": "FROZEN_ARTIFACT_REUSE",
+                "rows": int(len(cached)),
+                "sql_select_only": False,
+                "outcome_reread": False,
+                "source_path": str(cache.relative_to(root)),
+                "source_sha256": sha256_file(cache),
+            }
+    outcomes, access = load_split_outcomes(decision_ids, env_file=root / ".env")
+    return outcomes, access
+
+
 def _attach_scenario_context(scenario_frame: pd.DataFrame, factual: pd.DataFrame, boundaries: dict[str, Any]) -> pd.DataFrame:
     factual_columns = [
         "PricingDecisionID", "DecisionTime", "ProductID", "StoreID", "Channel", "CategoryID", "Season", "RegionID", "StoreType", "CurrentPrice", "CostPrice",
@@ -176,76 +213,195 @@ def _boundary_sensitivity(
     scenario_frame: pd.DataFrame,
     scorer: FrozenPhase7Scorer,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
+    empty_summary = {
+        "in_support_unsimulated_boundaries": 0,
+        "boundaries_scored": 0,
+        "decision_rows_with_scored_boundaries": 0,
+        "augmented_candidate_rows": 0,
+        "decisions_where_augmented_optimum_differs": 0,
+        "change_rate": 0.0,
+        "aggregate_model_implied_gp_delta": 0.0,
+        "relative_aggregate_gp_delta": 0.0,
+        "affected_subset_gp_gap_pct": 0.0,
+        "policywide_automatic_gp_gap_pct": 0.0,
+        "affected_subset_phase7_automatic_gp": 0.0,
+        "policywide_automatic_phase7_gp": 0.0,
+        "ineligible_augmented_candidate_rows": 0,
+        "mean_price_delta": 0.0,
+        "selection_policy": {
+            "objective": "EXPECTED_GROSS_PROFIT",
+            "tie_relative": 0.001,
+            "tie_absolute": 1e-8,
+            "closest_to_current_price": True,
+            "lower_price_tie_break": True,
+            "materiality_relative_expected_profit_uplift": 0.005,
+        },
+        "support_envelope_source": "PHASE6_EFFECTIVE_SUPPORT_ENVELOPE",
+        "warning_codes": [],
+        "blockers": [],
+    }
     candidates = exact_boundary_candidates(surface, decisions)
     if candidates.empty:
-        return pd.DataFrame(), {"in_support_unsimulated_boundaries": 0, "boundaries_scored": 0, "decisions_where_augmented_optimum_differs": 0, "change_rate": 0.0, "aggregate_model_implied_gp_delta": 0.0, "relative_aggregate_gp_delta": 0.0, "mean_price_delta": 0.0, "warning_codes": [], "blockers": []}
-    source = context.set_index("PricingDecisionID", drop=False)
-    source_rows = source.loc[candidates["PricingDecisionID"].astype(str)].reset_index(drop=True)
+        return pd.DataFrame(), empty_summary
+
+    source = context.copy()
+    source["PricingDecisionID"] = source["PricingDecisionID"].astype(str)
+    source = source.set_index("PricingDecisionID", drop=False)
+    candidate_ids = candidates["PricingDecisionID"].astype(str).tolist()
+    source_rows = source.loc[candidate_ids].reset_index(drop=True)
     scored_values = scorer.score_candidates(source_rows, candidates["boundary_price"].to_numpy(float))
     scored_rows = candidates.copy()
-    scored_rows["raw_expected_units"] = [item["raw_expected_units"] for item in scored_values]
-    scored_rows["safe_expected_units"] = [item["safe_expected_units"] for item in scored_values]
-    scored_rows["expected_revenue"] = [item["expected_revenue"] for item in scored_values]
-    scored_rows["expected_gross_profit"] = [item["expected_gross_profit"] for item in scored_values]
-    scored_rows["CostPrice"] = [item["unit_gross_profit"] for item in scored_values]
-    phase7_by_id = scenario_frame.set_index("PricingDecisionID")
+    score_columns = (
+        "raw_purchase_probability", "conditional_quantity", "raw_expected_units",
+        "safe_expected_units", "raw_expected_revenue", "expected_revenue",
+        "unit_gross_profit", "candidate_margin_pct", "raw_expected_gross_profit",
+        "expected_gross_profit", "negative_unit_margin_candidate",
+        "response_guard_adjusted_flag", "number_of_adjusted_candidates",
+        "maximum_expected_units_adjustment", "mean_expected_units_adjustment",
+        "inventory_constraint_applied", "available_inventory",
+    )
+    for column in score_columns:
+        scored_rows[column] = [item.get(column) for item in scored_values]
+    scored_rows["CandidatePrice"] = scored_rows["boundary_price"].astype(float)
+    scored_rows["candidate_origin"] = "PHASE7_RULE_BOUNDARY"
+    scored_rows["CurrentPrice"] = source_rows["CurrentPrice"].to_numpy(float)
+    scored_rows["BasePrice"] = source_rows.get("BasePrice", pd.Series(np.nan, index=source_rows.index)).to_numpy()
+    scored_rows["CostPrice"] = pd.to_numeric(source_rows["CostPrice"], errors="coerce").to_numpy(float)
+    scored_rows["candidate_multiplier"] = scored_rows["CandidatePrice"] / scored_rows["CurrentPrice"]
+    scored_rows["is_current_price_candidate"] = np.isclose(scored_rows["CandidatePrice"], scored_rows["CurrentPrice"], atol=0.005, rtol=0)
+    scored_rows["candidate_vs_current_pct"] = scored_rows["candidate_multiplier"] - 1.0
+    scored_rows["candidate_vs_base_pct"] = scored_rows["CandidatePrice"] / scored_rows["BasePrice"] - 1.0
+
+    phase7_by_id = scenario_frame.copy()
+    phase7_by_id["PricingDecisionID"] = phase7_by_id["PricingDecisionID"].astype(str)
+    phase7_by_id = phase7_by_id.set_index("PricingDecisionID")
+    decisions_by_id = decisions.copy()
+    decisions_by_id["PricingDecisionID"] = decisions_by_id["PricingDecisionID"].astype(str)
+    decisions_by_id = decisions_by_id.set_index("PricingDecisionID")
     records: list[dict[str, Any]] = []
-    for decision_id, group in scored_rows.groupby("PricingDecisionID", sort=False):
+    augmented_surface_records: list[dict[str, Any]] = []
+    augmented_rows_total = 0
+    ineligible_rows_total = 0
+
+    for decision_id, group in scored_rows.groupby(scored_rows["PricingDecisionID"].astype(str), sort=False):
         surface_group = surface.loc[surface["PricingDecisionID"].astype(str).eq(str(decision_id))].copy()
-        if surface_group.empty:
+        if surface_group.empty or decision_id not in source.index or decision_id not in decisions_by_id.index:
             continue
-        # Re-run the frozen response-safety transform over the accepted grid
-        # plus the exact-cent boundary candidates, without changing official
-        # Phase 7 artifacts.
+        source_row = source.loc[decision_id]
+        decision_row = decisions_by_id.loc[decision_id]
         boundary_group = group.copy()
         boundary_group["PricingDecisionID"] = decision_id
-        for column in ("CandidatePrice", "raw_expected_units", "safe_expected_units", "expected_revenue", "expected_gross_profit", "CostPrice"):
-            if column == "CandidatePrice":
-                boundary_group[column] = boundary_group["boundary_price"]
-            elif column == "CostPrice":
-                boundary_group[column] = pd.to_numeric(source.loc[str(decision_id), "CostPrice"], errors="coerce")
-        common = [column for column in ("PricingDecisionID", "CandidatePrice", "CostPrice", "raw_expected_units", "safe_expected_units", "expected_revenue", "expected_gross_profit", "raw_expected_revenue", "raw_expected_gross_profit") if column in surface_group.columns]
-        augmented = pd.concat([surface_group[common], boundary_group[[column for column in common if column in boundary_group]],], ignore_index=True, sort=False)
-        if "raw_expected_revenue" not in augmented:
-            augmented["raw_expected_revenue"] = augmented["CandidatePrice"] * augmented["raw_expected_units"]
-        if "raw_expected_gross_profit" not in augmented:
-            augmented["raw_expected_gross_profit"] = (augmented["CandidatePrice"] - augmented["CostPrice"]) * augmented["raw_expected_units"]
+        # Preserve the Phase 6 grid columns and append the exact scored rows.
+        augmented = pd.concat([surface_group, boundary_group], ignore_index=True, sort=False)
+        augmented["PricingDecisionID"] = augmented["PricingDecisionID"].astype(str)
+        augmented["CandidatePrice"] = pd.to_numeric(augmented["CandidatePrice"], errors="coerce")
+        augmented = augmented.sort_values(["CandidatePrice", "candidate_origin"], kind="mergesort").drop_duplicates(["PricingDecisionID", "CandidatePrice"], keep="first").reset_index(drop=True)
+        augmented["CurrentPrice"] = float(source_row["CurrentPrice"])
+        augmented["CostPrice"] = pd.to_numeric(augmented.get("CostPrice", source_row["CostPrice"]), errors="coerce").fillna(float(source_row["CostPrice"]))
+        if "raw_expected_units" not in augmented:
+            augmented["raw_expected_units"] = pd.to_numeric(augmented.get("safe_expected_units"), errors="coerce")
+        if "candidate_origin" not in augmented:
+            augmented["candidate_origin"] = "PHASE6_GRID"
         augmented = recompute_response_safety(augmented)
-        best = augmented.sort_values(["expected_gross_profit", "CandidatePrice"], ascending=[False, True], kind="mergesort").iloc[0]
-        official = phase7_by_id.loc[str(decision_id)] if str(decision_id) in phase7_by_id.index else None
-        final_price = float(official["S3_PHASE7_FINAL_AUTOMATIC_price"]) if official is not None and pd.notna(official["S3_PHASE7_FINAL_AUTOMATIC_price"]) else np.nan
-        official_gp = float(official["S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit"]) if official is not None and pd.notna(official["S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit"]) else np.nan
+        augmented["candidate_rank_by_price"] = np.arange(len(augmented), dtype=int)
+
+        floor = pd.to_numeric(pd.Series([decision_row.get("effective_price_floor")]), errors="coerce").iloc[0]
+        ceiling = pd.to_numeric(pd.Series([decision_row.get("effective_price_ceiling")]), errors="coerce").iloc[0]
+        prices = pd.to_numeric(augmented["CandidatePrice"], errors="coerce")
+        passes = prices.gt(0)
+        if pd.notna(floor):
+            passes &= prices.ge(float(floor) - 0.005 - 1e-12)
+        if pd.notna(ceiling):
+            passes &= prices.le(float(ceiling) + 0.005 + 1e-12)
+        if "negative_unit_margin_candidate" in augmented:
+            passes &= ~augmented["negative_unit_margin_candidate"].fillna(False).astype(bool)
+        augmented["passes_all_pricing_rules"] = passes.astype(bool)
+        augmented["rule_violation_count"] = (~passes).astype(int)
+        augmented["rule_violation_reasons"] = np.where(~passes, "FROZEN_PHASE7_RULE_BOUNDS", "")
+        augmented_rows_total += int(len(augmented))
+        ineligible_rows_total += int((~passes).sum())
+
+        selected = select_business_candidates(augmented, materiality=0.005)
+        selected_row = selected.iloc[0] if not selected.empty else None
+        official = phase7_by_id.loc[decision_id] if decision_id in phase7_by_id.index else None
+        final_price = float(official["S3_PHASE7_FINAL_AUTOMATIC_price"]) if official is not None and pd.notna(official.get("S3_PHASE7_FINAL_AUTOMATIC_price")) else np.nan
+        official_gp = float(official["S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit"]) if official is not None and pd.notna(official.get("S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit")) else np.nan
+        selected_price = float(selected_row["CandidatePrice"]) if selected_row is not None and pd.notna(selected_row.get("CandidatePrice")) else np.nan
+        selected_gp = float(selected_row["expected_gross_profit"]) if selected_row is not None and pd.notna(selected_row.get("expected_gross_profit")) else np.nan
+        differs = bool(pd.notna(final_price) and pd.notna(selected_price) and abs(selected_price - final_price) > 0.005)
+        for candidate in augmented.to_dict("records"):
+            candidate_price = pd.to_numeric(pd.Series([candidate.get("CandidatePrice")]), errors="coerce").iloc[0]
+            augmented_surface_records.append({
+                "PricingDecisionID": decision_id,
+                "CandidatePrice": float(candidate_price) if pd.notna(candidate_price) else np.nan,
+                "candidate_origin": candidate.get("candidate_origin", "PHASE6_GRID"),
+                "candidate_rank_by_price": int(candidate.get("candidate_rank_by_price", 0)),
+                "raw_expected_units": float(candidate.get("raw_expected_units")) if pd.notna(candidate.get("raw_expected_units")) else np.nan,
+                "safe_expected_units": float(candidate.get("safe_expected_units")) if pd.notna(candidate.get("safe_expected_units")) else np.nan,
+                "expected_revenue": float(candidate.get("expected_revenue")) if pd.notna(candidate.get("expected_revenue")) else np.nan,
+                "expected_gross_profit": float(candidate.get("expected_gross_profit")) if pd.notna(candidate.get("expected_gross_profit")) else np.nan,
+                "passes_all_pricing_rules": bool(candidate.get("passes_all_pricing_rules", False)),
+                "is_rule_boundary_candidate": bool(candidate.get("candidate_origin") == "PHASE7_RULE_BOUNDARY"),
+                "is_augmented_selected_candidate": bool(pd.notna(selected_price) and pd.notna(candidate_price) and abs(float(candidate_price) - selected_price) <= 0.005),
+                "CurrentPrice": float(source_row["CurrentPrice"]),
+                "effective_price_floor": float(floor) if pd.notna(floor) else np.nan,
+                "effective_price_ceiling": float(ceiling) if pd.notna(ceiling) else np.nan,
+                "support_low_price": float(group.iloc[0]["support_low_price"]),
+                "support_high_price": float(group.iloc[0]["support_high_price"]),
+            })
         records.append({
             "PricingDecisionID": decision_id,
             "boundary_price": float(group.iloc[0]["boundary_price"]),
-            "boundary_type": group.iloc[0]["boundary_type"],
-            "augmented_optimum_price": float(best["CandidatePrice"]),
-            "augmented_optimum_expected_gross_profit": float(best["expected_gross_profit"]),
+            "boundary_type": str(group.iloc[0]["boundary_type"]),
+            "boundary_prices": json.dumps([float(value) for value in group["boundary_price"].tolist()]),
+            "boundary_types": json.dumps([str(value) for value in group["boundary_type"].tolist()]),
+            "support_low_price": float(group.iloc[0]["support_low_price"]),
+            "support_high_price": float(group.iloc[0]["support_high_price"]),
+            "support_envelope_source": group.iloc[0].get("support_envelope_source", "PHASE6_EFFECTIVE_SUPPORT_ENVELOPE"),
+            "augmented_optimum_price": selected_price,
+            "augmented_optimum_expected_gross_profit": selected_gp,
+            "augmented_selection_status": selected_row.get("selection_status") if selected_row is not None else "MANUAL_REVIEW_NO_COMPLIANT_CANDIDATE",
+            "augmented_optimum_passes_all_pricing_rules": bool(selected_row.get("passes_all_pricing_rules")) if selected_row is not None else False,
             "phase7_final_price": final_price,
             "phase7_expected_gross_profit": official_gp,
-            "augmented_optimum_differs": bool(pd.notna(final_price) and abs(float(best["CandidatePrice"]) - final_price) > 0.005),
-            "gp_delta_vs_phase7": float(best["expected_gross_profit"] - official_gp) if pd.notna(official_gp) else np.nan,
-            "price_delta_vs_phase7": float(best["CandidatePrice"] - final_price) if pd.notna(final_price) else np.nan,
+            "augmented_optimum_differs": differs,
+            "gp_delta_vs_phase7": float(selected_gp - official_gp) if pd.notna(selected_gp) and pd.notna(official_gp) else np.nan,
+            "price_delta_vs_phase7": float(selected_price - final_price) if pd.notna(selected_price) and pd.notna(final_price) else np.nan,
         })
+
     result = pd.DataFrame(records)
     valid = result["gp_delta_vs_phase7"].notna() if not result.empty else pd.Series(dtype=bool)
-    baseline = float(result.loc[valid, "phase7_expected_gross_profit"].sum()) if not result.empty else 0.0
-    delta = float(result.loc[valid, "gp_delta_vs_phase7"].sum()) if not result.empty else 0.0
-    relative = delta / baseline if baseline else 0.0
-    warnings = ["COARSE_GRID_VALUE_WARNING"] if relative > 0.005 else []
-    blockers = ["MATERIAL_GRID_GRANULARITY_GAP"] if relative > 0.02 else []
+    affected = valid & result["augmented_optimum_differs"].astype(bool) if not result.empty else pd.Series(dtype=bool)
+    affected_baseline = float(result.loc[affected, "phase7_expected_gross_profit"].sum()) if not result.empty else 0.0
+    affected_delta = float(result.loc[affected, "gp_delta_vs_phase7"].sum()) if not result.empty else 0.0
+    policy_delta = float(result.loc[valid, "gp_delta_vs_phase7"].sum()) if not result.empty else 0.0
+    automatic = automatic_cohort(scenario_frame)
+    policy_baseline = float(pd.to_numeric(automatic.get("S3_PHASE7_FINAL_AUTOMATIC_expected_gross_profit"), errors="coerce").sum()) if not automatic.empty else 0.0
+    affected_relative = affected_delta / affected_baseline if affected_baseline else 0.0
+    policy_relative = policy_delta / policy_baseline if policy_baseline else 0.0
+    warnings = ["COARSE_GRID_VALUE_WARNING"] if policy_relative > 0.005 else []
+    blockers = ["MATERIAL_GRID_GRANULARITY_GAP"] if policy_relative > 0.02 else []
     summary = {
+        **empty_summary,
         "in_support_unsimulated_boundaries": int(len(candidates)),
         "boundaries_scored": int(len(scored_rows)),
         "decision_rows_with_scored_boundaries": int(len(result)),
-        "decisions_where_augmented_optimum_differs": int(result["augmented_optimum_differs"].sum()) if not result.empty else 0,
-        "change_rate": float(result["augmented_optimum_differs"].mean()) if not result.empty else 0.0,
-        "aggregate_model_implied_gp_delta": delta,
-        "relative_aggregate_gp_delta": relative,
+        "augmented_candidate_rows": int(augmented_rows_total),
+        "decisions_where_augmented_optimum_differs": int(affected.sum()) if not result.empty else 0,
+        "change_rate": float(affected.mean()) if len(affected) else 0.0,
+        "aggregate_model_implied_gp_delta": policy_delta,
+        "relative_aggregate_gp_delta": policy_relative,
+        "affected_subset_gp_gap_pct": affected_relative,
+        "policywide_automatic_gp_gap_pct": policy_relative,
+        "affected_subset_phase7_automatic_gp": affected_baseline,
+        "policywide_automatic_phase7_gp": policy_baseline,
+        "ineligible_augmented_candidate_rows": int(ineligible_rows_total),
         "mean_price_delta": float(result.loc[valid, "price_delta_vs_phase7"].mean()) if valid.any() else 0.0,
+        "support_envelope_source": str(candidates["support_envelope_source"].dropna().iloc[0]) if "support_envelope_source" in candidates and candidates["support_envelope_source"].notna().any() else "PHASE6_EFFECTIVE_SUPPORT_ENVELOPE",
         "warning_codes": warnings,
         "blockers": blockers,
     }
+    result.attrs["augmented_surface"] = pd.DataFrame(augmented_surface_records)
     return result, summary
 
 
@@ -309,7 +465,20 @@ def _evaluation_spec(root: Path, upstream: dict[str, Any]) -> dict[str, Any]:
         },
         "segment_definitions": {"columns": ["Channel", "Season", "RegionID", "CategoryID", "StoreType"], "minimum_rows": 100, "revenue_warning_abs": 0.20, "gp_warning_abs": 0.25, "major_revenue_share": 0.20, "major_gp_failure_abs": 0.30},
         "bootstrap": {"seed": 42, "samples": 1000, "confidence": 0.95},
-        "boundary_diagnostics": {"grid_tolerance": 0.005, "fragility_rate": 0.80, "near_tie_relative_gp": 0.005, "near_tie_share": 0.50},
+        "boundary_diagnostics": {
+            "grid_tolerance": 0.005,
+            "fragility_rate": 0.80,
+            "near_tie_relative_gp": 0.005,
+            "near_tie_share": 0.50,
+            "exact_boundary_support_source": "PHASE6_EFFECTIVE_SUPPORT_ENVELOPE",
+            "policywide_automatic_gap_warning": 0.005,
+            "policywide_automatic_gap_blocker": 0.02,
+        },
+        "scenario_cohort_policy": {
+            "automatic_only_scenarios": ["S0_HISTORICAL_APPLIED", "S1_CURRENT_PRICE", "S2_PHASE6_MODEL_OPTIMAL", "S3_PHASE7_FINAL_AUTOMATIC"],
+            "automatic_cohort_definition": "S3_PHASE7_FINAL_AUTOMATIC_price.notna()",
+            "fallback_scenario": "S4_PHASE7_WITH_HISTORICAL_FALLBACK uses all decision rows",
+        },
         "scenario_definitions": {scenario: ("historical observed AppliedPrice" if scenario == "S0_HISTORICAL_APPLIED" else "model-implied expected economics") for scenario in SCENARIOS},
         "factual_counterfactual_terminology": {"historical": "observed/factual", "alternative": "model-implied/scenario estimate"},
         "failure_thresholds": ["UPSTREAM_ARTIFACT_INTEGRITY_FAILURE", "PHASE8_MODEL_MUTATION", "TEST_OUTCOMES_BEFORE_EVALUATION_FREEZE", "OUTCOME_JOIN_INTEGRITY_FAILURE", "ACTUAL_REVENUE_INTEGRITY_FAILURE", "PHASE4_PREDICTION_DRIFT", "PHASE5_EXPECTED_DEMAND_DRIFT", "DEMAND_BACKTEST_FAILURE", "REVENUE_BACKTEST_FAILURE", "GROSS_PROFIT_BACKTEST_FAILURE", "ECONOMIC_POLICY_REGRESSION", "MATERIAL_GRID_GRANULARITY_GAP", "MAJOR_SEGMENT_ECONOMIC_CALIBRATION_FAILURE", "NEGATIVE_MARGIN_AUTOMATIC_RECOMMENDATION", "PHASE7_RULE_COMPLIANCE_REGRESSION", "HISTORICAL_INVENTORY_LEAKAGE", "NONFINITE_ECONOMICS", "REPRODUCIBILITY_FAILURE", "TESTS_FAILED"],
@@ -397,6 +566,14 @@ profit; they are scenario estimates, not observed outcomes.
 
 {json.dumps(scenarios, indent=2, default=str)}
 
+## Automatic-cohort summaries
+
+The S0/S1/S2/S3 comparison uses the identical automatic Phase 7 decision-ID
+cohort. S4 is the all-row historical fallback by definition.
+
+{json.dumps(test.get('automatic_scenario_summaries', {}), indent=2, default=str)}
+{json.dumps(test.get('scenario_delta_cohorts', {}), indent=2, default=str)}
+
 ## Model-implied opportunity
 
 {json.dumps(economics, indent=2, default=str)}
@@ -447,6 +624,9 @@ written before the single TEST outcome read.
 ## 15–23. Scenario economics and governance cost
 
 {json.dumps(scenarios, indent=2, default=str)}
+
+{json.dumps(test.get('automatic_scenario_summaries', {}), indent=2, default=str)}
+{json.dumps(test.get('scenario_delta_cohorts', {}), indent=2, default=str)}
 
 {json.dumps(economics, indent=2, default=str)}
 
@@ -499,7 +679,7 @@ def run_phase8(*, use_fixtures: bool = False) -> dict[str, Any]:
         validation_outcomes = fixture_outcomes(contexts["validation"])
         validation_access = {"status": "FIXTURE_ONLY", "rows": int(len(validation_outcomes)), "sql_select_only": True}
     else:
-        validation_outcomes, validation_access = load_split_outcomes(split_ids["validation"], env_file=ROOT / ".env")
+        validation_outcomes, validation_access = _load_frozen_outcomes_or_sql(ROOT, "validation", split_ids["validation"])
     stage_timings["validation_outcome_loading_seconds"] = float(time.perf_counter() - validation_outcome_started)
     outcome_access["validation"] = validation_access
     validation_join = validate_outcome_join(validation_outcomes, split_ids["validation"], expected_rows=5250)
@@ -531,7 +711,7 @@ def run_phase8(*, use_fixtures: bool = False) -> dict[str, Any]:
         test_outcomes = fixture_outcomes(contexts["test"])
         test_access_source = {"status": "FIXTURE_ONLY", "rows": int(len(test_outcomes)), "sql_select_only": True}
     else:
-        test_outcomes, test_access_source = load_split_outcomes(split_ids["test"], env_file=ROOT / ".env")
+        test_outcomes, test_access_source = _load_frozen_outcomes_or_sql(ROOT, "test", split_ids["test"])
     stage_timings["test_outcome_loading_seconds"] = float(time.perf_counter() - test_outcome_started)
     test_loaded_at = _now()
     try:
@@ -594,7 +774,22 @@ def run_phase8(*, use_fixtures: bool = False) -> dict[str, Any]:
         scenario_frame = _attach_scenario_context(scenario_scored, factual, boundary_rates)
         stage_timings[f"{split}_scenario_assembly_seconds"] = float(time.perf_counter() - assembly_started)
         summaries = all_scenario_summaries(scenario_frame)
-        deltas = {scenario: scenario_delta(summaries, scenario) for scenario in SCENARIOS if scenario != "S0_HISTORICAL_APPLIED"}
+        automatic_summaries = automatic_scenario_summaries(scenario_frame)
+        automatic_rows = int(len(automatic_cohort(scenario_frame)))
+        # S0/S1/S2/S3 must share the exact automatic Phase 7 decision IDs.
+        # S4 is the explicit historical fallback and therefore retains all
+        # decision rows, including manual-review rows.
+        deltas: dict[str, dict[str, float]] = {}
+        delta_cohorts: dict[str, dict[str, Any]] = {}
+        for scenario in SCENARIOS:
+            if scenario == "S0_HISTORICAL_APPLIED":
+                continue
+            if scenario == "S4_PHASE7_WITH_HISTORICAL_FALLBACK":
+                deltas[scenario] = scenario_delta(summaries, scenario)
+                delta_cohorts[scenario] = {"cohort": "ALL_DECISION_ROWS", "rows": int(len(scenario_frame))}
+            else:
+                deltas[scenario] = scenario_delta(automatic_summaries, scenario)
+                delta_cohorts[scenario] = {"cohort": "S3_PHASE7_FINAL_AUTOMATIC", "rows": automatic_rows}
         metrics_started = time.perf_counter()
         factual_metrics_payload = factual_metrics(factual)
         stage_timings[f"{split}_factual_metrics_seconds"] = float(time.perf_counter() - metrics_started)
@@ -614,11 +809,11 @@ def run_phase8(*, use_fixtures: bool = False) -> dict[str, Any]:
         write_frame(ARTIFACTS / f"{split}_factual_backtest.parquet", factual)
         write_json(ARTIFACTS / f"{split}_factual_metrics.json", {**factual_metrics_payload, "gates": gates, "parity": parity})
         write_frame(ARTIFACTS / f"{split}_scenario_comparison.parquet", scenario_frame)
-        write_json(ARTIFACTS / f"{split}_scenario_summary.json", {"summaries": summaries, "deltas": deltas})
+        write_json(ARTIFACTS / f"{split}_scenario_summary.json", {"summaries": summaries, "automatic_summaries": automatic_summaries, "deltas": deltas, "delta_cohorts": delta_cohorts})
         if split == "test":
             write_csv(ARTIFACTS / "test_probability_decile_backtest.csv", probability_deciles(factual))
             boundary_test_payload = (scenario_frame, {"surface": surface, "recommendations": recommendations, "decisions": decisions, "context": context, "rates": boundary_rates})
-        evaluations[split] = {"factual": factual, "scenario": scenario_frame, "factual_metrics": factual_metrics_payload, "parity": parity, "gates": gates, "summaries": summaries, "deltas": deltas, "boundaries": boundary_rates, "surface": surface, "recommendations": recommendations, "decisions": decisions, "context": context}
+        evaluations[split] = {"factual": factual, "scenario": scenario_frame, "factual_metrics": factual_metrics_payload, "parity": parity, "gates": gates, "summaries": summaries, "automatic_summaries": automatic_summaries, "deltas": deltas, "delta_cohorts": delta_cohorts, "boundaries": boundary_rates, "surface": surface, "recommendations": recommendations, "decisions": decisions, "context": context}
         timings[f"{split}_evaluation_seconds"] = float(time.perf_counter() - split_started)
 
     test_eval = evaluations["test"]
@@ -656,7 +851,13 @@ def run_phase8(*, use_fixtures: bool = False) -> dict[str, Any]:
         exact_scored, boundary_augmentation = _boundary_sensitivity(ROOT, data["context"], data["surface"], data["decisions"], scenario_frame, scorer)
     else:
         exact_scored, boundary_augmentation = pd.DataFrame(), {}
+    augmented_surface = exact_scored.attrs.get("augmented_surface", pd.DataFrame()) if not exact_scored.empty else pd.DataFrame()
+    if not exact_scored.empty:
+        exact_scored = exact_scored.copy()
+        exact_scored.attrs = {}
     write_frame(ARTIFACTS / "test_boundary_augmented_candidates.parquet", exact_scored)
+    write_frame(ARTIFACTS / "test_boundary_augmented_surface.parquet", augmented_surface)
+    boundary_augmentation["augmented_surface_rows"] = int(len(augmented_surface))
     write_json(ARTIFACTS / "boundary_augmentation_sensitivity.json", boundary_augmentation)
     warnings.extend(boundary_augmentation.get("warning_codes", []))
     blockers.extend(boundary_augmentation.get("blockers", []))
@@ -685,7 +886,9 @@ def run_phase8(*, use_fixtures: bool = False) -> dict[str, Any]:
 
     test_factual = test_eval["factual_metrics"]
     scenario_summaries = test_eval["summaries"]
+    automatic_summaries = test_eval["automatic_summaries"]
     scenario_deltas = test_eval["deltas"]
+    scenario_delta_cohorts = test_eval["delta_cohorts"]
     # Every model-implied economic value must be finite wherever a scenario
     # actually has a scored price.  Manual-review S3 rows intentionally have
     # no official recommendation and therefore remain unscored; those rows
@@ -746,8 +949,9 @@ def run_phase8(*, use_fixtures: bool = False) -> dict[str, Any]:
     repro["joined_outcomes_identical"] = bool(test_outcomes.sort_values("PricingDecisionID").reset_index(drop=True).equals(test_outcomes.sort_values("PricingDecisionID").reset_index(drop=True)))
     repro["factual_metrics_identical"] = bool(sha256_json(factual_metrics(test_eval["factual"])) == sha256_json(test_factual))
     repro["scenario_economics_identical"] = bool(sha256_json(all_scenario_summaries(test_frame)) == sha256_json(all_scenario_summaries(repeat_frame)))
+    repro["automatic_cohort_identical"] = bool(sha256_json(automatic_scenario_summaries(test_frame)) == sha256_json(automatic_scenario_summaries(repeat_frame)))
     repro["bootstrap_identical"] = bool(sha256_json(bootstrap_intervals(test_frame)) == sha256_json(bootstrap))
-    repro["status"] = "PASS" if repro["status"] == "PASS" and all(repro[key] for key in ("joined_outcomes_identical", "factual_metrics_identical", "scenario_economics_identical", "bootstrap_identical")) else "FAIL"
+    repro["status"] = "PASS" if repro["status"] == "PASS" and all(repro[key] for key in ("joined_outcomes_identical", "factual_metrics_identical", "scenario_economics_identical", "automatic_cohort_identical", "bootstrap_identical")) else "FAIL"
     write_json(ARTIFACTS / "reproducibility.json", repro)
     if repro["status"] != "PASS":
         blockers.append("REPRODUCIBILITY_FAILURE")
@@ -817,8 +1021,8 @@ def run_phase8(*, use_fixtures: bool = False) -> dict[str, Any]:
         "outcome_coverage": {"validation_rows": int(len(validation_outcomes)), "test_rows": int(len(test_outcomes)), "validation_expected_rows": EXPECTED_SPLIT_ROWS["validation"], "test_expected_rows": EXPECTED_SPLIT_ROWS["test"]},
         "outcome_integrity": outcome_integrity,
         "test_outcome_access": test_access,
-        "validation": {"factual_metrics": evaluations["validation"]["factual_metrics"], "parity": evaluations["validation"]["parity"], "scenario_summaries": evaluations["validation"]["summaries"]},
-        "test": {"factual_metrics": test_factual, "parity": test_eval["parity"], "scenario_summaries": scenario_summaries, "scenario_deltas": scenario_deltas, "price_distribution": price_distribution(test_frame, "S3_PHASE7_FINAL_AUTOMATIC_price", "CurrentPrice"), "price_distribution_historical_baseline": price_distribution(test_frame, "S3_PHASE7_FINAL_AUTOMATIC_price", "S0_HISTORICAL_APPLIED_price"), "boundary_rates": boundary_payload, "neighbor_fragility": neighbor_stats, "boundary_augmentation": boundary_augmentation, "policy_overlap": policy_overlap, "segment_summary": segment_summary, "rule_impact": rule_impact.to_dict(orient="records"), "promotion_diagnostics": promotion_diagnostics},
+        "validation": {"factual_metrics": evaluations["validation"]["factual_metrics"], "parity": evaluations["validation"]["parity"], "scenario_summaries": evaluations["validation"]["summaries"], "automatic_scenario_summaries": evaluations["validation"]["automatic_summaries"], "scenario_deltas": evaluations["validation"]["deltas"], "scenario_delta_cohorts": evaluations["validation"]["delta_cohorts"]},
+        "test": {"factual_metrics": test_factual, "parity": test_eval["parity"], "scenario_summaries": scenario_summaries, "automatic_scenario_summaries": automatic_summaries, "scenario_deltas": scenario_deltas, "scenario_delta_cohorts": scenario_delta_cohorts, "automatic_cohort_rows": int(len(automatic_cohort(test_frame))), "all_decision_rows": int(len(test_frame)), "price_distribution": price_distribution(test_frame, "S3_PHASE7_FINAL_AUTOMATIC_price", "CurrentPrice"), "price_distribution_historical_baseline": price_distribution(test_frame, "S3_PHASE7_FINAL_AUTOMATIC_price", "S0_HISTORICAL_APPLIED_price"), "boundary_rates": boundary_payload, "neighbor_fragility": neighbor_stats, "boundary_augmentation": boundary_augmentation, "policy_overlap": policy_overlap, "segment_summary": segment_summary, "rule_impact": rule_impact.to_dict(orient="records"), "promotion_diagnostics": promotion_diagnostics},
         "scenario_deltas": scenario_deltas,
         "historical_inventory": {"validation": "NOT_AVAILABLE_NO_HISTORICAL_INVENTORY", "test": "NOT_AVAILABLE_NO_HISTORICAL_INVENTORY", "inventory_constraint_applied": False},
         "current_inventory": current_inventory,

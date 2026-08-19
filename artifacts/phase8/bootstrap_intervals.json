@@ -4,24 +4,24 @@
   "interpretation": "Sample uncertainty only; intervals do not make counterfactual comparisons causal.",
   "intervals": {
     "aggregate_gp_error_pct": {
-      "lower_2_5_pct": -0.11137137178425276,
-      "mean": -0.04593698881804898,
-      "upper_97_5_pct": 0.028981591257943078
+      "lower_2_5_pct": -0.11511013495858238,
+      "mean": -0.04368037448770488,
+      "upper_97_5_pct": 0.029795851730678957
     },
     "aggregate_revenue_error_pct": {
-      "lower_2_5_pct": -0.10972360311356681,
-      "mean": -0.03919513882535475,
-      "upper_97_5_pct": 0.03846038538486725
+      "lower_2_5_pct": -0.10996268376568366,
+      "mean": -0.0374005056842816,
+      "upper_97_5_pct": 0.0387044894921101
     },
     "aggregate_units_error_pct": {
-      "lower_2_5_pct": -0.08482607578100819,
-      "mean": -0.027306257863473918,
-      "upper_97_5_pct": 0.03601064022899703
+      "lower_2_5_pct": -0.08385347290671867,
+      "mean": -0.02608835189996143,
+      "upper_97_5_pct": 0.03497827630566439
     },
     "phase7_model_implied_gp_delta_pct": {
-      "lower_2_5_pct": 0.0659634982304701,
-      "mean": 0.07208562024826802,
-      "upper_97_5_pct": 0.07821837331642315
+      "lower_2_5_pct": 0.08893329451141022,
+      "mean": 0.09192639225565152,
+      "upper_97_5_pct": 0.09502387560381478
     }
   },
   "seed": 42,
