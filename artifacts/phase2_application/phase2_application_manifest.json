@@ -1,0 +1,63 @@
+{
+  "phase": "Phase 2 — FastAPI ML Tooling & OpenAI Agent",
+  "contract_version": "1",
+  "scope": "fastapi_runtime_ml_tooling_and_optional_openai_agent",
+  "result": "PASS_WITH_WARNINGS",
+  "base_branch": "codex/app-phase1-contract-architecture",
+  "base_git_sha": "3f693569faba6e414f0c253b8a6909d4d83c02c6",
+  "implementation_branch": "codex/app-phase2-fastapi-openai-agent",
+  "implementation_git_sha": "49b032b7001e024cc5530d5e70615a19c23786ce",
+  "evidence_git_sha": "49b032b7001e024cc5530d5e70615a19c23786ce",
+  "source_tree_sha256": "d6025cd670cefb66159d0cb5ed08eaf4434c94adc2973a63a05953b3749466ea",
+  "runtime": {
+    "python": "3.12.13",
+    "fastapi": "0.141.1",
+    "pydantic": "2.13.4",
+    "openai_agents": "0.22.0",
+    "uvicorn": "0.52.4",
+    "httpx": "0.28.1",
+    "bind_default": "127.0.0.1",
+    "body_limit_bytes": 65536,
+    "persistence": "none",
+    "authentication": "none"
+  },
+  "entrypoints": {
+    "module": "python -m pricing_api",
+    "health": "GET /api/v1/healthz",
+    "chat": "POST /api/v1/pricing/chat",
+    "stream": "POST /api/v1/pricing/chat/stream"
+  },
+  "gates": {
+    "strict_request_and_response_contracts": true,
+    "artifact_integrity_and_read_only_service_container": true,
+    "ten_governed_tools": true,
+    "server_only_openai_configuration": true,
+    "deterministic_fallback_without_key": true,
+    "chart_authority_from_validated_tool_data": true,
+    "sse_ordering_and_terminal_event": true,
+    "loopback_cors_and_body_limit": true,
+    "no_persistence_sql_writes_or_training": true,
+    "secret_and_hidden_reasoning_exclusion": true
+  },
+  "targeted_tests": {
+    "status": "PASS",
+    "passed": 23,
+    "failed": 0,
+    "skipped": 0,
+    "command": "TEST_EVIDENCE_PATH=artifacts/phase2_application/targeted_test_results.json python -m pytest tests/phase2/test_pricing_api.py -q",
+    "evidence": "artifacts/phase2_application/targeted_test_results.json"
+  },
+  "full_suite": {
+    "status": "PASS",
+    "passed": 233,
+    "failed": 0,
+    "skipped": 0,
+    "command": "TEST_EVIDENCE_PATH=artifacts/phase2_application/full_suite_results.json python -m pytest -q",
+    "evidence": "artifacts/phase2_application/full_suite_results.json"
+  },
+  "warnings": [
+    "The configured environment emits one existing pytest warning for asyncio_default_fixture_loop_scope; it does not affect the 233 passing tests.",
+    "No live OpenAI call or real API key was used during tests; the deterministic fallback and injected SDK fakes were exercised.",
+    "React component implementation and browser chart integration remain Phase 3 work."
+  ]
+}
