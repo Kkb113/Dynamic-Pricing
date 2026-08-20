@@ -2,7 +2,7 @@
 
 Status: **PASS WITH WARNINGS**
 
-Phase 3 adds the local React/TypeScript presentation surface required by the Phase 1 contracts and Phase 2 FastAPI runtime. The work is isolated on `codex/app-phase3-react-pricing-chat`, based on `53072eca341dd07e21a7fb1e511ff3c8537f0dbf`, with implementation commit `d8a312cf8b424a20e40cba16453ac79d0be31fd0`. The machine-readable evidence is in `artifacts/phase3_application/phase3_application_manifest.json`.
+Phase 3 adds the local React/TypeScript presentation surface required by the Phase 1 contracts and Phase 2 FastAPI runtime. The work is isolated on `codex/app-phase3-react-pricing-chat`, based on `53072eca341dd07e21a7fb1e511ff3c8537f0dbf`, with implementation commit `d8a312cf8b424a20e40cba16453ac79d0be31fd0` and evidence commit `81bfbcc759a67dca0f5b0ec9f032ebe4da3d7175`. The machine-readable evidence is in `artifacts/phase3_application/phase3_application_manifest.json`.
 
 ## Delivered boundary
 

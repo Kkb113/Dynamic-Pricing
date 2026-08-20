@@ -7,7 +7,7 @@
   "base_git_sha": "53072eca341dd07e21a7fb1e511ff3c8537f0dbf",
   "implementation_branch": "codex/app-phase3-react-pricing-chat",
   "implementation_git_sha": "d8a312cf8b424a20e40cba16453ac79d0be31fd0",
-  "evidence_git_sha": "d8a312cf8b424a20e40cba16453ac79d0be31fd0",
+  "evidence_git_sha": "81bfbcc759a67dca0f5b0ec9f032ebe4da3d7175",
   "source_tree_sha256": "5a628432267b8fe1bc8589f9590f7325fb5f6c6b0de687bd5921dcdae5371e7b",
   "runtime": {
     "node": "24.14.0",
