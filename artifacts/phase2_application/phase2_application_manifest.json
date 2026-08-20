@@ -7,7 +7,7 @@
   "base_git_sha": "3f693569faba6e414f0c253b8a6909d4d83c02c6",
   "implementation_branch": "codex/app-phase2-fastapi-openai-agent",
   "implementation_git_sha": "49b032b7001e024cc5530d5e70615a19c23786ce",
-  "evidence_git_sha": "49b032b7001e024cc5530d5e70615a19c23786ce",
+  "evidence_git_sha": "a8597b32677a6241d79daffef62cd122fb7b4620",
   "source_tree_sha256": "d6025cd670cefb66159d0cb5ed08eaf4434c94adc2973a63a05953b3749466ea",
   "runtime": {
     "python": "3.12.13",
