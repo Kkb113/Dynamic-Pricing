@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "command": "npm run dev -- --host 127.0.0.1; Invoke-WebRequest http://127.0.0.1:5173/",
+  "status_code": 200,
+  "content_type": "text/html",
+  "assertions": {
+    "root_mount_present": true,
+    "pricefield_title_present": true
+  },
+  "browser_preview": false
+}
