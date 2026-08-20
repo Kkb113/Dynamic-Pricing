@@ -57,7 +57,7 @@
     "evidence": "artifacts/phase2_application/full_suite_results.json"
   },
   "warnings": [
-    "The configured environment emits one existing pytest warning for asyncio_default_fixture_loop_scope; it does not affect the 233 passing tests.",
+    "The configured environment emits one existing pytest warning for asyncio_default_fixture_loop_scope; it does not affect the 234 passing tests.",
     "No live OpenAI call or real API key was used during tests; the deterministic fallback and injected SDK fakes were exercised.",
     "React component implementation and browser chart integration remain Phase 3 work."
   ]
