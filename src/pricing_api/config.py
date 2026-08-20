@@ -7,6 +7,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from urllib.parse import urlparse
 
+try:  # python-dotenv is a declared runtime dependency.
+    from dotenv import load_dotenv
+except ImportError:  # pragma: no cover - keeps minimal imports safe
+    load_dotenv = None  # type: ignore[assignment]
+
 
 class ConfigurationError(ValueError):
     """Raised when local-only runtime configuration is unsafe or invalid."""
@@ -75,11 +80,20 @@ class Settings:
 
     @classmethod
     def from_env(cls) -> "Settings":
+        # Load only the explicit local file and never override values already
+        # supplied by the shell/service manager.  The key remains process-only
+        # and is never included in a repr, response, log, or artifact.
+        default_root = Path(__file__).resolve().parents[2]
+        if load_dotenv is not None:
+            load_dotenv(default_root / ".env", override=False)
+            configured_root = os.environ.get("DYNAMIC_PRICING_ROOT", "").strip()
+            if configured_root:
+                load_dotenv(Path(configured_root).resolve() / ".env", override=False)
         host = os.environ.get("FASTAPI_HOST", "127.0.0.1").strip() or "127.0.0.1"
         if host not in _LOOPBACK_HOSTS:
             raise ConfigurationError("FASTAPI_HOST must be a loopback address")
         root_raw = os.environ.get("DYNAMIC_PRICING_ROOT", "").strip()
-        root = Path(root_raw).resolve() if root_raw else Path(__file__).resolve().parents[2]
+        root = Path(root_raw).resolve() if root_raw else default_root
         key = os.environ.get("OPENAI_API_KEY", "").strip() or None
         model = os.environ.get("OPENAI_MODEL", "").strip() or None
         return cls(

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import asyncio
+import os
 from pathlib import Path
 from dataclasses import dataclass
 
@@ -347,3 +348,21 @@ def test_secret_not_in_response_or_source_logs():
         encoded = json.dumps(payload)
         assert "OPENAI_API_KEY" not in encoded
         assert "test-only" not in encoded
+
+
+def test_local_dotenv_is_loaded_without_overriding_process_environment(tmp_path, monkeypatch):
+    dotenv_path = tmp_path / ".env"
+    dotenv_path.write_text("OPENAI_API_KEY=file-only-key\nOPENAI_MODEL=file-model\nFASTAPI_HOST=127.0.0.1\n", encoding="utf-8")
+    monkeypatch.setenv("DYNAMIC_PRICING_ROOT", str(tmp_path))
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("OPENAI_MODEL", raising=False)
+    file_settings = Settings.from_env()
+    assert file_settings.openai_api_key == "file-only-key"
+    assert file_settings.openai_model == "file-model"
+    monkeypatch.setenv("OPENAI_API_KEY", "process-wins-key")
+    process_settings = Settings.from_env()
+    assert process_settings.openai_api_key == "process-wins-key"
+    # load_dotenv mutates os.environ by design; clean values introduced by the
+    # temporary fixture so no secret-like test value reaches later tests.
+    os.environ.pop("OPENAI_API_KEY", None)
+    os.environ.pop("OPENAI_MODEL", None)
