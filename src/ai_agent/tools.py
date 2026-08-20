@@ -105,7 +105,7 @@ def build_tools(registry: ArtifactRegistry | None = None) -> list[Any]:
         """List safe example questions supported by the local agent."""
         return {"supported_questions": ["What does this solution do?", "How well is the model performing?", "Why is this price recommended?", "Compare current and final price.", "What happens if I try another supported price?", "Show current snapshot seasonal markdown recommendations."]}
 
-    return [
+    tools = [
         get_pricing_recommendation,
         explain_pricing_recommendation,
         simulate_price,
@@ -117,6 +117,17 @@ def build_tools(registry: ArtifactRegistry | None = None) -> list[Any]:
         get_use_case_summary,
         get_agent_capabilities,
     ]
+
+    # Current Agents SDK releases expose a non-callable FunctionTool object;
+    # retain the original callable as ``func`` for the validated Phase 9/10
+    # introspection contract and for older local consumers.
+    for tool in tools:
+        if not hasattr(tool, "func") and hasattr(tool, "__wrapped__"):
+            try:
+                tool.func = tool.__wrapped__
+            except Exception:
+                pass
+    return tools
 
 
 __all__ = ["build_tools"]
