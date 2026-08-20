@@ -84,16 +84,16 @@ class Settings:
         # supplied by the shell/service manager.  The key remains process-only
         # and is never included in a repr, response, log, or artifact.
         default_root = Path(__file__).resolve().parents[2]
+        root_raw = os.environ.get("DYNAMIC_PRICING_ROOT", "").strip()
+        root = Path(root_raw).resolve() if root_raw else default_root
         if load_dotenv is not None:
-            load_dotenv(default_root / ".env", override=False)
-            configured_root = os.environ.get("DYNAMIC_PRICING_ROOT", "").strip()
-            if configured_root:
-                load_dotenv(Path(configured_root).resolve() / ".env", override=False)
+            # Resolve one root first, then load exactly that root's file. This
+            # prevents a repository .env from bleeding into an explicitly
+            # configured evidence/worktree root.
+            load_dotenv(root / ".env", override=False)
         host = os.environ.get("FASTAPI_HOST", "127.0.0.1").strip() or "127.0.0.1"
         if host not in _LOOPBACK_HOSTS:
             raise ConfigurationError("FASTAPI_HOST must be a loopback address")
-        root_raw = os.environ.get("DYNAMIC_PRICING_ROOT", "").strip()
-        root = Path(root_raw).resolve() if root_raw else default_root
         key = os.environ.get("OPENAI_API_KEY", "").strip() or None
         model = os.environ.get("OPENAI_MODEL", "").strip() or None
         return cls(
