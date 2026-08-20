@@ -2,7 +2,7 @@
 
 Status: **PASS_WITH_WARNINGS**
 
-The Phase 2 FastAPI runtime is implemented on `codex/app-phase2-fastapi-openai-agent` from the Phase 1 base `3f693569faba6e414f0c253b8a6909d4d83c02c6`. The implementation/evidence source commit is `49b032b7001e024cc5530d5e70615a19c23786ce`. The machine-readable acceptance record is [artifacts/phase2_application/phase2_application_manifest.json](../artifacts/phase2_application/phase2_application_manifest.json).
+The Phase 2 FastAPI runtime is implemented on `codex/app-phase2-fastapi-openai-agent` from the Phase 1 base `3f693569faba6e414f0c253b8a6909d4d83c02c6`. The implementation source commit is `acb998c83b6f9047df91073e2cff306fd6d22957`; the evidence commit is recorded in the machine-readable manifest. The machine-readable acceptance record is [artifacts/phase2_application/phase2_application_manifest.json](../artifacts/phase2_application/phase2_application_manifest.json).
 
 ## Accepted gates
 
@@ -17,6 +17,6 @@ The Phase 2 FastAPI runtime is implemented on `codex/app-phase2-fastapi-openai-a
 
 ## Verification
 
-The targeted Phase 2 suite passed **23 tests**. The complete repository suite passed **233 tests**. Both evidence files bind to source tree hash `d6025cd670cefb66159d0cb5ed08eaf4434c94adc2973a63a05953b3749466ea`; the Phase 1 evidence file was restored and was not used for Phase 2 results.
+The targeted Phase 2 suite passed **24 tests**. The complete repository suite passed **234 tests**. Both evidence files bind to source tree hash `01c90cc8faa60191dc3ecd9b09601d0c610f91f577fff3327f73ab845f7e255d`; the Phase 1 evidence file was restored and was not used for Phase 2 results. Local `.env` loading is explicit, root-scoped, and never overrides process environment values.
 
 The only warning is the pre-existing pytest configuration warning for `asyncio_default_fixture_loop_scope`. Phase 3 owns the React chat screen, chart library integration, and expandable raw-JSON viewer.

@@ -6,9 +6,9 @@
   "base_branch": "codex/app-phase1-contract-architecture",
   "base_git_sha": "3f693569faba6e414f0c253b8a6909d4d83c02c6",
   "implementation_branch": "codex/app-phase2-fastapi-openai-agent",
-  "implementation_git_sha": "49b032b7001e024cc5530d5e70615a19c23786ce",
-  "evidence_git_sha": "a8597b32677a6241d79daffef62cd122fb7b4620",
-  "source_tree_sha256": "d6025cd670cefb66159d0cb5ed08eaf4434c94adc2973a63a05953b3749466ea",
+  "implementation_git_sha": "acb998c83b6f9047df91073e2cff306fd6d22957",
+  "evidence_git_sha": "acb998c83b6f9047df91073e2cff306fd6d22957",
+  "source_tree_sha256": "01c90cc8faa60191dc3ecd9b09601d0c610f91f577fff3327f73ab845f7e255d",
   "runtime": {
     "python": "3.12.13",
     "fastapi": "0.141.1",
@@ -16,6 +16,7 @@
     "openai_agents": "0.22.0",
     "uvicorn": "0.52.4",
     "httpx": "0.28.1",
+    "python_dotenv": "1.2.3",
     "bind_default": "127.0.0.1",
     "body_limit_bytes": 65536,
     "persistence": "none",
@@ -41,7 +42,7 @@
   },
   "targeted_tests": {
     "status": "PASS",
-    "passed": 23,
+    "passed": 24,
     "failed": 0,
     "skipped": 0,
     "command": "TEST_EVIDENCE_PATH=artifacts/phase2_application/targeted_test_results.json python -m pytest tests/phase2/test_pricing_api.py -q",
@@ -49,7 +50,7 @@
   },
   "full_suite": {
     "status": "PASS",
-    "passed": 233,
+    "passed": 234,
     "failed": 0,
     "skipped": 0,
     "command": "TEST_EVIDENCE_PATH=artifacts/phase2_application/full_suite_results.json python -m pytest -q",
