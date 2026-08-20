@@ -2,11 +2,11 @@
 
 This repository contains a read-only, frozen dynamic-pricing intelligence stack and a local Streamlit application for business demonstration. The application exposes accepted Phase 4–8 artifacts through governed recommendation, simulation, audit, and model-intelligence views. It does not retrain models, write to SQL Server, or write prices back to an operational system.
 
-## React/FastAPI application track — Phase 2 complete
+## React/FastAPI application track — Phase 3 complete
 
 The new product track is a local-only React + FastAPI application with one natural-language pricing chat screen. The browser renders the natural-language answer, backend-authored charts, warnings, and an expandable raw JSON response viewer. FastAPI owns all OpenAI calls, local ML/service access, request validation, chart construction, and response normalization; React is presentation-only. There is no authentication, hosting, deployment, persistence, or price writeback.
 
-Phase 1 delivers the implementation-ready application contract and local architecture. Read [docs/PHASE1_APPLICATION_ACCEPTANCE_REPORT.md](docs/PHASE1_APPLICATION_ACCEPTANCE_REPORT.md), [docs/PHASE1_APPLICATION_ARCHITECTURE.md](docs/PHASE1_APPLICATION_ARCHITECTURE.md), [docs/PHASE1_API_CONTRACT.md](docs/PHASE1_API_CONTRACT.md), and [contracts/application/README.md](contracts/application/README.md). Phase 2 now implements the runnable FastAPI boundary, read-only ML tool wrappers, deterministic fallback, optional OpenAI Agents SDK narrative adapter, chart builder, and SSE stream. See [docs/PHASE2_FASTAPI_RUNTIME.md](docs/PHASE2_FASTAPI_RUNTIME.md) and the Phase 2 acceptance manifest under `artifacts/phase2_application/`. Phase 3 will implement React and browser chart rendering.
+Phase 1 delivers the implementation-ready application contract and local architecture. Read [docs/PHASE1_APPLICATION_ACCEPTANCE_REPORT.md](docs/PHASE1_APPLICATION_ACCEPTANCE_REPORT.md), [docs/PHASE1_APPLICATION_ARCHITECTURE.md](docs/PHASE1_APPLICATION_ARCHITECTURE.md), [docs/PHASE1_API_CONTRACT.md](docs/PHASE1_API_CONTRACT.md), and [contracts/application/README.md](contracts/application/README.md). Phase 2 implements the runnable FastAPI boundary, read-only ML tool wrappers, deterministic fallback, optional OpenAI Agents SDK narrative adapter, chart builder, and SSE stream. See [docs/PHASE2_FASTAPI_RUNTIME.md](docs/PHASE2_FASTAPI_RUNTIME.md) and the Phase 2 acceptance manifest under `artifacts/phase2_application/`. Phase 3 now implements the bounded React chat surface in [frontend/](frontend/), including POST-SSE consumption, validated charts, accessible table fallbacks, and the expandable raw JSON response viewer. Its acceptance manifest is under `artifacts/phase3_application/`.
 
 `OPENAI_API_KEY` is supplied only to FastAPI through the ignored local `.env` file. It must never appear in React, browser storage, prompts, responses, logs, artifacts, or Git. Copy [.env.example](.env.example) without adding a real key to source control. Deterministic local tools remain available when the key/model is absent.
 
@@ -19,7 +19,7 @@ python -m pytest -q tests/application_contract
 
 The existing Streamlit application remains the validated Phase 9–10 demonstration surface; it is not part of the React/FastAPI runtime handoff.
 
-## Run the Phase 2 FastAPI backend
+## Run the local React + FastAPI pricing chat
 
 ```powershell
 python -m pip install -e ".[test]"
@@ -28,7 +28,18 @@ $env:PYTHONPATH = "src"
 python -m pricing_api
 ```
 
-The backend listens on loopback (`127.0.0.1:8000`) and serves `/api/v1/healthz`, `/api/v1/pricing/chat`, and `/api/v1/pricing/chat/stream`. Leave the OpenAI values blank to exercise the deterministic local fallback. The React chat/chart/raw-JSON UI remains the Phase 3 handoff.
+In a second terminal, start the Phase 3 frontend:
+
+```powershell
+cd frontend
+Copy-Item .env.example .env.local
+npm install
+npm run dev -- --host 127.0.0.1
+```
+
+The backend listens on loopback (`127.0.0.1:8000`) and serves `/api/v1/healthz`, `/api/v1/pricing/chat`, and `/api/v1/pricing/chat/stream`. The frontend defaults to that same loopback base; `VITE_API_BASE_URL` may only point to `127.0.0.1`, `localhost`, or `::1`. Leave the backend OpenAI values blank to exercise the deterministic local fallback. The convenience launcher [scripts/run_local_react_app.ps1](scripts/run_local_react_app.ps1) starts both processes and stops its children when the launcher exits.
+
+Frontend checks run from `frontend/` with `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build`. The browser never reads `OPENAI_API_KEY`, makes provider calls, persists transcripts, or computes pricing values; FastAPI remains the sole owner of tools, OpenAI access, and response normalization.
 
 ## Run the local application
 
