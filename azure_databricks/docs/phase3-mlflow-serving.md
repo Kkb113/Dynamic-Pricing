@@ -47,7 +47,13 @@ python azure_databricks/scripts/phase3.py validate-business --policy-snapshot bu
 
 The replay reconstructs latest eligible current contexts using the original product/store/channel ordering and normalized 30-day age policy. It compares every accepted decision column, prices exactly and numeric economics within 1e-8; capture hashes are checked before reading. Inventory is narrowed to relevant product/store pairs per batch so unrelated source rows do not enter interactive requests.
 
-## Cloud release gates — not yet executed
+## Cloud release gates
+
+Linux acceptance passed on published scoring commit `f06cd247b531e8068373b6dbe4a535d671198bb6`, including the clean package and all optimizer/business replays. All PR checks were green. The registered scoring package is bound to that exact canonical inference-plan hash; deployment-control changes do not alter the inference package.
+
+Boundary review found upper-candidate selection in 5,153/5,250 validation and 5,122/5,250 test decisions. This is not evidence of realized profit uplift or willingness to pay. Policy-sensitivity tests pass, but production pricing approval remains false, with business review required for operational changes. No retraining or test-set tuning was performed.
+
+The first registration created version 1 before a Windows console encoding error. The bootstrap now uses UTF-8 and supports explicit `--resume`, checking the local ledger's release seal, model name, version and run ID against the registry before continuing. It does not duplicate registration. The scoped experiment parent folder is created idempotently.
 
 1. Capture and seal equivalent policy projections; complete full business replay without altering frozen expected outputs.
 2. Publish the branch with explicit public-repository approval and pass Linux CI, including real scorer replay and clean MLflow package load. Linux must resolve the accepted policy runner's import-only `pyodbc` dependency.
@@ -62,4 +68,4 @@ Read-only Azure inspection found the App and existing 2X-Small SQL warehouse sto
 
 ## Engineering basis
 
-MLflow recommends [Models-from-Code](https://mlflow.org/docs/latest/api_reference/python_api/mlflow.pyfunc.html) for custom Python models. [Explicit model signatures](https://mlflow.org/docs/latest/ml/model/signatures/) support inference validation. [Unity Catalog model lifecycle](https://docs.databricks.com/gcp/en/machine-learning/manage-model-lifecycle) uses immutable versions and aliases rather than legacy stages. [MLflow release history](https://mlflow.org/releases/archive) identifies 3.16.0; the older 3.4.0 failed pandas 3 string-schema validation in local testing, so the dependency was upgraded and the clean roundtrip rerun successfully.
+MLflow recommends [Models-from-Code](https://mlflow.org/docs/latest/api_reference/python_api/mlflow.pyfunc.html) for custom Python models. [Explicit model signatures](https://mlflow.org/docs/latest/ml/model/signatures/) support inference validation. [Unity Catalog model lifecycle](https://learn.microsoft.com/en-us/azure/databricks/machine-learning/manage-model-lifecycle/) uses immutable versions and aliases rather than legacy stages. [MLflow release history](https://mlflow.org/releases/archive) identifies 3.16.0; the older 3.4.0 failed pandas 3 string-schema validation in local testing, so the dependency was upgraded and the clean roundtrip rerun successfully.

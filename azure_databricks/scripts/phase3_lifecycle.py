@@ -19,8 +19,8 @@ def operate(action, expected_current=None, target_version=None):
             require(target_version != current, "Target is already Champion")
             with authentication(cloud.client, cfg["host"]):
                 version = MlflowClient(registry_uri="databricks-uc").get_model_version(name, str(target_version))
-                require(version.status == "READY" and version.tags.get("pricing.acceptance") == "PASS" and
-                        version.tags.get("pricing.release_seal"), "Target has not passed immutable release acceptance")
+                require(version.status == "READY" and version.tags.get("pricing_acceptance") == "PASS" and
+                        version.tags.get("pricing_release_seal"), "Target has not passed immutable release acceptance")
             cloud.client.registered_models.set_alias(name, "Champion", target_version)
         else:
             require(action == "rollback" and current > 0, "Promotion requires an accepted target version")

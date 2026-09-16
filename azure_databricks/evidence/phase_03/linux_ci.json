@@ -1,0 +1,13 @@
+{
+  "conclusion": "success",
+  "run_id": 35072257355,
+  "head_sha": "f06cd247b531e8068373b6dbe4a535d671198bb6",
+  "url": "https://github.com/Kkb113/Dynamic-Pricing/actions/runs/35072257355",
+  "inference_plan_sha256": "a3297e146ca3bb45f2cc71ebeaed033ee7f62f5a7edad8695a61d5597e4c750c",
+  "platform": "Ubuntu Python 3.12",
+  "package_roundtrip": "PASS",
+  "optimizer_replay": "PASS",
+  "business_replay": "PASS",
+  "business_decisions": 12329,
+  "accepted_business_columns": 49
+}

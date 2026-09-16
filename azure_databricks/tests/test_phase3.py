@@ -14,6 +14,19 @@ from pricing_mlflow.pipeline import PricingPipeline, VERSION
 
 
 class PricingServingContracts(unittest.TestCase):
+    def test_registration_resume_refuses_version_or_run_drift(self):
+        from types import SimpleNamespace
+        from phase3_live import validate_existing
+        accepted = {"model_version": "1", "run_id": "accepted-run"}
+        validate_existing([SimpleNamespace(version=1, run_id="accepted-run")], accepted, True)
+        validate_existing([], accepted, False)
+        for versions in ([], [SimpleNamespace(version=2, run_id="accepted-run")],
+                         [SimpleNamespace(version=1, run_id="different-run")]):
+            with self.assertRaises(RuntimeError):
+                validate_existing(versions, accepted, True)
+        with self.assertRaises(RuntimeError):
+            validate_existing([SimpleNamespace(version=1, run_id="accepted-run")], accepted, False)
+
     @classmethod
     def setUpClass(cls):
         (ROOT / "build").mkdir(exist_ok=True)

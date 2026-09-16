@@ -9,6 +9,7 @@ import subprocess
 import sys
 from contextlib import contextmanager
 from pathlib import Path
+from types import SimpleNamespace
 
 from phase1 import ROOT, CONFIG_PATH, Cloud, audit, packed, digest, require, RemoteFiles, write_once, workload
 from phase3 import plan, save_package, example, PricingPipeline
@@ -78,7 +79,33 @@ print(json.dumps({'actor':str(actor),'sha256':hashlib.sha256(result.encode()).he
         return json.loads(result.stdout.strip().splitlines()[-1])
 
 
-def apply(output):
+def register_package(folder, spec, seal, manifest, ledger, result):
+    import mlflow
+    saved = Path(folder) / "model"
+    sample = save_package(saved)
+    with mlflow.start_run(run_name="phase3-frozen-pricing-" + seal[:12]) as run:
+        mlflow.set_tags({"pricing.release_seal": seal, "pricing.source_release": spec["source_release"],
+            "pricing.advisory_only": "true", "pricing.policy_manifest": digest(packed(manifest)),
+            "pricing.no_retraining": "true", "pricing.data_embedded": "false"})
+        mlflow.log_artifacts(str(saved), "pricing")
+        for evidence in ("local_replay.json", "business_replay.json", "package_roundtrip.json", "linux_ci.json", "policy_sensitivity.json"):
+            mlflow.log_artifact(str(ROOT / "azure_databricks/evidence/phase_03" / evidence), "acceptance")
+        mlflow.log_dict(spec, "acceptance/release_manifest.json")
+        version = mlflow.register_model("runs:/" + run.info.run_id + "/pricing", spec["model_name"])
+        result.update(run_id=run.info.run_id, model_version=str(version.version))
+        ledger.write_bytes(packed(result))
+    return version, sample
+
+
+def validate_existing(existing, result, resume):
+    if resume:
+        require(len(existing) == 1 and str(existing[0].version) == result["model_version"] and
+                existing[0].run_id == result["run_id"], "Existing model version differs from registration ledger")
+    else:
+        require(not existing, "First release refuses existing model versions")
+
+
+def apply(output, resume=False):
     import mlflow
     from mlflow import MlflowClient
     from databricks.sdk.errors import NotFound, PermissionDenied
@@ -91,7 +118,7 @@ def apply(output):
     require(before["app_state"] == "STOPPED" and not before["clusters"] and
             all(x["state"] == "STOPPED" for x in before["warehouses"]), "Unexpected active compute")
     ledger = ROOT / "build/phase3-registration.json"
-    require(not ledger.exists(), "Registration already attempted; inspect existing release instead of duplicating it")
+    require(resume == ledger.exists(), "Use explicit resume for an existing registration ledger; never duplicate a version")
     seal = digest(packed({"model": spec, "policy": manifest}))
     root = "/Volumes/" + cfg["catalog"] + "/" + cfg["volumes"]["runtime"].replace(".", "/") + "/phase3/" + seal
     store = RemoteFiles(cloud.client)
@@ -100,28 +127,25 @@ def apply(output):
     write_once(store, root + "/policy/manifest.json", packed(manifest))
     result = {"status": "FAILED", "release_seal": seal, "policy_root": root + "/policy",
               "compute_started": False, "dedicated_endpoint_created": False, "model_name": spec["model_name"]}
+    if resume:
+        previous = json.loads(ledger.read_text())
+        require(previous["release_seal"] == seal and previous["model_name"] == spec["model_name"], "Resume release drift")
+        result.update(run_id=previous["run_id"], model_version=previous["model_version"])
     try:
         with authentication(cloud.client, cfg["host"]):
             mlflow.set_tracking_uri("databricks")
             mlflow.set_registry_uri("databricks-uc")
+            cloud.client.workspace.mkdirs(str(Path(spec["experiment"]).parent).replace("\\", "/"))
             mlflow.set_experiment(spec["experiment"])
             client = MlflowClient()
             existing = list(client.search_model_versions("name='" + spec["model_name"] + "'"))
-            require(not existing, "First-release command refuses to replace existing model versions")
+            validate_existing(existing, result, resume)
+            if resume:
+                version = SimpleNamespace(version=result["model_version"])
+                sample = example()
             with tempfile.TemporaryDirectory(dir=ROOT / "build") as folder:
-                saved = Path(folder) / "model"
-                sample = save_package(saved)
-                with mlflow.start_run(run_name="phase3-frozen-pricing-" + seal[:12]) as run:
-                    mlflow.set_tags({"pricing.release_seal": seal, "pricing.source_release": spec["source_release"],
-                        "pricing.advisory_only": "true", "pricing.policy_manifest": digest(packed(manifest)),
-                        "pricing.no_retraining": "true", "pricing.data_embedded": "false"})
-                    mlflow.log_artifacts(str(saved), "pricing")
-                    for evidence in ("local_replay.json", "business_replay.json", "package_roundtrip.json", "linux_ci.json"):
-                        mlflow.log_artifact(str(ROOT / "azure_databricks/evidence/phase_03" / evidence), "acceptance")
-                    mlflow.log_dict(spec, "acceptance/release_manifest.json")
-                    version = mlflow.register_model("runs:/" + run.info.run_id + "/pricing", spec["model_name"])
-                    result.update(run_id=run.info.run_id, model_version=str(version.version))
-                    ledger.write_bytes(packed(result))
+                if not resume:
+                    version, sample = register_package(folder, spec, seal, manifest, ledger, result)
             uri = "models:/" + spec["model_name"] + "/" + str(version.version)
             expected = PricingPipeline(ROOT).predict(sample).response_json.iloc[0]
             require(mlflow.pyfunc.load_model(uri).predict(sample).response_json.iloc[0] == expected, "Registered model parity failed")
@@ -152,8 +176,10 @@ def apply(output):
         with authentication(cloud.client, cfg["host"]):
             mlflow.set_registry_uri("databricks-uc")
             registry = MlflowClient()
-            registry.set_model_version_tag(spec["model_name"], str(version.version), "pricing.acceptance", "PASS")
-            registry.set_model_version_tag(spec["model_name"], str(version.version), "pricing.release_seal", seal)
+            registry.set_model_version_tag(spec["model_name"], str(version.version), "pricing_acceptance", "PASS")
+            registry.set_model_version_tag(spec["model_name"], str(version.version), "pricing_release_seal", seal)
+            registry.set_model_version_tag(spec["model_name"], str(version.version), "pricing_production_approved", "false")
+            registry.set_model_version_tag(spec["model_name"], str(version.version), "pricing_operational_price_change_requires_review", "true")
         cloud.client.registered_models.set_alias(spec["model_name"], "Champion", int(version.version))
         aliases = cloud.client.registered_models.get(spec["model_name"], include_aliases=True).aliases or []
         require(any(x.alias_name == "Champion" and x.version_num == int(version.version) for x in aliases), "Alias readback failed")
@@ -183,7 +209,9 @@ def apply(output):
 
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
-    print(json.dumps(apply(args.output), indent=2))
+    print(json.dumps(apply(args.output, args.resume), indent=2))

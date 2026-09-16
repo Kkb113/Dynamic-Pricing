@@ -1,0 +1,22 @@
+{
+  "status": "PASS_WITH_MODEL_BEHAVIOR_LIMITATION",
+  "frozen_optimizer_boundary_review": {
+    "validation": {"rows": 5250, "selected_at_upper_candidate": 5153},
+    "test": {"rows": 5250, "selected_at_upper_candidate": 5122},
+    "interpretation": "The model-implied gross-profit objective strongly favors the upper search boundary. This is not proof of real-world willingness to pay or realized profit uplift."
+  },
+  "sensitivity_cases_passed": [
+    "EXPLICIT_PRICE_CEILING_FILTERS_HIGHER_PRICES",
+    "CONFLICTING_PRICE_BOUNDS_REQUIRE_REVIEW",
+    "OVERLAPPING_PROMOTIONS_REQUIRE_REVIEW_WITHOUT_INVENTED_DISCOUNT",
+    "MISSING_INVENTORY_WITHHOLDS_ACTIONABLE_PRICE",
+    "OUT_OF_STOCK_WITHHOLDS_ACTIONABLE_PRICE",
+    "UNSUPPORTED_SIMULATION_PRICE_REJECTED",
+    "SIMULATIONS_DO_NOT_REPLACE_GOVERNED_RECOMMENDATIONS"
+  ],
+  "trained_weights_changed": false,
+  "test_set_tuned": false,
+  "automatic_writeback": false,
+  "production_pricing_approved": false,
+  "operational_price_change_requires_business_review": true
+}
