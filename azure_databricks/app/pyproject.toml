@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools==75.8.2", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "intellify-pricing-app"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["numpy==2.5.2", "pandas==3.0.5", "pyarrow==25.0.1", "mlflow-skinny==3.16.0", "catboost==1.2.10", "pyodbc==5.3.0", "psutil==7.2.2"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
