@@ -12,7 +12,7 @@ from typing import Any, Iterable
 
 
 EXCLUDED_PARTS = frozenset({
-    ".git", ".venv", "node_modules", "__pycache__", ".pytest_cache",
+    ".git", ".venv", "node_modules", "dist", "__pycache__", ".pytest_cache",
     ".phase2-run-tmp", ".phase4-runtime", ".test-tmp",
 })
 EXCLUDED_NAMES = frozenset({".env", ".env.local", ".env.production"})

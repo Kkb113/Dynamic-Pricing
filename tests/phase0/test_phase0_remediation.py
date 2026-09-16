@@ -114,6 +114,7 @@ def test_transfer_manifest_covers_lazy_context_and_excludes_secrets():
     assert "artifacts/phase8/validation_factual_backtest.parquet" in paths
     assert "contracts/pricing_runtime_contract_v1.yaml" in paths
     assert all(".env" not in path and ".git" not in path for path in paths)
+    assert all("/dist/" not in f"/{path}/" for path in paths)
     assert not manifest.payload["missing"]
 
 
