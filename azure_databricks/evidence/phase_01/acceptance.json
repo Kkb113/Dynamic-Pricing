@@ -1,0 +1,62 @@
+{
+  "schema_version": "pricing.phase1.acceptance.v1",
+  "date": "2026-09-16",
+  "phase": "Governance and immutable transfer",
+  "implemented_locally": "PASS",
+  "deployed": "PASS",
+  "validated_live": "PASS",
+  "implementation_commit": "31fe720e74861394624f2ce2f8b1f037691d8bf0",
+  "implementation_script_sha256": "24510fb0d3a30112847340b88b0306192b29b1bcb53008d1d7542be669b34ea6",
+  "configuration_sha256": "823204d0614098851e086c25d45d5a1cc6ee63f7219a83325f7cdc6d9fc57779",
+  "sealed_source_commit": "f35a7a7326e03f9a6b759358c9a43b0608f4cb95",
+  "accepted_phase0_merge": "975aad7006c2bde099729570b442f2d0bd371c90",
+  "release_id": "pricing-f35a7a7326e0-2e6c455737c60c1b",
+  "remote_verified_files": 204,
+  "remote_verified_bytes": 16267703,
+  "restricted_dataset_files": 8,
+  "runtime_files": 196,
+  "schemas_created": ["pricing_bronze", "pricing_ml"],
+  "managed_volumes_created": ["pricing_bronze.release_inputs", "pricing_ml.release_runtime"],
+  "validation": {
+    "local_failure_injection_tests_passed": 17,
+    "linux_phase1_tests": "PASS",
+    "linux_run": "https://github.com/Kkb113/Dynamic-Pricing/actions/runs/35062849509",
+    "existing_linux_regression_workflows": "PASS",
+    "remote_all_hashes_and_sizes": "PASS",
+    "source_manifests_and_verified_pointer": "PASS",
+    "safe_rerun_objects_created": 0,
+    "safe_rerun_grant_changes": 0,
+    "actual_app_identity_authenticated": true,
+    "actual_app_model_read": true,
+    "actual_app_restricted_input_denied": true,
+    "actual_app_no_effective_write": true,
+    "lower_privilege_identity_authenticated": true,
+    "lower_privilege_restricted_read_denied": true,
+    "temporary_credentials_revoked": true,
+    "retail_grants_and_app_configuration_unchanged": true
+  },
+  "cost_and_state": {
+    "compute_started": false,
+    "inference_calls": 0,
+    "azure_resources_created": 0,
+    "app_state": "STOPPED",
+    "warehouse_state": "STOPPED",
+    "warehouse_auto_stop_minutes": 1,
+    "clusters": 0,
+    "new_always_on_services": 0,
+    "incremental_cost_scope": "Small managed-storage footprint and file API operations only; invoice amount not measured"
+  },
+  "evidence": ["inspection.json", "plan.json", "apply.json", "safe_rerun.json", "identity.json"],
+  "limitations": [
+    "Application-enforced write-once release and read-only consumers, not a regulatory WORM retention lock",
+    "Historical 2025-12-31 snapshot; source currency remains unverified",
+    "Pricing is not yet wired into the App; curated data and inference integration belong to later phases"
+  ],
+  "next_phase_controls": [
+    "Review inherited predictive optimization before creating pricing Delta tables",
+    "Use a new approved bounded shutdown window before future compute-based validation; old demo schedules have expired"
+  ],
+  "blocking_live_checks": [],
+  "repository_review": "Pull request review and merge pending",
+  "rollback": "No App/model reference was promoted. Keep the pricing release unreferenced; preserve existing retail deployment. Do not delete shared resources."
+}

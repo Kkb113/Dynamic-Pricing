@@ -1,0 +1,1115 @@
+{
+  "after": {
+    "app_configuration_sha256": "cc101ae5f21c6a4d9ea9c089bb7739e9fc5459fe7fbb00f0356ea05d3033347f",
+    "app_state": "STOPPED",
+    "azure_resources": [
+      {
+        "name": "intellify-databricks-demo",
+        "type": "Microsoft.Databricks/workspaces"
+      },
+      {
+        "name": "retail-hp-poc-luna-identity",
+        "type": "Microsoft.Databricks/accessConnectors"
+      },
+      {
+        "name": "retail-hp-poc-openai-4073b6c9",
+        "type": "Microsoft.CognitiveServices/accounts"
+      },
+      {
+        "name": "retail-hp-poc-shutdown",
+        "type": "Microsoft.Automation/automationAccounts"
+      },
+      {
+        "name": "retail-hp-poc-shutdown/retail-hp-stop-demo",
+        "type": "Microsoft.Automation/automationAccounts/runbooks"
+      }
+    ],
+    "catalog_grants": {
+      "privilege_assignments": [
+        {
+          "principal": "_workspace_users_intellify_databricks_demo_7405618180989330",
+          "privileges": [
+            "USE_CATALOG"
+          ]
+        },
+        {
+          "principal": "6972ee85-f9e7-455b-9f93-74e1b0d9a99e",
+          "privileges": [
+            "USE_CATALOG"
+          ]
+        },
+        {
+          "principal": "retail_hp_admins",
+          "privileges": [
+            "CREATE_SCHEMA",
+            "USE_CATALOG"
+          ]
+        },
+        {
+          "principal": "retail_hp_app_runtime",
+          "privileges": [
+            "USE_CATALOG"
+          ]
+        },
+        {
+          "principal": "retail_hp_viewers",
+          "privileges": [
+            "USE_CATALOG"
+          ]
+        },
+        {
+          "principal": "retail_hp_engineers",
+          "privileges": [
+            "USE_CATALOG"
+          ]
+        }
+      ]
+    },
+    "catalog_owner": "_workspace_admins_intellify_databricks_demo_7405618180989330",
+    "catalog_predictive_optimization": {
+      "inherited_from_name": "metastore_azure_westus",
+      "value": "ENABLE"
+    },
+    "clusters": [],
+    "compute_started": false,
+    "retail_schema_grants": {
+      "intellify_databricks_demo.agent": {
+        "privilege_assignments": [
+          {
+            "principal": "6972ee85-f9e7-455b-9f93-74e1b0d9a99e",
+            "privileges": [
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_app_runtime",
+            "privileges": [
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.bronze": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.default": {
+        "privilege_assignments": [
+          {
+            "principal": "_workspace_users_intellify_databricks_demo_7405618180989330",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_MATERIALIZED_VIEW",
+              "CREATE_MODEL",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.features": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.gold": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.ml": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_MODEL",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_MODEL",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.monitoring": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.serving": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_app_runtime",
+            "privileges": [
+              "EXECUTE",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_viewers",
+            "privileges": [
+              "EXECUTE",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.silver": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      }
+    },
+    "serving_endpoints": [
+      {
+        "name": "retail-hp-poc-recommender",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "NOT_READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-4-7",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-4-8",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-5",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-4-6",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-gpt-oss-120b",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-sonnet-5",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-sonnet-4-6",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-sonnet-4-5",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-haiku-4-5",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-gpt-oss-20b",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-qwen3-next-80b-a3b-instruct",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-qwen35-122b-a10b",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-llama-4-maverick",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-gemma-3-12b",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-gte-large-en",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-bge-large-en",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-meta-llama-3-1-8b-instruct",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-meta-llama-3-3-70b-instruct",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-4-5",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-4-1",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-sonnet-4",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-qwen3-embedding-0-6b",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      }
+    ],
+    "shutdown": [
+      {
+        "account": "retail-hp-poc-shutdown",
+        "items": [
+          {
+            "enabled": null,
+            "expiry": null,
+            "name": "retail-hp-stop-demo",
+            "state": "Edit"
+          }
+        ],
+        "kind": "runbooks"
+      },
+      {
+        "account": "retail-hp-poc-shutdown",
+        "items": [
+          {
+            "enabled": true,
+            "expiry": "2026-09-11T18:29:00+00:00",
+            "name": "retail-hp-stop-demo-20260911-2359-ist",
+            "state": null
+          },
+          {
+            "enabled": true,
+            "expiry": "2026-09-15T18:29:00+00:00",
+            "name": "retail-hp-stop-demo-20260915-2359-ist",
+            "state": null
+          }
+        ],
+        "kind": "schedules"
+      }
+    ],
+    "warehouses": [
+      {
+        "auto_stop_mins": 1,
+        "max_clusters": 1,
+        "name": "retail-hp-poc-sql",
+        "size": "2X-Small",
+        "state": "STOPPED"
+      }
+    ],
+    "workspace": "intellify-databricks-demo"
+  },
+  "before": {
+    "app_configuration_sha256": "cc101ae5f21c6a4d9ea9c089bb7739e9fc5459fe7fbb00f0356ea05d3033347f",
+    "app_state": "STOPPED",
+    "azure_resources": [
+      {
+        "name": "intellify-databricks-demo",
+        "type": "Microsoft.Databricks/workspaces"
+      },
+      {
+        "name": "retail-hp-poc-luna-identity",
+        "type": "Microsoft.Databricks/accessConnectors"
+      },
+      {
+        "name": "retail-hp-poc-openai-4073b6c9",
+        "type": "Microsoft.CognitiveServices/accounts"
+      },
+      {
+        "name": "retail-hp-poc-shutdown",
+        "type": "Microsoft.Automation/automationAccounts"
+      },
+      {
+        "name": "retail-hp-poc-shutdown/retail-hp-stop-demo",
+        "type": "Microsoft.Automation/automationAccounts/runbooks"
+      }
+    ],
+    "catalog_grants": {
+      "privilege_assignments": [
+        {
+          "principal": "_workspace_users_intellify_databricks_demo_7405618180989330",
+          "privileges": [
+            "USE_CATALOG"
+          ]
+        },
+        {
+          "principal": "6972ee85-f9e7-455b-9f93-74e1b0d9a99e",
+          "privileges": [
+            "USE_CATALOG"
+          ]
+        },
+        {
+          "principal": "retail_hp_admins",
+          "privileges": [
+            "CREATE_SCHEMA",
+            "USE_CATALOG"
+          ]
+        },
+        {
+          "principal": "retail_hp_app_runtime",
+          "privileges": [
+            "USE_CATALOG"
+          ]
+        },
+        {
+          "principal": "retail_hp_viewers",
+          "privileges": [
+            "USE_CATALOG"
+          ]
+        },
+        {
+          "principal": "retail_hp_engineers",
+          "privileges": [
+            "USE_CATALOG"
+          ]
+        }
+      ]
+    },
+    "catalog_owner": "_workspace_admins_intellify_databricks_demo_7405618180989330",
+    "catalog_predictive_optimization": {
+      "inherited_from_name": "metastore_azure_westus",
+      "value": "ENABLE"
+    },
+    "clusters": [],
+    "compute_started": false,
+    "retail_schema_grants": {
+      "intellify_databricks_demo.agent": {
+        "privilege_assignments": [
+          {
+            "principal": "6972ee85-f9e7-455b-9f93-74e1b0d9a99e",
+            "privileges": [
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_app_runtime",
+            "privileges": [
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.bronze": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.default": {
+        "privilege_assignments": [
+          {
+            "principal": "_workspace_users_intellify_databricks_demo_7405618180989330",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_MATERIALIZED_VIEW",
+              "CREATE_MODEL",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.features": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.gold": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.ml": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_MODEL",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_MODEL",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.monitoring": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.serving": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_app_runtime",
+            "privileges": [
+              "EXECUTE",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_viewers",
+            "privileges": [
+              "EXECUTE",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      },
+      "intellify_databricks_demo.silver": {
+        "privilege_assignments": [
+          {
+            "principal": "retail_hp_engineers",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          },
+          {
+            "principal": "retail_hp_admins",
+            "privileges": [
+              "CREATE_FUNCTION",
+              "CREATE_TABLE",
+              "CREATE_VOLUME",
+              "EXECUTE",
+              "MODIFY",
+              "SELECT",
+              "USE_SCHEMA"
+            ]
+          }
+        ]
+      }
+    },
+    "serving_endpoints": [
+      {
+        "name": "retail-hp-poc-recommender",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "NOT_READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-4-7",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-4-8",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-5",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-4-6",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-gpt-oss-120b",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-sonnet-5",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-sonnet-4-6",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-sonnet-4-5",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-haiku-4-5",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-gpt-oss-20b",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-qwen3-next-80b-a3b-instruct",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-qwen35-122b-a10b",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-llama-4-maverick",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-gemma-3-12b",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-gte-large-en",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-bge-large-en",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-meta-llama-3-1-8b-instruct",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-meta-llama-3-3-70b-instruct",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-4-5",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-opus-4-1",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-claude-sonnet-4",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      },
+      {
+        "name": "databricks-qwen3-embedding-0-6b",
+        "state": {
+          "config_update": "NOT_UPDATING",
+          "ready": "READY"
+        }
+      }
+    ],
+    "shutdown": [
+      {
+        "account": "retail-hp-poc-shutdown",
+        "items": [
+          {
+            "enabled": null,
+            "expiry": null,
+            "name": "retail-hp-stop-demo",
+            "state": "Edit"
+          }
+        ],
+        "kind": "runbooks"
+      },
+      {
+        "account": "retail-hp-poc-shutdown",
+        "items": [
+          {
+            "enabled": true,
+            "expiry": "2026-09-11T18:29:00+00:00",
+            "name": "retail-hp-stop-demo-20260911-2359-ist",
+            "state": null
+          },
+          {
+            "enabled": true,
+            "expiry": "2026-09-15T18:29:00+00:00",
+            "name": "retail-hp-stop-demo-20260915-2359-ist",
+            "state": null
+          }
+        ],
+        "kind": "schedules"
+      }
+    ],
+    "warehouses": [
+      {
+        "auto_stop_mins": 1,
+        "max_clusters": 1,
+        "name": "retail-hp-poc-sql",
+        "size": "2X-Small",
+        "state": "STOPPED"
+      }
+    ],
+    "workspace": "intellify-databricks-demo"
+  },
+  "command": "apply",
+  "compute_started": false,
+  "configuration_sha256": "823204d0614098851e086c25d45d5a1cc6ee63f7219a83325f7cdc6d9fc57779",
+  "governance": {
+    "changes": [],
+    "status": "PASS"
+  },
+  "implementation_script_sha256": "24510fb0d3a30112847340b88b0306192b29b1bcb53008d1d7542be669b34ea6",
+  "release_id": "pricing-f35a7a7326e0-2e6c455737c60c1b",
+  "status": "PASS",
+  "timestamp_utc": "2026-09-16T06:16:15.995172+00:00",
+  "transfer": {
+    "objects_created": 0,
+    "pointer": {
+      "bytes": 16267703,
+      "files": 204,
+      "manifest_sha256": "2e6c455737c60c1b422154c4b410e99bf7d6ddfac8d25cc2ac3ba3927ad62adc",
+      "release_id": "pricing-f35a7a7326e0-2e6c455737c60c1b",
+      "roots": {
+        "restricted": "/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/pricing-f35a7a7326e0-2e6c455737c60c1b",
+        "runtime": "/Volumes/intellify_databricks_demo/pricing_ml/release_runtime/pricing-f35a7a7326e0-2e6c455737c60c1b"
+      },
+      "schema_version": "pricing.verified.release.v1"
+    },
+    "status": "PASS",
+    "verified_bytes": 16267703,
+    "verified_files": 204
+  },
+  "unrelated_resources_unchanged": true
+}

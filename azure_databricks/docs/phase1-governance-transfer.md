@@ -1,5 +1,11 @@
 # Phase 1 — Governance and immutable transfer
 
+Status (16 September 2026): implemented locally, deployed, and validated live.
+All 204 hashes/sizes passed, the second apply made zero changes, and actual
+runtime/negative identity tests passed. All 17 failure-injection/contract tests
+passed locally and on Linux. See `../evidence/phase_01/acceptance.json` and the
+underlying evidence files. Repository review/merge remains a separate step.
+
 The deployment targets the existing `intellify-databricks-demo` workspace and
 `intellify_databricks_demo` catalog, within the `Databricks` resource group.
 The baseline is merged PR #10, commit `975aad7006c2bde099729570b442f2d0bd371c90`.
