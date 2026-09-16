@@ -1,0 +1,27 @@
+{
+  "acceptance_sha256": "d106630de45d22fac4076ff3de2e53b0f31c9fb62863f15fe60cf5b0709b3b5e",
+  "captured_at": "2026-09-16T07:40:45.005860+00:00",
+  "contains_customer_or_outcome_rows": false,
+  "files": [
+    {
+      "path": "rules.parquet",
+      "rows": 200,
+      "sha256": "7236f39363390035543aa5f5213e52b42fe00a77be46e5ab17d739708bb6e88a"
+    },
+    {
+      "path": "promotions.parquet",
+      "rows": 200,
+      "sha256": "f1fb760a85ab290c351abc1993c1856408660c0fa1ac7172b1ed938608dcd248"
+    },
+    {
+      "path": "inventory.parquet",
+      "rows": 15000,
+      "sha256": "c64e2c038e5af5cd2a1ee6248c9472d9085d4470dbf16ff85b3a29892e9112ab"
+    }
+  ],
+  "original_export": false,
+  "replay_verified": true,
+  "schema_version": "pricing.policy_snapshot.v1",
+  "source": "LOCAL_SQL_SELECT_ONLY",
+  "source_release": "pricing-f35a7a7326e0-2e6c455737c60c1b"
+}

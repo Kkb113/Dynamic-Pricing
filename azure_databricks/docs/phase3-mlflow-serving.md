@@ -1,0 +1,55 @@
+# Phase 3 — MLflow pricing and serving
+
+Status: local implementation, optimizer acceptance, full business-policy replay and clean MLflow package load passed. Linux CI, Unity Catalog registration, additional policy sensitivity checks and promotion remain pending. This is not a completed production release.
+
+## Decision unit
+
+`src/pricing_mlflow/pipeline.py` executes the accepted CatBoost scorer, frozen conditional-quantity estimator, supported candidate grid, monotonic response guard, economic selection, pricing rules, promotions and inventory policy. It does not serve a lookup of previously selected final prices. Batch and interactive callers use the same implementation.
+
+The MLflow Models-from-Code adapter is `azure_databricks/scripts/phase3_model.py`. Input/output signatures are string columns `request_json` and `response_json`; the JSON contract is `pricing.scoring.v1`. The inference bundle contains six frozen model/contract/policy files and canonical Python source, never customer datasets, outcomes, credentials or database connection settings. Pricing remains advisory-only with no automatic price writeback.
+
+Requests explicitly supply full point-in-time model features, product/store/channel/decision identity, decision time, cost and the governed business source projections. Empty business sources must be explicit, not inferred. All six observed channels are supported. Requests reject unknown fields, customer/outcome fields, invalid prices, future feature context, unsupported simulation prices and stale current-inventory context. Current-inventory mode refers only to the frozen 2025-12-31 snapshot and a maximum 30-day context age; it is not live inventory.
+
+Responses distinguish raw probability/demand/economics, guarded estimates and final stock-capped decision economics. Candidate simulations report rule compliance separately and do not replace the recommendation. Currency remains unverified: Azure billing in INR does not establish the source product-price currency. Estimated uplift is model-implied, not realized revenue.
+
+## Local acceptance
+
+Use Python 3.12 and `azure_databricks/requirements-mlflow.txt`.
+
+```powershell
+python -m unittest discover -s azure_databricks/tests -v
+python azure_databricks/scripts/phase3.py plan
+python azure_databricks/scripts/phase3.py validate-local --evidence azure_databricks/evidence/phase_03/local_replay.json
+python azure_databricks/scripts/phase3.py validate-package --evidence azure_databricks/evidence/phase_03/package_roundtrip.json
+```
+
+Both 5,250-row optimizer replays have zero monetary or price differences against the accepted Phase 6 outputs (predeclared economic tolerance 1e-8). A clean process loads the saved MLflow package without repository imports and produces the same output. The local runtime envelope is startup <60 seconds and RSS <1.5 GB. Concurrent calls are serialized around the frozen scorer's cache to prevent cross-request contamination; CatBoost uses two threads. No test-set tuning or retraining occurs.
+
+The optimizer-only checks do not prove full Phase 7 business-policy parity. A separate replay with recovered rules, promotions and inventory subsequently passed all 12,329 decisions: validation 5,250, test 5,250 and current inventory 1,829. All 49 accepted output columns matched, with prices exact and numeric tolerance 1e-8. Evidence is `azure_databricks/evidence/phase_03/business_replay.json`. The source capture's original manifest remains unchanged and correctly records that it was not the original export; the separate successful replay establishes output equivalence.
+
+## Required source recovery
+
+The Windows administrator has started the local SQL Server instance `MSSQLSERVER`. Read-only recovery succeeded: 200 pricing rules, 200 promotions and 15,000 inventory rows were captured under ignored `build/phase3-policy-capture`. This capture is a newly recovered snapshot, not automatically the original export. Full equivalence is established only by replay acceptance.
+
+Once available, `phase3_policy_snapshot.py` can export only the three business-policy projections, using the existing local environment file without logging its values. It writes a new, ignored, non-overwriting snapshot with hashes and counts. Recovered rows must reproduce every final decision for validation/test (5,250 each) and all 1,829 current-inventory scenarios, including status, policy/promotion identifiers, fallback/reason codes, stock caps and monetary fields. A new extraction is not assumed to equal the original extraction: acceptance must demonstrate equivalence. If it differs, recover the original backup rather than modifying expected results.
+
+```powershell
+python azure_databricks/scripts/phase3.py validate-business --policy-snapshot build/phase3-policy-capture --evidence azure_databricks/evidence/phase_03/business_replay.json
+```
+
+The replay reconstructs latest eligible current contexts using the original product/store/channel ordering and normalized 30-day age policy. It compares every accepted decision column, prices exactly and numeric economics within 1e-8; capture hashes are checked before reading. Inventory is narrowed to relevant product/store pairs per batch so unrelated source rows do not enter interactive requests.
+
+## Cloud release gates — not yet executed
+
+1. Capture and seal equivalent policy projections; complete full business replay without altering frozen expected outputs.
+2. Publish the branch with explicit public-repository approval and pass Linux CI, including real scorer replay and clean MLflow package load. Linux must resolve the accepted policy runner's import-only `pyodbc` dependency.
+3. With a separately approved bounded validation window, log the complete package to `/Shared/dynamic-pricing/phase3-pricing` and register `intellify_databricks_demo.pricing_ml.pricing_decision_pipeline`. Use the existing governed catalog, schema and deployment identity, not broad new grants.
+4. Load the registered immutable version with the runtime identity, verify signature/artifact hashes and batch/interactive parity. Verify that unauthorized identities cannot read restricted source datasets or modify the model.
+5. Set `Champion` only after all acceptance evidence passes. Record the previous alias version and package/policy/data fingerprints. Rollback restores that previous immutable version; do not delete it. On first release, rollback means withholding availability rather than selecting an unvalidated version.
+6. Integrate in-process into the existing App in the later integration phase. Do not create a dedicated endpoint or start the retail App for this phase. Restore stopped compute after the approved validation window.
+
+Read-only Azure inspection found the App and existing 2X-Small SQL warehouse stopped and no clusters. No cloud compute or paid service was started during local Phase 3 work. This observation is not a live billing guarantee.
+
+## Engineering basis
+
+MLflow recommends [Models-from-Code](https://mlflow.org/docs/latest/api_reference/python_api/mlflow.pyfunc.html) for custom Python models. [Explicit model signatures](https://mlflow.org/docs/latest/ml/model/signatures/) support inference validation. [Unity Catalog model lifecycle](https://docs.databricks.com/gcp/en/machine-learning/manage-model-lifecycle) uses immutable versions and aliases rather than legacy stages. [MLflow release history](https://mlflow.org/releases/archive) identifies 3.16.0; the older 3.4.0 failed pandas 3 string-schema validation in local testing, so the dependency was upgraded and the clean roundtrip rerun successfully.

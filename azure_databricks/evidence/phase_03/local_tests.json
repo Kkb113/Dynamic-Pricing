@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "azure_contract_tests": 65,
+  "existing_regression_tests": 280,
+  "existing_regression_seconds": 25.25,
+  "cloud_compute_started": false,
+  "linux_ci": "NOT_RUN",
+  "business_policy_replay": "PASS_12329_DECISIONS_49_COLUMNS_SEE_BUSINESS_REPLAY_EVIDENCE",
+  "champion_promoted": false,
+  "phase_complete": false
+}

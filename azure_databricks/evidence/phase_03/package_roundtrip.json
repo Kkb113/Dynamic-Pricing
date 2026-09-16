@@ -1,0 +1,12 @@
+{
+  "clean_process_roundtrip_identical": true,
+  "cloud_compute_started": false,
+  "dataset_embedded": false,
+  "registry_roundtrip": "NOT_RUN",
+  "runtime": {
+    "rss_bytes": 168095744,
+    "sha256": "cbfbb69731049eaae72dad2ded2289483113e0b3986bbefb5a4d7d19244d1d44",
+    "startup_seconds": 0.9549483000009786
+  },
+  "status": "PASS"
+}
