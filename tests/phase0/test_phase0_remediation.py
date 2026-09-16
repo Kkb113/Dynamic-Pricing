@@ -18,6 +18,19 @@ from pricing_api.models import PricingChatRequest
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def test_legacy_json_hash_accepts_line_endings_but_rejects_changed_values(tmp_path):
+    import hashlib
+    from app_services.artifact_registry import matches_recorded_hash
+
+    original = b'{\r\n  "price": 10\r\n}\r\n'
+    expected = hashlib.sha256(original).hexdigest()
+    artifact = tmp_path / "policy.json"
+    artifact.write_bytes(original.replace(b"\r\n", b"\n"))
+    assert matches_recorded_hash(artifact, expected)
+    artifact.write_bytes(b'{\n  "price": 11\n}\n')
+    assert not matches_recorded_hash(artifact, expected)
+
+
 def _request(message: str) -> PricingChatRequest:
     return PricingChatRequest(schema_version="pricing.chat.request.v1", message=message)
 
