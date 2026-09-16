@@ -14,6 +14,20 @@ from pricing_mlflow.pipeline import PricingPipeline, VERSION
 
 
 class PricingServingContracts(unittest.TestCase):
+    def test_normalized_champion_alias_status_and_rollback(self):
+        from types import SimpleNamespace
+        from unittest.mock import MagicMock, patch
+        import phase3_lifecycle
+        cloud = MagicMock()
+        model = SimpleNamespace(aliases=[SimpleNamespace(alias_name="champion", version_num=1)])
+        cloud.client.registered_models.get.return_value = model
+        with patch.object(phase3_lifecycle, "Cloud", return_value=cloud):
+            self.assertEqual(phase3_lifecycle.operate("status")["champion_version"], 1)
+            cloud.client.registered_models.get.side_effect = [model, SimpleNamespace(aliases=[])]
+            result = phase3_lifecycle.operate("rollback", expected_current=1)
+            self.assertEqual(result["champion_version"], 0)
+            cloud.client.registered_models.delete_alias.assert_called_once()
+
     def test_registration_resume_refuses_version_or_run_drift(self):
         from types import SimpleNamespace
         from phase3_live import validate_existing

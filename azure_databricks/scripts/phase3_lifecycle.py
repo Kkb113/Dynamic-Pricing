@@ -12,7 +12,7 @@ def operate(action, expected_current=None, target_version=None):
     cloud = Cloud(cfg)
     name = plan()["model_name"]
     model = cloud.client.registered_models.get(name, include_aliases=True)
-    current = next((x.version_num for x in model.aliases or [] if x.alias_name == "Champion"), 0)
+    current = next((x.version_num for x in model.aliases or [] if x.alias_name.casefold() == "champion"), 0)
     if action != "status":
         require(expected_current is not None and expected_current == current, "Champion changed; inspect before mutation")
         if target_version is not None:
@@ -26,7 +26,7 @@ def operate(action, expected_current=None, target_version=None):
             require(action == "rollback" and current > 0, "Promotion requires an accepted target version")
             cloud.client.registered_models.delete_alias(name, "Champion")
         after = cloud.client.registered_models.get(name, include_aliases=True)
-        current = next((x.version_num for x in after.aliases or [] if x.alias_name == "Champion"), 0)
+        current = next((x.version_num for x in after.aliases or [] if x.alias_name.casefold() == "champion"), 0)
         require(current == (target_version or 0), "Alias readback did not match requested release")
     return {"status": "PASS", "action": action, "model_name": name, "champion_version": current,
             "compute_started": False, "versions_deleted": False}

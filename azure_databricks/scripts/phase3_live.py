@@ -182,11 +182,11 @@ def apply(output, resume=False):
             registry.set_model_version_tag(spec["model_name"], str(version.version), "pricing_operational_price_change_requires_review", "true")
         cloud.client.registered_models.set_alias(spec["model_name"], "Champion", int(version.version))
         aliases = cloud.client.registered_models.get(spec["model_name"], include_aliases=True).aliases or []
-        require(any(x.alias_name == "Champion" and x.version_num == int(version.version) for x in aliases), "Alias readback failed")
+        require(any(x.alias_name.casefold() == "champion" and x.version_num == int(version.version) for x in aliases), "Alias readback failed")
         # First-release rollback withholds availability; no duplicate model version is needed.
         cloud.client.registered_models.delete_alias(spec["model_name"], "Champion")
         aliases = cloud.client.registered_models.get(spec["model_name"], include_aliases=True).aliases or []
-        require(not any(x.alias_name == "Champion" for x in aliases), "First-release rollback failed")
+        require(not any(x.alias_name.casefold() == "champion" for x in aliases), "First-release rollback failed")
         cloud.client.registered_models.set_alias(spec["model_name"], "Champion", int(version.version))
         result["first_release_rollback_tested"] = True
         result.update(champion_promoted=True, first_release_rollback="DELETE_CHAMPION_ALIAS_TO_WITHHOLD_UNVALIDATED_AVAILABILITY",
@@ -196,7 +196,7 @@ def apply(output, resume=False):
     finally:
         if result["status"] != "PASS" and result.get("model_version"):
             aliases = cloud.client.registered_models.get(spec["model_name"], include_aliases=True).aliases or []
-            if any(x.alias_name == "Champion" for x in aliases):
+            if any(x.alias_name.casefold() == "champion" for x in aliases):
                 cloud.client.registered_models.delete_alias(spec["model_name"], "Champion")
         # This command never starts compute; do not mutate unrelated resources.
         after = audit(cloud)
