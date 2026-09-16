@@ -130,10 +130,51 @@ def test_manifest_verifier_detects_tampering(tmp_path):
         ]
     }
     assert verify_release_manifest(tmp_path, payload)["status"] == "PASS"
-    (tmp_path / "artifact.txt").write_text("changed", encoding="utf-8")
-    report = verify_release_manifest(tmp_path, json.loads(json.dumps(payload)))
+
+
+def test_changed_artifact_is_rejected(tmp_path):
+    from dynamic_pricing.release import manifest_digest
+
+    artifact = tmp_path / "artifact.txt"
+    artifact.write_text("original", encoding="utf-8")
+    digest, size, mode = manifest_digest(artifact)
+    payload = {"files": [{"path": "artifact.txt", "bytes": size, "sha256": digest, "hash_mode": mode}]}
+    artifact.write_text("changed", encoding="utf-8")
+    report = verify_release_manifest(tmp_path, payload)
     assert report["status"] == "BLOCKED"
     assert report["hash_mismatches"][0]["path"] == "artifact.txt"
+
+
+@pytest.mark.parametrize("payload", [{}, {"files": []}])
+def test_empty_manifest_cannot_pass(tmp_path, payload):
+    assert verify_release_manifest(tmp_path, payload)["status"] == "BLOCKED"
+
+
+@pytest.mark.parametrize("cost", [None, float("nan"), float("inf"), -1, "unknown"])
+def test_scorer_rejects_invalid_cost_before_model_access(cost):
+    from phase7.frozen_scorer import FrozenPhase7Scorer
+
+    scorer = FrozenPhase7Scorer.__new__(FrozenPhase7Scorer)
+    with pytest.raises(ValueError, match="CostPrice"):
+        scorer.score_candidates(pd.DataFrame([{"CostPrice": cost}]), [10.0])
+
+
+def test_scorer_rejects_missing_cost_before_model_access():
+    from phase7.frozen_scorer import FrozenPhase7Scorer
+
+    scorer = FrozenPhase7Scorer.__new__(FrozenPhase7Scorer)
+    with pytest.raises(ValueError, match="CostPrice"):
+        scorer.score_candidates(pd.DataFrame([{"PricingDecisionID": "PD1"}]), [10.0])
+
+
+def test_cache_fingerprint_includes_price_feature_inputs():
+    from phase7.frozen_scorer import FrozenPhase7Scorer
+
+    scorer = FrozenPhase7Scorer.__new__(FrozenPhase7Scorer)
+    scorer.feature_names = ("discount_pct",)
+    original = pd.DataFrame([{"CurrentPrice": 10.0, "BasePrice": 12.0, "discount_pct": 0.0}])
+    changed = original.assign(CurrentPrice=11.0)
+    assert scorer._context_fingerprints(original) != scorer._context_fingerprints(changed)
 
 
 def test_manifest_text_hash_is_portable_across_git_line_endings(tmp_path):

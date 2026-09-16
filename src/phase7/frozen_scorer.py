@@ -49,7 +49,7 @@ class FrozenPhase7Scorer:
     def _context_fingerprints(self, frame: pd.DataFrame) -> list[str]:
         """Fingerprint every scoring row so cache entries cannot cross contexts."""
 
-        selected = [name for name in ("PricingDecisionID", "CostPrice", *self.feature_names) if name in frame.columns]
+        selected = sorted(frame.columns)
         projection = frame.loc[:, selected].copy()
         hashes = pd.util.hash_pandas_object(projection, index=False).astype("uint64")
         return [f"{int(value):016x}" for value in hashes]
@@ -67,6 +67,13 @@ class FrozenPhase7Scorer:
         prices = np.asarray(candidate_prices, dtype=float)
         if len(frame) != len(prices):
             raise ValueError("candidate_prices length must match source rows")
+        if not np.isfinite(prices).all() or (prices <= 0).any():
+            raise ValueError("candidate_prices must be finite and positive")
+        if "CostPrice" not in frame:
+            raise ValueError("CostPrice is required for pricing advice")
+        validated_costs = pd.to_numeric(frame["CostPrice"], errors="coerce").to_numpy(float)
+        if not np.isfinite(validated_costs).all() or (validated_costs < 0).any():
+            raise ValueError("CostPrice must be finite and nonnegative")
         identifiers = frame["PricingDecisionID"].astype(str).tolist() if "PricingDecisionID" in frame.columns else [str(index) for index in frame.index]
         context_fingerprints = self._context_fingerprints(frame)
         keys = [
@@ -82,7 +89,7 @@ class FrozenPhase7Scorer:
         prepared = self._build_features(uncached_frame, uncached_prices, self.contract, self.feature_names)
         pool = self._make_pool(prepared, self.contract, self.feature_names)
         probabilities = np.asarray(self.model.predict_proba(pool), dtype=float)[:, 1]
-        costs = pd.to_numeric(uncached_frame.get("CostPrice", pd.Series(0.0, index=uncached_frame.index)), errors="coerce").fillna(0.0).to_numpy(float)
+        costs = validated_costs[missing_indices]
         computed: list[dict[str, Any]] = []
         for probability, price, cost in zip(probabilities, uncached_prices, costs):
             probability = float(probability)

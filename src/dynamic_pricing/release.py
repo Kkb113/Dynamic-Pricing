@@ -154,6 +154,8 @@ def build_release_manifest(root: Path, *, require_clean: bool = True) -> Release
     tree_status = _git(root, "status", "--porcelain", "--untracked-files=all")
     dirty = tree_status not in {"", "unavailable"}
     blockers = []
+    if tree_status == "unavailable":
+        blockers.append("SOURCE_GIT_UNAVAILABLE")
     if missing:
         blockers.append("MISSING_TRANSFER_DEPENDENCIES")
     if unsafe:
@@ -167,7 +169,7 @@ def build_release_manifest(root: Path, *, require_clean: bool = True) -> Release
         "release_mode": "HISTORICAL_SNAPSHOT_POC",
         "source_commit": _git(root, "rev-parse", "HEAD"),
         "source_branch": _git(root, "branch", "--show-current"),
-        "source_tree_clean": not dirty,
+        "source_tree_clean": not dirty and tree_status != "unavailable",
         "currency_status": "UNVERIFIED_SOURCE_UNIT",
         "inventory_snapshot_date": "2025-12-31",
         "advisory_only": True,
@@ -188,23 +190,54 @@ def build_release_manifest(root: Path, *, require_clean: bool = True) -> Release
 def verify_release_manifest(root: Path, payload: dict[str, Any]) -> dict[str, Any]:
     mismatches: list[dict[str, str]] = []
     missing: list[str] = []
+    errors: list[str] = []
+    entries = payload.get("files", [])
+    if not isinstance(entries, list) or not entries:
+        return {"status": "BLOCKED", "errors": ["EMPTY_OR_INVALID_INVENTORY"], "missing": [], "hash_mismatches": [], "verified_files": 0}
+    if payload.get("schema_version") == "pricing.release.manifest.v1":
+        if payload.get("status") != "PASS" or payload.get("source_tree_clean") is not True:
+            errors.append("RELEASE_NOT_SEALED")
+        if payload.get("file_count") != len(entries):
+            errors.append("INVENTORY_COUNT_MISMATCH")
+        declared = {item.get("path") for item in entries if isinstance(item, dict)}
+        if not set(CRITICAL_RUNTIME_PATHS).issubset(declared):
+            errors.append("INCOMPLETE_RUNTIME_INVENTORY")
+    seen: set[str] = set()
+    verified = 0
     for item in payload.get("files", []):
+        if not isinstance(item, dict) or not isinstance(item.get("path"), str):
+            errors.append("INVALID_ENTRY")
+            continue
         relative = str(item["path"])
         path = root.resolve() / relative
+        if (relative in seen or Path(relative).is_absolute() or ".." in Path(relative).parts
+                or not path.resolve().is_relative_to(root.resolve()) or not _safe(path, root.resolve())):
+            errors.append("UNSAFE_OR_DUPLICATE_PATH")
+            continue
+        seen.add(relative)
+        if item.get("hash_mode", "raw_bytes") not in {"raw_bytes", "canonical_utf8_lf"}:
+            errors.append("UNKNOWN_HASH_MODE")
+            continue
         if not path.is_file():
             missing.append(relative)
             continue
         if item.get("hash_mode") == "canonical_utf8_lf":
-            actual, _, _ = manifest_digest(path)
+            actual, size, _ = manifest_digest(path)
         else:
             actual = sha256_file(path)
+            size = path.stat().st_size
         if actual != item.get("sha256"):
             mismatches.append({"path": relative, "expected": str(item.get("sha256")), "actual": actual})
+        elif size != item.get("bytes"):
+            errors.append("SIZE_MISMATCH:" + relative)
+        else:
+            verified += 1
     return {
-        "status": "PASS" if not missing and not mismatches else "BLOCKED",
+        "status": "PASS" if not missing and not mismatches and not errors else "BLOCKED",
+        "errors": errors,
         "missing": missing,
         "hash_mismatches": mismatches,
-        "verified_files": len(payload.get("files", [])) - len(missing) - len(mismatches),
+        "verified_files": verified,
     }
 
 
