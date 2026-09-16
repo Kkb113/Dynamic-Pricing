@@ -3,7 +3,7 @@
 Status (16 September 2026): implemented, deployed and live-validated in frozen
 snapshot scope. [PR #12](https://github.com/Kkb113/Dynamic-Pricing/pull/12) awaits
 review/merge. Full rerun created zero objects; App and warehouse ended stopped.
-There are 42 local governance/contract tests and 280 passing pricing regressions.
+There are 44 local governance/contract tests and 280 passing pricing regressions.
 
 ## Scope and release
 

@@ -1,7 +1,7 @@
 {
   "status": "PASS",
   "date_utc": "2026-09-16",
-  "governance_and_contract_tests": {"passed": 42, "failed": 0},
+  "governance_and_contract_tests": {"passed": 44, "failed": 0},
   "pricing_regression": {"passed": 280, "failed": 0, "skipped": 0, "duration_seconds": 31.68},
   "regression_environment": "Existing pricing Python environment with CatBoost and Optuna",
   "initial_operator_environment_attempt": "Collection blocked by absent training-only CatBoost/Optuna; rerun in pricing environment passed",

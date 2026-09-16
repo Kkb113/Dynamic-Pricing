@@ -103,6 +103,19 @@ class LakehouseContracts(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "Invalid cost"):
             phase2.validate_frames(frames)
 
+    def test_nonfinite_price_rejected(self):
+        for column in ("CurrentPrice", "BasePrice", "FinalRecommendedPrice"):
+            frames = self.changed("test_decisions")
+            frames["test_decisions"].loc[0, column] = float("inf")
+            with self.assertRaisesRegex(RuntimeError, "Invalid price"):
+                phase2.validate_frames(frames)
+
+    def test_missing_reference_price_rejected(self):
+        frames = self.changed("test_decisions")
+        frames["test_decisions"].loc[0, "CurrentPrice"] = float("nan")
+        with self.assertRaisesRegex(RuntimeError, "missing required"):
+            phase2.validate_frames(frames)
+
     def test_future_inventory_rejected(self):
         frames = self.changed("test_decisions")
         frames["test_decisions"].loc[0, "InventorySnapshotDate"] = pd.Timestamp("2025-12-31")

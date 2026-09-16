@@ -131,8 +131,11 @@ def validate_frames(frames):
     require(frames["validation_candidates"].groupby("PricingDecisionID").size().eq(9).all(), "Candidate count mismatch")
     for name in ("validation_decisions", "test_decisions", "inventory_decisions"):
         d = frames[name]
-        require(d[["ProductID", "StoreID", "Channel", "DecisionTime", "CostPrice", "CurrentPrice"]].notna().all().all(), name + ": missing required context")
+        require(d[["ProductID", "StoreID", "Channel", "DecisionTime", "CostPrice", "CurrentPrice", "BasePrice"]].notna().all().all(), name + ": missing required context")
         require(d.CostPrice.map(lambda x: Decimal(str(x)).is_finite() and x > 0).all(), "Invalid cost")
+        for column in ("CurrentPrice", "BasePrice", "FinalRecommendedPrice"):
+            require(d[column].dropna().map(lambda x: Decimal(str(x)).is_finite() and x > 0).all(),
+                    "Invalid price: " + column)
         require(d.ADVISORY_ONLY.eq(True).all() and d.AUTO_WRITEBACK.eq(False).all(), "Unsafe writeback contract")
         require((d.FinalRecommendedPrice.notna() | d.manual_review_flag).all(), "Missing price without review")
         require((d.FinalRecommendedPrice.dropna() > 0).all(), "Non-positive recommendation")
