@@ -183,7 +183,8 @@ class PricingPipeline:
                 selected = checked.loc[checked["__requested"]].copy()
                 decision = decisions.loc[decisions.PricingDecisionID.eq(decision_id)].iloc[0]
                 selected["simulation_only"] = True
-                selected["eligible_for_action"] = selected.passes_all_pricing_rules & (not bool(decision.manual_review_flag)) & (selected.CandidatePrice >= float(source.CostPrice))
+                selected["eligible_for_action"] = selected.passes_all_pricing_rules & (not bool(decision.manual_review_flag)) & (selected.CandidatePrice >= float(source.CostPrice)) & selected.CandidatePrice.eq(decision.FinalRecommendedPrice)
+                selected["all_business_policies_approved"] = selected.eligible_for_action
                 selected["governed_recommendation_action"] = decision.FinalAction
                 selected["stock_capped"] = False
                 simulations.extend(records(selected))

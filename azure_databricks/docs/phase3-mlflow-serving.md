@@ -1,6 +1,6 @@
 # Phase 3 — MLflow pricing and serving
 
-Status: local implementation, optimizer acceptance, full business-policy replay and clean MLflow package load passed. Linux CI, Unity Catalog registration, additional policy sensitivity checks and promotion remain pending. This is not a completed production release.
+Status: local implementation, optimizer acceptance, full business-policy replay, policy sensitivity checks and clean MLflow package load passed. Linux CI, Unity Catalog registration and promotion remain pending. This is not a completed production release.
 
 ## Decision unit
 
@@ -17,6 +17,8 @@ Requests explicitly supply full point-in-time model features, product/store/chan
 Policy sensitivity tests cover explicit ceilings, rejected simulations, conflicting bounds, overlapping promotions, missing inventory and out-of-stock outcomes. An all-null final-price attachment bug found by these tests was corrected in the new adapter; the frozen accepted source pipeline and expected business outputs were not changed. Simulations are marked simulation-only and distinguish eligibility from hypothetical, uncapped model economics.
 
 Responses distinguish raw probability/demand/economics, guarded estimates and final stock-capped decision economics. Candidate simulations report rule compliance separately and do not replace the recommendation. Currency remains unverified: Azure billing in INR does not establish the source product-price currency. Estimated uplift is model-implied, not realized revenue.
+
+An arbitrary simulation passing price rules is not automatically approved under all promotion/markdown/inventory policies. `eligible_for_action`/`all_business_policies_approved` is true only when it matches the actual governed final price, has nonnegative margin and the decision does not require review. Other simulations retain hypothetical uncapped economics for comparison, explicitly labelled simulation-only and not stock-capped.
 
 ## Local acceptance
 
