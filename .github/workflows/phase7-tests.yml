@@ -30,3 +30,4 @@ jobs:
       # to SQL Server.
       - run: python -m pip install pandas numpy pyarrow pyyaml pytest pyodbc
       - run: pytest -q tests/phase7
+
