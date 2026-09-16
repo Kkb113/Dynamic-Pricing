@@ -1,0 +1,7 @@
+# Isolated packaging/operator environment; no training or hosted endpoint.
+-r ../requirements-runtime.lock
+-r requirements-operator.txt
+mlflow-skinny==3.16.0
+# The accepted Phase 7 policy module imports its read-only audit helper.
+# This import-only dependency does not enable any database access in the model.
+pyodbc==5.3.0

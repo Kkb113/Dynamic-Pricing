@@ -1,0 +1,51 @@
+{
+  "champion_promoted": false,
+  "cloud_compute_started": false,
+  "economic_tolerance": 1e-08,
+  "phase_complete": false,
+  "policy_capture": {
+    "captured_at": "2026-09-16T07:40:45.005860+00:00",
+    "contains_customer_or_outcome_rows": false,
+    "files": [
+      {
+        "path": "rules.parquet",
+        "rows": 200,
+        "sha256": "7236f39363390035543aa5f5213e52b42fe00a77be46e5ab17d739708bb6e88a"
+      },
+      {
+        "path": "promotions.parquet",
+        "rows": 200,
+        "sha256": "f1fb760a85ab290c351abc1993c1856408660c0fa1ac7172b1ed938608dcd248"
+      },
+      {
+        "path": "inventory.parquet",
+        "rows": 15000,
+        "sha256": "c64e2c038e5af5cd2a1ee6248c9472d9085d4470dbf16ff85b3a29892e9112ab"
+      }
+    ],
+    "original_export": false,
+    "replay_verified": false,
+    "schema_version": "pricing.policy_snapshot.v1",
+    "source": "LOCAL_SQL_SELECT_ONLY"
+  },
+  "price_tolerance": 0,
+  "registry_roundtrip": "NOT_RUN",
+  "splits": {
+    "current_inventory": {
+      "compared_columns": 49,
+      "mismatches": {},
+      "rows": 1829
+    },
+    "test": {
+      "compared_columns": 49,
+      "mismatches": {},
+      "rows": 5250
+    },
+    "validation": {
+      "compared_columns": 49,
+      "mismatches": {},
+      "rows": 5250
+    }
+  },
+  "status": "PASS"
+}

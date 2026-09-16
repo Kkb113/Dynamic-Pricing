@@ -1,0 +1,33 @@
+{
+  "batch_interactive_identical": true,
+  "business_replay": "PENDING_ORIGINAL_IMMUTABLE_RULE_PROMOTION_INVENTORY_PROJECTIONS",
+  "champion_promoted": false,
+  "compute_started": false,
+  "no_training": true,
+  "phase_complete": false,
+  "registry_roundtrip": "NOT_RUN",
+  "seconds": 278.71305759999086,
+  "splits": {
+    "test": {
+      "economic_tolerance": 1e-08,
+      "exact_price_mismatches": 0,
+      "max_absolute_deltas": {
+        "recommended_expected_gross_profit": 0.0,
+        "recommended_expected_revenue": 0.0,
+        "recommended_expected_units": 0.0
+      },
+      "rows": 5250
+    },
+    "validation": {
+      "economic_tolerance": 1e-08,
+      "exact_price_mismatches": 0,
+      "max_absolute_deltas": {
+        "recommended_expected_gross_profit": 0.0,
+        "recommended_expected_revenue": 0.0,
+        "recommended_expected_units": 0.0
+      },
+      "rows": 5250
+    }
+  },
+  "status": "PASS"
+}
