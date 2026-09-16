@@ -5,3 +5,4 @@ __pycache__/
 .env
 .phase4-runtime/
 .test-tmp/
+build/

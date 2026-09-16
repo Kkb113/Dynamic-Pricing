@@ -5,7 +5,7 @@ on:
       - 'azure_databricks/**'
       - '.github/workflows/azure-databricks-phase1.yml'
   push:
-    branches: ['codex/azure-phase1-governance-transfer']
+    branches: ['codex/azure-phase1-governance-transfer', 'codex/azure-phase2-lakehouse']
 permissions:
   contents: read
 jobs:
@@ -16,5 +16,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - run: pip install -r azure_databricks/requirements-lakehouse.txt
       - run: python -m unittest discover -s azure_databricks/tests -v
       - run: python azure_databricks/scripts/phase1.py plan
+      - run: python azure_databricks/scripts/phase2.py plan

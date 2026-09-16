@@ -11,10 +11,12 @@ on:
       - "scripts/build_phase0_release.py"
       - "requirements-*.lock"
       - "pyproject.toml"
+      - "azure_databricks/**"
       - ".github/workflows/azure-databricks-phase0.yml"
   push:
     branches:
       - "codex/azure-phase0-remediation"
+      - "codex/azure-phase2-lakehouse"
 
 jobs:
   python-contract-and-regression:

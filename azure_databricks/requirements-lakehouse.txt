@@ -1,0 +1,4 @@
+# Operator/data-contract environment; separate from the sealed inference release.
+-r requirements-operator.txt
+pandas==3.0.3
+pyarrow==24.0.0
