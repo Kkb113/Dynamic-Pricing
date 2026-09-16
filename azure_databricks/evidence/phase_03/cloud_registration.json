@@ -1,0 +1,25 @@
+{
+  "champion_promoted": true,
+  "compute_started": false,
+  "credentials_revoked": true,
+  "dedicated_endpoint_created": false,
+  "final_compute_stopped": true,
+  "first_release_rollback": "DELETE_CHAMPION_ALIAS_TO_WITHHOLD_UNVALIDATED_AVAILABILITY",
+  "first_release_rollback_tested": true,
+  "identity_checks": {
+    "app_model_no_write": true,
+    "app_policy_read_identical": true,
+    "app_registered_load_identical": true,
+    "authenticated_as_actual_app": true,
+    "lower_privilege_policy_denied": true,
+    "lower_privilege_registered_load_denied": true
+  },
+  "model_name": "intellify_databricks_demo.pricing_ml.pricing_decision_pipeline",
+  "model_version": "1",
+  "operator_registered_load_identical": true,
+  "policy_root": "/Volumes/intellify_databricks_demo/pricing_ml/release_runtime/phase3/735d895d28179dc4bb10725a695eefdbe9afaf414def540efb57c1f2126520e1/policy",
+  "release_seal": "735d895d28179dc4bb10725a695eefdbe9afaf414def540efb57c1f2126520e1",
+  "retail_unchanged": true,
+  "run_id": "e08331e079f9445f9d6cbf0e8df4516a",
+  "status": "PASS"
+}

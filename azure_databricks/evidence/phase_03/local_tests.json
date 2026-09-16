@@ -1,11 +1,12 @@
 {
   "status": "PASS",
-  "azure_contract_tests": 66,
+  "azure_contract_tests": 68,
   "existing_regression_tests": 280,
   "existing_regression_seconds": 25.25,
   "cloud_compute_started": false,
-  "linux_ci": "NOT_RUN",
+  "linux_ci": "PASS_FOR_CANONICAL_INFERENCE_PACKAGE_SEE_LINUX_CI_JSON",
   "business_policy_replay": "PASS_12329_DECISIONS_49_COLUMNS_SEE_BUSINESS_REPLAY_EVIDENCE",
-  "champion_promoted": false,
-  "phase_complete": false
+  "champion_promoted": true,
+  "cloud_validation": "PASS_SEE_CLOUD_REGISTRATION_JSON",
+  "production_pricing_approved": false
 }

@@ -49,6 +49,10 @@ The replay reconstructs latest eligible current contexts using the original prod
 
 ## Cloud release gates
 
+September 16 live validation passed: immutable model version 1 registered, operator/App loads reproduced the package output, all six actual/negative identity checks passed, and Champion was promoted, deleted for first-release rollback, and restored to version 1. Read-only status independently confirmed Champion version 1. Ownership is `retail_hp_admins`; temporary identity credentials were revoked. Policy projections were transferred write-once into the existing governed runtime volume. No warehouse, App, cluster or endpoint was started; final audit confirmed stopped compute and unchanged retail configuration/Azure resources. Evidence: `azure_databricks/evidence/phase_03/cloud_registration.json`.
+
+Local platform acceptance now has 68 passing tests, including registration resume drift and normalized-alias rollback. Unity Catalog version tags use underscores because dots are reserved; alias readback is case-insensitive because Databricks returns `champion`. App identity validation used fresh authenticated local processes, not the physical App image: App integration and native-library qualification remain Phase 4 work.
+
 Linux acceptance passed on published scoring commit `f06cd247b531e8068373b6dbe4a535d671198bb6`, including the clean package and all optimizer/business replays. All PR checks were green. The registered scoring package is bound to that exact canonical inference-plan hash; deployment-control changes do not alter the inference package.
 
 Boundary review found upper-candidate selection in 5,153/5,250 validation and 5,122/5,250 test decisions. This is not evidence of realized profit uplift or willingness to pay. Policy-sensitivity tests pass, but production pricing approval remains false, with business review required for operational changes. No retraining or test-set tuning was performed.
