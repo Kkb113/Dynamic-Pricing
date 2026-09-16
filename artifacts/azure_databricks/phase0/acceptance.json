@@ -1,0 +1,37 @@
+{
+  "schema_version": "pricing.phase0.acceptance.v1",
+  "phase": "Phase 0 - Remediation and release readiness",
+  "status": "PASS_LOCAL",
+  "source_branch": "codex/azure-phase0-remediation",
+  "source_commit": "40d9fba137b3b51f386758e979de2053bf0be3f6",
+  "validation": {
+    "python": {
+      "status": "PASS",
+      "tests_passed": 268,
+      "tests_failed": 0
+    },
+    "frontend": {
+      "status": "PASS",
+      "tests_passed": 30,
+      "tests_failed": 0,
+      "lint": "PASS",
+      "production_build": "PASS"
+    },
+    "release_manifest": {
+      "status": "PASS",
+      "file_count": 205,
+      "total_bytes": 16292193,
+      "missing": 0,
+      "unsafe": 0
+    }
+  },
+  "scope": {
+    "mode": "HISTORICAL_SNAPSHOT_POC",
+    "inventory_snapshot_date": "2025-12-31",
+    "currency_status": "UNVERIFIED_SOURCE_UNIT",
+    "advisory_only": true,
+    "azure_resources_created_or_started": false,
+    "cloud_deployment_performed": false
+  },
+  "remaining_external_gate": "Linux GitHub Actions must pass after the branch is pushed; Phase 1 cloud work has not started."
+}
