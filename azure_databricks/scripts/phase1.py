@@ -154,6 +154,9 @@ def audit(cloud):
             "app_state": app.compute_status.state.value,
             "warehouses": [{"name": w.name, "state": w.state.value, "auto_stop_mins": w.auto_stop_mins,
                 "size": w.cluster_size, "max_clusters": w.max_num_clusters} for w in c.warehouses.list()],
+            "clusters": [{"name": x.cluster_name, "state": str(x.state)} for x in c.clusters.list()],
+            "serving_endpoints": [{"name": x.name, "state": x.state.as_dict() if x.state else {}}
+                                  for x in c.serving_endpoints.list()],
             "azure_resources": sorted([{"name": r["name"], "type": r["type"]} for r in resources], key=lambda x:x["name"]),
             "shutdown": shutdown, "compute_started": False}
 
@@ -277,7 +280,7 @@ def verify_published(store, plan):
     return result
 
 
-def transfer(store, root, plan):
+def transfer(store, root, plan, progress=None):
     # Validate every local byte before creating anything remotely.
     contents = {i["path"]: local_bytes(root, i) for i in plan["files"]}
     if store.read(plan["roots"]["runtime"] + "/_VERIFIED.json") is not None:
@@ -286,9 +289,13 @@ def transfer(store, root, plan):
     created = 0
     for partition in plan["roots"]:
         created += write_once(store, plan["roots"][partition] + "/_source_manifest.json", manifest)
-    for item in plan["files"]:
+    for index, item in enumerate(plan["files"], start=1):
         path = plan["roots"][item["partition"]] + "/" + item["path"]
         created += write_once(store, path, contents[item["path"]])
+        if progress and (index % 25 == 0 or index == len(plan["files"])):
+            progress(f"Uploaded/checked {index}/{len(plan['files'])} files")
+    if progress:
+        progress("Reconciling every remote size and SHA-256 before publication")
     result = reconcile(store, plan)
     pointer = release_pointer(plan)
     created += write_once(store, plan["roots"]["runtime"] + "/_VERIFIED.json", packed(pointer))
@@ -356,14 +363,18 @@ def main():
         result = {k: v for k, v in plan.items() if k not in {"files", "source_manifest"}}
         result["partition_counts"] = {p: sum(i["partition"] == p for i in plan["files"]) for p in plan["roots"]}
     else:
+        progress = lambda message: print(message, file=sys.stderr, flush=True)
+        progress("Inspecting authorized workspace and existing controls; no compute start")
         cloud = Cloud(cfg)
         before = audit(cloud)
         result = {"before": before}
         if args.command in {"apply", "verify"}:
+            progress("Checking pricing ownership and grants")
             result["governance"] = governance(cloud.client, cfg, apply=args.command == "apply")
             store = RemoteFiles(cloud.client)
-            result["transfer"] = transfer(store, ROOT, plan) if args.command == "apply" else verify_published(store, plan)
+            result["transfer"] = transfer(store, ROOT, plan, progress) if args.command == "apply" else verify_published(store, plan)
         elif args.command == "identity-test":
+            progress("Verifying release before authenticated identity checks")
             governance(cloud.client, cfg)
             verify_published(RemoteFiles(cloud.client), plan)
             result["identity"] = identity_test(cloud.client, cfg, plan)
@@ -373,7 +384,9 @@ def main():
         result["after"] = after
         result["unrelated_resources_unchanged"] = True
     result.update({"status": "PASS", "command": args.command, "timestamp_utc": datetime.now(UTC).isoformat(),
-                   "release_id": plan["release_id"], "compute_started": False})
+                   "release_id": plan["release_id"], "compute_started": False,
+                   "implementation_script_sha256": digest(Path(__file__).read_bytes().replace(b"\r\n", b"\n")),
+                   "configuration_sha256": digest(packed(cfg))})
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_bytes(packed(result))
