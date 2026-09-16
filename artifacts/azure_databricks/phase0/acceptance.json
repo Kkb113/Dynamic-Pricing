@@ -3,11 +3,11 @@
   "phase": "Phase 0 - Remediation and release readiness",
   "status": "PASS_LOCAL",
   "source_branch": "codex/azure-phase0-remediation",
-  "source_commit": "40d9fba137b3b51f386758e979de2053bf0be3f6",
+  "source_commit": "47766d9d4dda1819f2f66ca55129fd62f5af8eb6",
   "validation": {
     "python": {
       "status": "PASS",
-      "tests_passed": 268,
+      "tests_passed": 269,
       "tests_failed": 0
     },
     "frontend": {
@@ -20,7 +20,7 @@
     "release_manifest": {
       "status": "PASS",
       "file_count": 205,
-      "total_bytes": 16292193,
+      "total_bytes": 16265649,
       "missing": 0,
       "unsafe": 0
     }
