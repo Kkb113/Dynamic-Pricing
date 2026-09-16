@@ -23,7 +23,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - name: Install test dependencies
-        run: python -m pip install -e ".[test]"
+        run: python -m pip install -r requirements-test.lock -e ".[agent,training,extraction,legacy-ui,test]"
       - name: Run Phase 3 tests
         env:
           TEST_EVIDENCE_PATH: artifacts/phase3/test_results.json
