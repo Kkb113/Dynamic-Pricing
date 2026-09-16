@@ -1,116 +1,59 @@
 # Phase 4 — Unified business agent and App
 
-## Completion run update
+Status (2026-09-16): implemented, deployed, automated HTTP acceptance passed.
+Human business-user browser acceptance remains pending by the owner's explicit
+choice. Not every original Phase 4 exit gate is complete.
 
-The owner has now authorized public PRs and merges, and one additional INR 250
-estimated live window (cumulative reservation ceiling INR 500; no ledger reset).
-The prior local-only publication instruction is superseded. Human browser acceptance
-remains pending by the owner's explicit choice; no browser pass is claimed.
+## Delivered
 
-The registered model and sealed source remain unchanged. The derived App package
-has an explicit `LAZY_DATABASE_DRIVER_IMPORT_V1` source adaptation with original
-and adapted hashes. Only the audited database driver's import timing changes;
-database calls still require the real driver, and trained weights are untouched.
-The actual package passed all six tests in a minimal Linux container with no native
-ODBC and no network. Full baseline replay passed 12,329 decisions and all 49 fields
-with no mismatches. Final live tests and CI are still pending at this checkpoint.
+The existing authenticated retail App supports pricing, exact-price simulations,
+explanations, scenario discovery, follow-ups and combined retail/pricing requests.
+Pricing remains default-off and server-authorized. Session isolation, bounded
+scoring, immutable manifests and business-only output projection are enforced.
 
-Status: IN PROGRESS — LIVE PRICING ACCEPTANCE FAILED (2026-09-16).
-The unified App snapshot deployed, but pricing initialization remains unavailable.
-Phase 3's registered model version and weights remain unchanged. Do not advance
-to Phase 5 or describe this release as accepted.
+Registered model version 1 and trained weights are unchanged. The derived App
+copy records portable MLflow metadata and LAZY_DATABASE_DRIVER_IMPORT_V1 with
+original/adapted hashes. It is not byte-identical to the registered source.
+Real database access still requires the driver; pure inference does not.
 
-## Latest validation and publication decision
+A live concurrency failure exposed a fallback bug: identifier digits were treated
+as candidate prices. The correction preserves exact-ID recommendations when the
+LLM queue is busy, but ambiguous numeric simulations still require clarification.
 
-- Both coordinated branches remain local, as explicitly requested by the owner.
-  No push, PR or GitHub Linux CI was performed.
-- Retail regression: 380 passed, four skipped. Ruff passed; mypy passed for 42
-  source files. Six actual frozen-model integration tests passed on Windows,
-  including a POSIX entry-point check. These are not Linux deployment acceptance.
-- One INR 250 estimated validation reservation was used. No additional paid
-  service was created. The original deadline was not extended.
-- Initial and corrected deployments both started, but pricing requests returned
-  unavailable. Retail returned five recommendations; unauthorized customer access
-  was refused. Five concurrent pricing requests did not succeed. Latency acceptance
-  therefore has not passed. Temporary test credentials were revoked.
-- The App, SQL warehouse and recommendation endpoint were independently confirmed
-  STOPPED after validation. Storage and other baseline charges can still apply;
-  the reservation is not an Azure invoice cap.
-- A Windows absolute `model_code_path` was found in registered MLflow metadata.
-  The derived App copy now uses `phase3_model.py`, with before/after metadata hashes
-  recorded in its manifest. Registry artifacts and model binaries were not changed.
-  This correction alone did not resolve live startup; further diagnosis is required.
-- The actual portable payload was subsequently tested in a temporary local
-  `python:3.12-slim` container. It failed because `phase7.runner` imports
-  `audit.database_profile`, which imports `pyodbc` at module load; the native
-  `libodbc.so.2` library is absent. This reproduces an offline Linux startup
-  failure consistent with the App symptom, but private App traceback evidence has
-  not yet confirmed that it is the identical live exception. The container was
-  removed automatically after the probe; no Azure compute was used for it.
-- Durable remediation: isolate database-audit imports from the pure inference
-  path, retaining explicit errors for real database operations; then rerun the
-  accepted business-policy replay and actual-payload Linux tests. Any inference
-  source change must receive a new recorded source fingerprint and parity evidence;
-  do not silently rewrite the registered model or treat a code-modified package
-  as byte-identical to model version 1. Private startup exception logging was added
-  locally to the companion App and its two release tests passed; it is not deployed.
-- Authenticated human browser acceptance was deferred by the owner. Automated
-  identity tests do not replace this outstanding acceptance step.
+## Validation
 
-The sections below record earlier implementation checkpoints; this latest status
-takes precedence over earlier counts and pre-deployment statements.
+- Retail: 382 passed, four skipped; Ruff passed; mypy passed for 42 source files.
+  Includes the 24-case offline business matrix.
+- Actual pricing payload: six minimal-Linux tests passed without native ODBC or
+  network access. Full baseline business replay: 12,329 decisions, 49 fields,
+  zero mismatches. Baseline replay and adapted-payload tests are distinct checks.
+- Live non-admin HTTP: eight business checks passed, including expected price
+  61.28, explanations, simulation, unauthorized-customer rejection, five retail
+  products, combined requests, discovery and scenario selection.
+- Five independent concurrent sessions: 5/5 successful with exact price parity.
+  Durations: 2.328, 8.546, 11.000, 11.000, 15.843 seconds. Nearest-rank p95 for
+  this five-observation sample is its maximum, not a production benchmark.
+- Local uncached warm deterministic scoring p95: 0.829 seconds over ten calls.
+  First live retail request with stopped warehouse: 43.656 seconds; combined:
+  24.453 seconds. Do not claim every cold request meets the 30-second target.
+- Temporary validation credentials were revoked; no private inference records
+  or credentials are included in public evidence.
+- Final immutable App release:
+  fb0b96405de27bc4c8ceb821f4c839d71ce5f1d3cdab78c18a255e88bc8dd609.
+- Prerequisite retail PR #22 was reviewed, passed CI and merged.
+  Coordinated PRs are Dynamic-Pricing #14 and retail #23; their current check
+  and merge state is authoritative.
 
-## Implemented locally
+## Cost and remaining acceptance
 
-- A separate `intellify-pricing-app` wheel wraps the accepted MLflow pipeline.
-- An immutable private payload projects 10,500 supported historical contexts onto
-  the 65 model features plus decision identifiers, dates and required product costs.
-  Customer identities, sessions, customer affinities and observed outcomes are excluded.
-- Bounded, serialized scoring and a 128-entry result cache; returned values are copied
-  so one request cannot mutate another request's cached answer.
-- Business-only output projection, historical-data disclosure, review requirements,
-  exact candidate-price simulations and no automatic price writeback.
-- The companion retail integration is on `codex/pricing-phase4-unified-app`, based
-  on the current Genie release branch rather than the older retail default branch.
-  It provides a default-off, server-owned pricing entitlement, deterministic pricing
-  summaries, verified scenario follow-ups and combined recommendation/pricing answers.
-- Pricing load failures withhold pricing while retaining retail chat functionality.
+Two separately approved INR 250 estimated windows were reserved (INR 500 cumulative).
+This is not measured invoice cost or a guaranteed billing cap. The corrective
+deployment retained the second window's original shutdown deadline. No new paid
+service, larger compute tier or deadline extension was introduced. Final stopped
+states are recorded in the accompanying sanitized live evidence.
 
-## Validation performed
-
-- Five local frozen-model integration tests passed: business projection and cache
-  isolation, candidate simulation, invalid inputs, five concurrent reads and private projection.
-- Companion retail suite: 353 passed, four skipped before adding the separate
-  24-case business matrix. The 24-case matrix also passed separately.
-- The business matrix covers four cases each for recommendations, pricing, combined
-  requests, follow-ups, manual review and unsupported scenarios. Routing is mocked:
-  this does not establish live LLM routing quality or authenticated browser acceptance.
-- Pricing wheel built successfully. No Azure compute was started.
-- Read-only Azure check on 2026-09-16 found the existing App and warehouse STOPPED;
-  warehouse idle auto-stop remained one minute.
-
-## Remaining release gates
-
-1. Complete source-seal verification, product-name hydration, unified dependency-lock
-   resolution and packaging/rollback tests against the actual registered model.
-2. Verify five concurrent HTTP sessions and measure uncached warm pricing p95 <=3s
-   and end-to-end p95 <=30s. A five-thread cache test is not a substitute.
-3. Run full type/lint checks and Linux CI for both coordinated branches.
-4. Obtain a new bounded Phase 4 live validation allowance; prior phase allowances
-   do not carry forward. No new paid service is required.
-5. Deploy the existing App with the independent shutdown controller armed; verify
-   real-user sign-in, entitlements, business scenarios, retail regression, rollback
-   and final compute shutdown. Never mark Phase 4 complete from API-only checks.
-
-## Research basis
-
-- [Databricks Apps authentication](https://learn.microsoft.com/en-us/azure/databricks/dev-tools/databricks-apps/auth):
-  retain forwarded user OAuth and separate App service identity; never trust a browser-supplied role.
-- [App dependencies](https://learn.microsoft.com/en-us/azure/databricks/dev-tools/databricks-apps/dependencies):
-  use the existing Python 3.12 uv deployment with a resolved lock, not a second service.
-- [App best practices](https://learn.microsoft.com/en-us/azure/databricks/dev-tools/databricks-apps/best-practices):
-  preserve least privilege and explicit resource bindings.
-
-The frozen pricing model remains advisory. Historical synthetic results are not live
-prices or evidence of profit uplift. Model performance limitations accepted in Phase 3
-are not corrected by adding a conversational interface.
+The normal signed-in browser journey remains for the owner to accept. API tests
+do not replace it. Pricing is advisory on historical synthetic data; currency is
+unverified, current inventory is not applied, no price writeback occurs, and
+modeled profit is not realized uplift. Phase 5 still owns the wider operational
+rehearsal and final POC acceptance.
