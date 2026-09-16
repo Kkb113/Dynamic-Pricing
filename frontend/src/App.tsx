@@ -8,8 +8,7 @@ import type {
   ToolName,
   WarningDetail,
 } from "./types/contracts";
-import { ChartPanel } from "./components/ChartPanel";
-import { JsonViewer } from "./components/JsonViewer";
+import { BusinessResponse } from "./components/BusinessResponse";
 import { ApiRequestError, createPricingApiClient, type PricingApiClient } from "./lib/api";
 import { SseProtocolError } from "./lib/sse";
 import { STARTER_PROMPTS } from "./lib/prompts";
@@ -25,6 +24,7 @@ type DisplayMessage = {
   errors: ErrorDetail[];
   tools: Array<{ tool_name: ToolName; status: string; record_count?: number }>;
   pending?: boolean;
+  question?: string;
 };
 
 type HealthState = "checking" | "ready" | "fallback" | "blocked" | "unavailable";
@@ -50,8 +50,15 @@ function isAbortError(error: unknown): boolean {
 }
 
 function responseWarnings(response: PricingChatResponse): string {
-  if (response.metadata.agent_available) return "Agent explanation active; numeric claims remain tool-authoritative.";
-  return "Deterministic local fallback active; numeric claims come from validated pricing tools.";
+  return response.status === "completed" ? "Response ready." : "Response completed with items to review.";
+}
+
+function friendlyError(error: ErrorDetail): { title: string; message: string } {
+  if (error.code === "MISSING_PRICING_CONTEXT") return { title: "More information needed", message: "Please include a pricing decision, product, store, category, or sales channel so I can provide a useful recommendation." };
+  if (error.code === "UNKNOWN_PRICING_DECISION") return { title: "Recommendation not found", message: "I could not find a matching recommendation. Please check the reference or try a broader product, store, category, or channel question." };
+  if (error.code === "UNSUPPORTED_INTENT") return { title: "Please rephrase the question", message: "Ask about recommendations, pricing options, expected business impact, inventory, model performance, or pricing rules." };
+  if (error.code === "POLICY_REJECTED") return { title: "Request unavailable", message: "I can help with pricing analysis and recommendations, but I cannot perform that operation." };
+  return { title: "Unable to complete the request", message: error.retryable ? "The request could not be completed right now. Please try again." : "Please adjust the question and try again." };
 }
 
 function emptyMessage(role: "user" | "assistant", content: string): DisplayMessage {
@@ -62,7 +69,8 @@ export interface AppProps {
   apiClient?: PricingApiClient;
 }
 
-export default function App({ apiClient = createPricingApiClient() }: AppProps): ReactElement {
+export default function App({ apiClient }: AppProps): ReactElement {
+  const client = useMemo(() => apiClient ?? createPricingApiClient(), [apiClient]);
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [health, setHealth] = useState<HealthResponse | null>(null);
@@ -78,24 +86,24 @@ export default function App({ apiClient = createPricingApiClient() }: AppProps):
     setHealthState("checking");
     setHealthMessage("Checking the local pricing service…");
     try {
-      const result = await apiClient.getHealth();
+      const result = await client.getHealth();
       setHealth(result);
       if (result.status === "blocked" || result.artifacts_integrity === "blocked") {
         setHealthState("blocked");
         setHealthMessage("The local artifact set is integrity-blocked. Pricing requests are disabled.");
       } else if (result.agent_available) {
         setHealthState("ready");
-        setHealthMessage("Local service ready · agent explanation available.");
+        setHealthMessage("Workspace ready.");
       } else {
         setHealthState("fallback");
-        setHealthMessage("Local service ready · deterministic fallback active.");
+        setHealthMessage("Workspace ready.");
       }
     } catch (error) {
       setHealth(null);
       setHealthState("unavailable");
       setHealthMessage(error instanceof Error ? error.message : "The local pricing service is unavailable.");
     }
-  }, [apiClient]);
+  }, [client]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => { void checkHealth(); }, 0);
@@ -112,14 +120,14 @@ export default function App({ apiClient = createPricingApiClient() }: AppProps):
     const requestId = makeId("req");
     const userMessage = emptyMessage("user", message);
     const assistantId = makeId("assistant");
-    const assistantMessage: DisplayMessage = { ...emptyMessage("assistant", ""), id: assistantId, pending: true };
+    const assistantMessage: DisplayMessage = { ...emptyMessage("assistant", ""), id: assistantId, pending: true, question: message };
     const priorConversation = messages.slice(-MAX_MESSAGES).map(({ role, content }) => ({ role, content }));
     const request: PricingChatRequest = {
       schema_version: "pricing.chat.request.v1",
       request_id: requestId,
       message,
       conversation: priorConversation,
-      options: { stream: true, include_raw_json: true, max_charts: 4 },
+      options: { stream: true, include_raw_json: true, max_charts: 0 },
     };
     setMessages((current) => [...current, userMessage, assistantMessage].slice(-MAX_MESSAGES));
     setDraft("");
@@ -164,7 +172,7 @@ export default function App({ apiClient = createPricingApiClient() }: AppProps):
     };
 
     try {
-      await apiClient.streamChat(request, { onEvent }, controller.signal);
+      await client.streamChat(request, { onEvent }, controller.signal);
       if (!completedResponse && !streamState.error) throw new SseProtocolError("The stream ended without a pricing response.");
     } catch (error) {
       if (isAbortError(error)) {
@@ -175,7 +183,7 @@ export default function App({ apiClient = createPricingApiClient() }: AppProps):
       } else {
         setStatusText("Streaming was unavailable; trying the JSON response endpoint…");
         try {
-          const response = await apiClient.postChat({ ...request, options: { ...request.options, stream: false } }, controller.signal);
+          const response = await client.postChat({ ...request, options: { ...request.options, stream: false } }, controller.signal);
           completedResponse = response;
           updateAssistant(assistantId, (current) => ({ ...current, content: response.answer, response, warnings: response.warnings, errors: response.errors, pending: false }));
           setStatusText(responseWarnings(response));
@@ -190,7 +198,7 @@ export default function App({ apiClient = createPricingApiClient() }: AppProps):
       setBusy(false);
       composerRef.current?.focus();
     }
-  }, [apiClient, busy, healthState, messages, updateAssistant]);
+  }, [client, busy, healthState, messages, updateAssistant]);
 
   function submit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -202,8 +210,7 @@ export default function App({ apiClient = createPricingApiClient() }: AppProps):
   }
 
   const serviceLabel = useMemo(() => {
-    if (healthState === "ready") return "AGENT READY";
-    if (healthState === "fallback") return "DETERMINISTIC MODE";
+    if (healthState === "ready" || healthState === "fallback") return "WORKSPACE READY";
     if (healthState === "blocked") return "INTEGRITY BLOCKED";
     if (healthState === "unavailable") return "SERVICE OFFLINE";
     return "CONNECTING";
@@ -211,17 +218,27 @@ export default function App({ apiClient = createPricingApiClient() }: AppProps):
 
   return (
     <div className="app-shell">
-      <header className="topbar">
-        <a className="brand" href="/" aria-label="Pricefield home"><span className="brand-mark" aria-hidden="true">↗</span><span>Pricefield</span></a>
-        <div className="topbar-status" aria-live="polite"><span className={`status-dot ${healthState}`} />{serviceLabel}<span className="local-only">LOCAL ONLY</span></div>
-      </header>
-      <main className="main-grid">
-        <section className="conversation-panel" aria-labelledby="page-title">
-          <div className="intro-block">
-            <p className="eyebrow">Dynamic pricing assistant</p>
-            <h1 id="page-title">Ask the price<br /><em>with evidence.</em></h1>
-            <p className="intro-copy">A focused interface for governed pricing decisions. Ask in plain language; the local tools supply every numeric claim.</p>
-          </div>
+      <aside className="sidebar" aria-label="Application navigation">
+        <a className="brand" href="/" aria-label="Pricefield home"><span className="brand-mark" aria-hidden="true">p/</span><span>Pricefield</span></a>
+        <div className="nav-item"><span aria-hidden="true">✦</span><span>Pricing assistant</span></div>
+        <div className="sidebar-note"><span>Local workspace</span><small>No data is persisted</small></div>
+      </aside>
+      <div className="workspace">
+        <header className="topbar">
+          <div><strong>Dynamic pricing workspace</strong><span>Pricing recommendations powered by your model</span></div>
+          <div className="topbar-status" aria-live="polite"><span className={`status-dot ${healthState}`} />{serviceLabel}</div>
+        </header>
+        <main className="main-grid">
+          <section className="conversation-panel" aria-labelledby="page-title">
+            <div className="page-heading">
+              <div className="intro-block">
+                <p className="eyebrow">Pricing assistant</p>
+                <h1 id="page-title">Ask the price. Get a clear next step.</h1>
+                <p className="intro-copy">Explore recommendations, scenarios, inventory, and model performance in plain language.</p>
+              </div>
+              {messages.length > 0 && <button type="button" className="reset-button" onClick={() => { setMessages([]); setLastPrompt(null); setStatusText("Ready for a pricing question."); }}>Reset conversation</button>}
+            </div>
+            <div className="chat-card">
           <div className={`health-notice ${healthState}`} role={healthState === "unavailable" || healthState === "blocked" ? "alert" : "status"}>
             <span className="notice-icon" aria-hidden="true">{healthState === "ready" ? "●" : healthState === "fallback" ? "◇" : healthState === "blocked" ? "!" : "·"}</span>
             <span>{healthMessage}</span>
@@ -230,9 +247,7 @@ export default function App({ apiClient = createPricingApiClient() }: AppProps):
           <div className="message-list" aria-live="polite" aria-label="Pricing conversation">
             {messages.length === 0 && (
               <div className="empty-state">
-                <span className="empty-glyph" aria-hidden="true">⌁</span>
-                <h2>What should we price next?</h2>
-                <p>Start with a decision, a comparison, or an explanation of the governing rule.</p>
+                <div className="empty-intro"><span className="empty-glyph" aria-hidden="true">✦</span><div><h2>What would you like to explore?</h2><p>Ask for a recommendation, compare pricing options, or review expected business impact.</p></div></div>
                 <div className="starter-prompts">
                   {STARTER_PROMPTS.map((prompt) => <button type="button" key={prompt} onClick={() => void sendMessage(prompt)} disabled={busy || healthState === "blocked"}>{prompt}</button>)}
                 </div>
@@ -240,43 +255,31 @@ export default function App({ apiClient = createPricingApiClient() }: AppProps):
             )}
             {messages.map((message) => (
               <article className={`message ${message.role}`} key={message.id}>
-                <div className="message-label">{message.role === "user" ? "You" : "Pricing assistant"}</div>
+                <div className="message-avatar" aria-label={message.role === "user" ? "You" : "Pricing assistant"}>{message.role === "user" ? "You" : "✦"}</div>
                 <div className="message-body">
                   {message.pending && <span className="processing-line"><span className="processing-pulse" />Working through validated tools…</span>}
-                  {message.content && <p>{message.content}</p>}
-                  {message.tools.length > 0 && <div className="tool-statuses" aria-label="Tool status">{message.tools.map((tool, index) => <span key={`${tool.tool_name}-${index}`}><i />{tool.tool_name.replaceAll("_", " ")} {tool.status}</span>)}</div>}
-                  {message.warnings.length > 0 && <div className="inline-notices">{message.warnings.map((warning) => <p className={`inline-warning ${warning.severity}`} key={`${warning.code}-${warning.message}`}><strong>{warning.code.replaceAll("_", " ")}</strong> {warning.message}</p>)}</div>}
-                  {message.errors.length > 0 && <div className="inline-notices">{message.errors.map((error) => <p className="inline-error" key={`${error.code}-${error.message}`}><strong>{error.code.replaceAll("_", " ")}</strong> {error.message}</p>)}</div>}
-                  {message.response && <div className="response-details">
-                    {message.response.charts.map((chart) => <ChartPanel chart={chart} key={chart.chart_id} />)}
-                    <JsonViewer value={message.response} />
-                  </div>}
+                  {!message.response && message.content && message.errors.length === 0 && <p>{message.content}</p>}
+                  {message.warnings.some((warning) => warning.code === "MANUAL_REVIEW_REQUIRED" || warning.code === "RULE_VIOLATION_REVIEW" || warning.code === "CURRENT_CONTEXT_STALENESS_HIGH") && <div className="inline-notices">{message.warnings.filter((warning) => warning.code === "MANUAL_REVIEW_REQUIRED" || warning.code === "RULE_VIOLATION_REVIEW" || warning.code === "CURRENT_CONTEXT_STALENESS_HIGH").map((warning) => <p className={`inline-warning ${warning.severity}`} key={`${warning.code}-${warning.message}`}>{warning.message}</p>)}</div>}
+                  {message.errors.length > 0 && <div className="inline-notices">{message.errors.map((error) => { const friendly = friendlyError(error); return <p className="inline-error" key={`${error.code}-${error.message}`}><strong>{friendly.title}</strong><span>{friendly.message}</span></p>; })}</div>}
+                  {message.response && <BusinessResponse response={message.response} question={message.question ?? ""} />}
                 </div>
               </article>
             ))}
           </div>
           <form className="composer" onSubmit={submit}>
-            <label htmlFor="pricing-question">Your pricing question</label>
+            <label className="sr-only" htmlFor="pricing-question">Your pricing question</label>
             <div className="composer-row">
-              <textarea id="pricing-question" ref={composerRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); void sendMessage(draft); } }} placeholder="Ask about capabilities, model performance, inventory, or a governed decision" maxLength={4000} disabled={busy || healthState === "blocked"} rows={2} />
-              {busy ? <button type="button" className="send-button cancel" onClick={cancel}>Cancel</button> : <button type="submit" className="send-button" disabled={!draft.trim() || healthState === "blocked"}>Send <span aria-hidden="true">↗</span></button>}
+              <textarea id="pricing-question" ref={composerRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); void sendMessage(draft); } }} placeholder="Ask about pricing recommendations, business impact, inventory, or model performance" maxLength={4000} disabled={busy || healthState === "blocked"} rows={2} />
+              {busy ? <button type="button" className="send-button cancel" onClick={cancel}>Cancel</button> : <button type="submit" className="send-button" aria-label="Send pricing question" disabled={!draft.trim() || healthState === "blocked"}>Ask <span aria-hidden="true">→</span></button>}
             </div>
             <div className="composer-meta"><span>Enter to send · Shift + Enter for a new line</span><span>{draft.length}/4000</span></div>
           </form>
           {lastPrompt && !busy && messages.some((message) => message.errors.length > 0) && <button type="button" className="retry-button" onClick={() => void sendMessage(lastPrompt)}>Try the last question again</button>}
-        </section>
-        <aside className="context-panel" aria-label="Pricing service details">
-          <div className="context-header"><p className="eyebrow">System boundary</p><h2>Evidence, kept close.</h2></div>
-          <div className="boundary-list">
-            <div><span className="boundary-index">01</span><div><strong>Local tools</strong><p>Frozen ML and pricing rules supply the numbers.</p></div></div>
-            <div><span className="boundary-index">02</span><div><strong>Plain-language answer</strong><p>Agent text explains; it cannot invent a price.</p></div></div>
-            <div><span className="boundary-index">03</span><div><strong>Charts + JSON</strong><p>Every visual maps back to a validated response.</p></div></div>
-          </div>
-          <div className="context-footer"><span className="footer-rule" /><p>Responses stay in this session only.<br />No transcript is persisted.</p><span className="contract-stamp">CONTRACT<br />V1</span></div>
-          {health && <dl className="health-details"><div><dt>Runtime</dt><dd>{health.runtime}</dd></div><div><dt>Artifacts</dt><dd>{health.artifacts_integrity}</dd></div><div><dt>Agent</dt><dd>{health.agent_available ? "available" : "fallback"}</dd></div></dl>}
-        </aside>
-      </main>
-      <footer className="status-footer"><span className="sr-only" aria-live="polite">{statusText}</span><span aria-hidden="true">{statusText}</span><span>pricing.chat.response.v1</span></footer>
+            </div>
+          </section>
+        </main>
+        <footer className="status-footer"><span className="sr-only" aria-live="polite">{statusText}</span><span aria-hidden="true">{statusText}</span>{health && <span>Local workspace</span>}</footer>
+      </div>
     </div>
   );
 }

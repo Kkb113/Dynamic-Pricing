@@ -1,0 +1,46 @@
+{
+  "artifacts": {
+    "integrity": "pass"
+  },
+  "blockers": [],
+  "configuration": {
+    "backend_host": "127.0.0.1",
+    "backend_port": 8000,
+    "frontend_origin_allowlist": [
+      "http://localhost:5173",
+      "http://127.0.0.1:5173"
+    ],
+    "model_id": "gpt-5.6-luna",
+    "openai_api_key_configured": true,
+    "openai_max_turns": 4,
+    "openai_model_configured": true,
+    "openai_timeout_seconds": 20.0
+  },
+  "dependencies": {
+    "fastapi": "0.141.1",
+    "httpx": "0.28.1",
+    "openai_agents": "0.22.0",
+    "pydantic": "2.13.4",
+    "python": "3.12.13",
+    "uvicorn": "0.52.4"
+  },
+  "frontend": {
+    "lockfile_present": true,
+    "production_build_present": true,
+    "root": "frontend"
+  },
+  "live_gate": "PASS",
+  "local_only": {
+    "allowed_api_base_examples": [
+      "http://127.0.0.1:8000",
+      "http://localhost:8000"
+    ],
+    "authentication": false,
+    "backend_loopback": true,
+    "hosting": false,
+    "persistence": false
+  },
+  "mode": "live_ready",
+  "phase": "phase4",
+  "status": "PASS"
+}

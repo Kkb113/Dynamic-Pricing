@@ -1,7 +1,7 @@
 import responseFixture from "../../tests/application_contract/fixtures/response_recommendation.json";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../src/App";
 import type { ErrorDetail, HealthResponse, PricingChatResponse } from "../src/types/contracts";
 import type { PricingApiClient } from "../src/lib/api";
@@ -9,6 +9,8 @@ import { SseProtocolError } from "../src/lib/sse";
 
 const readyFallback: HealthResponse = { status: "ready", runtime: "local", contract_version: "1", agent_available: false, artifacts_integrity: "pass" };
 const response = responseFixture as PricingChatResponse;
+
+afterEach(() => vi.unstubAllGlobals());
 
 function fakeClient(overrides: Partial<PricingApiClient> = {}): PricingApiClient {
   return {
@@ -24,28 +26,44 @@ function fakeClient(overrides: Partial<PricingApiClient> = {}): PricingApiClient
 }
 
 describe("pricing chat interface", () => {
+  it("creates the default API client once and does not loop the health check", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(readyFallback), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<App />);
+    expect(await screen.findByText("WORKSPACE READY")).toBeInTheDocument();
+    await new Promise((resolve) => window.setTimeout(resolve, 25));
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it("opens as a focused local pricing chat with context-free starters", async () => {
     render(<App apiClient={fakeClient()} />);
     expect(screen.getByRole("heading", { name: /ask the price/i })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /pricing question/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /what pricing questions/i })).toBeInTheDocument();
-    expect(await screen.findByText("DETERMINISTIC MODE")).toBeInTheDocument();
+    expect(await screen.findByText("WORKSPACE READY")).toBeInTheDocument();
     expect(screen.queryByText(/dashboard/i)).not.toBeInTheDocument();
   });
 
-  it("submits a starter prompt, renders validated charts/warnings, and exposes raw JSON copy/expand", async () => {
+  it("renders a polished business recommendation and keeps JSON available on demand", async () => {
     const user = userEvent.setup();
     const client = fakeClient();
     const copySpy = vi.spyOn(navigator.clipboard, "writeText").mockResolvedValue(undefined);
     render(<App apiClient={client} />);
     await user.click(screen.getByRole("button", { name: /what pricing questions/i }));
-    expect(await screen.findByText(response.answer)).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: response.charts[0].title })).toBeInTheDocument();
-    expect(screen.getAllByText(/model-implied estimates/i).length).toBeGreaterThan(0);
-    await user.click(screen.getByRole("button", { name: /show response payload/i }));
-    expect(screen.getByText(/"schema_version": "pricing.chat.response.v1"/)).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: /copy raw json/i }));
-    expect(copySpy).toHaveBeenCalledWith(expect.stringContaining("pricing.chat.response.v1"));
+    expect(await screen.findByText(/model-informed recommendation constrained/i)).toBeInTheDocument();
+    expect(screen.getAllByText("109.99 source units").length).toBeGreaterThan(0);
+    expect(screen.getByText("Final recommendation")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: response.charts[0].title })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Phase7FinalRecommendedPrice/)).not.toBeInTheDocument();
+    expect(screen.getByText(response.answer)).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /view json output/i }));
+    expect(screen.getByText(/"question": "What pricing questions can I ask\?"/)).toBeInTheDocument();
+    expect(screen.getByText(/"sources":/)).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /copy answer json/i }));
+    expect(copySpy).toHaveBeenCalledWith(expect.stringContaining("What pricing questions can I ask?"));
     expect(client.streamChat).toHaveBeenCalledTimes(1);
   });
 
@@ -55,7 +73,7 @@ describe("pricing chat interface", () => {
     render(<App apiClient={client} />);
     await user.type(screen.getByRole("textbox", { name: /pricing question/i }), "What pricing questions can I ask?");
     await user.click(screen.getByRole("button", { name: /^send/i }));
-    expect(await screen.findByText(response.answer)).toBeInTheDocument();
+    expect(await screen.findByText(/model-informed recommendation constrained/i)).toBeInTheDocument();
     expect(client.postChat).toHaveBeenCalledTimes(1);
   });
 
@@ -79,7 +97,9 @@ describe("pricing chat interface", () => {
     render(<App apiClient={client} />);
     await user.type(screen.getByRole("textbox", { name: /pricing question/i }), "Why did the price move?");
     await user.click(screen.getByRole("button", { name: /^send/i }));
-    expect((await screen.findAllByText(terminalError.message)).length).toBeGreaterThan(0);
-    expect(screen.getByText(/missing pricing context/i)).toBeInTheDocument();
+    expect(await screen.findByText(/more information needed/i)).toBeInTheDocument();
+    expect(screen.getByText(/please include a pricing decision/i)).toBeInTheDocument();
+    expect(screen.queryByText(terminalError.message)).not.toBeInTheDocument();
+    expect(screen.queryByText(/missing pricing context/i)).not.toBeInTheDocument();
   });
 });

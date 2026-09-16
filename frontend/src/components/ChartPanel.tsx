@@ -6,7 +6,7 @@ const palette = ["#2cc6b8", "#f3b45b", "#8fd3ff"];
 function formatValue(value: number | string | null, unit: string): string {
   if (value === null) return "—";
   if (typeof value === "string") return value;
-  if (unit === "currency") return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(value);
+  if (unit === "currency") return `${new Intl.NumberFormat("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(value)} source units`;
   if (unit === "percentage") return `${(value <= 1 ? value * 100 : value).toFixed(1)}%`;
   if (unit === "count") return new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 }).format(value);
   return new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(value);

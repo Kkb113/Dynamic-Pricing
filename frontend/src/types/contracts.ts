@@ -23,7 +23,7 @@ export type AnswerSource = "agent" | "deterministic_fallback" | "policy";
 export type WarningCode =
   | "OPENAI_NOT_CONFIGURED"
   | "OPENAI_UNAVAILABLE"
-  | "CURRENT_SNAPSHOT_INVENTORY_CONTEXT"
+  | "HISTORICAL_INVENTORY_SNAPSHOT"
   | "CURRENT_CONTEXT_STALENESS_HIGH"
   | "MANUAL_REVIEW_REQUIRED"
   | "RULE_VIOLATION_REVIEW"
@@ -255,7 +255,7 @@ export interface PricingChatResponse {
   warnings: WarningDetail[];
   errors: ErrorDetail[];
   metadata: {
-    runtime: "local";
+    runtime: "local" | "databricks";
     agent_available: boolean;
     contract_version: "1";
     duration_ms?: number;
@@ -272,7 +272,7 @@ export interface PricingChatError {
 
 export interface HealthResponse {
   status: "starting" | "ready" | "blocked";
-  runtime: "local";
+  runtime: "local" | "databricks";
   contract_version: "1";
   agent_available: boolean;
   artifacts_integrity: "pass" | "blocked" | "unknown";

@@ -27,7 +27,7 @@ describe("pricing API client", () => {
     const events: string[] = [];
     await createPricingApiClient().streamChat(request, { onEvent: (event) => events.push(event.event) });
     expect(events).toEqual(["chat.started", "chat.delta", "chat.error"]);
-    expect(fetchMock).toHaveBeenCalledWith("http://127.0.0.1:8000/api/v1/pricing/chat/stream", expect.objectContaining({ method: "POST" }));
+    expect(fetchMock).toHaveBeenCalledWith("/api/v1/pricing/chat/stream", expect.objectContaining({ method: "POST" }));
   });
 
   it("validates JSON responses and maps invalid server output to a safe error", async () => {

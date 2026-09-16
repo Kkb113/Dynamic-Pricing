@@ -1,0 +1,35 @@
+contract_version: pricing.runtime.v1
+operating_mode: advisory_only
+identifiers:
+  decision: PricingDecisionID
+  product: ProductID
+  store: StoreID
+  channel: Channel
+time:
+  effective_field: DecisionTime
+  timezone: UTC
+  inventory_snapshot_field: InventorySnapshotDate
+money:
+  scale: 2
+  rounding: ROUND_HALF_UP
+  source_currency:
+    status: UNVERIFIED_SOURCE_UNIT
+    code: null
+    rule: Never add a currency symbol or perform a currency conversion until the source currency is verified.
+versions:
+  required: [release_version, data_version, model_version, policy_version]
+scenario_modes:
+  HISTORICAL_REPLAY: Reproduce a sealed historical decision.
+  HISTORICAL_WHAT_IF: Score supported candidate prices against a sealed historical feature context.
+  FRESH_INPUT: Disabled until a complete, validated fresh-input context is available.
+unsupported_behavior:
+  missing_decision: reject_with_unknown_decision
+  missing_cost: reject_without_numeric_advice
+  missing_inventory: omit_inventory_claims
+  ambiguous_context: request_clarification
+  stale_snapshot: disclose_as_of_date
+  policy_conflict: manual_review
+claims:
+  causal_uplift: forbidden
+  realized_revenue: forbidden_for_model_outputs
+  individual_willingness_to_pay: forbidden

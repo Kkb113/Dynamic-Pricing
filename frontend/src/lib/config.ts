@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000";
+const DEFAULT_API_BASE_URL = "";
 const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "::1"]);
 
 export class ApiConfigurationError extends Error {
@@ -14,18 +14,20 @@ function configuredApiBase(): string {
 }
 
 export function resolveApiBaseUrl(candidate = configuredApiBase()): string {
+  if (candidate.trim() === "") return "";
   let parsed: URL;
   try {
     parsed = new URL(candidate);
   } catch {
-    throw new ApiConfigurationError("The API base URL must be a valid loopback HTTP URL.");
+    throw new ApiConfigurationError("The API base URL must be a valid HTTP URL or empty for same-origin requests.");
   }
   if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
     throw new ApiConfigurationError("The API base URL must use HTTP or HTTPS.");
   }
   const normalizedHostname = parsed.hostname.toLowerCase().replace(/^\[|\]$/g, "");
-  if (!LOOPBACK_HOSTS.has(normalizedHostname)) {
-    throw new ApiConfigurationError("This local application only permits a loopback API base URL.");
+  const currentHost = typeof window !== "undefined" ? window.location.hostname.toLowerCase() : "";
+  if (!LOOPBACK_HOSTS.has(normalizedHostname) && normalizedHostname !== currentHost) {
+    throw new ApiConfigurationError("The API URL must be loopback or the same origin as this application.");
   }
   if (parsed.username || parsed.password) {
     throw new ApiConfigurationError("Credentials are not permitted in the API base URL.");

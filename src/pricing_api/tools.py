@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import math
+from contextlib import contextmanager
+from contextvars import ContextVar
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any, Callable, Iterator
 
 from app_services.simulation_service import SimulationError
 
@@ -40,6 +42,10 @@ class ToolCallRecord:
     status: str
     record_count: int
     error_code: str | None = None
+    # Internal-only provenance.  It is deliberately omitted from the public
+    # response contract; the release validator uses it to distinguish the
+    # deterministic pre-route from an actual SDK-requested tool call.
+    source: str = "deterministic"
 
 
 class GovernedToolset:
@@ -48,6 +54,11 @@ class GovernedToolset:
     def __init__(self, services: ServiceContainer):
         self.services = services
         self._trace: list[ToolCallRecord] = []
+        self._source: ContextVar[str] = ContextVar("pricing_tool_source", default="deterministic")
+        # Each API request enters a trace scope.  ContextVar gives every
+        # concurrent asyncio task its own collector; the legacy list remains
+        # only for direct/unit calls made outside a request scope.
+        self._collector: ContextVar[list[ToolCallRecord] | None] = ContextVar("pricing_tool_collector", default=None)
         self._raw = self._build_raw()
         self._sdk_tools = self._build_sdk_tools()
 
@@ -98,10 +109,51 @@ class GovernedToolset:
 
     def _record(self, name: str, status: str, value: Any = None, *, error_code: str | None = None) -> None:
         count = len(value) if isinstance(value, list) else (0 if value is None else 1)
-        self._trace.append(ToolCallRecord(name, status, min(count, 100), error_code))
+        record = ToolCallRecord(name, status, min(count, 100), error_code, self._source.get())
+        collector = self._collector.get()
+        if collector is None:
+            self._trace.append(record)
+        else:
+            collector.append(record)
 
-    def drain_trace(self) -> list[ToolCallRecord]:
-        trace, self._trace = self._trace, []
+    @contextmanager
+    def trace_scope(self) -> Iterator[list[ToolCallRecord]]:
+        """Collect one request's traces without sharing mutable lists."""
+
+        collector: list[ToolCallRecord] = []
+        token = self._collector.set(collector)
+        try:
+            yield collector
+        finally:
+            self._collector.reset(token)
+
+    @contextmanager
+    def source_scope(self, source: str) -> Iterator[None]:
+        """Tag calls made in a bounded execution scope without exposing args."""
+
+        if source not in {"deterministic", "agent"}:
+            source = "deterministic"
+        token = self._source.set(source)
+        try:
+            yield
+        finally:
+            self._source.reset(token)
+
+    def drain_trace(self, *, source: str | None = None) -> list[ToolCallRecord]:
+        scoped = self._collector.get()
+        if scoped is not None:
+            if source is None:
+                result, scoped[:] = list(scoped), []
+                return result
+            result = [item for item in scoped if item.source == source]
+            scoped[:] = [item for item in scoped if item.source != source]
+            return result
+        if source is None:
+            trace, self._trace = self._trace, []
+            return trace
+        selected = [item for item in self._trace if item.source == source]
+        self._trace = [item for item in self._trace if item.source != source]
+        return selected
         return trace
 
     def _call(self, name: str, fn: Callable[[], Any]) -> Any:
@@ -213,7 +265,7 @@ class GovernedToolset:
                         "Why is this price recommended?",
                         "Compare current and final price.",
                         "What happens if I try another supported price?",
-                        "Show current snapshot seasonal markdown recommendations.",
+                        "Show historical inventory snapshot seasonal markdown recommendations.",
                     ]
                 },
             )
@@ -253,7 +305,8 @@ class GovernedToolset:
     def execute(self, name: str, **kwargs: Any) -> Any:
         if name not in self._raw:
             raise ValueError("Unsupported tool")
-        return self._raw[name](**kwargs)
+        with self.source_scope("deterministic"):
+            return self._raw[name](**kwargs)
 
 
 __all__ = ["GovernedToolset", "TOOL_NAMES", "ToolCallRecord"]

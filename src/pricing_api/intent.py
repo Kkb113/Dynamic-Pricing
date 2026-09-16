@@ -9,10 +9,21 @@ from typing import Any
 from .models import PricingChatRequest
 
 
-_DECISION_RE = re.compile(r"\b(?:pricing\s*decision|decision|pd)\s*[:#-]?\s*([A-Za-z0-9][A-Za-z0-9._:-]{0,127})\b", re.IGNORECASE)
+_DECISION_RE = re.compile(
+    r"\b(?:pricing\s*decision\s*id|pricingdecisionid|pricing\s*decision|decision\s*id|decision|pd)"
+    r"\s*[:=#-]?\s*[`'\"]?([A-Za-z0-9][A-Za-z0-9._:-]{0,127})[`'\"]?\b",
+    re.IGNORECASE,
+)
 _PRICE_RE = re.compile(r"(?:\$\s*|(?:candidate|another|try|price(?:\s+of)?|at)\s+)([0-9]{1,12}(?:\.[0-9]{1,4})?)", re.IGNORECASE)
+_CHANNEL_RE = re.compile(
+    r"\b(?:(email|online|web|mobile|store|in[- ]store)\s+channel|channel\s*(?:is|=|:)?\s*(email|online|web|mobile|store|in[- ]store))\b",
+    re.IGNORECASE,
+)
+_PRODUCT_RE = re.compile(r"\b(PRO[0-9]{4,})\b", re.IGNORECASE)
+_STORE_RE = re.compile(r"\b(STO[0-9]{4,})\b", re.IGNORECASE)
+_CATEGORY_RE = re.compile(r"\b(CAT[0-9]{4,})\b", re.IGNORECASE)
 _UNSAFE_RE = re.compile(
-    r"(?:openai[_\s-]*api[_\s-]*key|api\s*key|secret|password|chain[-\s]*of[-\s]*thought|system\s+prompt|retrain|train\s+the\s+model|write\s*back|write\s+price|update\s+price|delete|drop\s+table|\bsql\b|shell\s+command|execute\s+code)",
+    r"(?:openai[_\s-]*api[_\s-]*key|(?:show|reveal|return|print|give)\s+(?:me\s+)?(?:the\s+)?(?:api\s*key|secret|password|system\s+prompt|chain[-\s]*of[-\s]*thought)|retrain\s+(?:or\s+)?deploy|train\s+the\s+model|write\s*back|write\s+price|update\s+(?:the\s+)?(?:live\s+)?price|delete\s+(?:the\s+)?(?:data|table|model)|drop\s+table|run\s+(?:a\s+)?shell\s+command|execute\s+(?:arbitrary\s+)?code)",
     re.IGNORECASE,
 )
 
@@ -51,21 +62,30 @@ class IntentRouter:
 
     @staticmethod
     def _context_filters(request: PricingChatRequest) -> dict[str, Any]:
+        filters: dict[str, Any] = {}
+        channel_match = _CHANNEL_RE.search(request.message)
+        if channel_match:
+            raw_channel = (channel_match.group(1) or channel_match.group(2)).casefold().replace("-", " ")
+            channel_names = {"email": "Email", "online": "Online", "web": "Web", "mobile": "Mobile", "store": "Store", "in store": "In-Store"}
+            filters["Channel"] = channel_names[raw_channel]
+        if product_match := _PRODUCT_RE.search(request.message):
+            filters["ProductID"] = product_match.group(1).upper()
+        if store_match := _STORE_RE.search(request.message):
+            filters["StoreID"] = store_match.group(1).upper()
+        if category_match := _CATEGORY_RE.search(request.message):
+            filters["CategoryID"] = category_match.group(1).upper()
         context = request.context
         if not context:
-            return {}
-        return {
-            "ProductID": context.product_id,
-            "StoreID": context.store_id,
-            "CategoryID": context.category_id,
-            "Channel": context.channel,
-        }
+            return filters
+        context_values = {"ProductID": context.product_id, "StoreID": context.store_id, "CategoryID": context.category_id, "Channel": context.channel}
+        filters.update({key: value for key, value in context_values.items() if value is not None})
+        return filters
 
     def route(self, request: PricingChatRequest) -> IntentDecision:
         text = request.message.strip()
         lowered = text.casefold()
         if _UNSAFE_RE.search(text):
-            return IntentDecision("policy_rejected", error_code="POLICY_REJECTED", error_message="This local pricing assistant cannot expose secrets, hidden reasoning, or perform write operations.")
+            return IntentDecision("policy_rejected", error_code="POLICY_REJECTED", error_message="This pricing assistant cannot expose credentials or hidden instructions, retrain models, execute code, or change live prices.")
 
         decision_id = self._decision_id(request)
         split = request.context.split if request.context else "validation"
@@ -75,13 +95,28 @@ class IntentRouter:
             return IntentDecision("capability_explanation", split=split)
         if any(term in lowered for term in ("model performance", "model performing", "how accurate", "auc", "brier", "lift", "metrics")):
             return IntentDecision("model_performance", split=split)
+        # Executive recommendation requests are intentionally compound: they
+        # often mention comparisons, rules, financial outcomes, and review
+        # status in one sentence. Route these to the full recommendation
+        # record before narrower keyword branches inspect the same wording.
+        if decision_id and any(
+            term in lowered
+            for term in (
+                "executive pricing recommendation",
+                "pricing recommendation for",
+                "recommendation for pricing",
+            )
+        ):
+            return IntentDecision("recommendation_lookup", decision_id=decision_id, split=split)
         if any(term in lowered for term in ("inventory", "stock", "slow-moving", "slow moving", "seasonal")):
             return IntentDecision("inventory_insight", decision_id=decision_id, split="current", filters=filters)
         if any(term in lowered for term in ("business rule", "pricing rule", "constraint", "floor", "ceiling", "compliant")):
             if not decision_id:
                 return IntentDecision("business_rule_explanation", split=split, error_code="MISSING_PRICING_CONTEXT", error_message="Provide a pricing decision id so the frozen business rule can be inspected.")
             return IntentDecision("business_rule_explanation", decision_id=decision_id, split=split)
-        if any(term in lowered for term in ("which products", "list recommendations", "search recommendations", "find recommendations", "show recommendations")):
+        if any(term in lowered for term in ("which products", "list recommendations", "search recommendations", "find recommendations", "show recommendations")) or (
+            not decision_id and "recommendation" in lowered and (bool(filters) or any(term in lowered for term in ("find", "show", "list", "current", "all")))
+        ):
             return IntentDecision("recommendation_search", split=split, filters=filters)
         if any(term in lowered for term in ("compare", "versus", "vs ", "current and final", "scenarios")):
             if not decision_id:

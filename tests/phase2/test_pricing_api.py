@@ -20,7 +20,9 @@ from application_contracts.validation import validate_document
 from pricing_api.agent import AgentOutcome, OpenAIAgentAdapter
 from pricing_api.app import create_app
 from pricing_api.config import Settings
-from pricing_api.models import PricingChatRequest
+from pricing_api.models import AuthoritativeData, PricingChatRequest
+from pricing_api.normalization import normalize_recommendation
+from pricing_api.orchestrator import PricingOrchestrator
 from pricing_api.services import ServiceContainer
 from pricing_api.tools import GovernedToolset, TOOL_NAMES
 
@@ -131,6 +133,51 @@ def test_recommendation_response_is_schema_valid_and_fallback_authoritative():
         assert payload["answer_source"] == "deterministic_fallback"
         assert payload["authoritative"]["recommendations"][0]["final_recommended_price"] == 104.0
         assert "OPENAI_NOT_CONFIGURED" in {item["code"] for item in payload["warnings"]}
+
+
+@pytest.mark.parametrize(
+    "identifier_phrase",
+    [
+        "PricingDecisionID PD-001",
+        "Pricing Decision ID: PD-001",
+        "decision ID `PD-001`",
+    ],
+)
+def test_business_standard_decision_id_syntax_is_parsed(identifier_phrase):
+    with make_client() as client:
+        payload = client.post(
+            "/api/v1/pricing/chat",
+            json=request(f"Provide the recommended price for {identifier_phrase}"),
+        ).json()
+        assert payload["status"] in {"completed", "partial"}
+        assert payload["authoritative"]["recommendations"][0]["decision_id"] == "PD-001"
+        assert "UNKNOWN_PRICING_DECISION" not in {item["code"] for item in payload["errors"]}
+
+
+def test_compound_executive_request_routes_to_complete_recommendation():
+    message = (
+        "Provide an executive pricing recommendation for PricingDecisionID PD-001. "
+        "Compare the current and recommended prices, quantify the expected revenue and "
+        "gross-profit impact, identify the governing business rule, and state whether "
+        "manual review is required."
+    )
+    with make_client() as client:
+        payload = client.post("/api/v1/pricing/chat", json=request(message)).json()
+        recommendation = payload["authoritative"]["recommendations"][0]
+        assert recommendation["decision_id"] == "PD-001"
+        assert recommendation["final_recommended_price"] == 104.0
+        assert recommendation["pricing_rule_id"] == "R-1"
+        assert recommendation["manual_review_required"] is False
+        assert "get_pricing_recommendation" in payload["tools_used"]
+
+
+def test_channel_level_recommendation_question_routes_to_search_without_decision_id():
+    message = "Find current pricing recommendations for the Email channel. Summarize the recommended actions, expected revenue, expected gross profit, and manual-review requirements."
+    with make_client() as client:
+        payload = client.post("/api/v1/pricing/chat", json=request(message)).json()
+        assert payload["status"] == "completed"
+        assert payload["errors"] == []
+        assert "search_recommendations" in payload["tools_used"]
 
 
 @pytest.mark.parametrize(
@@ -285,8 +332,23 @@ def test_agent_failure_and_untrusted_numeric_output_use_deterministic_fallback()
     with make_client(agent=FailingAgent(AgentOutcome("The price is 999999.", True))) as client:
         rejected_payload = client.post("/api/v1/pricing/chat", json=request("recommend for decision PD-001")).json()
         assert rejected_payload["answer_source"] == "deterministic_fallback"
-        assert any(item["code"] == "AGENT_OUTPUT_INVALID" for item in rejected_payload["errors"])
+        assert rejected_payload["status"] == "completed"
+        assert rejected_payload["errors"] == []
+        assert rejected_payload["warnings"] == []
         assert "999999" not in rejected_payload["answer"]
+
+
+def test_agent_narrative_treats_business_ids_as_labels_and_removes_unsupported_figures():
+    record = dict(REC)
+    record["PricingDecisionID"] = "PDL000000000029917"
+    authoritative = AuthoritativeData(recommendations=[normalize_recommendation(record)])
+    narrative = "## Recommendation for PDL000000000029917\nUse **104.00**.\nUnsupported change is 99.99%.\nManual review is not required."
+    safe = PricingOrchestrator._safe_agent_text(narrative, authoritative, PricingChatRequest(schema_version="pricing.chat.request.v1", message="recommend"))
+    assert safe is not None
+    assert "PDL000000000029917" in safe
+    assert "104.00" in safe
+    assert "99.99" not in safe
+    assert "Manual review is not required." in safe
 
 
 def test_blocked_artifacts_disable_numeric_tools():

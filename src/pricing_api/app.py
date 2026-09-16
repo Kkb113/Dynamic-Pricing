@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import uuid
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, contextmanager
 from typing import Any, AsyncIterator
 
 from fastapi import FastAPI, Request
@@ -22,6 +22,7 @@ from .orchestrator import PricingOrchestrator
 from .services import ServiceContainer
 from .sse import event_payload, format_sse
 from .tools import GovernedToolset
+from .tools import TOOL_NAMES
 
 
 def _request_id() -> str:
@@ -52,6 +53,19 @@ def _error_envelope(request_id: str, code: str, message: str, *, retryable: bool
     model = PricingChatError(request_id=request_id, error=ErrorDetail(code=code, message=message[:500], retryable=retryable, field=field))
     validate_model(model, "pricing_chat_error_v1.schema.json")
     return dump_model(model)
+
+
+def _safe_agent_headers(result: Any) -> dict[str, str]:
+    """Expose only allowlisted internal provenance for redacted live checks."""
+
+    names = tuple(
+        name for name in getattr(result, "agent_tool_names", ())
+        if isinstance(name, str) and name in TOOL_NAMES
+    )
+    return {
+        "X-Pricing-Agent-Tools": ",".join(dict.fromkeys(names)),
+        "X-Pricing-Agent-SDK-Success": "true" if bool(getattr(result, "agent_sdk_success", False)) else "false",
+    }
 
 
 class _UnavailableServices:
@@ -132,6 +146,7 @@ def create_app(
         _initialize_runtime(application, container, agent_adapter)
         services = application.state.services or _UnavailableServices()
         report = services.health(agent_available=bool(getattr(application.state.agent, "available", False)))
+        report["runtime"] = application.state.settings.runtime_mode
         model = HealthResponse.model_validate(report)
         return JSONResponse(status_code=200 if model.status != "blocked" else 503, content=dump_model(model))
 
@@ -142,7 +157,8 @@ def create_app(
         if orchestrator is None:
             raise PricingAPIError("INTERNAL_ERROR", "The local pricing service is not initialized", status_code=500)
         result = await asyncio.wait_for(orchestrator.handle(payload, _request_id()), timeout=app_settings.request_timeout_seconds)
-        return JSONResponse(status_code=200, content=dump_model(result.response), headers={"Cache-Control": "no-store"})
+        headers = {"Cache-Control": "no-store", **_safe_agent_headers(result)}
+        return JSONResponse(status_code=200, content=dump_model(result.response), headers=headers)
 
     @application.post("/api/v1/pricing/chat/stream")
     async def pricing_chat_stream(payload: PricingChatRequest, request: Request) -> StreamingResponse:
@@ -202,14 +218,26 @@ def _initialize_runtime(application: FastAPI, container: Any | None, agent_adapt
         toolset = _EmptyToolset()
     agent = agent_adapter or OpenAIAgentAdapter(application.state.settings, toolset)
     application.state.agent = agent
-    application.state.orchestrator = PricingOrchestrator(services, agent, toolset=toolset)
+    application.state.orchestrator = PricingOrchestrator(
+        services, agent, toolset=toolset, runtime_mode=application.state.settings.runtime_mode
+    )
 
 
 class _EmptyToolset:
     names: tuple[str, ...] = ()
     sdk_tools: tuple[Any, ...] = ()
 
-    def drain_trace(self) -> list[Any]:
+    @contextmanager
+    def trace_scope(self):
+        yield []
+
+    @contextmanager
+    def source_scope(self, source: str):
+        del source
+        yield
+
+    def drain_trace(self, *, source: str | None = None) -> list[Any]:
+        del source
         return []
 
     def execute(self, name: str, **kwargs: Any) -> Any:

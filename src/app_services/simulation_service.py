@@ -39,6 +39,37 @@ class SimulationService:
         surface = self.registry.load_candidate_surface("validation")
         return surface.loc[surface["PricingDecisionID"].astype(str) == str(decision_id)].copy()
 
+    def _guarded_off_grid_values(self, decision_id: str, price: float, context: pd.DataFrame) -> dict[str, Any]:
+        """Score a new candidate and apply the same candidate-set response guard."""
+
+        from phase7.frozen_scorer import recompute_response_safety
+
+        raw = self._frozen_scorer().score_candidates(context.iloc[[0]], [price])[0]
+        surface = self._surface_rows(decision_id)
+        candidate = {
+            **raw,
+            "PricingDecisionID": str(decision_id),
+            "CandidatePrice": price,
+            "CostPrice": float(pd.to_numeric(context.iloc[0].get("CostPrice"), errors="coerce")),
+            "__phase0_requested_candidate": True,
+        }
+        surface["__phase0_requested_candidate"] = False
+        guarded = recompute_response_safety(pd.concat([surface, pd.DataFrame([candidate])], ignore_index=True, sort=False))
+        selected = guarded.loc[guarded["__phase0_requested_candidate"].fillna(False)].iloc[0]
+        return {
+            "purchase_probability": selected["raw_purchase_probability"],
+            "expected_quantity_if_purchase": selected["conditional_quantity"],
+            "raw_expected_units": selected["raw_expected_units"],
+            "guarded_expected_units": selected["safe_expected_units"],
+            "expected_units": selected["safe_expected_units"],
+            "expected_revenue": selected["expected_revenue"],
+            "expected_gross_profit": selected["expected_gross_profit"],
+            "candidate_margin_pct": selected["candidate_margin_pct"],
+            "response_guard_adjusted": not math.isclose(
+                float(selected["raw_expected_units"]), float(selected["safe_expected_units"]), rel_tol=0.0, abs_tol=1e-12
+            ),
+        }
+
     def support_envelope(self, decision_id: str, *, split: str = "validation") -> dict[str, float]:
         decision = self._decision(decision_id, split=split)
         rows = self._surface_rows(decision_id)
@@ -105,25 +136,20 @@ class SimulationService:
             values = {
                 "purchase_probability": matched.get("raw_purchase_probability"),
                 "expected_quantity_if_purchase": matched.get("conditional_quantity"),
+                "raw_expected_units": matched.get("raw_expected_units"),
+                "guarded_expected_units": matched.get("safe_expected_units"),
                 "expected_units": matched.get("safe_expected_units"),
                 "expected_revenue": matched.get("expected_revenue"),
                 "expected_gross_profit": matched.get("expected_gross_profit"),
                 "candidate_margin_pct": matched.get("candidate_margin_pct"),
+                "response_guard_adjusted": matched.get("response_guard_adjusted_flag", False),
             }
         else:
             context = self.registry.load_feature_context(split)
             context = context.loc[context["PricingDecisionID"].astype(str) == str(decision_id)]
             if context.empty:
                 raise SimulationError("MISSING_FEATURE_CONTEXT", "No frozen feature context is available for this decision")
-            scored = self._frozen_scorer().score_candidates(context.iloc[[0]], [price])[0]
-            values = {
-                "purchase_probability": scored["raw_purchase_probability"],
-                "expected_quantity_if_purchase": scored["conditional_quantity"],
-                "expected_units": scored["safe_expected_units"],
-                "expected_revenue": scored["expected_revenue"],
-                "expected_gross_profit": scored["expected_gross_profit"],
-                "candidate_margin_pct": scored["candidate_margin_pct"],
-            }
+            values = self._guarded_off_grid_values(decision_id, price, context)
         compliant, violations = self._rule_check(decision, price)
         return {
             "PricingDecisionID": str(decision_id),
@@ -133,6 +159,9 @@ class SimulationService:
             "business_rule_compliance": compliant,
             "rule_violations": violations,
             "model_implied": True,
+            "scenario_mode": "HISTORICAL_WHAT_IF",
+            "currency_code": None,
+            "currency_status": "UNVERIFIED_SOURCE_UNIT",
         }
 
     def candidate_surface(self, decision_id: str) -> pd.DataFrame:

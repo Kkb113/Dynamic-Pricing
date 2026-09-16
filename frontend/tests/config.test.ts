@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { ApiConfigurationError, DEFAULT_API_BASE_URL, resolveApiBaseUrl } from "../src/lib/config";
 
-describe("local API boundary", () => {
-  it("defaults to the loopback Phase 2 service and normalizes paths", () => {
-    expect(DEFAULT_API_BASE_URL).toBe("http://127.0.0.1:8000");
+describe("API boundary", () => {
+  it("defaults to same-origin and permits explicit loopback development", () => {
+    expect(DEFAULT_API_BASE_URL).toBe("");
+    expect(resolveApiBaseUrl("")).toBe("");
     expect(resolveApiBaseUrl("http://localhost:8000/")).toBe("http://localhost:8000");
     expect(resolveApiBaseUrl("http://[::1]:8000/path?query=ignored")).toBe("http://[::1]:8000/path");
   });

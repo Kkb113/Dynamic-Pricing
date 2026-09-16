@@ -16,22 +16,22 @@ export function JsonViewer({ value }: { value: unknown }): ReactElement {
   }
 
   return (
-    <section className="json-viewer" aria-label="Raw JSON response">
+    <section className="json-viewer" aria-label="Answer JSON output">
       <div className="json-heading">
         <div>
-          <p className="eyebrow">Machine-readable response</p>
-          <h3>Raw JSON</h3>
+          <h3>JSON output</h3>
+          <p>Question, answer, and supporting information sources</p>
         </div>
-        <button className="button subtle" type="button" onClick={() => void copyJson()} aria-label="Copy raw JSON response">
+        <button className="button subtle" type="button" onClick={() => void copyJson()} aria-label="Copy answer JSON">
           {copied ? "Copied" : "Copy JSON"}
         </button>
       </div>
       <button className="json-toggle" type="button" aria-expanded={open} onClick={() => setOpen((current) => !current)}>
-        <span>{open ? "Hide response payload" : "Show response payload"}</span>
+        <span>{open ? "Hide JSON output" : "View JSON output"}</span>
         <span aria-hidden="true">{open ? "−" : "+"}</span>
       </button>
       {open && <pre className="json-content" tabIndex={0}>{formatted}</pre>}
-      <p className="sr-only" aria-live="polite">{copied ? "Raw JSON copied to clipboard." : ""}</p>
+      <p className="sr-only" aria-live="polite">{copied ? "Answer JSON copied to clipboard." : ""}</p>
     </section>
   );
 }

@@ -1,0 +1,53 @@
+name: azure-databricks-dynamic-pricing-phase0
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "contracts/**"
+      - "config/**"
+      - "frontend/**"
+      - "scripts/build_phase0_release.py"
+      - "requirements-*.lock"
+      - "pyproject.toml"
+      - ".github/workflows/azure-databricks-phase0.yml"
+  push:
+    branches:
+      - "codex/azure-phase0-remediation"
+
+jobs:
+  python-contract-and-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e ".[agent,training,extraction,legacy-ui,test]"
+      - run: pytest -q
+        env:
+          TEST_EVIDENCE_PATH: artifacts/azure_databricks/phase0/ci_test_results.json
+      - run: python scripts/build_phase0_release.py --allow-dirty
+
+  frontend-contract-and-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build

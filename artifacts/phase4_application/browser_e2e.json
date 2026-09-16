@@ -1,0 +1,17 @@
+{
+  "phase": "phase4",
+  "status": "BLOCKED",
+  "browser_surface": "in_app_browser",
+  "target_origin": "http://127.0.0.1:5173",
+  "desktop_flow": "BLOCKED",
+  "mobile_flow": "BLOCKED",
+  "documentation_read": false,
+  "connection_attempts": 2,
+  "reset_retries": 1,
+  "block_reason": "IN_APP_BROWSER_TRUSTED_RPC_UNAVAILABLE",
+  "services_were_ready_before_attempt": true,
+  "owned_services_stopped_after_attempt": true,
+  "ports_free_after_attempt": true,
+  "screenshots_captured": false,
+  "secret_or_business_data_recorded": false
+}

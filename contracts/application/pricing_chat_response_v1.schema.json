@@ -152,7 +152,7 @@
       "additionalProperties": false,
       "required": ["runtime", "agent_available", "contract_version"],
       "properties": {
-        "runtime": {"const": "local"}, "agent_available": {"type": "boolean"}, "contract_version": {"const": "1"}, "duration_ms": {"type": "number", "minimum": 0}
+        "runtime": {"enum": ["local", "databricks"]}, "agent_available": {"type": "boolean"}, "contract_version": {"const": "1"}, "duration_ms": {"type": "number", "minimum": 0}
       }
     }
   }

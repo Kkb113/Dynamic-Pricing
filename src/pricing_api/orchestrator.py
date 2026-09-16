@@ -31,13 +31,21 @@ from .services import ServiceContainer
 from .tools import GovernedToolset, ToolCallRecord
 
 
-_DIGIT_RE = re.compile(r"(?<![A-Za-z])\d+(?:\.\d+)?")
+# Standalone numeric claims only. Digits embedded in business identifiers such
+# as PDL000000000029917 or RULE01 are labels, not prices or metrics.
+_DIGIT_RE = re.compile(r"(?<![A-Za-z0-9])\d+(?:\.\d+)?(?![A-Za-z0-9])")
 
 
 @dataclass(frozen=True)
 class OrchestrationResult:
     response: PricingChatResponse
     traces: tuple[ToolCallRecord, ...]
+    # Redacted internal release metadata.  These fields never enter the
+    # Phase 1 response envelope, but let live validation prove which tools the
+    # model actually requested instead of conflating them with pre-routing.
+    pre_routing_tools: tuple[str, ...] = ()
+    agent_tool_names: tuple[str, ...] = ()
+    agent_sdk_success: bool = False
 
 
 def _error(code: str, message: str, *, retryable: bool = False, field: str | None = None) -> ErrorDetail:
@@ -70,11 +78,12 @@ def _numeric_tokens(value: Any) -> set[str]:
 class PricingOrchestrator:
     """Application use-case layer shared by JSON and SSE endpoints."""
 
-    def __init__(self, services: ServiceContainer, agent: Any, *, router: IntentRouter | None = None, toolset: GovernedToolset | None = None):
+    def __init__(self, services: ServiceContainer, agent: Any, *, router: IntentRouter | None = None, toolset: GovernedToolset | None = None, runtime_mode: str = "local"):
         self.services = services
         self.toolset = toolset or GovernedToolset(services)
         self.agent = agent
         self.router = router or IntentRouter()
+        self.runtime_mode = runtime_mode if runtime_mode in {"local", "databricks"} else "local"
 
     @property
     def agent_available(self) -> bool:
@@ -97,39 +106,162 @@ class PricingOrchestrator:
 
     @staticmethod
     def _answer(decision: IntentDecision, authoritative: AuthoritativeData) -> str:
+        def money(value: float | None) -> str:
+            return "not available" if value is None else f"${value:,.2f}"
+
+        def label(value: str | None) -> str:
+            if not value:
+                return "standard business action"
+            return re.sub(r"\s+", " ", re.sub(r"[_-]+", " ", value)).strip().lower()
+
+        def recommendation_lines(items: list[Recommendation]) -> list[str]:
+            lines: list[str] = []
+            for item in items[:5]:
+                review = "manual review is required" if item.manual_review_required else "it can continue through the normal approval process"
+                reason = label(item.reason_codes[0]) if item.reason_codes else "the available demand, margin, and policy evidence"
+                lines.append(f"- **{label(item.final_action).title()}** at **{money(item.final_recommended_price)}** (current price: {money(item.current_price)}). This is supported by {reason}; {review}.")
+            return lines
+
         if decision.intent in {"capability_explanation", "help"}:
-            return "This local assistant answers governed pricing questions using deterministic frozen tools and can present validated chart data and raw JSON."
+            questions = authoritative.capabilities.supported_questions if authoritative.capabilities else []
+            bullets = "\n".join(f"- {question}" for question in questions[:8]) or "- Pricing recommendations and their business rationale\n- Price-scenario comparisons\n- Inventory and promotion opportunities\n- Pricing-rule and model-performance questions"
+            return f"""### How the pricing assistant can help
+
+This workspace turns approved pricing evidence into clear commercial decisions. It explains what action is recommended, why it is appropriate, what outcome is expected, and whether a decision needs review.
+
+### Questions you can ask
+
+{bullets}
+
+### Recommended next step
+
+Start with a product, store, category, sales channel, or pricing decision and ask for the best action and supporting business rationale."""
         if decision.intent == "model_performance":
-            return "The validated model-performance evidence is available in the structured response, including ranking and aggregate economic metrics."
+            performance = authoritative.model_performance
+            if performance:
+                interpretations = "\n".join(f"- {item}" for item in performance.business_interpretation)
+                return f"""### Executive assessment
+
+The model has been evaluated for its ability to rank pricing opportunities and estimate commercial outcomes. The available measures should be considered together rather than treated as a single accuracy score.
+
+### What the results mean
+
+{interpretations or '- The available metrics describe ranking quality, probability calibration, and aggregate demand and financial estimation.'}
+
+### Recommended next steps
+
+Use the results to support controlled pricing decisions, continue monitoring demand and financial error after each refresh, and retain business-rule review for higher-risk actions.
+
+**Important context:** {performance.caveat}"""
         if decision.intent == "inventory_insight":
-            return "The current-snapshot inventory insight is available in the structured response; it is observed context and does not create a new price."
+            items = authoritative.inventory_insights
+            examples = "\n".join(f"- **{label(item.final_action).title()}** at **{money(item.final_recommended_price)}** for a {label(item.stock_status)} stock position." for item in items[:5])
+            return f"""### Inventory pricing assessment
+
+The historical inventory snapshot contains **{len(items)}** relevant inventory opportunities. Seasonal and slow-moving signals illustrate where selling-window and carrying-cost risk can change the best commercial action.
+
+### Priority opportunities
+
+{examples or '- No matching inventory opportunity was returned for the requested scope.'}
+
+### Recommended next steps
+
+Prioritize time-sensitive seasonal and slow-moving stock, confirm operational availability, and monitor sell-through before applying a further price change. These are snapshot-based observations, not live inventory guarantees."""
         if decision.intent == "business_rule_explanation":
-            return "The effective business-rule constraints and compliance result are available in the structured response."
+            rule = authoritative.business_rule
+            if rule:
+                status = "complies with the active rule" if rule.final_price_compliant else "requires manual review before implementation"
+                next_step = "Continue through the normal approval process." if rule.final_price_compliant else "Review the exception with the pricing owner before changing the customer-facing price."
+                return f"""### Business rule assessment
+
+The selected pricing decision **{status}**. The permitted price range is **{money(rule.min_price)} to {money(rule.max_price)}**.
+
+### Why this matters
+
+The rule protects commercial boundaries such as price, margin, discount depth, and the size of a price movement. A model recommendation can only proceed when it remains inside those approved limits.
+
+### Recommended next step
+
+{next_step}"""
         if decision.intent == "recommendation_search":
-            return "The deterministic recommendation search returned the matching governed records in the structured response."
+            lines = "\n".join(recommendation_lines(authoritative.recommendations))
+            review_count = sum(1 for item in authoritative.recommendations if item.manual_review_required)
+            return f"""### Executive recommendation
+
+The requested portfolio contains **{len(authoritative.recommendations)}** matched pricing opportunities. The strongest representative actions are:
+
+{lines or '- No matching recommendation was found for the requested scope.'}
+
+### Controls and considerations
+
+**{review_count}** returned opportunities require manual review. Treat implementation-ready decisions separately from exceptions so review activity does not delay straightforward actions.
+
+### Recommended next steps
+
+Prioritize opportunities that combine a clear commercial action with no outstanding review requirement, then monitor customer response and margin performance before scaling the action across a wider assortment."""
         if decision.intent in {"scenario_simulation", "scenario_comparison"}:
-            return "The supported candidate-price scenarios were evaluated by the frozen deterministic pricing tools; see the structured response and chart specifications."
+            scenarios = authoritative.scenario_comparisons
+            lines = "\n".join(f"- **{label(item.scenario).title()}** uses a price of **{money(item.candidate_price)}**, with expected revenue of **{money(item.expected_revenue)}** and expected gross profit of **{money(item.expected_gross_profit)}**." for item in scenarios[:5])
+            return f"""### Price scenario comparison
+
+The available options show the commercial trade-off between customer response, revenue, gross profit, and business-rule compliance.
+
+{lines or '- No supported price scenarios were returned for this request.'}
+
+### Recommended next steps
+
+Select the option that best balances revenue and gross profit while remaining within model support and approved pricing rules. Route any non-compliant option for review rather than applying it automatically."""
         if authoritative.recommendations:
             rec = authoritative.recommendations[0]
-            if rec.final_recommended_price is not None:
-                return f"The governed recommendation is {rec.final_recommended_price:g} with action {rec.final_action}; the structured response contains the deterministic evidence."
-            return f"The governed recommendation uses action {rec.final_action}; the structured response contains the deterministic evidence."
+            outcome = f"expected revenue of **{money(rec.expected_revenue)}** and expected gross profit of **{money(rec.expected_gross_profit)}**"
+            reasons = ", ".join(label(code) for code in rec.reason_codes[:4]) or "the available demand, margin, inventory, and policy evidence"
+            review = "A manual review is required before implementation." if rec.manual_review_required else "No manual review is required; the decision can continue through the normal business approval process."
+            return f"""### Executive recommendation
+
+The recommended action is to **{label(rec.final_action)}** at **{money(rec.final_recommended_price)}**, compared with the current price of **{money(rec.current_price)}**.
+
+### Why this is the right action
+
+The decision is supported by {reasons}. The recommendation balances customer response with revenue, gross-profit, inventory, and pricing-rule considerations.
+
+### Expected business outcome
+
+At the recommended price, the available estimates indicate {outcome}. These are decision-support estimates rather than guaranteed results.
+
+### Controls and considerations
+
+{review}
+
+### Recommended next steps
+
+Confirm the current operational context, complete any required approval, implement the price through the normal channel process, and monitor demand and margin response after the change."""
         if authoritative.capabilities:
-            return "The supported capabilities are listed in the structured response."
-        return "The deterministic pricing tools completed; see the structured response for authoritative details."
+            return "### Pricing assistant capabilities\n\n" + "\n".join(f"- {item}" for item in authoritative.capabilities.supported_questions)
+        return "### Pricing assessment\n\nThe request completed, but no matching business evidence was returned. Broaden the question with a product, store, category, channel, or pricing-decision reference and try again."
+
+    @staticmethod
+    def _safe_agent_text(text: str, authoritative: AuthoritativeData, request: PricingChatRequest) -> str | None:
+        lowered = text.casefold()
+        if any(term in lowered for term in ("chain of thought", "system prompt", "api key", "secret", "password")):
+            return None
+        allowed = _numeric_tokens(authoritative.model_dump(mode="json"))
+        safe_lines: list[str] = []
+        for line in text.splitlines():
+            # Markdown ordered-list markers are presentation syntax, not
+            # pricing claims. Every other number must match tool evidence.
+            claim_line = re.sub(r"^\s*\d+\.\s+", "- ", line)
+            tokens = _DIGIT_RE.findall(claim_line)
+            if any(token not in allowed and f"{float(token):.2f}" not in allowed for token in tokens):
+                # Keep the useful narrative instead of rejecting the complete
+                # answer when a provider adds an unsupported derived figure.
+                continue
+            safe_lines.append(line)
+        safe_text = "\n".join(safe_lines).strip()
+        return safe_text if len(safe_text) >= 20 else None
 
     @staticmethod
     def _agent_text_is_safe(text: str, authoritative: AuthoritativeData, request: PricingChatRequest) -> bool:
-        lowered = text.casefold()
-        if any(term in lowered for term in ("chain of thought", "system prompt", "api key", "secret", "password")):
-            return False
-        allowed = _numeric_tokens(authoritative.model_dump(mode="json"))
-        if request.context:
-            allowed.update(_numeric_tokens(request.context.model_dump(mode="json")))
-        for token in _DIGIT_RE.findall(text):
-            if token not in allowed and f"{float(token):.2f}" not in allowed:
-                return False
-        return True
+        return PricingOrchestrator._safe_agent_text(text, authoritative, request) == text.strip()
 
     async def _agent_narrative(self, request: PricingChatRequest, authoritative: AuthoritativeData) -> AgentOutcome:
         context = request.context.model_dump(mode="json") if request.context else {}
@@ -258,7 +390,7 @@ class PricingOrchestrator:
                     except (TypeError, ValueError):
                         continue
                 if decision.split == "current":
-                    warnings.append(_warning("CURRENT_SNAPSHOT_INVENTORY_CONTEXT", "Inventory insights come from the accepted current snapshot and are not persisted.", severity="notice"))
+                    warnings.append(_warning("HISTORICAL_INVENTORY_SNAPSHOT", "Inventory insights use the sealed 2025-12-31 historical snapshot and are not live inventory.", severity="notice"))
         elif decision.intent == "recommendation_search":
             raw = self.toolset.execute("search_recommendations", **decision.filters, limit=100, split=decision.split)
             names.append("search_recommendations")
@@ -289,6 +421,12 @@ class PricingOrchestrator:
         return authoritative, self._dedupe_names(names), errors, warnings
 
     async def handle(self, request: PricingChatRequest, request_id: str) -> OrchestrationResult:
+        """Handle one request inside an isolated trace collector."""
+
+        with self.toolset.trace_scope():
+            return await self._handle(request, request_id)
+
+    async def _handle(self, request: PricingChatRequest, request_id: str) -> OrchestrationResult:
         started = time.perf_counter()
         decision = self.router.route(request)
         names: list[str] = []
@@ -310,17 +448,34 @@ class PricingOrchestrator:
             status = "rejected"
         else:
             authoritative, names, errors, warnings = self._deterministic(decision)
+            deterministic_traces = self.toolset.drain_trace(source="deterministic")
             if errors:
                 status = "partial" if authoritative.recommendations or authoritative.scenario_comparisons or authoritative.inventory_insights else "failed"
             answer = self._answer(decision, authoritative)
             outcome = await self._agent_narrative(request, authoritative)
-            if outcome.available and outcome.text and self._agent_text_is_safe(outcome.text, authoritative, request):
-                answer = outcome.text
+            agent_traces = self.toolset.drain_trace(source="agent")
+            agent_called_names = {item.tool_name for item in agent_traces if item.status == "called"}
+            safe_agent_text = self._safe_agent_text(outcome.text, authoritative, request) if outcome.text else None
+            # The SDK result must be accompanied by a successful governed
+            # wrapper trace.  A hand-constructed narrative or malformed SDK
+            # item cannot claim a tool merely by naming it in metadata.
+            if (
+                outcome.available
+                and outcome.text
+                and outcome.sdk_success
+                and outcome.tool_names_valid
+                and outcome.tool_names
+                and any(name in agent_called_names for name in outcome.tool_names)
+                and safe_agent_text
+            ):
+                answer = safe_agent_text
                 answer_source = "agent"
             elif outcome.available and outcome.text:
-                errors.append(_error("AGENT_OUTPUT_INVALID", "The narrative agent returned text that could not be proven safe; deterministic fallback is active."))
-                warnings.append(_warning("OPENAI_UNAVAILABLE", "Deterministic local results remain authoritative while the narrative output is rejected.", severity="notice"))
-                status = "partial" if status == "completed" else status
+                # Optional prose rejection is not a pricing failure. The
+                # governed result is already complete and remains visible.
+                # ``answer_source`` records the fallback without presenting a
+                # successful pricing request as a user-facing error banner.
+                pass
             elif outcome.code == "AGENT_NOT_CONFIGURED":
                 warnings.append(_warning("OPENAI_NOT_CONFIGURED", "OpenAI narrative generation is not configured; deterministic fallback is active.", severity="notice"))
             elif outcome.code:
@@ -329,9 +484,13 @@ class PricingOrchestrator:
                 status = "partial" if status == "completed" else status
             if not errors and status == "partial":
                 warnings.append(_warning("RESPONSE_PARTIAL", "The response contains all available deterministic evidence but one optional path did not complete.", severity="notice"))
-
-        traces = self.toolset.drain_trace()
-        names = self._dedupe_names(names + [item.tool_name for item in traces if item.status == "called"])
+        if "deterministic_traces" not in locals():
+            deterministic_traces = self.toolset.drain_trace(source="deterministic")
+            outcome = None
+            agent_traces = self.toolset.drain_trace(source="agent")
+        traces = deterministic_traces + agent_traces
+        agent_tool_names = tuple(getattr(outcome, "tool_names", ()) or ()) if outcome is not None else tuple()
+        names = self._dedupe_names(names + [item.tool_name for item in traces if item.status == "called"] + list(agent_tool_names))
         charts = build_charts(authoritative, max_charts=request.options.max_charts, tool_names=names)
         payload = PricingChatResponse(
             request_id=request_id,
@@ -344,7 +503,7 @@ class PricingOrchestrator:
             tool_trace=self._trace_models(traces),
             warnings=warnings[:20],
             errors=errors[:20],
-            metadata=ResponseMetadata(agent_available=self.agent_available, duration_ms=(time.perf_counter() - started) * 1000),
+            metadata=ResponseMetadata(runtime=self.runtime_mode, agent_available=self.agent_available, duration_ms=(time.perf_counter() - started) * 1000),
         )
         try:
             validate_model(payload, "pricing_chat_response_v1.schema.json")
@@ -362,12 +521,18 @@ class PricingOrchestrator:
                 tool_trace=[],
                 warnings=[],
                 errors=[_error("TOOL_VALIDATION_FAILED", "The backend response failed its contract validation.")],
-                metadata=ResponseMetadata(agent_available=self.agent_available, duration_ms=(time.perf_counter() - started) * 1000),
+                metadata=ResponseMetadata(runtime=self.runtime_mode, agent_available=self.agent_available, duration_ms=(time.perf_counter() - started) * 1000),
             )
             validate_model(fallback, "pricing_chat_response_v1.schema.json")
             payload = fallback
             traces = tuple()
-        return OrchestrationResult(payload, tuple(traces))
+        return OrchestrationResult(
+            payload,
+            tuple(traces),
+            pre_routing_tools=tuple(dict.fromkeys(item.tool_name for item in deterministic_traces if item.status == "called")),
+            agent_tool_names=tuple(dict.fromkeys(agent_tool_names)),
+            agent_sdk_success=bool(getattr(outcome, "sdk_success", False)) if outcome is not None else False,
+        )
 
 
 __all__ = ["OrchestrationResult", "PricingOrchestrator"]

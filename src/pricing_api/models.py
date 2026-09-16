@@ -68,7 +68,7 @@ class WarningDetail(ContractModel):
     code: Literal[
         "OPENAI_NOT_CONFIGURED",
         "OPENAI_UNAVAILABLE",
-        "CURRENT_SNAPSHOT_INVENTORY_CONTEXT",
+        "HISTORICAL_INVENTORY_SNAPSHOT",
         "CURRENT_CONTEXT_STALENESS_HIGH",
         "MANUAL_REVIEW_REQUIRED",
         "RULE_VIOLATION_REVIEW",
@@ -205,7 +205,7 @@ class AuthoritativeData(ContractModel):
 
 
 class ResponseMetadata(ContractModel):
-    runtime: Literal["local"] = "local"
+    runtime: Literal["local", "databricks"] = "local"
     agent_available: bool
     contract_version: Literal["1"] = "1"
     duration_ms: float | None = Field(default=None, ge=0)
@@ -236,7 +236,7 @@ class PricingChatError(ContractModel):
 
 class HealthResponse(ContractModel):
     status: Literal["starting", "ready", "blocked"]
-    runtime: Literal["local"] = "local"
+    runtime: Literal["local", "databricks"] = "local"
     contract_version: Literal["1"] = "1"
     agent_available: bool
     artifacts_integrity: Literal["pass", "blocked", "unknown"]
