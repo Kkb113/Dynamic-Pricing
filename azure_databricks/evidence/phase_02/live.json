@@ -1,0 +1,8 @@
+{
+  "deadline_unix": 1789542951,
+  "retail_unchanged": true,
+  "status": "FAILED",
+  "stop_job": "9dd8000b-a858-4436-9b03-e2be38020305",
+  "timestamp_utc": "2026-09-16T06:50:08.639400+00:00",
+  "warehouse_final_state": "STOPPED"
+}

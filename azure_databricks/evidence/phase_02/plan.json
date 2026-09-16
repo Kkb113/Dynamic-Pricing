@@ -1,0 +1,1981 @@
+{
+  "combined_tools_enabled": false,
+  "compute_started": false,
+  "contract_version": "pricing.lakehouse.v1",
+  "currency_status": "UNVERIFIED_SOURCE_UNIT",
+  "inventory_as_of": "2025-12-31",
+  "manifest_sha256": "2e6c455737c60c1b422154c4b410e99bf7d6ddfac8d25cc2ac3ba3927ad62adc",
+  "mapping_status": "PENDING_LIVE_RECONCILIATION",
+  "release_id": "pricing-f35a7a7326e0-2e6c455737c60c1b",
+  "tables": [
+    {
+      "compatibility_bytes": 5420271,
+      "compatibility_sha256": "90fe103db429920b11871647d1266eb0efb4c184497ad0348c12935a3a47d032",
+      "fields": [
+        {
+          "name": "PricingDecisionID",
+          "type": "STRING"
+        },
+        {
+          "name": "DecisionTime",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "CustomerID",
+          "type": "STRING"
+        },
+        {
+          "name": "SessionID",
+          "type": "STRING"
+        },
+        {
+          "name": "ProductID",
+          "type": "STRING"
+        },
+        {
+          "name": "StoreID",
+          "type": "STRING"
+        },
+        {
+          "name": "Channel",
+          "type": "STRING"
+        },
+        {
+          "name": "CurrentPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "AppliedPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PurchasedFlag",
+          "type": "BIGINT"
+        },
+        {
+          "name": "QuantityPurchased",
+          "type": "BIGINT"
+        },
+        {
+          "name": "CategoryID",
+          "type": "STRING"
+        },
+        {
+          "name": "BrandID",
+          "type": "STRING"
+        },
+        {
+          "name": "BasePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "Season",
+          "type": "STRING"
+        },
+        {
+          "name": "RegionID",
+          "type": "STRING"
+        },
+        {
+          "name": "StoreType",
+          "type": "STRING"
+        },
+        {
+          "name": "ClimateZone",
+          "type": "STRING"
+        },
+        {
+          "name": "LoyaltyTier",
+          "type": "STRING"
+        },
+        {
+          "name": "CustomerSegment",
+          "type": "STRING"
+        },
+        {
+          "name": "PreferredChannel",
+          "type": "STRING"
+        },
+        {
+          "name": "FavoriteCategoryID",
+          "type": "STRING"
+        },
+        {
+          "name": "FavoriteBrandID",
+          "type": "STRING"
+        },
+        {
+          "name": "PriceSensitivity",
+          "type": "STRING"
+        },
+        {
+          "name": "CategoryAffinityScore",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BrandAffinityScore",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "active_history_selling_price",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "history_discount_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "days_since_current_price_started",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "previous_selling_price",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "previous_price_change_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "active_history_promotion_id",
+          "type": "STRING"
+        },
+        {
+          "name": "active_price_history_id",
+          "type": "STRING"
+        },
+        {
+          "name": "selected_price_effective_from",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "selected_price_effective_to",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "price_history_current_price_delta",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_history_current_price_mismatch",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "selected_promotion_start_date",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "selected_promotion_end_date",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "active_promotion_id",
+          "type": "STRING"
+        },
+        {
+          "name": "active_promotion_flag",
+          "type": "BIGINT"
+        },
+        {
+          "name": "active_promotion_discount_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "selected_sales_order_date",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "product_store_sales_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_store_sales_14d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_store_sales_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_region_sales_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_region_sales_14d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_region_sales_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_14d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_60d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_90d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_store_sales_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_store_sales_14d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_store_sales_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_sales_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_sales_14d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_sales_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_velocity_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_velocity_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_velocity_90d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_velocity_ratio_7d_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "days_since_last_product_sale",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "competitor_price_exact_channel",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "competitor_price_region_fallback",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "competitor_price_product_fallback",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "competitor_price_available",
+          "type": "BIGINT"
+        },
+        {
+          "name": "competitor_price_age_days",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "selected_competitor_observed_at",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "competitor_match_level",
+          "type": "STRING"
+        },
+        {
+          "name": "competitor_price",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "selected_behavior_event_at",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "product_views_1h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_views_24h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_views_168h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_views_720h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cart_additions_1h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cart_additions_24h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cart_additions_168h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cart_additions_720h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "search_clicks_1h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "search_clicks_24h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "search_clicks_168h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "search_clicks_720h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "decision_month",
+          "type": "BIGINT"
+        },
+        {
+          "name": "decision_quarter",
+          "type": "BIGINT"
+        },
+        {
+          "name": "decision_day_of_week",
+          "type": "BIGINT"
+        },
+        {
+          "name": "decision_is_weekend",
+          "type": "BIGINT"
+        },
+        {
+          "name": "weather_temperature",
+          "type": "BIGINT"
+        },
+        {
+          "name": "weather_condition",
+          "type": "STRING"
+        },
+        {
+          "name": "weather_precipitation",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "is_holiday",
+          "type": "BIGINT"
+        },
+        {
+          "name": "holiday_sales_impact_factor",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "holiday_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "price_change_amount",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_change_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_vs_base_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "discount_from_base_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_vs_competitor_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "current_vs_base_pct",
+          "type": "DOUBLE"
+        }
+      ],
+      "keys": [
+        "PricingDecisionID"
+      ],
+      "name": "features",
+      "original_path": "artifacts/phase2/feature_dataset.parquet",
+      "query": "SELECT * FROM read_files('/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/90fe103db429920b11871647d1266eb0efb4c184497ad0348c12935a3a47d032.parquet', format => 'parquet', schema => '`PricingDecisionID` STRING, `DecisionTime` TIMESTAMP_NTZ, `CustomerID` STRING, `SessionID` STRING, `ProductID` STRING, `StoreID` STRING, `Channel` STRING, `CurrentPrice` DOUBLE, `AppliedPrice` DOUBLE, `PurchasedFlag` BIGINT, `QuantityPurchased` BIGINT, `CategoryID` STRING, `BrandID` STRING, `BasePrice` DOUBLE, `Season` STRING, `RegionID` STRING, `StoreType` STRING, `ClimateZone` STRING, `LoyaltyTier` STRING, `CustomerSegment` STRING, `PreferredChannel` STRING, `FavoriteCategoryID` STRING, `FavoriteBrandID` STRING, `PriceSensitivity` STRING, `CategoryAffinityScore` DOUBLE, `BrandAffinityScore` DOUBLE, `active_history_selling_price` DOUBLE, `history_discount_pct` DOUBLE, `days_since_current_price_started` DOUBLE, `previous_selling_price` DOUBLE, `previous_price_change_pct` DOUBLE, `active_history_promotion_id` STRING, `active_price_history_id` STRING, `selected_price_effective_from` TIMESTAMP_NTZ, `selected_price_effective_to` TIMESTAMP_NTZ, `price_history_current_price_delta` DOUBLE, `price_history_current_price_mismatch` BOOLEAN, `selected_promotion_start_date` TIMESTAMP_NTZ, `selected_promotion_end_date` TIMESTAMP_NTZ, `active_promotion_id` STRING, `active_promotion_flag` BIGINT, `active_promotion_discount_pct` DOUBLE, `selected_sales_order_date` TIMESTAMP_NTZ, `product_store_sales_7d` DOUBLE, `product_store_sales_14d` DOUBLE, `product_store_sales_30d` DOUBLE, `product_region_sales_7d` DOUBLE, `product_region_sales_14d` DOUBLE, `product_region_sales_30d` DOUBLE, `product_sales_7d` DOUBLE, `product_sales_14d` DOUBLE, `product_sales_30d` DOUBLE, `product_sales_60d` DOUBLE, `product_sales_90d` DOUBLE, `category_store_sales_7d` DOUBLE, `category_store_sales_14d` DOUBLE, `category_store_sales_30d` DOUBLE, `category_sales_7d` DOUBLE, `category_sales_14d` DOUBLE, `category_sales_30d` DOUBLE, `product_sales_velocity_7d` DOUBLE, `product_sales_velocity_30d` DOUBLE, `product_sales_velocity_90d` DOUBLE, `product_sales_velocity_ratio_7d_30d` DOUBLE, `days_since_last_product_sale` DOUBLE, `competitor_price_exact_channel` DOUBLE, `competitor_price_region_fallback` DOUBLE, `competitor_price_product_fallback` DOUBLE, `competitor_price_available` BIGINT, `competitor_price_age_days` DOUBLE, `selected_competitor_observed_at` TIMESTAMP_NTZ, `competitor_match_level` STRING, `competitor_price` DOUBLE, `selected_behavior_event_at` TIMESTAMP_NTZ, `product_views_1h` DOUBLE, `product_views_24h` DOUBLE, `product_views_168h` DOUBLE, `product_views_720h` DOUBLE, `cart_additions_1h` DOUBLE, `cart_additions_24h` DOUBLE, `cart_additions_168h` DOUBLE, `cart_additions_720h` DOUBLE, `search_clicks_1h` DOUBLE, `search_clicks_24h` DOUBLE, `search_clicks_168h` DOUBLE, `search_clicks_720h` DOUBLE, `decision_month` BIGINT, `decision_quarter` BIGINT, `decision_day_of_week` BIGINT, `decision_is_weekend` BIGINT, `weather_temperature` BIGINT, `weather_condition` STRING, `weather_precipitation` DOUBLE, `is_holiday` BIGINT, `holiday_sales_impact_factor` DOUBLE, `holiday_count` BIGINT, `price_change_amount` DOUBLE, `price_change_pct` DOUBLE, `price_vs_base_pct` DOUBLE, `discount_from_base_pct` DOUBLE, `price_vs_competitor_pct` DOUBLE, `current_vs_base_pct` DOUBLE')",
+      "rows": 35000,
+      "source": "/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/90fe103db429920b11871647d1266eb0efb4c184497ad0348c12935a3a47d032.parquet",
+      "source_sha256": "e3be4b1f7a0dd4b343b04bf9b0cc6b42d53a2e163b09e31f81a88c2f59d9306b",
+      "table": "intellify_databricks_demo.pricing_silver.features_2e6c455737c6"
+    },
+    {
+      "compatibility_bytes": 584948,
+      "compatibility_sha256": "eed856f046048dbe14be55727e6dcd8ee568c3b81d18902d43bc3c25b2c78bcb",
+      "fields": [
+        {
+          "name": "PricingDecisionID",
+          "type": "STRING"
+        },
+        {
+          "name": "DecisionTime",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "split",
+          "type": "STRING"
+        }
+      ],
+      "keys": [
+        "PricingDecisionID"
+      ],
+      "name": "splits",
+      "original_path": "artifacts/phase3/split_assignments.parquet",
+      "query": "SELECT * FROM read_files('/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/eed856f046048dbe14be55727e6dcd8ee568c3b81d18902d43bc3c25b2c78bcb.parquet', format => 'parquet', schema => '`PricingDecisionID` STRING, `DecisionTime` TIMESTAMP_NTZ, `split` STRING')",
+      "rows": 35000,
+      "source": "/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/eed856f046048dbe14be55727e6dcd8ee568c3b81d18902d43bc3c25b2c78bcb.parquet",
+      "source_sha256": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d",
+      "table": "intellify_databricks_demo.pricing_silver.splits_2e6c455737c6"
+    },
+    {
+      "compatibility_bytes": 4612241,
+      "compatibility_sha256": "b55d8b708a6d39bd8604b1b31753dbaf9823aab3a8b8e2b34a36e4da7ff6cda0",
+      "fields": [
+        {
+          "name": "PricingDecisionID",
+          "type": "STRING"
+        },
+        {
+          "name": "DecisionTime",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "ProductID",
+          "type": "STRING"
+        },
+        {
+          "name": "StoreID",
+          "type": "STRING"
+        },
+        {
+          "name": "Channel",
+          "type": "STRING"
+        },
+        {
+          "name": "CurrentPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "AppliedPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BasePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CostPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "HistoricalAppliedPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "candidate_multiplier",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CandidatePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "candidate_rank_by_price",
+          "type": "BIGINT"
+        },
+        {
+          "name": "is_current_price_candidate",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "is_support_lower_boundary",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "is_support_upper_boundary",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "candidate_vs_current_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "candidate_vs_base_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "support_low",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "support_high",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "raw_purchase_probability",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "conditional_quantity",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "raw_expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "safe_expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "response_guard_adjusted_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "raw_demand_non_monotonic_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "number_of_adjusted_candidates",
+          "type": "BIGINT"
+        },
+        {
+          "name": "maximum_expected_units_adjustment",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "mean_expected_units_adjustment",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "raw_expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "unit_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "candidate_margin_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "raw_expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "negative_unit_margin_candidate",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "inventory_constraint_applied",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "available_inventory",
+          "type": "DOUBLE"
+        }
+      ],
+      "keys": [
+        "PricingDecisionID",
+        "CandidatePrice"
+      ],
+      "name": "validation_candidates",
+      "original_path": "artifacts/phase6/validation_candidate_surface.parquet",
+      "query": "SELECT * FROM read_files('/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/b55d8b708a6d39bd8604b1b31753dbaf9823aab3a8b8e2b34a36e4da7ff6cda0.parquet', format => 'parquet', schema => '`PricingDecisionID` STRING, `DecisionTime` TIMESTAMP_NTZ, `ProductID` STRING, `StoreID` STRING, `Channel` STRING, `CurrentPrice` DOUBLE, `AppliedPrice` DOUBLE, `BasePrice` DOUBLE, `CostPrice` DOUBLE, `HistoricalAppliedPrice` DOUBLE, `candidate_multiplier` DOUBLE, `CandidatePrice` DOUBLE, `candidate_rank_by_price` BIGINT, `is_current_price_candidate` BOOLEAN, `is_support_lower_boundary` BOOLEAN, `is_support_upper_boundary` BOOLEAN, `candidate_vs_current_pct` DOUBLE, `candidate_vs_base_pct` DOUBLE, `support_low` DOUBLE, `support_high` DOUBLE, `raw_purchase_probability` DOUBLE, `conditional_quantity` DOUBLE, `raw_expected_units` DOUBLE, `safe_expected_units` DOUBLE, `response_guard_adjusted_flag` BOOLEAN, `raw_demand_non_monotonic_flag` BOOLEAN, `number_of_adjusted_candidates` BIGINT, `maximum_expected_units_adjustment` DOUBLE, `mean_expected_units_adjustment` DOUBLE, `expected_revenue` DOUBLE, `raw_expected_revenue` DOUBLE, `unit_gross_profit` DOUBLE, `candidate_margin_pct` DOUBLE, `expected_gross_profit` DOUBLE, `raw_expected_gross_profit` DOUBLE, `negative_unit_margin_candidate` BOOLEAN, `inventory_constraint_applied` BOOLEAN, `available_inventory` DOUBLE')",
+      "rows": 47250,
+      "source": "/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/b55d8b708a6d39bd8604b1b31753dbaf9823aab3a8b8e2b34a36e4da7ff6cda0.parquet",
+      "source_sha256": "4c2e1729736d429f9f0c7910d4c1fc7d82fc6c850255112d6cf4cc63d41bb610",
+      "table": "intellify_databricks_demo.pricing_silver.validation_candidates_2e6c455737c6"
+    },
+    {
+      "compatibility_bytes": 910351,
+      "compatibility_sha256": "38b6c18ee651a5950903ae35950a010192b71740524bcecc93b48b409d72d821",
+      "fields": [
+        {
+          "name": "PricingDecisionID",
+          "type": "STRING"
+        },
+        {
+          "name": "DecisionTime",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "ProductID",
+          "type": "STRING"
+        },
+        {
+          "name": "StoreID",
+          "type": "STRING"
+        },
+        {
+          "name": "Channel",
+          "type": "STRING"
+        },
+        {
+          "name": "CurrentPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "HistoricalAppliedPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "RawModelOptimalPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SafeModelOptimalPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "RevenueOptimalCandidatePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "GrossProfitOptimalCandidatePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ModelOptimalCandidatePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "candidate_multiplier",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "current_expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "recommended_expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "current_expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "recommended_expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "current_expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "recommended_expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "absolute_expected_profit_uplift",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "relative_expected_profit_uplift",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "current_margin_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "candidate_margin_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_change_amount",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_change_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "decision_status",
+          "type": "STRING"
+        },
+        {
+          "name": "raw_vs_safe_optimum_changed",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "support_boundary_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "raw_expected_profit_optimum",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "safe_expected_profit_optimum",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "raw_revenue_optimum",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "current_negative_margin",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "NOT_FINAL_BUSINESS_RECOMMENDATION",
+          "type": "BOOLEAN"
+        }
+      ],
+      "keys": [
+        "PricingDecisionID"
+      ],
+      "name": "validation_model_decisions",
+      "original_path": "artifacts/phase6/validation_recommendations.parquet",
+      "query": "SELECT * FROM read_files('/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/38b6c18ee651a5950903ae35950a010192b71740524bcecc93b48b409d72d821.parquet', format => 'parquet', schema => '`PricingDecisionID` STRING, `DecisionTime` TIMESTAMP_NTZ, `ProductID` STRING, `StoreID` STRING, `Channel` STRING, `CurrentPrice` DOUBLE, `HistoricalAppliedPrice` DOUBLE, `RawModelOptimalPrice` DOUBLE, `SafeModelOptimalPrice` DOUBLE, `RevenueOptimalCandidatePrice` DOUBLE, `GrossProfitOptimalCandidatePrice` DOUBLE, `ModelOptimalCandidatePrice` DOUBLE, `candidate_multiplier` DOUBLE, `current_expected_units` DOUBLE, `recommended_expected_units` DOUBLE, `current_expected_revenue` DOUBLE, `recommended_expected_revenue` DOUBLE, `current_expected_gross_profit` DOUBLE, `recommended_expected_gross_profit` DOUBLE, `absolute_expected_profit_uplift` DOUBLE, `relative_expected_profit_uplift` DOUBLE, `current_margin_pct` DOUBLE, `candidate_margin_pct` DOUBLE, `price_change_amount` DOUBLE, `price_change_pct` DOUBLE, `decision_status` STRING, `raw_vs_safe_optimum_changed` BOOLEAN, `support_boundary_flag` BOOLEAN, `raw_expected_profit_optimum` DOUBLE, `safe_expected_profit_optimum` DOUBLE, `raw_revenue_optimum` DOUBLE, `current_negative_margin` BOOLEAN, `NOT_FINAL_BUSINESS_RECOMMENDATION` BOOLEAN')",
+      "rows": 5250,
+      "source": "/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/38b6c18ee651a5950903ae35950a010192b71740524bcecc93b48b409d72d821.parquet",
+      "source_sha256": "2db3bb58f18aa0d21dd68b52721556e845a5a92c5babbe89b353f9818948edab",
+      "table": "intellify_databricks_demo.pricing_silver.validation_model_decisions_2e6c455737c6"
+    },
+    {
+      "compatibility_bytes": 277418,
+      "compatibility_sha256": "7d7daf10fb62b0f64c72a83d4b114cdbf430afea3ffe773632ea617902b70363",
+      "fields": [
+        {
+          "name": "PricingDecisionID",
+          "type": "STRING"
+        },
+        {
+          "name": "DecisionTime",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "ProductID",
+          "type": "STRING"
+        },
+        {
+          "name": "StoreID",
+          "type": "STRING"
+        },
+        {
+          "name": "Channel",
+          "type": "STRING"
+        },
+        {
+          "name": "CategoryID",
+          "type": "STRING"
+        },
+        {
+          "name": "CurrentPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BasePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CostPrice",
+          "type": "DECIMAL(5,2)"
+        },
+        {
+          "name": "Phase6ModelOptimalCandidatePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "FinalRecommendedPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "FinalAction",
+          "type": "STRING"
+        },
+        {
+          "name": "PricingRuleID",
+          "type": "STRING"
+        },
+        {
+          "name": "RuleName",
+          "type": "STRING"
+        },
+        {
+          "name": "RulePriority",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "RuleSpecificity",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "effective_price_floor",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "effective_price_ceiling",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "passes_all_pricing_rules",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "rule_violation_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "rule_violation_reasons",
+          "type": "ARRAY<STRING>"
+        },
+        {
+          "name": "RecommendedPromotionID",
+          "type": "STRING"
+        },
+        {
+          "name": "RecommendedPromotionName",
+          "type": "STRING"
+        },
+        {
+          "name": "RecommendedPromotionDiscountPct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PromotionAction",
+          "type": "STRING"
+        },
+        {
+          "name": "promotion_pricing_mode",
+          "type": "STRING"
+        },
+        {
+          "name": "promotion_price",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "promotion_conflict_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "promotion_rule_conflict_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "MarkdownAction",
+          "type": "STRING"
+        },
+        {
+          "name": "seasonal_product_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "slow_moving_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "inventory_constraint_applied",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "InventorySnapshotDate",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "AvailableQty",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "StockStatus",
+          "type": "STRING"
+        },
+        {
+          "name": "expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "inventory_capped_expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "inventory_capped_expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "inventory_capped_expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_change_amount",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_change_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "phase6_price_changed_by_phase7",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "phase7_change_reason_codes",
+          "type": "ARRAY<STRING>"
+        },
+        {
+          "name": "manual_review_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "ADVISORY_ONLY",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "AUTO_WRITEBACK",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "context_mode",
+          "type": "STRING"
+        }
+      ],
+      "keys": [
+        "PricingDecisionID"
+      ],
+      "name": "inventory_decisions",
+      "original_path": "artifacts/phase7/current_inventory_business_decisions.parquet",
+      "query": "SELECT * FROM read_files('/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/7d7daf10fb62b0f64c72a83d4b114cdbf430afea3ffe773632ea617902b70363.parquet', format => 'parquet', schema => '`PricingDecisionID` STRING, `DecisionTime` TIMESTAMP_NTZ, `ProductID` STRING, `StoreID` STRING, `Channel` STRING, `CategoryID` STRING, `CurrentPrice` DOUBLE, `BasePrice` DOUBLE, `CostPrice` DECIMAL(5,2), `Phase6ModelOptimalCandidatePrice` DOUBLE, `FinalRecommendedPrice` DOUBLE, `FinalAction` STRING, `PricingRuleID` STRING, `RuleName` STRING, `RulePriority` DOUBLE, `RuleSpecificity` DOUBLE, `effective_price_floor` DOUBLE, `effective_price_ceiling` DOUBLE, `passes_all_pricing_rules` BOOLEAN, `rule_violation_count` BIGINT, `rule_violation_reasons` ARRAY<STRING>, `RecommendedPromotionID` STRING, `RecommendedPromotionName` STRING, `RecommendedPromotionDiscountPct` DOUBLE, `PromotionAction` STRING, `promotion_pricing_mode` STRING, `promotion_price` DOUBLE, `promotion_conflict_flag` BOOLEAN, `promotion_rule_conflict_flag` BOOLEAN, `MarkdownAction` STRING, `seasonal_product_flag` BOOLEAN, `slow_moving_flag` BOOLEAN, `inventory_constraint_applied` BOOLEAN, `InventorySnapshotDate` TIMESTAMP_NTZ, `AvailableQty` DOUBLE, `StockStatus` STRING, `expected_units` DOUBLE, `expected_revenue` DOUBLE, `expected_gross_profit` DOUBLE, `inventory_capped_expected_units` DOUBLE, `inventory_capped_expected_revenue` DOUBLE, `inventory_capped_expected_gross_profit` DOUBLE, `price_change_amount` DOUBLE, `price_change_pct` DOUBLE, `phase6_price_changed_by_phase7` BOOLEAN, `phase7_change_reason_codes` ARRAY<STRING>, `manual_review_flag` BOOLEAN, `ADVISORY_ONLY` BOOLEAN, `AUTO_WRITEBACK` BOOLEAN, `context_mode` STRING')",
+      "rows": 1829,
+      "source": "/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/7d7daf10fb62b0f64c72a83d4b114cdbf430afea3ffe773632ea617902b70363.parquet",
+      "source_sha256": "71c3a73e93c78611c4d6af09ce3105981bd00be4900aee53babbd55b9a3d8563",
+      "table": "intellify_databricks_demo.pricing_silver.inventory_decisions_2e6c455737c6"
+    },
+    {
+      "compatibility_bytes": 482268,
+      "compatibility_sha256": "eda2d6ced20f4010e66e8aa45ff36c565f5cb057a9104432561b0366d280d6fd",
+      "fields": [
+        {
+          "name": "PricingDecisionID",
+          "type": "STRING"
+        },
+        {
+          "name": "DecisionTime",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "ProductID",
+          "type": "STRING"
+        },
+        {
+          "name": "StoreID",
+          "type": "STRING"
+        },
+        {
+          "name": "Channel",
+          "type": "STRING"
+        },
+        {
+          "name": "CategoryID",
+          "type": "STRING"
+        },
+        {
+          "name": "CurrentPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BasePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CostPrice",
+          "type": "DECIMAL(5,2)"
+        },
+        {
+          "name": "Phase6ModelOptimalCandidatePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "FinalRecommendedPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "FinalAction",
+          "type": "STRING"
+        },
+        {
+          "name": "PricingRuleID",
+          "type": "STRING"
+        },
+        {
+          "name": "RuleName",
+          "type": "STRING"
+        },
+        {
+          "name": "RulePriority",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "RuleSpecificity",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "effective_price_floor",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "effective_price_ceiling",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "passes_all_pricing_rules",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "rule_violation_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "rule_violation_reasons",
+          "type": "ARRAY<STRING>"
+        },
+        {
+          "name": "RecommendedPromotionID",
+          "type": "STRING"
+        },
+        {
+          "name": "RecommendedPromotionName",
+          "type": "STRING"
+        },
+        {
+          "name": "RecommendedPromotionDiscountPct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PromotionAction",
+          "type": "STRING"
+        },
+        {
+          "name": "promotion_pricing_mode",
+          "type": "STRING"
+        },
+        {
+          "name": "promotion_price",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "promotion_conflict_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "promotion_rule_conflict_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "MarkdownAction",
+          "type": "STRING"
+        },
+        {
+          "name": "seasonal_product_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "slow_moving_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "inventory_constraint_applied",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "InventorySnapshotDate",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "AvailableQty",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "StockStatus",
+          "type": "STRING"
+        },
+        {
+          "name": "expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "inventory_capped_expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "inventory_capped_expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "inventory_capped_expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_change_amount",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_change_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "phase6_price_changed_by_phase7",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "phase7_change_reason_codes",
+          "type": "ARRAY<STRING>"
+        },
+        {
+          "name": "manual_review_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "ADVISORY_ONLY",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "AUTO_WRITEBACK",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "context_mode",
+          "type": "STRING"
+        }
+      ],
+      "keys": [
+        "PricingDecisionID"
+      ],
+      "name": "test_decisions",
+      "original_path": "artifacts/phase7/test_business_decisions.parquet",
+      "query": "SELECT * FROM read_files('/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/eda2d6ced20f4010e66e8aa45ff36c565f5cb057a9104432561b0366d280d6fd.parquet', format => 'parquet', schema => '`PricingDecisionID` STRING, `DecisionTime` TIMESTAMP_NTZ, `ProductID` STRING, `StoreID` STRING, `Channel` STRING, `CategoryID` STRING, `CurrentPrice` DOUBLE, `BasePrice` DOUBLE, `CostPrice` DECIMAL(5,2), `Phase6ModelOptimalCandidatePrice` DOUBLE, `FinalRecommendedPrice` DOUBLE, `FinalAction` STRING, `PricingRuleID` STRING, `RuleName` STRING, `RulePriority` DOUBLE, `RuleSpecificity` DOUBLE, `effective_price_floor` DOUBLE, `effective_price_ceiling` DOUBLE, `passes_all_pricing_rules` BOOLEAN, `rule_violation_count` BIGINT, `rule_violation_reasons` ARRAY<STRING>, `RecommendedPromotionID` STRING, `RecommendedPromotionName` STRING, `RecommendedPromotionDiscountPct` DOUBLE, `PromotionAction` STRING, `promotion_pricing_mode` STRING, `promotion_price` DOUBLE, `promotion_conflict_flag` BOOLEAN, `promotion_rule_conflict_flag` BOOLEAN, `MarkdownAction` STRING, `seasonal_product_flag` BOOLEAN, `slow_moving_flag` BOOLEAN, `inventory_constraint_applied` BOOLEAN, `InventorySnapshotDate` TIMESTAMP_NTZ, `AvailableQty` DOUBLE, `StockStatus` STRING, `expected_units` DOUBLE, `expected_revenue` DOUBLE, `expected_gross_profit` DOUBLE, `inventory_capped_expected_units` DOUBLE, `inventory_capped_expected_revenue` DOUBLE, `inventory_capped_expected_gross_profit` DOUBLE, `price_change_amount` DOUBLE, `price_change_pct` DOUBLE, `phase6_price_changed_by_phase7` BOOLEAN, `phase7_change_reason_codes` ARRAY<STRING>, `manual_review_flag` BOOLEAN, `ADVISORY_ONLY` BOOLEAN, `AUTO_WRITEBACK` BOOLEAN, `context_mode` STRING')",
+      "rows": 5250,
+      "source": "/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/eda2d6ced20f4010e66e8aa45ff36c565f5cb057a9104432561b0366d280d6fd.parquet",
+      "source_sha256": "4b81635f2794488c923a2334db2d93759abed6e5fdd78e2f9fa7a718135c48fa",
+      "table": "intellify_databricks_demo.pricing_silver.test_decisions_2e6c455737c6"
+    },
+    {
+      "compatibility_bytes": 491537,
+      "compatibility_sha256": "259fbe9528bbb5ce1c42b48de1803169ad85916d1600e0c657e5eafcd6ecc7ac",
+      "fields": [
+        {
+          "name": "PricingDecisionID",
+          "type": "STRING"
+        },
+        {
+          "name": "DecisionTime",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "ProductID",
+          "type": "STRING"
+        },
+        {
+          "name": "StoreID",
+          "type": "STRING"
+        },
+        {
+          "name": "Channel",
+          "type": "STRING"
+        },
+        {
+          "name": "CategoryID",
+          "type": "STRING"
+        },
+        {
+          "name": "CurrentPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BasePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CostPrice",
+          "type": "DECIMAL(5,2)"
+        },
+        {
+          "name": "Phase6ModelOptimalCandidatePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "FinalRecommendedPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "FinalAction",
+          "type": "STRING"
+        },
+        {
+          "name": "PricingRuleID",
+          "type": "STRING"
+        },
+        {
+          "name": "RuleName",
+          "type": "STRING"
+        },
+        {
+          "name": "RulePriority",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "RuleSpecificity",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "effective_price_floor",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "effective_price_ceiling",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "passes_all_pricing_rules",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "rule_violation_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "rule_violation_reasons",
+          "type": "ARRAY<STRING>"
+        },
+        {
+          "name": "RecommendedPromotionID",
+          "type": "STRING"
+        },
+        {
+          "name": "RecommendedPromotionName",
+          "type": "STRING"
+        },
+        {
+          "name": "RecommendedPromotionDiscountPct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PromotionAction",
+          "type": "STRING"
+        },
+        {
+          "name": "promotion_pricing_mode",
+          "type": "STRING"
+        },
+        {
+          "name": "promotion_price",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "promotion_conflict_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "promotion_rule_conflict_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "MarkdownAction",
+          "type": "STRING"
+        },
+        {
+          "name": "seasonal_product_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "slow_moving_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "inventory_constraint_applied",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "InventorySnapshotDate",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "AvailableQty",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "StockStatus",
+          "type": "STRING"
+        },
+        {
+          "name": "expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "inventory_capped_expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "inventory_capped_expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "inventory_capped_expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_change_amount",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_change_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "phase6_price_changed_by_phase7",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "phase7_change_reason_codes",
+          "type": "ARRAY<STRING>"
+        },
+        {
+          "name": "manual_review_flag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "ADVISORY_ONLY",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "AUTO_WRITEBACK",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "context_mode",
+          "type": "STRING"
+        }
+      ],
+      "keys": [
+        "PricingDecisionID"
+      ],
+      "name": "validation_decisions",
+      "original_path": "artifacts/phase7/validation_business_decisions.parquet",
+      "query": "SELECT * FROM read_files('/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/259fbe9528bbb5ce1c42b48de1803169ad85916d1600e0c657e5eafcd6ecc7ac.parquet', format => 'parquet', schema => '`PricingDecisionID` STRING, `DecisionTime` TIMESTAMP_NTZ, `ProductID` STRING, `StoreID` STRING, `Channel` STRING, `CategoryID` STRING, `CurrentPrice` DOUBLE, `BasePrice` DOUBLE, `CostPrice` DECIMAL(5,2), `Phase6ModelOptimalCandidatePrice` DOUBLE, `FinalRecommendedPrice` DOUBLE, `FinalAction` STRING, `PricingRuleID` STRING, `RuleName` STRING, `RulePriority` DOUBLE, `RuleSpecificity` DOUBLE, `effective_price_floor` DOUBLE, `effective_price_ceiling` DOUBLE, `passes_all_pricing_rules` BOOLEAN, `rule_violation_count` BIGINT, `rule_violation_reasons` ARRAY<STRING>, `RecommendedPromotionID` STRING, `RecommendedPromotionName` STRING, `RecommendedPromotionDiscountPct` DOUBLE, `PromotionAction` STRING, `promotion_pricing_mode` STRING, `promotion_price` DOUBLE, `promotion_conflict_flag` BOOLEAN, `promotion_rule_conflict_flag` BOOLEAN, `MarkdownAction` STRING, `seasonal_product_flag` BOOLEAN, `slow_moving_flag` BOOLEAN, `inventory_constraint_applied` BOOLEAN, `InventorySnapshotDate` TIMESTAMP_NTZ, `AvailableQty` DOUBLE, `StockStatus` STRING, `expected_units` DOUBLE, `expected_revenue` DOUBLE, `expected_gross_profit` DOUBLE, `inventory_capped_expected_units` DOUBLE, `inventory_capped_expected_revenue` DOUBLE, `inventory_capped_expected_gross_profit` DOUBLE, `price_change_amount` DOUBLE, `price_change_pct` DOUBLE, `phase6_price_changed_by_phase7` BOOLEAN, `phase7_change_reason_codes` ARRAY<STRING>, `manual_review_flag` BOOLEAN, `ADVISORY_ONLY` BOOLEAN, `AUTO_WRITEBACK` BOOLEAN, `context_mode` STRING')",
+      "rows": 5250,
+      "source": "/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/259fbe9528bbb5ce1c42b48de1803169ad85916d1600e0c657e5eafcd6ecc7ac.parquet",
+      "source_sha256": "339c95141eda615175a52470244ad95608c71ea389cd21ae9702776a452dde56",
+      "table": "intellify_databricks_demo.pricing_silver.validation_decisions_2e6c455737c6"
+    },
+    {
+      "compatibility_bytes": 1398588,
+      "compatibility_sha256": "e0caf873208f34a7fbc38c4463bbbc815924cd5a46c852ef2dd1c9f970264415",
+      "fields": [
+        {
+          "name": "PricingDecisionID",
+          "type": "STRING"
+        },
+        {
+          "name": "DecisionTime",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "CustomerID",
+          "type": "STRING"
+        },
+        {
+          "name": "SessionID",
+          "type": "STRING"
+        },
+        {
+          "name": "ProductID",
+          "type": "STRING"
+        },
+        {
+          "name": "StoreID",
+          "type": "STRING"
+        },
+        {
+          "name": "Channel",
+          "type": "STRING"
+        },
+        {
+          "name": "CurrentPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "AppliedPrice",
+          "type": "DECIMAL(5,2)"
+        },
+        {
+          "name": "CategoryID",
+          "type": "STRING"
+        },
+        {
+          "name": "BrandID",
+          "type": "STRING"
+        },
+        {
+          "name": "BasePrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "Season",
+          "type": "STRING"
+        },
+        {
+          "name": "RegionID",
+          "type": "STRING"
+        },
+        {
+          "name": "StoreType",
+          "type": "STRING"
+        },
+        {
+          "name": "ClimateZone",
+          "type": "STRING"
+        },
+        {
+          "name": "LoyaltyTier",
+          "type": "STRING"
+        },
+        {
+          "name": "CustomerSegment",
+          "type": "STRING"
+        },
+        {
+          "name": "PreferredChannel",
+          "type": "STRING"
+        },
+        {
+          "name": "FavoriteCategoryID",
+          "type": "STRING"
+        },
+        {
+          "name": "FavoriteBrandID",
+          "type": "STRING"
+        },
+        {
+          "name": "PriceSensitivity",
+          "type": "STRING"
+        },
+        {
+          "name": "CategoryAffinityScore",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BrandAffinityScore",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "active_history_selling_price",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "history_discount_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "days_since_current_price_started",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "previous_selling_price",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "previous_price_change_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "active_history_promotion_id",
+          "type": "STRING"
+        },
+        {
+          "name": "active_price_history_id",
+          "type": "STRING"
+        },
+        {
+          "name": "selected_price_effective_from",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "selected_price_effective_to",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "price_history_current_price_delta",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_history_current_price_mismatch",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "selected_promotion_start_date",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "selected_promotion_end_date",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "active_promotion_id",
+          "type": "STRING"
+        },
+        {
+          "name": "active_promotion_flag",
+          "type": "BIGINT"
+        },
+        {
+          "name": "active_promotion_discount_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "selected_sales_order_date",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "product_store_sales_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_store_sales_14d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_store_sales_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_region_sales_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_region_sales_14d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_region_sales_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_14d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_60d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_90d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_store_sales_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_store_sales_14d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_store_sales_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_sales_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_sales_14d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "category_sales_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_velocity_7d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_velocity_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_velocity_90d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_sales_velocity_ratio_7d_30d",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "days_since_last_product_sale",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "competitor_price_exact_channel",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "competitor_price_region_fallback",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "competitor_price_product_fallback",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "competitor_price_available",
+          "type": "BIGINT"
+        },
+        {
+          "name": "competitor_price_age_days",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "selected_competitor_observed_at",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "competitor_match_level",
+          "type": "STRING"
+        },
+        {
+          "name": "competitor_price",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "selected_behavior_event_at",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "product_views_1h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_views_24h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_views_168h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "product_views_720h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cart_additions_1h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cart_additions_24h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cart_additions_168h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cart_additions_720h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "search_clicks_1h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "search_clicks_24h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "search_clicks_168h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "search_clicks_720h",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "decision_month",
+          "type": "BIGINT"
+        },
+        {
+          "name": "decision_quarter",
+          "type": "BIGINT"
+        },
+        {
+          "name": "decision_day_of_week",
+          "type": "BIGINT"
+        },
+        {
+          "name": "decision_is_weekend",
+          "type": "BIGINT"
+        },
+        {
+          "name": "weather_temperature",
+          "type": "BIGINT"
+        },
+        {
+          "name": "weather_condition",
+          "type": "STRING"
+        },
+        {
+          "name": "weather_precipitation",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "is_holiday",
+          "type": "BIGINT"
+        },
+        {
+          "name": "holiday_sales_impact_factor",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "holiday_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "price_change_amount",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_change_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_vs_base_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "discount_from_base_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "price_vs_competitor_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "current_vs_base_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CostPrice",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PurchasedFlag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "QuantityPurchased",
+          "type": "BIGINT"
+        },
+        {
+          "name": "ActualRevenue",
+          "type": "DECIMAL(6,2)"
+        },
+        {
+          "name": "OutcomeTime",
+          "type": "TIMESTAMP_NTZ"
+        },
+        {
+          "name": "historical_purchase_probability",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "historical_expected_quantity_if_purchase",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "historical_expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "historical_expected_revenue",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "historical_expected_gross_profit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ObservedGrossProfit",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ObservedGrossProfit_formula_check",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "official_probability",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "phase5_official_expected_units",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "phase4_probability_delta",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "phase5_expected_units_delta",
+          "type": "DOUBLE"
+        }
+      ],
+      "keys": [
+        "PricingDecisionID"
+      ],
+      "name": "validation_outcomes",
+      "original_path": "artifacts/phase8/validation_factual_backtest.parquet",
+      "query": "SELECT * FROM read_files('/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/e0caf873208f34a7fbc38c4463bbbc815924cd5a46c852ef2dd1c9f970264415.parquet', format => 'parquet', schema => '`PricingDecisionID` STRING, `DecisionTime` TIMESTAMP_NTZ, `CustomerID` STRING, `SessionID` STRING, `ProductID` STRING, `StoreID` STRING, `Channel` STRING, `CurrentPrice` DOUBLE, `AppliedPrice` DECIMAL(5,2), `CategoryID` STRING, `BrandID` STRING, `BasePrice` DOUBLE, `Season` STRING, `RegionID` STRING, `StoreType` STRING, `ClimateZone` STRING, `LoyaltyTier` STRING, `CustomerSegment` STRING, `PreferredChannel` STRING, `FavoriteCategoryID` STRING, `FavoriteBrandID` STRING, `PriceSensitivity` STRING, `CategoryAffinityScore` DOUBLE, `BrandAffinityScore` DOUBLE, `active_history_selling_price` DOUBLE, `history_discount_pct` DOUBLE, `days_since_current_price_started` DOUBLE, `previous_selling_price` DOUBLE, `previous_price_change_pct` DOUBLE, `active_history_promotion_id` STRING, `active_price_history_id` STRING, `selected_price_effective_from` TIMESTAMP_NTZ, `selected_price_effective_to` TIMESTAMP_NTZ, `price_history_current_price_delta` DOUBLE, `price_history_current_price_mismatch` BOOLEAN, `selected_promotion_start_date` TIMESTAMP_NTZ, `selected_promotion_end_date` TIMESTAMP_NTZ, `active_promotion_id` STRING, `active_promotion_flag` BIGINT, `active_promotion_discount_pct` DOUBLE, `selected_sales_order_date` TIMESTAMP_NTZ, `product_store_sales_7d` DOUBLE, `product_store_sales_14d` DOUBLE, `product_store_sales_30d` DOUBLE, `product_region_sales_7d` DOUBLE, `product_region_sales_14d` DOUBLE, `product_region_sales_30d` DOUBLE, `product_sales_7d` DOUBLE, `product_sales_14d` DOUBLE, `product_sales_30d` DOUBLE, `product_sales_60d` DOUBLE, `product_sales_90d` DOUBLE, `category_store_sales_7d` DOUBLE, `category_store_sales_14d` DOUBLE, `category_store_sales_30d` DOUBLE, `category_sales_7d` DOUBLE, `category_sales_14d` DOUBLE, `category_sales_30d` DOUBLE, `product_sales_velocity_7d` DOUBLE, `product_sales_velocity_30d` DOUBLE, `product_sales_velocity_90d` DOUBLE, `product_sales_velocity_ratio_7d_30d` DOUBLE, `days_since_last_product_sale` DOUBLE, `competitor_price_exact_channel` DOUBLE, `competitor_price_region_fallback` DOUBLE, `competitor_price_product_fallback` DOUBLE, `competitor_price_available` BIGINT, `competitor_price_age_days` DOUBLE, `selected_competitor_observed_at` TIMESTAMP_NTZ, `competitor_match_level` STRING, `competitor_price` DOUBLE, `selected_behavior_event_at` TIMESTAMP_NTZ, `product_views_1h` DOUBLE, `product_views_24h` DOUBLE, `product_views_168h` DOUBLE, `product_views_720h` DOUBLE, `cart_additions_1h` DOUBLE, `cart_additions_24h` DOUBLE, `cart_additions_168h` DOUBLE, `cart_additions_720h` DOUBLE, `search_clicks_1h` DOUBLE, `search_clicks_24h` DOUBLE, `search_clicks_168h` DOUBLE, `search_clicks_720h` DOUBLE, `decision_month` BIGINT, `decision_quarter` BIGINT, `decision_day_of_week` BIGINT, `decision_is_weekend` BIGINT, `weather_temperature` BIGINT, `weather_condition` STRING, `weather_precipitation` DOUBLE, `is_holiday` BIGINT, `holiday_sales_impact_factor` DOUBLE, `holiday_count` BIGINT, `price_change_amount` DOUBLE, `price_change_pct` DOUBLE, `price_vs_base_pct` DOUBLE, `discount_from_base_pct` DOUBLE, `price_vs_competitor_pct` DOUBLE, `current_vs_base_pct` DOUBLE, `CostPrice` DOUBLE, `PurchasedFlag` BOOLEAN, `QuantityPurchased` BIGINT, `ActualRevenue` DECIMAL(6,2), `OutcomeTime` TIMESTAMP_NTZ, `historical_purchase_probability` DOUBLE, `historical_expected_quantity_if_purchase` DOUBLE, `historical_expected_units` DOUBLE, `historical_expected_revenue` DOUBLE, `historical_expected_gross_profit` DOUBLE, `ObservedGrossProfit` DOUBLE, `ObservedGrossProfit_formula_check` DOUBLE, `official_probability` DOUBLE, `phase5_official_expected_units` DOUBLE, `phase4_probability_delta` DOUBLE, `phase5_expected_units_delta` DOUBLE')",
+      "rows": 5250,
+      "source": "/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/lakehouse/e0caf873208f34a7fbc38c4463bbbc815924cd5a46c852ef2dd1c9f970264415.parquet",
+      "source_sha256": "abd509c74164fa0bb6125a0f19f8b97cee714e6383aba70f6d92ea1de139f453",
+      "table": "intellify_databricks_demo.pricing_silver.validation_outcomes_2e6c455737c6"
+    }
+  ],
+  "validation": {
+    "raw_source_refresh": "UNAVAILABLE_FROZEN_SNAPSHOT_ONLY",
+    "sources": {
+      "features": {
+        "null_keys": 0,
+        "rows": 35000,
+        "unique_keys": true
+      },
+      "inventory_decisions": {
+        "manual_review_rows": 186,
+        "missing_price_rows": 17,
+        "null_keys": 0,
+        "rows": 1829,
+        "unique_keys": true
+      },
+      "splits": {
+        "null_keys": 0,
+        "rows": 35000,
+        "unique_keys": true
+      },
+      "test_decisions": {
+        "manual_review_rows": 75,
+        "missing_price_rows": 75,
+        "null_keys": 0,
+        "rows": 5250,
+        "unique_keys": true
+      },
+      "validation_candidates": {
+        "null_keys": 0,
+        "rows": 47250,
+        "unique_keys": true
+      },
+      "validation_decisions": {
+        "manual_review_rows": 11,
+        "missing_price_rows": 11,
+        "null_keys": 0,
+        "rows": 5250,
+        "unique_keys": true
+      },
+      "validation_model_decisions": {
+        "null_keys": 0,
+        "rows": 5250,
+        "unique_keys": true
+      },
+      "validation_outcomes": {
+        "null_keys": 0,
+        "rows": 5250,
+        "unique_keys": true
+      }
+    },
+    "split_boundaries": {
+      "test": {
+        "end": "2025-12-31T23:59:39",
+        "start": "2025-11-15T23:57:30"
+      },
+      "train": {
+        "end": "2025-09-23T14:26:24",
+        "start": "2025-01-01T08:12:26"
+      },
+      "validation": {
+        "end": "2025-11-15T23:42:22",
+        "start": "2025-09-23T15:09:15"
+      }
+    },
+    "status": "PASS",
+    "temporal_audit": "Available source audit columns checked; raw history not independently rebuilt"
+  },
+  "versions": {
+    "data_version": "e3be4b1f7a0dd4b343b04bf9b0cc6b42d53a2e163b09e31f81a88c2f59d9306b",
+    "model_version": "1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d",
+    "policy_version": "bb03746172a89d22f1c5596dc3607b1486a4c9afbc07ec38c706442c7b10689a"
+  }
+}
