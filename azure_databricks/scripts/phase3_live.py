@@ -56,6 +56,7 @@ def acceptance():
 
 
 def isolated_load(client, host, uri, sample):
+    (ROOT / "build").mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(dir=ROOT / "build") as folder:
         path = Path(folder) / "input.json"
         path.write_text(sample.to_json(orient="records"))

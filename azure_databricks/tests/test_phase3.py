@@ -16,6 +16,7 @@ from pricing_mlflow.pipeline import PricingPipeline, VERSION
 class PricingServingContracts(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        (ROOT / "build").mkdir(exist_ok=True)
         cls.pipeline = PricingPipeline(ROOT)
         cls.input = phase3.example(cls.pipeline)
         cls.payload = json.loads(cls.input.request_json.iloc[0])

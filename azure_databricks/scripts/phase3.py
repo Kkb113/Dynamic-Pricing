@@ -102,6 +102,7 @@ def validate_local():
 
 
 def save_package(saved):
+    (ROOT / "build").mkdir(exist_ok=True)
     import mlflow
     from mlflow.models import ModelSignature
     from mlflow.types import Schema, ColSpec
@@ -128,6 +129,7 @@ def save_package(saved):
 
 
 def validate_package():
+    (ROOT / "build").mkdir(exist_ok=True)
     expected = PricingPipeline(ROOT).predict(example()).response_json.iloc[0]
     with tempfile.TemporaryDirectory(dir=ROOT / "build") as folder:
         temporary = Path(folder)
