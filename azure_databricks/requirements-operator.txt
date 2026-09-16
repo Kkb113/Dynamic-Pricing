@@ -1,0 +1,2 @@
+# Operator-only dependency. Do not add this to the pricing inference lock.
+databricks-sdk==0.81.0
