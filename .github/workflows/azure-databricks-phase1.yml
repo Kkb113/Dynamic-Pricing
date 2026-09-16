@@ -22,7 +22,7 @@ jobs:
       - run: python -m unittest discover -s azure_databricks/tests -v
       - run: python azure_databricks/scripts/phase1.py plan
       - run: python azure_databricks/scripts/phase2.py plan
-      - run: python azure_databricks/scripts/phase3.py plan
+      - run: python azure_databricks/scripts/phase3.py plan --evidence build/linux_phase3/plan.json
       - run: python azure_databricks/scripts/phase3.py validate-package --evidence build/linux_phase3/package.json
       - run: python azure_databricks/scripts/phase3.py validate-local --evidence build/linux_phase3/optimizer.json
       - run: python azure_databricks/scripts/phase3.py validate-business --policy-snapshot artifacts/azure_databricks/phase3/policy --evidence build/linux_phase3/business.json

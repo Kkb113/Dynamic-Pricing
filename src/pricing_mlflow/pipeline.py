@@ -22,6 +22,7 @@ from optimization.price_selector import select_model_optimal_prices
 from phase7.frozen_scorer import FrozenPhase7Scorer, recompute_response_safety
 from phase7.runner import build_business_decisions, annotate_rule_compliance
 from promotions.promotion_loader import PROMOTION_COLUMNS, validate_promotions
+from pricing_mlflow.release import fingerprint
 
 VERSION = "pricing.scoring.v1"
 FORBIDDEN = {"CustomerID", "SessionID", "PurchasedFlag", "QuantityPurchased", "ActualRevenue", "CustomerEmail"}
@@ -49,6 +50,7 @@ class PricingPipeline:
     def __init__(self, root: str | Path):
         self.root = Path(root)
         self.scorer = FrozenPhase7Scorer(self.root)
+        self.release_fingerprint = fingerprint(self.root)
         self.optimizer = json.loads((self.root / "artifacts/phase6/frozen_optimizer_spec.json").read_text())
         self.policy = json.loads((self.root / "artifacts/phase7/frozen_business_policy_spec.json").read_text())
         self.grid = CandidateGrid(*[float(self.optimizer[k]) for k in
@@ -197,7 +199,7 @@ class PricingPipeline:
             decisions[name] = final[name].to_numpy()
         decisions["currency_code"] = None
         decisions["currency_status"] = "UNVERIFIED_SOURCE_UNIT"
-        decisions["model_release"] = self.scorer.release_fingerprint
+        decisions["model_release"] = self.release_fingerprint
         return clean({"schema_version": VERSION, "decisions": records(decisions),
                 "model_recommendations": records(recommendations), "simulations": simulations, "diagnostics": diagnostics,
                 "advisory_only": True, "auto_writeback": False,

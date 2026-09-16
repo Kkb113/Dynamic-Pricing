@@ -13,23 +13,14 @@ from pathlib import Path
 
 from phase1 import ROOT, CONFIG_PATH, make_plan, packed, digest, require
 from pricing_mlflow.pipeline import PricingPipeline, VERSION, clean
+from pricing_mlflow.release import INFERENCE_FILES, release_bytes
 import numpy as np
 import pandas as pd
-
-INFERENCE_FILES = (
-    "contracts/phase2_feature_contract_v1.yaml",
-    "artifacts/phase4/models/purchase_catboost.cbm",
-    "artifacts/phase4/frozen_model_spec.json",
-    "artifacts/phase5/models/quantity_estimator_metadata.json",
-    "artifacts/phase6/frozen_optimizer_spec.json",
-    "artifacts/phase7/frozen_business_policy_spec.json",
-)
-
 
 def plan():
     config = json.loads(CONFIG_PATH.read_text())
     sealed = make_plan(ROOT, config)
-    files = [{"path": p, "sha256": digest((ROOT / p).read_bytes()), "bytes": (ROOT / p).stat().st_size}
+    files = [{"path": p, "sha256": digest(release_bytes(ROOT / p)), "bytes": len(release_bytes(ROOT / p))}
              for p in INFERENCE_FILES]
     code = [{"path": p.relative_to(ROOT).as_posix(), "sha256": digest(p.read_bytes().replace(b"\r\n", b"\n"))}
             for p in sorted((ROOT / "src").rglob("*.py"))]
@@ -37,6 +28,8 @@ def plan():
             "model_name": config["catalog"] + ".pricing_ml.pricing_decision_pipeline",
             "experiment": "/Shared/dynamic-pricing/phase3-pricing",
             "files": files, "code": code, "package_bytes": sum(x["bytes"] for x in files),
+            "entrypoint_sha256": digest((ROOT / "azure_databricks/scripts/phase3_model.py").read_bytes().replace(b"\r\n", b"\n")),
+            "dependencies_sha256": digest((ROOT / "azure_databricks/requirements-mlflow.txt").read_bytes().replace(b"\r\n", b"\n")),
             "contains_row_level_data": False, "compute_started": False,
             "dedicated_endpoint": False, "advisory_only": True, "automatic_writeback": False,
             "signature": {"input": {"request_json": "string"}, "output": {"response_json": "string"}},
@@ -51,7 +44,7 @@ def inference_bundle(destination):
     for p in INFERENCE_FILES:
         target = destination / p
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(ROOT / p, target)
+        target.write_bytes(release_bytes(ROOT / p))
     (destination / "pricing_release.json").write_bytes(packed(plan()))
     require(not list(destination.rglob("*.parquet")), "Dataset embedded in inference package")
     return destination

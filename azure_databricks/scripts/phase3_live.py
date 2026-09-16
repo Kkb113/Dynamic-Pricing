@@ -46,6 +46,7 @@ def acceptance():
     require(all(not x["mismatches"] for x in business["splits"].values()), "Business parity incomplete")
     linux = json.loads((ROOT / "azure_databricks/evidence/phase_03/linux_ci.json").read_text())
     require(linux["conclusion"] == "success", "Linux CI must pass before registration")
+    require(linux["inference_plan_sha256"] == digest(packed(plan())), "Scoring package changed after Linux acceptance")
     policy = ROOT / "artifacts/azure_databricks/phase3/policy"
     manifest = json.loads((policy / "manifest.json").read_text())
     require(manifest["replay_verified"] and manifest["acceptance_sha256"] == digest(packed(business)), "Policy acceptance drift")
@@ -142,17 +143,17 @@ def apply(output):
             denied = isolated_load(negative, cfg["host"], uri, sample)
             checks["lower_privilege_registered_load_denied"] = denied.get("denied", False)
             try:
-                negative.registered_models.get(spec["model_name"])
-                # Metadata discoverability is not equivalent to model execution permission.
-            except PermissionDenied:
-                pass
-            try:
                 RemoteFiles(negative).read(root + "/policy/manifest.json")
                 checks["lower_privilege_policy_denied"] = False
             except PermissionDenied:
                 checks["lower_privilege_policy_denied"] = True
         require(all(checks.values()), "Runtime identity acceptance failed")
         result["identity_checks"] = checks
+        with authentication(cloud.client, cfg["host"]):
+            mlflow.set_registry_uri("databricks-uc")
+            registry = MlflowClient()
+            registry.set_model_version_tag(spec["model_name"], str(version.version), "pricing.acceptance", "PASS")
+            registry.set_model_version_tag(spec["model_name"], str(version.version), "pricing.release_seal", seal)
         cloud.client.registered_models.set_alias(spec["model_name"], "Champion", int(version.version))
         aliases = cloud.client.registered_models.get(spec["model_name"], include_aliases=True).aliases or []
         require(any(x.alias_name == "Champion" and x.version_num == int(version.version) for x in aliases), "Alias readback failed")

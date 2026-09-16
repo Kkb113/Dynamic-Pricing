@@ -4,9 +4,9 @@
   "dataset_embedded": false,
   "registry_roundtrip": "NOT_RUN",
   "runtime": {
-    "rss_bytes": 168095744,
-    "sha256": "cbfbb69731049eaae72dad2ded2289483113e0b3986bbefb5a4d7d19244d1d44",
-    "startup_seconds": 0.9549483000009786
+    "rss_bytes": 168558592,
+    "sha256": "55614c3a1cd97fe83c784d34939ba042dd8ec78c6fcc6a2feca8b5d4b04b9708",
+    "startup_seconds": 0.9588215000112541
   },
   "status": "PASS"
 }
