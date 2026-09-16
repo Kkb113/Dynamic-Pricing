@@ -203,6 +203,29 @@ class PricingServingContracts(unittest.TestCase):
             self.assertEqual(os.environ["DATABRICKS_TOKEN"], "test-only-placeholder")
         self.assertEqual(os.environ.get("DATABRICKS_TOKEN"), previous)
 
+    def test_explicit_resolution_batch_and_immutable_output(self):
+        from pricing_mlflow.serving import PricingService, persist_decisions
+        from business_rules.rule_loader import PRICING_RULE_COLUMNS
+        from promotions.promotion_loader import PROMOTION_COLUMNS
+        from inventory_policy.inventory_loader import INVENTORY_COLUMNS
+        context = pd.DataFrame(self.payload["context"])
+        service = PricingService(self.pipeline, context, pd.DataFrame(columns=PRICING_RULE_COLUMNS),
+            pd.DataFrame(columns=PROMOTION_COLUMNS), pd.DataFrame(columns=INVENTORY_COLUMNS))
+        row = context.iloc[0]
+        single = service.recommend(row.ProductID, row.StoreID, row.Channel, row.DecisionTime)
+        batch = service.batch(context)
+        self.assertEqual(single["decisions"], batch["decisions"])
+        with self.assertRaisesRegex(ValueError, "SUPPORTED_CONTEXT_NOT_FOUND"):
+            service.resolve("missing", row.StoreID, row.Channel, row.DecisionTime)
+        with self.assertRaisesRegex(ValueError, "UNSUPPORTED_SNAPSHOT_AS_OF"):
+            service.resolve(row.ProductID, row.StoreID, row.Channel, "2026-09-16")
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "decisions.json"
+            self.assertTrue(persist_decisions(batch, path)["created"])
+            self.assertFalse(persist_decisions(batch, path)["created"])
+            with self.assertRaisesRegex(ValueError, "IMMUTABLE_BATCH_OUTPUT_COLLISION"):
+                persist_decisions({**batch, "mode": "different"}, path)
+
 
 if __name__ == "__main__":
     unittest.main()

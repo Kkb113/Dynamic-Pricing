@@ -162,9 +162,10 @@ def apply(output):
         require(not any(x.alias_name == "Champion" for x in aliases), "First-release rollback failed")
         cloud.client.registered_models.set_alias(spec["model_name"], "Champion", int(version.version))
         result["first_release_rollback_tested"] = True
-        result.update(status="PASS", champion_promoted=True, first_release_rollback="DELETE_CHAMPION_ALIAS_TO_WITHHOLD_UNVALIDATED_AVAILABILITY",
+        result.update(champion_promoted=True, first_release_rollback="DELETE_CHAMPION_ALIAS_TO_WITHHOLD_UNVALIDATED_AVAILABILITY",
                       credentials_revoked=True)
         cloud.client.registered_models.update(spec["model_name"], owner=cfg["owner_group"])
+        result["status"] = "PASS"
     finally:
         if result["status"] != "PASS" and result.get("model_version"):
             aliases = cloud.client.registered_models.get(spec["model_name"], include_aliases=True).aliases or []

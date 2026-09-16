@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "azure_contract_tests": 65,
+  "azure_contract_tests": 66,
   "existing_regression_tests": 280,
   "existing_regression_seconds": 25.25,
   "cloud_compute_started": false,

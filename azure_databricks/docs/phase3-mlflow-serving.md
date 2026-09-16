@@ -10,6 +10,10 @@ The MLflow Models-from-Code adapter is `azure_databricks/scripts/phase3_model.py
 
 Requests explicitly supply full point-in-time model features, product/store/channel/decision identity, decision time, cost and the governed business source projections. Empty business sources must be explicit, not inferred. All six observed channels are supported. Requests reject unknown fields, customer/outcome fields, invalid prices, future feature context, unsupported simulation prices and stale current-inventory context. Current-inventory mode refers only to the frozen 2025-12-31 snapshot and a maximum 30-day context age; it is not live inventory.
 
+`PricingService` resolves explicit product/store/channel/as-of requests against caller-authorized precomputed contexts, without accessing customer data or outcomes. It selects the latest available preceding context, labels the actual source/policy date, rejects contexts older than 30 days and dates beyond the accepted snapshot, and never pretends features have been recomputed for today. Its batch adapter uses the same pipeline, 500 contexts at a time. `persist_decisions` provides immutable, idempotent JSON outputs with SHA-256 readback and collision rejection.
+
+Policy sensitivity tests cover explicit ceilings, rejected simulations, conflicting bounds, overlapping promotions, missing inventory and out-of-stock outcomes. An all-null final-price attachment bug found by these tests was corrected in the new adapter; the frozen accepted source pipeline and expected business outputs were not changed. Simulations are marked simulation-only and distinguish eligibility from hypothetical, uncapped model economics.
+
 Responses distinguish raw probability/demand/economics, guarded estimates and final stock-capped decision economics. Candidate simulations report rule compliance separately and do not replace the recommendation. Currency remains unverified: Azure billing in INR does not establish the source product-price currency. Estimated uplift is model-implied, not realized revenue.
 
 ## Local acceptance
