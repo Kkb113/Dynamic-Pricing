@@ -1,0 +1,47 @@
+{
+  "phase": "Phase 1 — Application Contract & Local Architecture",
+  "contract_version": "1",
+  "scope": "contracts_and_architecture_only",
+  "result": "PASS_WITH_WARNINGS",
+  "base_branch": "codex/phase9-10-local-ai-pricing-app",
+  "base_git_sha": "8c06b3280d0802065cb5a699f3d9dc9d9689f692",
+  "implementation_branch": "codex/app-phase1-contract-architecture",
+  "implementation_git_sha": "ce4690b21e9467fb53c19f7df3e4d21f8f4fdd03",
+  "evidence_git_sha": "ce4690b21e9467fb53c19f7df3e4d21f8f4fdd03",
+  "gates": {
+    "architecture_and_trust_boundary": true,
+    "versioned_schemas": true,
+    "fixtures_validate": true,
+    "secret_scan": true,
+    "phase_boundary_documented": true
+  },
+  "schema_files": [
+    "chart_spec_v1.schema.json",
+    "pricing_chat_error_v1.schema.json",
+    "pricing_chat_request_v1.schema.json",
+    "pricing_chat_response_v1.schema.json",
+    "pricing_chat_sse_event_v1.schema.json"
+  ],
+  "fixture_results": {
+    "request_recommendation.json": "PASS",
+    "response_recommendation.json": "PASS",
+    "error_unsupported.json": "PASS"
+  },
+  "targeted_tests": {
+    "status": "PASS",
+    "passed": 15,
+    "failed": 0,
+    "command": "pytest -q tests/application_contract"
+  },
+  "full_suite": {
+    "status": "PASS",
+    "passed": 210,
+    "failed": 0,
+    "command": "pytest -q"
+  },
+  "warnings": [
+    "FastAPI runtime wiring is deferred to Phase 2.",
+    "React runtime and browser chart integration are deferred to Phase 3.",
+    "OpenAI key is intentionally absent from the checked-in environment example."
+  ]
+}

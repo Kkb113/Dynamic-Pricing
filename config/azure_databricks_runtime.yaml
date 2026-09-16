@@ -1,0 +1,25 @@
+schema_version: pricing.databricks.runtime.v1
+status: phase0_prepared_not_deployed
+workspace: intellify-databricks-demo
+catalog: intellify_databricks_demo
+runtime:
+  mode_environment_variable: PRICING_RUNTIME_MODE
+  mode: databricks
+  bind_host: 0.0.0.0
+  port_environment_variable: DATABRICKS_APP_PORT
+  api_routing: same_origin
+  authentication: databricks_app_identity
+release:
+  version_environment_variable: PRICING_RELEASE_VERSION
+  feature_flag_default: false
+storage:
+  proposed_schemas: [pricing_bronze, pricing_silver, pricing_gold, pricing_ml]
+  create_in_phase0: false
+compute:
+  new_serving_endpoint: false
+  recurring_job: false
+  use_existing_app_after_phase3_acceptance: true
+security:
+  secrets_in_file: false
+  browser_credentials: false
+  least_privilege_required: true

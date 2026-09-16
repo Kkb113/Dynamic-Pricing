@@ -1,0 +1,40 @@
+[
+  {
+    "schema_version": "pricing.chat.sse.v1",
+    "event": "chat.started",
+    "request_id": "req_demo_stream",
+    "sequence": 0,
+    "payload": {"status": "started"}
+  },
+  {
+    "schema_version": "pricing.chat.sse.v1",
+    "event": "chat.tool",
+    "request_id": "req_demo_stream",
+    "sequence": 1,
+    "payload": {
+      "tool_name": "compare_price_scenarios",
+      "status": "completed",
+      "record_count": 2
+    }
+  },
+  {
+    "schema_version": "pricing.chat.sse.v1",
+    "event": "chat.delta",
+    "request_id": "req_demo_stream",
+    "sequence": 2,
+    "payload": {"text": "I found a validated pricing comparison."}
+  },
+  {
+    "schema_version": "pricing.chat.sse.v1",
+    "event": "chat.error",
+    "request_id": "req_demo_stream_error",
+    "sequence": 0,
+    "payload": {
+      "error": {
+        "code": "AGENT_TIMEOUT",
+        "message": "The conversational explanation timed out; deterministic pricing tools remain available.",
+        "retryable": true
+      }
+    }
+  }
+]

@@ -1,0 +1,96 @@
+{
+  "phase": "Phase 3 — React Conversational Pricing Interface",
+  "contract_version": "1",
+  "scope": "local_react_pricing_chat_with_validated_charts_and_raw_json",
+  "result": "PASS_WITH_WARNINGS",
+  "base_branch": "codex/app-phase2-fastapi-openai-agent",
+  "base_git_sha": "53072eca341dd07e21a7fb1e511ff3c8537f0dbf",
+  "implementation_branch": "codex/app-phase3-react-pricing-chat",
+  "implementation_git_sha": "d8a312cf8b424a20e40cba16453ac79d0be31fd0",
+  "evidence_git_sha": "81bfbcc759a67dca0f5b0ec9f032ebe4da3d7175",
+  "source_tree_sha256": "5a628432267b8fe1bc8589f9590f7325fb5f6c6b0de687bd5921dcdae5371e7b",
+  "runtime": {
+    "node": "24.14.0",
+    "npm": "11.9.0",
+    "react": "19.2.8",
+    "vite": "8.2.1",
+    "typescript": "6.0.3",
+    "vitest": "4.1.11",
+    "jsdom": "30.0.1",
+    "package_lock_sha256": "411006ab9b5d6f3297922bb8efdd5124ed32375f4df3d556a955e0f52f25ca93",
+    "default_api_base": "http://127.0.0.1:8000",
+    "persistence": "none",
+    "authentication": "none",
+    "hosting": "none"
+  },
+  "entrypoints": {
+    "development": "cd frontend; npm run dev -- --host 127.0.0.1",
+    "quality": "cd frontend; npm run lint; npm run typecheck; npm test; npm run build",
+    "local_launcher": "scripts/run_local_react_app.ps1",
+    "backend_health": "GET /api/v1/healthz",
+    "backend_chat": "POST /api/v1/pricing/chat",
+    "backend_stream": "POST /api/v1/pricing/chat/stream"
+  },
+  "gates": {
+    "single_conversational_pricing_route": true,
+    "loopback_only_api_configuration": true,
+    "strict_phase1_runtime_contract_validation": true,
+    "server_generated_sse_id_learning_and_ordering": true,
+    "numeric_delta_rejection": true,
+    "validated_backend_chart_allowlist": true,
+    "accessible_chart_table_fallback": true,
+    "validated_terminal_raw_json_only": true,
+    "recursive_sensitive_string_scan": true,
+    "no_direct_openai_call_or_key_read": true,
+    "no_browser_persistence": true,
+    "no_sql_writeback_training_or_hosting": true,
+    "reduced_motion_and_keyboard_accessibility": true,
+    "safe_json_endpoint_fallback": true
+  },
+  "frontend_tests": {
+    "status": "PASS",
+    "passed": 26,
+    "failed": 0,
+    "skipped": 0,
+    "suites": 6,
+    "command": "cd frontend; npm test -- --reporter=json --outputFile=../artifacts/phase3_application/frontend_test_results.json --maxWorkers=1 --testTimeout=5000",
+    "evidence": "artifacts/phase3_application/frontend_test_results.json"
+  },
+  "frontend_typecheck": {
+    "status": "PASS",
+    "command": "cd frontend; npm run typecheck"
+  },
+  "frontend_lint": {
+    "status": "PASS",
+    "command": "cd frontend; npm run lint"
+  },
+  "frontend_build": {
+    "status": "PASS",
+    "command": "cd frontend; npm run build",
+    "evidence": "artifacts/phase3_application/build_results.json"
+  },
+  "route_smoke": {
+    "status": "PASS",
+    "command": "loopback Vite GET /",
+    "status_code": 200,
+    "evidence": "artifacts/phase3_application/route_smoke.json"
+  },
+  "full_suite": {
+    "status": "PASS",
+    "passed": 234,
+    "failed": 0,
+    "skipped": 0,
+    "command": "TEST_EVIDENCE_PATH=artifacts/phase3_application/full_suite_results.json PYTHONPATH=src python -m pytest -q",
+    "evidence": "artifacts/phase3_application/full_suite_results.json"
+  },
+  "upstream_evidence": {
+    "phase1_test_results_git_blob_sha": "5fd4eaf1c56cf4276d9458841d4972794807a1c4",
+    "phase2_manifest_git_blob_sha": "ecf8d9487b9d3808f2f2d79f3ed2e888637250e5",
+    "byte_for_byte_unchanged": true
+  },
+  "warnings": [
+    "The existing Python environment emits one asyncio_default_fixture_loop_scope pytest configuration warning; all 234 tests pass.",
+    "npm reports an existing jsdom 30.0.1 engine advisory for Node 24.14.0; all 26 frontend tests and the production build pass.",
+    "No browser preview or live OpenAI call was used; the route smoke was a loopback HTML request and API behavior was tested with fakes/fixtures."
+  ]
+}

@@ -1,0 +1,84 @@
+version: 1
+contract_id: dynamic-pricing-local-chat
+phase: "Phase 1 - Application Contract & Local Architecture"
+runtime:
+  mode: local_only
+  frontend: react
+  backend: fastapi
+  browser_origin_allowlist:
+    - http://localhost:5173
+    - http://127.0.0.1:5173
+  backend_bind: 127.0.0.1
+  backend_port: 8000
+  authentication: none
+  persistence: none
+  hosting: prohibited
+  deployment: prohibited
+secrets:
+  openai_api_key:
+    owner: fastapi
+    source: OPENAI_API_KEY
+    browser_visible: false
+    response_visible: false
+    log_visible: false
+    artifact_visible: false
+    git_visible: false
+api:
+  health:
+    method: GET
+    path: /api/v1/healthz
+    response: health_v1
+  chat:
+    method: POST
+    path: /api/v1/pricing/chat
+    request_schema: pricing_chat_request_v1.schema.json
+    response_schema: pricing_chat_response_v1.schema.json
+  stream:
+    method: POST
+    path: /api/v1/pricing/chat/stream
+    request_schema: pricing_chat_request_v1.schema.json
+    content_type: text/event-stream
+    event_schema: pricing_chat_sse_event_v1.schema.json
+  errors:
+    schema: pricing_chat_error_v1.schema.json
+supported_intents:
+  - capability_explanation
+  - recommendation_lookup
+  - recommendation_explanation
+  - scenario_simulation
+  - scenario_comparison
+  - model_performance
+  - business_rule_explanation
+  - inventory_insight
+  - help
+authority:
+  numeric_pricing_claims: deterministic_local_tools_only
+  chart_data: validated_backend_structured_data_only
+  natural_language_answer: agent_or_deterministic_fallback
+  chain_of_thought: never_returned
+  tool_names:
+    - get_pricing_recommendation
+    - explain_pricing_recommendation
+    - simulate_price
+    - compare_price_scenarios
+    - search_recommendations
+    - get_model_performance
+    - get_business_rule_details
+    - get_current_inventory_insight
+    - get_use_case_summary
+    - get_agent_capabilities
+phase_boundary:
+  delivered:
+    - architecture_and_trust_boundaries
+    - versioned_json_contracts
+    - representative_fixtures
+    - agent_governance_and_failure_policy
+    - react_state_and_component_contract
+    - adr_decisions
+    - contract_validation_tests
+  deferred:
+    - fastapi_runtime_implementation
+    - openai_agent_runtime_wiring
+    - react_runtime_implementation
+    - chart_library_integration
+    - end_to_end_browser_tests

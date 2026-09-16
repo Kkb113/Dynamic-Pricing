@@ -1,0 +1,19 @@
+{
+  "phase": "phase4",
+  "status": "PASS",
+  "frontend_http_status": 200,
+  "health_http_status": 200,
+  "chat_http_status": 200,
+  "health_ready": true,
+  "health_agent_available": false,
+  "answer_source": "deterministic_fallback",
+  "response_status": "completed",
+  "schema_validation": true,
+  "fallback_functional": true,
+  "warning_codes": [
+    "OPENAI_NOT_CONFIGURED"
+  ],
+  "error_codes": [],
+  "response_contains_sensitive_markers": false,
+  "raw_json_viewer_safe": true
+}

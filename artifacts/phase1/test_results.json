@@ -1,18 +1,22 @@
 {
-  "duration_seconds": 0.264962,
-  "exit_code": 0,
-  "failed": 0,
-  "generated_at_utc": "2026-08-16T08:07:38.391621+00:00",
+  "duration_seconds": 22.257453,
+  "exit_code": 1,
+  "failed": 19,
+  "generated_at_utc": "2026-09-16T04:19:23.264719+00:00",
   "invocation": [
     "__main__.py",
-    "-q"
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    ".test-tmp\\baseline"
   ],
-  "passed": 59,
+  "passed": 240,
   "skipped": 0,
   "source": "pytest_sessionfinish",
-  "source_tree_sha256": "ed30d89fc4da3ccc5aebe89a37110cc2d14337a8ae38a39baecbac521d164f72",
-  "status": "PASS",
-  "total": 59,
+  "source_tree_sha256": "92c2455a6a0ce2705dc85c48cc63a9390292b314e84b2ec80b5a6d75352370c2",
+  "status": "FAIL",
+  "total": 259,
   "xfailed": 0,
   "xpassed": 0
 }

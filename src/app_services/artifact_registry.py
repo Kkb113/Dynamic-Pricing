@@ -41,6 +41,24 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def matches_recorded_hash(path: Path, expected: str) -> bool:
+    """Preserve legacy hashes across Git LF/CRLF checkout conversion only."""
+    if sha256_file(path) == expected:
+        return True
+    if path.suffix.lower() != ".json":
+        return False
+    content = path.read_bytes()
+    try:
+        content.decode("utf-8")
+    except UnicodeDecodeError:
+        return False
+    lf = content.replace(b"\r\n", b"\n")
+    return expected in {
+        hashlib.sha256(lf).hexdigest(),
+        hashlib.sha256(lf.replace(b"\n", b"\r\n")).hexdigest(),
+    }
+
+
 def _json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -164,7 +182,7 @@ class ArtifactRegistry:
             if not path.exists():
                 continue
             actual = sha256_file(path)
-            if actual != expected:
+            if not matches_recorded_hash(path, expected):
                 mismatches.append({"path": path.relative_to(self.root).as_posix(), "expected": expected, "actual": actual})
         manifest = self.phase8_manifest if self.paths.phase8_manifest.exists() else {}
         blockers = list(manifest.get("major_blockers", []))

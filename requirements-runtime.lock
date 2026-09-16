@@ -1,0 +1,12 @@
+# Tested Phase 0 runtime dependency set (Python 3.12.14, Windows local validation).
+# Linux compatibility is checked in CI; this is not a cross-platform hash lock.
+PyYAML==6.0.3
+catboost==1.2.10
+fastapi==0.141.1
+numpy==2.5.2
+pandas==3.0.5
+psutil==7.2.2
+pyarrow==25.0.1
+pydantic==2.13.4
+python-dotenv==1.2.3
+uvicorn==0.52.4

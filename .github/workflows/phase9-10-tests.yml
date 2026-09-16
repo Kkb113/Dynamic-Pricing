@@ -23,8 +23,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - run: python -m pip install --upgrade pip
-      - run: python -m pip install -e ".[test]"
+      - run: python -m pip install -r requirements-test.lock -e ".[agent,training,extraction,legacy-ui,test]"
       - run: pytest -q tests/phase9_10
       - run: pytest -q

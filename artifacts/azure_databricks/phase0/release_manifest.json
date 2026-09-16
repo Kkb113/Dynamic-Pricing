@@ -1,0 +1,1257 @@
+{
+  "advisory_only": true,
+  "blockers": [],
+  "currency_status": "UNVERIFIED_SOURCE_UNIT",
+  "excluded": [
+    ".env",
+    ".env.local",
+    ".env.production",
+    ".git",
+    ".phase2-run-tmp",
+    ".phase4-runtime",
+    ".pytest_cache",
+    ".test-tmp",
+    ".venv",
+    "__pycache__",
+    "dist",
+    "node_modules"
+  ],
+  "file_count": 204,
+  "files": [
+    {
+      "bytes": 5495194,
+      "hash_mode": "raw_bytes",
+      "path": "artifacts/phase2/feature_dataset.parquet",
+      "sha256": "e3be4b1f7a0dd4b343b04bf9b0cc6b42d53a2e163b09e31f81a88c2f59d9306b"
+    },
+    {
+      "bytes": 586254,
+      "hash_mode": "raw_bytes",
+      "path": "artifacts/phase3/split_assignments.parquet",
+      "sha256": "9632ad58c980ee6d3c5f95a5bb78b03ea559c9198b004040a4a8d603e3528c1d"
+    },
+    {
+      "bytes": 4662,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase4/frozen_model_spec.json",
+      "sha256": "055bbbbc137ce06493bc585946681baf07b9e175ca21b9743e575f3ea333101d"
+    },
+    {
+      "bytes": 216480,
+      "hash_mode": "raw_bytes",
+      "path": "artifacts/phase4/models/purchase_catboost.cbm",
+      "sha256": "1af936a1905dcb21e3623392a16afbdbfc6b57c6866093fd6b33f12976dfd86d"
+    },
+    {
+      "bytes": 5536,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase5/frozen_quantity_spec.json",
+      "sha256": "3c824d85b20b8e8fb994b6b00cde85cefbeab4373cac70f1dff310b4292c74b4"
+    },
+    {
+      "bytes": 115,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase5/models/conditional_quantity_mean.json",
+      "sha256": "ee23e6e1cb93ae3eb3faa37641f63f89453d3702c48a9eeade3c28ad5f8ea1b7"
+    },
+    {
+      "bytes": 2155,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase5/models/quantity_estimator_metadata.json",
+      "sha256": "194db2fa30850c3a549a9637e7c0224c628a1f62fae858ea4ef3bacee00f8088"
+    },
+    {
+      "bytes": 5556,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase6/frozen_optimizer_spec.json",
+      "sha256": "f0b6b904815ce60a11e0012d29f6b934381a2e3ac0efbbb468cf84ec757bf622"
+    },
+    {
+      "bytes": 4624968,
+      "hash_mode": "raw_bytes",
+      "path": "artifacts/phase6/validation_candidate_surface.parquet",
+      "sha256": "4c2e1729736d429f9f0c7910d4c1fc7d82fc6c850255112d6cf4cc63d41bb610"
+    },
+    {
+      "bytes": 921850,
+      "hash_mode": "raw_bytes",
+      "path": "artifacts/phase6/validation_recommendations.parquet",
+      "sha256": "2db3bb58f18aa0d21dd68b52721556e845a5a92c5babbe89b353f9818948edab"
+    },
+    {
+      "bytes": 293688,
+      "hash_mode": "raw_bytes",
+      "path": "artifacts/phase7/current_inventory_business_decisions.parquet",
+      "sha256": "71c3a73e93c78611c4d6af09ce3105981bd00be4900aee53babbd55b9a3d8563"
+    },
+    {
+      "bytes": 8773,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase7/frozen_business_policy_spec.json",
+      "sha256": "bb03746172a89d22f1c5596dc3607b1486a4c9afbc07ec38c706442c7b10689a"
+    },
+    {
+      "bytes": 65120,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase7/phase7_manifest.json",
+      "sha256": "d3daac93f1a154a319c07ecd08c36d81a472739bf8705f2f2fe006254ecb0276"
+    },
+    {
+      "bytes": 498539,
+      "hash_mode": "raw_bytes",
+      "path": "artifacts/phase7/test_business_decisions.parquet",
+      "sha256": "4b81635f2794488c923a2334db2d93759abed6e5fdd78e2f9fa7a718135c48fa"
+    },
+    {
+      "bytes": 507808,
+      "hash_mode": "raw_bytes",
+      "path": "artifacts/phase7/validation_business_decisions.parquet",
+      "sha256": "339c95141eda615175a52470244ad95608c71ea389cd21ae9702776a452dde56"
+    },
+    {
+      "bytes": 4377,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase8/frozen_evaluation_spec.json",
+      "sha256": "9f6006ff467096a50580e2dccdc94c5728b05fd834b13c4f902e1008d9a3376c"
+    },
+    {
+      "bytes": 72427,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase8/phase8_manifest.json",
+      "sha256": "ea4a2dbd4ac6175d4a2a7f343276fa87ef71e5f116c59add0e221beb6ee619be"
+    },
+    {
+      "bytes": 2674,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase8/test_factual_metrics.json",
+      "sha256": "d91bfd2ffab127a4b05005d33617f6480d12fd10e4c045610d1c77c59dfb239e"
+    },
+    {
+      "bytes": 9722,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "artifacts/phase8/test_scenario_summary.json",
+      "sha256": "2185346dd95b8e77a52ba54a03657f0df5c7ed1662aba315708f3e7c3cebe255"
+    },
+    {
+      "bytes": 1443494,
+      "hash_mode": "raw_bytes",
+      "path": "artifacts/phase8/validation_factual_backtest.parquet",
+      "sha256": "abd509c74164fa0bb6125a0f19f8b97cee714e6383aba70f6d92ea1de139f453"
+    },
+    {
+      "bytes": 789,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "config/azure_databricks_runtime.yaml",
+      "sha256": "a3c70aedf0766c73d04334b30d19457bda074a2ff77b06da1f6cc50890ba66ca"
+    },
+    {
+      "bytes": 2977,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "config/explanation_feature_labels.yaml",
+      "sha256": "4fc5d7f6b262936c3d61394a6df42bf199412d61795c72b93d25da65c2cb4963"
+    },
+    {
+      "bytes": 902,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "config/phase1_audit.yaml",
+      "sha256": "634098896f265a1c98ac012a2dede13d71aaa63fd1735c7e60af5510c95d7f51"
+    },
+    {
+      "bytes": 773,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "config/phase2_features.yaml",
+      "sha256": "f8e38923ee735d07f9367c8aa4aa3f466341ada9ca0dfa6ebe0d9664714b2e3b"
+    },
+    {
+      "bytes": 921,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "config/phase3_baselines.yaml",
+      "sha256": "9d794fb60d9114cfa454b762d8dffd97cf483d7ad90e6be868368b4d875eb2da"
+    },
+    {
+      "bytes": 993,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "config/phase4_catboost.yaml",
+      "sha256": "a0d836a4c12b9889dd4160f74dc441078d3bf6e71b217066549c4b5b59590a2e"
+    },
+    {
+      "bytes": 1388,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "config/phase5_quantity.yaml",
+      "sha256": "8f55e6cf960b0e87a46fb08841df3c2640221aa33b9d9eac86d1b3ec95014ab8"
+    },
+    {
+      "bytes": 2031,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "config/phase6_optimizer.yaml",
+      "sha256": "30875a62d062c172deed764c75cf9578a4336e5d240ff2d604d0bba25cbf2df6"
+    },
+    {
+      "bytes": 1714,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "config/phase7_business_policy.yaml",
+      "sha256": "1d12561310d330cccfb9b866d5646c733ec147cd1c377f684b2f315900072419"
+    },
+    {
+      "bytes": 2808,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "config/phase8_business_evaluation.yaml",
+      "sha256": "3f06caf2b4d0bd0fd64a51e775273a770dd09ff8c02e64ba9a85a7ec5b303a4f"
+    },
+    {
+      "bytes": 1356,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "contracts/application/README.md",
+      "sha256": "578fffc249487de2896cf206ae8e7ab150b0ded327efbee633a15c4028e0b1d4"
+    },
+    {
+      "bytes": 2331,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "contracts/application/application_contract_v1.yaml",
+      "sha256": "4bcbf181d0256f45b243eb967faa4785c750aa567c84466f89cbd3be6ad4fae8"
+    },
+    {
+      "bytes": 4078,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "contracts/application/chart_spec_v1.schema.json",
+      "sha256": "62d55d1644759e48f61cb74e5740a93531022b7706791e36720b4079cf59c332"
+    },
+    {
+      "bytes": 2352,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "contracts/application/pricing_chat_error_v1.schema.json",
+      "sha256": "4f92ff13223e96d081c928c5580709a5b83ff88154202cd7dfb9a5922d3d9fc0"
+    },
+    {
+      "bytes": 2716,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "contracts/application/pricing_chat_request_v1.schema.json",
+      "sha256": "4f0b58020bf9af660ca9d3fa95f405fda7f77de29591b9b8d4ede7d9ee779812"
+    },
+    {
+      "bytes": 10614,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "contracts/application/pricing_chat_response_v1.schema.json",
+      "sha256": "e17b27afbbabe71f647b23ea229e184c1f0b1eb29e05d81ea4deaccdd527dac2"
+    },
+    {
+      "bytes": 3804,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "contracts/application/pricing_chat_sse_event_v1.schema.json",
+      "sha256": "476bd369f0667851aedf7d70b0be6d78b603e2d4b46cd52bc0dbe48cf1c1d693"
+    },
+    {
+      "bytes": 32517,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "contracts/phase2_feature_contract_v1.yaml",
+      "sha256": "423b32108a3a856348f79ed13e7cae94ce77a3c7c9a69834ebfcdd88d9988a0c"
+    },
+    {
+      "bytes": 1242,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "contracts/pricing_runtime_contract_v1.yaml",
+      "sha256": "5d117bbf40263f6e5b23959aefa165de2e2cef62ee05ee3dc94d94b69d3d92a0"
+    },
+    {
+      "bytes": 469,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/index.html",
+      "sha256": "64ae9ee88d6089753e978c56c9153519ae3b44d735a1d9363d638625277e1822"
+    },
+    {
+      "bytes": 134511,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/package-lock.json",
+      "sha256": "411006ab9b5d6f3297922bbe8fdd5124ed32375f4df3d556a955e0f52f25ca93"
+    },
+    {
+      "bytes": 1083,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/package.json",
+      "sha256": "5e944020ccd6bb78af96f777e7cf128477596329d3286e277d62786c0a4ee96e"
+    },
+    {
+      "bytes": 81147,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/pnpm-lock.yaml",
+      "sha256": "e17fc7ce69cf3806295f74525fac3c973219c0e87219774bb9398cae9b1f7e71"
+    },
+    {
+      "bytes": 16292,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/App.tsx",
+      "sha256": "d11bf77de38ed3e66624274bd5442b2d4e74aaacc6c98cbcb47c0347b008cbf7"
+    },
+    {
+      "bytes": 10770,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/components/BusinessResponse.tsx",
+      "sha256": "509ba99d1d04c027ca81262764f5c9089018e0d770ec30ac65f277ec669026e4"
+    },
+    {
+      "bytes": 5046,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/components/ChartPanel.tsx",
+      "sha256": "bc955cf270bd27ef9ce0f02f287c0ae6158872f36682299c6091f7867dfeee81"
+    },
+    {
+      "bytes": 1419,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/components/JsonViewer.tsx",
+      "sha256": "7790f3a7572ecf34eb1ea72000db3d4059436b426c1266fda206c9052faf00c3"
+    },
+    {
+      "bytes": 5529,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/components/MarkdownAnswer.tsx",
+      "sha256": "84a3ff825c8b38c13a2a270145c018e08733cf46c89e48b9d4e2d15c0ee8dfcb"
+    },
+    {
+      "bytes": 38,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/env.d.ts",
+      "sha256": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+    },
+    {
+      "bytes": 5517,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/lib/api.ts",
+      "sha256": "dfcfd174503a4c22be7c417da4a20e15c78b146aead10ea093fa0d6e6fe4709b"
+    },
+    {
+      "bytes": 1621,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/lib/config.ts",
+      "sha256": "a1666ae2a862049432f4bc51587bc45a6eba52a4143ba3272a16e02462883628"
+    },
+    {
+      "bytes": 187,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/lib/prompts.ts",
+      "sha256": "4e98ea11ae473a0a917ff9e31a3bd7254b36b22f457b9577b1df9c43a6134ce5"
+    },
+    {
+      "bytes": 4491,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/lib/sse.ts",
+      "sha256": "9a466c22209cd9854ddd320052a65ad528481dfb0509b1db9067a77c607e206b"
+    },
+    {
+      "bytes": 33909,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/lib/validation.ts",
+      "sha256": "5f7e74cf107fe273641be2ad67a6fba4a67079cc1b3ee9b877626909dabfff72"
+    },
+    {
+      "bytes": 219,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/main.tsx",
+      "sha256": "bb980f9b65c97dde71332486a3fcc74f5c97dcb9dc9de4de8da0b532893d19cd"
+    },
+    {
+      "bytes": 25834,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/styles.css",
+      "sha256": "8826635d8ded050c74039bcf061f694aa873cdc4a327e53f30d97ac458a6986c"
+    },
+    {
+      "bytes": 8496,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/src/types/contracts.ts",
+      "sha256": "c57be13cdc2d39c8d6774c7092c26459dfb075539a414506e2f6e7dacda33094"
+    },
+    {
+      "bytes": 4011,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/tests/api.test.ts",
+      "sha256": "30dc86d47323337ae9fb71f4b461818c1015957393dfa9eefdf402108e4566b0"
+    },
+    {
+      "bytes": 805,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/tests/config.test.ts",
+      "sha256": "76a371c304f75104e1ec77b7ab100c3dbd969d4aa8b417fa72f4ffe72c33aa0a"
+    },
+    {
+      "bytes": 2769,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/tests/contracts.test.ts",
+      "sha256": "f57c3477d9ecb82124e24ed21ee4d699c856646bd6f43b0bc52b056b31b77d95"
+    },
+    {
+      "bytes": 1405,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/tests/safety.test.ts",
+      "sha256": "7f1b52b98722f8f7845df772ec0e0768e507ef87a0ead8850d69af1481a041c0"
+    },
+    {
+      "bytes": 202,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/tests/setup.ts",
+      "sha256": "74a7acc5ce15bf3418a70e364137cb21a184c439748cc49368f8a002033271c4"
+    },
+    {
+      "bytes": 4289,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/tests/sse.test.ts",
+      "sha256": "1eafba86a7c4bc2b2fc15c57397acbd5845c78148a8d67c56d77102fc9f6e066"
+    },
+    {
+      "bytes": 657,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/tsconfig.app.json",
+      "sha256": "353fc521af4992c393c9589ef27e7beb9499413d806c1f591a7634d1da70f31c"
+    },
+    {
+      "bytes": 119,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/tsconfig.json",
+      "sha256": "770b4140bbb581e2dfd9ea9946ffc9c75a1d86ba7d2db5f77c83e37cbdf9d808"
+    },
+    {
+      "bytes": 453,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/tsconfig.node.json",
+      "sha256": "49236b06affc086a479d77b2415bbc411b35f7e754ed7cc9cb5dd5628a51c6e3"
+    },
+    {
+      "bytes": 353,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/vite.config.ts",
+      "sha256": "1ef02fcc54e0a19a4600ab6e12a0bb6aabacfad67e05c784ced1279336d3f88a"
+    },
+    {
+      "bytes": 302,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "frontend/vitest.config.ts",
+      "sha256": "42ebfbd96880dc3fb261bcc934e363045adad1f71c12a3bf938d09744d770aac"
+    },
+    {
+      "bytes": 1118,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "pyproject.toml",
+      "sha256": "5e16bd4afd72c618cf8b33d88dd643a2287163ed98db44c89df64b928bd8a72f"
+    },
+    {
+      "bytes": 323,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "requirements-runtime.lock",
+      "sha256": "bb2fc30a516d628071d261f89916cff0cd62846924b6ae4bf966b196f75c722c"
+    },
+    {
+      "bytes": 57,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "requirements-test.lock",
+      "sha256": "98f65afb34c9921cd98f2bdb266b3854831621e7424d4410788fc110c80be654"
+    },
+    {
+      "bytes": 264,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/ai_agent/__init__.py",
+      "sha256": "a84a2efc9db82405290a200d440a01b17cd7e5bad37f555095d19b59bbb8da6c"
+    },
+    {
+      "bytes": 3431,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/ai_agent/agent.py",
+      "sha256": "90b9f1cfc56c6b0566033758e03ca1987f0d6b4300a4991635977b1e982ffcc6"
+    },
+    {
+      "bytes": 1355,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/ai_agent/instructions.py",
+      "sha256": "f6f26209fac1aa7ffa4c09ea656e20d2d7a5ed7a05d9db2dab1392ea662500cf"
+    },
+    {
+      "bytes": 597,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/ai_agent/schemas.py",
+      "sha256": "cd3e727391968e5d50758dc7e947b37e82317f468c2b8ab49c293957dfda2c6c"
+    },
+    {
+      "bytes": 5991,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/ai_agent/tools.py",
+      "sha256": "205442bbdbe546d42cd72314a8ae25b241b4a13af6f61edb81e0026681d28b5e"
+    },
+    {
+      "bytes": 354,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/app_services/__init__.py",
+      "sha256": "35cce539da01a5e0917391c8cda409048ea38c8f2aa446f60e50a0f33962febe"
+    },
+    {
+      "bytes": 13237,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/app_services/artifact_registry.py",
+      "sha256": "f0e4523eee5bff59542afd43fe82f415c575902ca17ae766d4d4792069ed53d3"
+    },
+    {
+      "bytes": 971,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/app_services/explanation_service.py",
+      "sha256": "32e125c0c689a2f2e9220b570c171046d607c676a72ff933eb14143f7c4b279d"
+    },
+    {
+      "bytes": 2901,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/app_services/model_performance_service.py",
+      "sha256": "9d645e92bfbc5b60c569f77b405ef7699ba6b0ada7e0f01aadec897b86a72f12"
+    },
+    {
+      "bytes": 11878,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/app_services/recommendation_service.py",
+      "sha256": "1f0073d3a4ec3cf012b658bc7078c975f7472c04676a9a9489f822de8e2bfb31"
+    },
+    {
+      "bytes": 10251,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/app_services/simulation_service.py",
+      "sha256": "85965e5d408c483aed6b093b6406612a696788bc46e713cdf61f26638d265d5e"
+    },
+    {
+      "bytes": 216,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/application_contracts/__init__.py",
+      "sha256": "a93a998c49b414b5e56641b06b4657aceb84ea4de79bfdcab3b48fe950dd4c8f"
+    },
+    {
+      "bytes": 4044,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/application_contracts/acceptance.py",
+      "sha256": "171e93c2fd32c2913ff3b0733ae352e396747bde05a66e8b3f61387dc33914eb"
+    },
+    {
+      "bytes": 9583,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/application_contracts/validation.py",
+      "sha256": "43398999b5064ab52105c229565c44da5da25cdd5525638b7d2ff57862ca3d7e"
+    },
+    {
+      "bytes": 62,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/__init__.py",
+      "sha256": "6dac153a22defcc69a4d96fae4402dc950a7d4d94962a7ef8591774d6c2bb8aa"
+    },
+    {
+      "bytes": 14964,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/advanced_audit.py",
+      "sha256": "a3656b7a632ee6dc8bfa892022a5108f8ed8ca55a8db4bf9c3d2383a7e986a7f"
+    },
+    {
+      "bytes": 5214,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/competitor_audit.py",
+      "sha256": "7585ce1d3c4c9a8908be1bb498e6eee8da22145882fae6bdfb5ae4f37ec5ee89"
+    },
+    {
+      "bytes": 5712,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/database_profile.py",
+      "sha256": "29ec905443b553d2f3688de0c1e28baf67b047cb00da9639205466d02d660fab"
+    },
+    {
+      "bytes": 1287,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/generator_analysis.py",
+      "sha256": "e9e5b1afc4fb7dde766d61920c7ac7fa1af75d47d1c4c7490f9c7e0b033cd857"
+    },
+    {
+      "bytes": 8314,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/leakage_analysis.py",
+      "sha256": "38ced9e049ae107fb2a0b1bed3c58b1b63acde517b55f82d0d017544b8c320bb"
+    },
+    {
+      "bytes": 4639,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/price_variation_audit.py",
+      "sha256": "8a366677ee709d7d7ff8bc470b9cf4c33f678120c70b257942d5097f9effd0b3"
+    },
+    {
+      "bytes": 5524,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/relationship_audit.py",
+      "sha256": "fd2ff40c08bf8de2ed66a760d4084fd2010b686434ecd000b3a804791a6a6a94"
+    },
+    {
+      "bytes": 33458,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/report_builder.py",
+      "sha256": "30b7697fb189c5c98e0cdafdfea9fb655d56ce692a0bbbd1937ecb4362cd625e"
+    },
+    {
+      "bytes": 2221,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/rule_audit.py",
+      "sha256": "b1435a21a894796469eada589d372af88b612f677569eaf727f8154c0bce8c8d"
+    },
+    {
+      "bytes": 2346,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/sales_coverage_audit.py",
+      "sha256": "71d1dbb54d2da2b01a881809052ddfab7aa1f2fc6c7a73fcfea7e4b60289221f"
+    },
+    {
+      "bytes": 2875,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/target_audit.py",
+      "sha256": "b18cf439a74e4901dcf2e18c8215ae1441b8465f4a513218b85c0285ad3487b7"
+    },
+    {
+      "bytes": 2774,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/temporal_audit.py",
+      "sha256": "a6e6c0ecf8af1c06d89807b1bedfa63f99ad8750a602bbb9eba493900de2646d"
+    },
+    {
+      "bytes": 439,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/audit/validation_runner.py",
+      "sha256": "9c714a8e0d4ab6de5d75490356f091e26f3d255da70962ec4b335ef3e8399bbd"
+    },
+    {
+      "bytes": 317,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/baselines/__init__.py",
+      "sha256": "22531c385cfda17036afb6f1ebf63b8a37b6d9172a68f4276645fe52ad9f41b9"
+    },
+    {
+      "bytes": 2593,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/baselines/purchase.py",
+      "sha256": "b57dff680e9635ad28a844f809a0c30fd236af5c913ea4f0d37b9f687575ecb5"
+    },
+    {
+      "bytes": 1435,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/baselines/quantity.py",
+      "sha256": "19062d6be7d7da8a11a9314acf823a020a6d0988acdd7a8a1892b86fd55760e2"
+    },
+    {
+      "bytes": 992,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/baselines/training.py",
+      "sha256": "d6e6649147c3f0a66648b02ea142d6b4014c731e701c4075607c9eefff6f885a"
+    },
+    {
+      "bytes": 427,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/business_rules/__init__.py",
+      "sha256": "b8f815dde2ff2dcf64c69bc6b7294e112079422658c7d8436c3c6f4d5d781293"
+    },
+    {
+      "bytes": 6462,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/business_rules/rule_constraints.py",
+      "sha256": "0a0af225ea007bc08bfd7e05b6a7dadd71a48b65352a095750fceddc38cf20d9"
+    },
+    {
+      "bytes": 2243,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/business_rules/rule_loader.py",
+      "sha256": "fe4bc0481ebe6d5cc41f4cc4a3a3271f9408ed5aba0e125faa6fe632099b7eff"
+    },
+    {
+      "bytes": 6905,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/business_rules/rule_replay.py",
+      "sha256": "29f50cef916bcab39f249ad910cb6ec9a4efdb0e0fe2059193a87acf0d773f83"
+    },
+    {
+      "bytes": 4373,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/business_rules/rule_resolver.py",
+      "sha256": "ae85433454aed2cf71c71d10a7b6459e3eb87ff5e0b556a7a39bfd860088fd47"
+    },
+    {
+      "bytes": 21738,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/business_rules/rule_semantics.py",
+      "sha256": "f3815f22c829a12d2a7d65a960a2f0617abe5544b3059c696bc3476968dd74c5"
+    },
+    {
+      "bytes": 346,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/decisioning/__init__.py",
+      "sha256": "0af30c1083c48ec03145b7f642316aec1a9b369447604034e27621c7a67144a9"
+    },
+    {
+      "bytes": 3474,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/decisioning/business_selector.py",
+      "sha256": "3f1545703e8f7e5721dfa9a233c7953d412ac88f0087fa167e082100323cf573"
+    },
+    {
+      "bytes": 4956,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/decisioning/candidate_augmentation.py",
+      "sha256": "d36e88afcf22a06469aaeabd4d61d64d519fbd8d8eb6416463fd021b2f68136d"
+    },
+    {
+      "bytes": 2855,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/decisioning/final_decision.py",
+      "sha256": "7c3866dcbb3f79d74ff33008bfcb4806944b86560a1f94423e50e1ac25f5cdff"
+    },
+    {
+      "bytes": 53,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/demand/__init__.py",
+      "sha256": "84235019aeb47e262974f75af3ba69e2a543e06d3418f4bcf8a828e46cea8655"
+    },
+    {
+      "bytes": 4873,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/demand/expected_units.py",
+      "sha256": "0802c68c6b648baa3523fc09419c6dfb9ff962c0d165dd7b2ff6f910712c768c"
+    },
+    {
+      "bytes": 621,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/demand/quantity_price_adapter.py",
+      "sha256": "4a82a72bd4e1d18b0b5922176f0ab31ac069df5055d53e24545519cc9d5196a5"
+    },
+    {
+      "bytes": 251,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/dynamic_pricing/__init__.py",
+      "sha256": "f030abe9e1e367c75b6b708b54dab3f9587d48915135eec38fcf39b02c210b72"
+    },
+    {
+      "bytes": 1554,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/dynamic_pricing/contracts.py",
+      "sha256": "73b1b776c33e335126acf1f3a6c521b762cb5587295bcdb9911de930d8a75d27"
+    },
+    {
+      "bytes": 9943,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/dynamic_pricing/release.py",
+      "sha256": "f7f1edac6df0d99336270666168ff4c2a5ab33ede5e03b960092f0114931faec"
+    },
+    {
+      "bytes": 191,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/features/__init__.py",
+      "sha256": "34082398d5cfc9e46c50dd72e1ad16f19395414fcd7735dd524f81a0ccc5549e"
+    },
+    {
+      "bytes": 36951,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/features/feature_builder.py",
+      "sha256": "da614d321e8798f2698dc6351e1d38cbe53618ebd976c5af6e29e1b11ce198e4"
+    },
+    {
+      "bytes": 5495,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/features/feature_contract.py",
+      "sha256": "131bd73b29207c64612651fe1abf817ff700108b7e34094b442d168a59d00249"
+    },
+    {
+      "bytes": 3440,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/features/price_features.py",
+      "sha256": "bcfecea40acd8dfcbdadcbf014cb5a9a0ec5bf9445b12b70cbfb6a38d755194e"
+    },
+    {
+      "bytes": 5776,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/features/source_snapshot.py",
+      "sha256": "e67fc7df37cdd7e9b1579b65068d21804e5192489f2cb3fc2bacb51dc4eb2bfa"
+    },
+    {
+      "bytes": 33252,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/features/validation.py",
+      "sha256": "d8a68a77dbc4da785a74785bfcdb038fe1156f67d7c24b8539734ec8ddf82852"
+    },
+    {
+      "bytes": 4653,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/features/validation_runner.py",
+      "sha256": "94744b761ee97bfc14fac3dc79a5099b3998d51e503aaaf2a2f048737e85d320"
+    },
+    {
+      "bytes": 552,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/inventory_policy/__init__.py",
+      "sha256": "6305147dd0a70a4ce3be2af0aba91cd475b82a66c215cb7af82e1bac92ec4843"
+    },
+    {
+      "bytes": 4615,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/inventory_policy/inventory_loader.py",
+      "sha256": "ba2b9eee3d10fb66b41b1984aca325008147d75207de8200e0956222a798fe40"
+    },
+    {
+      "bytes": 3439,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/inventory_policy/inventory_policy.py",
+      "sha256": "1fbfc9fc2870cddc56a4b92184ac95f5186803199b44af5817711879c2c9809a"
+    },
+    {
+      "bytes": 4121,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/inventory_policy/markdown_policy.py",
+      "sha256": "1d8e4a7de87649559bce533745aec9e5380c57d4d78e2200b6d344393381e639"
+    },
+    {
+      "bytes": 53,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/models/__init__.py",
+      "sha256": "e80fa8a05097896c1621fb38cf87445fdd432892d3ed49a6347f6b622fa541dd"
+    },
+    {
+      "bytes": 3066,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/models/calibration.py",
+      "sha256": "b5c0a152bc2584d4716f282f3e1ea39f993587b2e295b7823979afb810667c5c"
+    },
+    {
+      "bytes": 7985,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/models/catboost_data.py",
+      "sha256": "5b8c98fd151eb52ef3aa3911285a04fb782def1042e25b141f25bee46a1867e4"
+    },
+    {
+      "bytes": 1946,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/models/catboost_purchase.py",
+      "sha256": "e46807c9e7d01f2bac537234c34aaec303ea1cd0642c6056b2232637dd12f162"
+    },
+    {
+      "bytes": 14144,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/models/hyperparameter_search.py",
+      "sha256": "deb470775172a236ad874469ee85d82f1efe58d5e9e421c874f0f037a413a671"
+    },
+    {
+      "bytes": 3502,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/models/price_response.py",
+      "sha256": "7b9660a5ea7360503f2283d485043e87afdfbefb58a5b49e293455d52ec3862d"
+    },
+    {
+      "bytes": 7202,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/models/quantity_catboost.py",
+      "sha256": "79fa3ce2e6903e39e56cb4df5d5dfe6b8d204c7943c82ead5cf5f2f64ab8ca5e"
+    },
+    {
+      "bytes": 9276,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/models/quantity_data.py",
+      "sha256": "b7568a6fba3fdc084add277e1b62b30b4c6c51c51af7facd8e0830f1b6c8b906"
+    },
+    {
+      "bytes": 4089,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/models/quantity_estimator.py",
+      "sha256": "fa394a71903e146e826ec84a31cee3d35d0b9c526a76eeb69f499023b30302f9"
+    },
+    {
+      "bytes": 17721,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/models/quantity_selection.py",
+      "sha256": "489c0066efad0948115105c60f09e40305c129b6a5386c3ef99fb29b252f6366"
+    },
+    {
+      "bytes": 473,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/optimization/__init__.py",
+      "sha256": "4d8be879fcc21fd467caea1f46236da8b8cc0ae1dcff83be758e2efed4459f52"
+    },
+    {
+      "bytes": 7088,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/optimization/candidate_grid.py",
+      "sha256": "56473e644dadea06787903fb20b420676ceb2b05d43656e610605c0bb1bd6792"
+    },
+    {
+      "bytes": 8105,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/optimization/candidate_simulator.py",
+      "sha256": "2380079927db4f56211d8c4aaaddca00b51e4e3dea5dc39835d43696e9f6e3fe"
+    },
+    {
+      "bytes": 5083,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/optimization/cost_resolver.py",
+      "sha256": "a19c43c1a5ff9fa69ea3d0863fc247fd64dfdb859992009f7cf85d073481b9be"
+    },
+    {
+      "bytes": 1591,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/optimization/economics.py",
+      "sha256": "2272f9f179b80bbc20f3ac010fa29a732f1dff947c4bf5319148ec788b94ffe5"
+    },
+    {
+      "bytes": 1081,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/optimization/optimizer.py",
+      "sha256": "ff5090f79e15dd57bd7371805cec490b0328652119da2e0770fd9bc6b96b6535"
+    },
+    {
+      "bytes": 4779,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/optimization/price_selector.py",
+      "sha256": "8ce1cfb15f1f5a9f9491b664ee28e77b6bb1b9bfce0fdcde733294d24f718c08"
+    },
+    {
+      "bytes": 3991,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/optimization/response_safety.py",
+      "sha256": "fa37cfcc0172baa3f48ef68161853d5f3fa43782c44f2de4bb896c5c756b9958"
+    },
+    {
+      "bytes": 62,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase4/__init__.py",
+      "sha256": "95e1500b14c976e18fe7ca1000b9dd971e01bd1dfe13311b7567f63796d6067e"
+    },
+    {
+      "bytes": 55119,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase4/runner.py",
+      "sha256": "6fbd23470c4d651fc24aeb6dcc3821dbe74935e48c324558ee77c7ae0f347b7b"
+    },
+    {
+      "bytes": 66,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase5/__init__.py",
+      "sha256": "aeb4356e0900b7ea832509c061e570e05a2e2176fa64d64f0ae3ce613259ebc7"
+    },
+    {
+      "bytes": 61085,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase5/runner.py",
+      "sha256": "4c2e0ac24b168c01311f54b4d8cf7078a3b08ac7c5566a24f640e405bb139ea7"
+    },
+    {
+      "bytes": 60,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase6/__init__.py",
+      "sha256": "1230b736cce9f419e06c5e5db610fb7436a09e545e703f4913622c6a0883b769"
+    },
+    {
+      "bytes": 42184,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase6/runner.py",
+      "sha256": "b3714e230e17bfcc388e884613fd443b258d86ac32db225050103590212cc050"
+    },
+    {
+      "bytes": 187,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase7/__init__.py",
+      "sha256": "e1dfbaa9a7fd71b9994322f24489e4f5faea401c93eb648d5effd234c3f70634"
+    },
+    {
+      "bytes": 1131,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase7/artifacts.py",
+      "sha256": "4e98a7873efbef6cc93ee1a5ee72172dbcb611f6289783649dbe1fa2904ae2e9"
+    },
+    {
+      "bytes": 7918,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase7/frozen_scorer.py",
+      "sha256": "62984484e73cd977e7599b7acc6b05fb165d3ab0583ab3888efe9233803cf799"
+    },
+    {
+      "bytes": 83641,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase7/runner.py",
+      "sha256": "cdd43c481b599068440fa23724aaaab76ad57947c3373b2f7c6816ba3f53bde1"
+    },
+    {
+      "bytes": 7931,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase7/validation.py",
+      "sha256": "d4f2f2b90ea455dbc541c7d25a51c5c25beee79942d7fee52571ea9b1f490dc6"
+    },
+    {
+      "bytes": 249,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/__init__.py",
+      "sha256": "eac93fa1dd8f2a71c10ed8faa5d0687d2d69c753d1cfc1a03099d638e013646b"
+    },
+    {
+      "bytes": 723,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/artifacts.py",
+      "sha256": "cd87848e7278de23b13d86e80c4cae0e0107a344d46aa61e5b53a60f7102cc38"
+    },
+    {
+      "bytes": 3256,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/bootstrap.py",
+      "sha256": "bff34bc6a2617c98f7de106548923010d0a9c719dd5f4915d747648a93d5e8e7"
+    },
+    {
+      "bytes": 12020,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/boundary_analysis.py",
+      "sha256": "dcdad385ab5aef3661404aabd03121ddb87351f57798c6d8ba3544e050f59687"
+    },
+    {
+      "bytes": 2892,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/economic_metrics.py",
+      "sha256": "b7b5174d0107895e6afcb976ca209c04d7f594c3982df65bb58523bc851d27a5"
+    },
+    {
+      "bytes": 7515,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/factual_backtest.py",
+      "sha256": "793dc153649b52833ebad4aee0fae0f7ec9ac1383d7e05aa99735a85e96a0fa7"
+    },
+    {
+      "bytes": 5813,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/outcome_loader.py",
+      "sha256": "126af7ca066541405c740e729c4d7b1000e27c68e1ba502a8247380ce43b98c0"
+    },
+    {
+      "bytes": 6535,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/outcome_validation.py",
+      "sha256": "208655856137e2e81209ff4e9d631f4eb976143dc7994b5aaf172bdcf5f7aba1"
+    },
+    {
+      "bytes": 66499,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/runner.py",
+      "sha256": "c93627c6b86b42f9f1ea13ae362eefdd92efcda1ebe1c428c56a3ab004879764"
+    },
+    {
+      "bytes": 8511,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/scenario_evaluation.py",
+      "sha256": "a216fb71fb3f861c8e2acd104300e989213c83d1d99e5bee0f272e5743559c72"
+    },
+    {
+      "bytes": 5288,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/segment_analysis.py",
+      "sha256": "10f994059ac2522533a4ca1cda28848da39b11ccffcf2c1537206e13aef3c1d7"
+    },
+    {
+      "bytes": 6519,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase8/validation.py",
+      "sha256": "f7292dbe0cad44dc9d2a2246e1b3ce9fb39956c032ee6d94817281922347606b"
+    },
+    {
+      "bytes": 58,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase9_10/__init__.py",
+      "sha256": "e829ed7a7e070b6d75fb030a182c6cd98dbf857526a0751fe1c66814a817ddda"
+    },
+    {
+      "bytes": 11827,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase9_10/acceptance.py",
+      "sha256": "3ced0fd5c6b55fb99236c4271e76b151749796e22dff70b20c4c840dc0354582"
+    },
+    {
+      "bytes": 4093,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase9_10/runner.py",
+      "sha256": "dfe5f8aae8dcf9fe8b18d0423eee4ce6486e3120523089565fa27e7980b398e3"
+    },
+    {
+      "bytes": 12409,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/phase9_10/validation.py",
+      "sha256": "13f33fcb65606873ffb0cbe21186e8fbc1dc3b0d1509b8177ffba27f90de8cf4"
+    },
+    {
+      "bytes": 343,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/__init__.py",
+      "sha256": "f2b6059e48e5d08a9d62330fa24154db902e21fde0f6a96f2753461c2a4aedb4"
+    },
+    {
+      "bytes": 382,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/__main__.py",
+      "sha256": "1465cec3c7d1e38dd78e61fb02c6edd98c2ebb3da07f233cb96082fa6aa2135f"
+    },
+    {
+      "bytes": 13431,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/agent.py",
+      "sha256": "aee8743a6943d0b75716d98944fb674d795c7439cd97b1c207b3a7ac6c5f50ce"
+    },
+    {
+      "bytes": 11339,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/app.py",
+      "sha256": "d15861ce03323d5e18553e3eb76ff78323d0a6da9a918ede774f178c58958c34"
+    },
+    {
+      "bytes": 5945,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/charts.py",
+      "sha256": "96159a63b9fd0d827d2ac1761837751a1117940c667706b63d203f11c03461df"
+    },
+    {
+      "bytes": 6273,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/config.py",
+      "sha256": "772cb319d6cd097b0e75bb93d6119b81060e80a340fda4f00a45962fd7d4d216"
+    },
+    {
+      "bytes": 2215,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/contracts.py",
+      "sha256": "fdfc7ab0e18ab25728bb00e5dac69f459d0c8c443f7b8e8c3c2c1e3088eb4447"
+    },
+    {
+      "bytes": 756,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/exceptions.py",
+      "sha256": "0f02d868cc5cb3aa474ff8a62d19c3ea5a6db273d675360ca993a8f2b8c9d2bb"
+    },
+    {
+      "bytes": 8945,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/intent.py",
+      "sha256": "32e2b0addad2929118ac0d36d5513899c1cb1c30ea8c19a664849c8c9a2cf815"
+    },
+    {
+      "bytes": 11028,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/live_validation.py",
+      "sha256": "d6d9e31065bd358dfc4d66a98bb89c222fde27f5b418784fb092dbe8e3c47aad"
+    },
+    {
+      "bytes": 3333,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/middleware.py",
+      "sha256": "20ca3ef07a38c8fc0673a4e0988da4c8fd64e2cdcb6d5713ebd081e131a20a35"
+    },
+    {
+      "bytes": 9888,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/models.py",
+      "sha256": "602820f3259dd0bbfb78285e0e9957abbec6b4d74c5eabee16d42c3e3a21f2f5"
+    },
+    {
+      "bytes": 10189,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/normalization.py",
+      "sha256": "a91fff3eef2ad0a7fce279f0317f1362cf616463a8bb391c22a24cbe4aaea0fd"
+    },
+    {
+      "bytes": 29623,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/orchestrator.py",
+      "sha256": "e74af9b00c77570214853340bf45248a11daeca9ea60d72ebdfc006f6cea5b00"
+    },
+    {
+      "bytes": 6185,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/preflight.py",
+      "sha256": "54ccef11a2dcd064833512bc456828df92731ef8448f338cd129b19ff64d9506"
+    },
+    {
+      "bytes": 1720,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/services.py",
+      "sha256": "227c8b1b9d2f869219989b108cc2f4a4f03eb19bb8ab30efecb7711d49d56c73"
+    },
+    {
+      "bytes": 848,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/sse.py",
+      "sha256": "315303d6341b8f205b6a85582d0e0444d536cbab1de7b757f0e6a6078f747ab7"
+    },
+    {
+      "bytes": 13922,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/pricing_api/tools.py",
+      "sha256": "6f4ba6cd5b69eaefa16355e5bbad0aae6c5cedc33ba90190068156a4703ec420"
+    },
+    {
+      "bytes": 254,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/promotions/__init__.py",
+      "sha256": "763aaa0e8307d63669d7df2214b140480e44900106741f7a7f717ec5071e08de"
+    },
+    {
+      "bytes": 2038,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/promotions/promotion_loader.py",
+      "sha256": "3fa48f4238890a28cd94575f347d5fcab10383072fe6b05efb98992546302fc5"
+    },
+    {
+      "bytes": 6799,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/promotions/promotion_resolver.py",
+      "sha256": "3dbc8700987704f968a3915bdb71027876173ffdce52d9441b6b0248090ec377"
+    },
+    {
+      "bytes": 400,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/validation/__init__.py",
+      "sha256": "e9ce512f02384aa00a1a198783e62b05f06e68d2d3d116087590937698897207"
+    },
+    {
+      "bytes": 1549,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/validation/artifacts.py",
+      "sha256": "59ed5a65f4738a02f9717eae1e85a1a43a81bba59550905103b1fe6e980d37ff"
+    },
+    {
+      "bytes": 2430,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/validation/compute.py",
+      "sha256": "b93dbba784e3c4fb8d1eaf528bcf49a5d2c695d3820c1a3c3d883fd9b55132f3"
+    },
+    {
+      "bytes": 7109,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/validation/diagnostics.py",
+      "sha256": "6619991b911f6f625472ae01b7be47b66e6ecbe4cc1f91747716246211e842e1"
+    },
+    {
+      "bytes": 5761,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/validation/metrics.py",
+      "sha256": "2c35d5891b95e2d4e8ec86699c057ced1dfe90b8bb393e0d4c8fbe2fe5a40809"
+    },
+    {
+      "bytes": 2568,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/validation/preprocessing.py",
+      "sha256": "37e3fb8ac9c0d65c4f8824ae74b763d22e71c4bdb4121e0b73cf7f00ef67248f"
+    },
+    {
+      "bytes": 45051,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/validation/runner.py",
+      "sha256": "570f998a687730ee11a1deb7da90279414ebb76d44c9d036d11ad1c1e233b751"
+    },
+    {
+      "bytes": 9676,
+      "hash_mode": "canonical_utf8_lf",
+      "path": "src/validation/temporal_split.py",
+      "sha256": "2bb24e03609a59408a31375947765640054dacf45c23a72b98ac013568345265"
+    }
+  ],
+  "generated_at_utc": "2026-09-16T05:17:07.785811+00:00",
+  "inventory_snapshot_date": "2025-12-31",
+  "missing": [],
+  "release_mode": "HISTORICAL_SNAPSHOT_POC",
+  "schema_version": "pricing.release.manifest.v1",
+  "source_branch": "codex/azure-phase0-remediation",
+  "source_commit": "f35a7a7326e03f9a6b759358c9a43b0608f4cb95",
+  "source_tree_clean": true,
+  "status": "PASS",
+  "total_bytes": 16267703,
+  "unsafe": []
+}

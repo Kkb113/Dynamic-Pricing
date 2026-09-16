@@ -1,0 +1,19 @@
+{
+  "duration_seconds": 4.322842,
+  "exit_code": 0,
+  "failed": 0,
+  "generated_at_utc": "2026-08-20T00:19:32.202088+00:00",
+  "invocation": [
+    "__main__.py",
+    "tests/phase2/test_pricing_api.py",
+    "-q"
+  ],
+  "passed": 24,
+  "skipped": 0,
+  "source": "pytest_sessionfinish",
+  "source_tree_sha256": "01c90cc8faa60191dc3ecd9b09601d0c610f91f577fff3327f73ab845f7e255d",
+  "status": "PASS",
+  "total": 24,
+  "xfailed": 0,
+  "xpassed": 0
+}

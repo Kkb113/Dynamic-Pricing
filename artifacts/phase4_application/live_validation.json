@@ -1,0 +1,31 @@
+{
+  "agent_tool_count": 1,
+  "agent_tool_names": [
+    "get_agent_capabilities"
+  ],
+  "answer_source": "agent",
+  "api_calls": 2,
+  "authoritative_numeric_source": true,
+  "base_url_loopback": true,
+  "block_reason": null,
+  "chat_http_status": 200,
+  "configured_model_id": "gpt-5.6-luna",
+  "evidence_hash": "70b42c61549c6b7facc0a9b87ffc29c692ce049f7cd52a71fed4f2e06b96a029",
+  "fallback_functional": true,
+  "health_agent_available": true,
+  "health_http_status": 200,
+  "latency_ms": 5912.03,
+  "leak_checks": {
+    "no_hidden_reasoning": true,
+    "no_raw_tool_payload": true,
+    "no_secret_or_provider_markers": true
+  },
+  "live_gate": "PASS",
+  "openai_api_key_configured": true,
+  "openai_model_configured": true,
+  "phase": "phase4",
+  "response_hash": "4cf963ab2d058e933340edb2516b881c869f36b8fbcae78574392c8f1b7b55bb",
+  "schema_validation": true,
+  "status": "PASS",
+  "timestamp_utc": "2026-08-20T02:14:31.176646Z"
+}

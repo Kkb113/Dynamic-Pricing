@@ -1,0 +1,11 @@
+{
+  "schema_version": "pricing.chat.error.v1",
+  "request_id": "req_demo_unsupported",
+  "status": "error",
+  "error": {
+    "code": "UNSUPPORTED_INTENT",
+    "message": "This local application supports read-only pricing explanations, recommendations, and supported scenarios; it cannot write prices or execute arbitrary operations.",
+    "retryable": false
+  },
+  "warnings": []
+}

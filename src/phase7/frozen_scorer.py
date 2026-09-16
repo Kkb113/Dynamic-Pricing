@@ -8,6 +8,7 @@ CatBoost or a live SQL source.
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -33,7 +34,25 @@ class FrozenPhase7Scorer:
         self.model.load_model(str(root / "artifacts/phase4/models/purchase_catboost.cbm"))
         quantity_spec = json.loads((root / "artifacts/phase5/models/quantity_estimator_metadata.json").read_text(encoding="utf-8"))
         self.quantity_mean = float(quantity_spec["mean_value"])
-        self._score_cache: dict[tuple[str, float], dict[str, Any]] = {}
+        release_inputs = (
+            root / "artifacts/phase4/models/purchase_catboost.cbm",
+            root / "artifacts/phase4/frozen_model_spec.json",
+            root / "artifacts/phase5/models/quantity_estimator_metadata.json",
+            root / "artifacts/phase7/frozen_business_policy_spec.json",
+        )
+        digest = hashlib.sha256()
+        for path in release_inputs:
+            digest.update(path.read_bytes())
+        self.release_fingerprint = digest.hexdigest()
+        self._score_cache: dict[tuple[str, str, str, float], dict[str, Any]] = {}
+
+    def _context_fingerprints(self, frame: pd.DataFrame) -> list[str]:
+        """Fingerprint every scoring row so cache entries cannot cross contexts."""
+
+        selected = sorted(frame.columns)
+        projection = frame.loc[:, selected].copy()
+        hashes = pd.util.hash_pandas_object(projection, index=False).astype("uint64")
+        return [f"{int(value):016x}" for value in hashes]
 
     def __call__(self, source: pd.Series, candidate_price: float) -> dict[str, Any]:
         return self.score_candidates(
@@ -48,8 +67,19 @@ class FrozenPhase7Scorer:
         prices = np.asarray(candidate_prices, dtype=float)
         if len(frame) != len(prices):
             raise ValueError("candidate_prices length must match source rows")
+        if not np.isfinite(prices).all() or (prices <= 0).any():
+            raise ValueError("candidate_prices must be finite and positive")
+        if "CostPrice" not in frame:
+            raise ValueError("CostPrice is required for pricing advice")
+        validated_costs = pd.to_numeric(frame["CostPrice"], errors="coerce").to_numpy(float)
+        if not np.isfinite(validated_costs).all() or (validated_costs < 0).any():
+            raise ValueError("CostPrice must be finite and nonnegative")
         identifiers = frame["PricingDecisionID"].astype(str).tolist() if "PricingDecisionID" in frame.columns else [str(index) for index in frame.index]
-        keys = [(identifier, round(float(price), 2)) for identifier, price in zip(identifiers, prices)]
+        context_fingerprints = self._context_fingerprints(frame)
+        keys = [
+            (self.release_fingerprint, identifier, context_fingerprint, round(float(price), 2))
+            for identifier, context_fingerprint, price in zip(identifiers, context_fingerprints, prices)
+        ]
         results: list[dict[str, Any] | None] = [self._score_cache.get(key) for key in keys]
         missing_indices = [index for index, result in enumerate(results) if result is None]
         if not missing_indices:
@@ -59,7 +89,7 @@ class FrozenPhase7Scorer:
         prepared = self._build_features(uncached_frame, uncached_prices, self.contract, self.feature_names)
         pool = self._make_pool(prepared, self.contract, self.feature_names)
         probabilities = np.asarray(self.model.predict_proba(pool), dtype=float)[:, 1]
-        costs = pd.to_numeric(uncached_frame.get("CostPrice", pd.Series(0.0, index=uncached_frame.index)), errors="coerce").fillna(0.0).to_numpy(float)
+        costs = validated_costs[missing_indices]
         computed: list[dict[str, Any]] = []
         for probability, price, cost in zip(probabilities, uncached_prices, costs):
             probability = float(probability)

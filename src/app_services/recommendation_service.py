@@ -60,7 +60,9 @@ class RecommendationService:
         if violations:
             warnings.append("RULE_VIOLATION_REVIEW")
         if str(row.get("context_mode", "")).upper() == "CURRENT_INVENTORY_MODE" and pd.notna(row.get("InventorySnapshotDate")):
-            warnings.append("CURRENT_SNAPSHOT_INVENTORY_CONTEXT")
+            warnings.append("HISTORICAL_INVENTORY_SNAPSHOT")
+        raw_units = json_value(row.get("expected_units"))
+        capped_units = json_value(row.get("inventory_capped_expected_units")) if pd.notna(row.get("inventory_capped_expected_units")) else raw_units
         recommendation = {
             "PricingDecisionID": str(row["PricingDecisionID"]),
             "ProductID": json_value(row.get("ProductID")),
@@ -72,7 +74,10 @@ class RecommendationService:
             "ModelOptimalCandidatePrice": json_value(row.get("Phase6ModelOptimalCandidatePrice")),
             "FinalRecommendedPrice": json_value(row.get("FinalRecommendedPrice")),
             "FinalAction": json_value(row.get("FinalAction")),
-            "ExpectedUnits": json_value(row.get("inventory_capped_expected_units")) if pd.notna(row.get("inventory_capped_expected_units")) else json_value(row.get("expected_units")),
+            "RawPurchaseProbability": None,
+            "GuardedExpectedUnits": raw_units,
+            "InventoryCappedExpectedUnits": capped_units,
+            "ExpectedUnits": capped_units,
             "ExpectedRevenue": json_value(row.get("inventory_capped_expected_revenue")) if pd.notna(row.get("inventory_capped_expected_revenue")) else json_value(row.get("expected_revenue")),
             "ExpectedGrossProfit": json_value(row.get("inventory_capped_expected_gross_profit")) if pd.notna(row.get("inventory_capped_expected_gross_profit")) else json_value(row.get("expected_gross_profit")),
             "PricingRuleID": json_value(row.get("PricingRuleID")),
@@ -82,6 +87,10 @@ class RecommendationService:
             "manual_review_flag": bool(row.get("manual_review_flag", False)),
             "reason_codes": reasons,
             "warnings": sorted(set(warnings)),
+            "scenario_mode": "HISTORICAL_REPLAY",
+            "currency_code": None,
+            "currency_status": "UNVERIFIED_SOURCE_UNIT",
+            "InventorySnapshotDate": json_value(row.get("InventorySnapshotDate")),
         }
         return recommendation
 
@@ -91,9 +100,6 @@ class RecommendationService:
         final = float(rec["FinalRecommendedPrice"] or 0.0)
         change = final - current
         change_pct = None if current == 0 else change / current
-        expected_units = float(rec["ExpectedUnits"] or 0.0)
-        mean_quantity = float(self.registry.phase6_spec.get("phase5_mean_value", 1.0) or 1.0)
-        purchase_probability = max(0.0, min(1.0, expected_units / mean_quantity))
         manual = bool(rec["manual_review_flag"])
         if manual:
             text = "This decision is flagged for manual review; the frozen business policy does not authorize an automatic replacement price."
@@ -110,7 +116,10 @@ class RecommendationService:
             "final_price": final,
             "price_change_amount": change,
             "price_change_percentage": change_pct,
-            "purchase_probability": purchase_probability,
+            "purchase_probability": rec["RawPurchaseProbability"],
+            "purchase_probability_status": "NOT_AVAILABLE_IN_DECISION_ARTIFACT",
+            "guarded_expected_demand": rec["GuardedExpectedUnits"],
+            "inventory_capped_expected_demand": rec["InventoryCappedExpectedUnits"],
             "expected_demand": rec["ExpectedUnits"],
             "expected_revenue": rec["ExpectedRevenue"],
             "expected_gross_profit": rec["ExpectedGrossProfit"],
@@ -122,6 +131,9 @@ class RecommendationService:
             "warnings": rec["warnings"],
             "explanation_text": text,
             "model_implied": True,
+            "scenario_mode": rec["scenario_mode"],
+            "currency_code": rec["currency_code"],
+            "currency_status": rec["currency_status"],
         }
 
     def get_business_rule_details(self, decision_id: str, *, split: str = "validation") -> dict[str, Any]:
@@ -147,7 +159,8 @@ class RecommendationService:
             return None
         row = self._row(decision_id, split="current")
         return {
-            "label": "Current snapshot inventory context",
+            "label": "Historical inventory snapshot context",
+            "InventorySnapshotDate": json_value(row.get("InventorySnapshotDate")),
             "AvailableQty": json_value(row.get("AvailableQty")),
             "StockStatus": json_value(row.get("StockStatus")),
             "slow_moving": bool(row.get("slow_moving_flag", False)),

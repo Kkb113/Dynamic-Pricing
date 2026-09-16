@@ -1,0 +1,49 @@
+{
+  "schema_version": "pricing.phase0.acceptance.v1",
+  "phase": "Phase 0 - Remediation and release readiness",
+  "status": "PASS_LOCAL_AND_LINUX",
+  "source_branch": "codex/azure-phase0-remediation",
+  "source_commit": "f35a7a7326e03f9a6b759358c9a43b0608f4cb95",
+  "validation": {
+    "python": {
+      "status": "PASS",
+      "tests_passed": 280,
+      "tests_failed": 0
+    },
+    "frontend": {
+      "status": "PASS",
+      "tests_passed": 30,
+      "tests_failed": 0,
+      "lint": "PASS",
+      "production_build": "PASS"
+    },
+    "release_manifest": {
+      "status": "PASS",
+      "file_count": 204,
+      "total_bytes": 16267703,
+      "missing": 0,
+      "unsafe": 0
+    }
+  },
+  "scope": {
+    "mode": "HISTORICAL_SNAPSHOT_POC",
+    "inventory_snapshot_date": "2025-12-31",
+    "currency_status": "UNVERIFIED_SOURCE_UNIT",
+    "advisory_only": true,
+    "azure_resources_created_or_started": false,
+    "cloud_deployment_performed": false
+  },
+  "linux_ci": {
+    "status": "PASS",
+    "tested_commit": "08bf3194627bbc8c3fdee954fc998d934d46ecb8",
+    "run_url": "https://github.com/Kkb113/Dynamic-Pricing/actions/runs/35057674763",
+    "python_tests_passed": 280,
+    "frontend_tests_passed": 30,
+    "manifest_files_verified": 204,
+    "python_wheel": "PASS",
+    "frontend_lint_and_build": "PASS",
+    "warning": "One upstream Starlette/AnyIO deprecation warning; no test failures."
+  },
+  "remaining_external_gate": null,
+  "next_phase": "Phase 1 governance and immutable transfer; not started."
+}

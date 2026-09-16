@@ -1,0 +1,16 @@
+{
+  "phase": "phase4",
+  "status": "PASS",
+  "historical_evidence_diff_file_count": 0,
+  "phase4_artifact_file_count": 5,
+  "forbidden_marker_hit_count": 0,
+  "secret_values_recorded": false,
+  "prompts_recorded": false,
+  "narratives_recorded": false,
+  "business_values_recorded": false,
+  "request_ids_recorded": false,
+  "raw_tool_payloads_recorded": false,
+  "provider_header_values_recorded": false,
+  "ports_free": true,
+  "owned_process_state_present": false
+}

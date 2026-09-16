@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "command": "cd frontend; npm run build",
+  "bundler": "vite 8.2.1",
+  "typescript": "6.0.3",
+  "output": {
+    "index_html_kb": 0.56,
+    "css_kb": 10.57,
+    "javascript_kb": 232.45,
+    "gzip_javascript_kb": 71.60
+  },
+  "dist_is_ignored": true,
+  "sourcemaps": false
+}

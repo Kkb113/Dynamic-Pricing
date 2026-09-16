@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dynamic-pricing.local/contracts/application/pricing_chat_error_v1.schema.json",
+  "title": "Dynamic Pricing Chat Error v1",
+  "description": "Stable HTTP error envelope for the local pricing chat API. Internal exception details are never returned.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request_id", "status", "error"],
+  "properties": {
+    "schema_version": {"const": "pricing.chat.error.v1"},
+    "request_id": {"type": "string", "pattern": "^req_[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"},
+    "status": {"const": "error"},
+    "error": {"$ref": "#/$defs/error_detail"},
+    "warnings": {"type": "array", "maxItems": 20, "items": {"$ref": "#/$defs/warning"}}
+  },
+  "$defs": {
+    "error_code": {
+      "type": "string",
+      "enum": ["INVALID_REQUEST", "UNSUPPORTED_INTENT", "MISSING_PRICING_CONTEXT", "POLICY_REJECTED", "UNKNOWN_PRICING_DECISION", "INVALID_CANDIDATE_PRICE", "MODEL_SUPPORT_LIMIT", "ARTIFACT_INTEGRITY_FAILURE", "AGENT_NOT_CONFIGURED", "AGENT_TIMEOUT", "AGENT_RATE_LIMITED", "AGENT_CALL_FAILED", "AGENT_OUTPUT_INVALID", "TOOL_FAILURE", "TOOL_VALIDATION_FAILED", "INTERNAL_ERROR"]
+    },
+    "error_detail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "retryable"],
+      "properties": {
+        "code": {"$ref": "#/$defs/error_code"},
+        "message": {"type": "string", "minLength": 1, "maxLength": 500},
+        "field": {"type": "string", "pattern": "^[A-Za-z0-9_.-]{1,80}$"},
+        "retryable": {"type": "boolean"}
+      }
+    },
+    "warning_code": {
+      "type": "string",
+      "enum": ["OPENAI_NOT_CONFIGURED", "OPENAI_UNAVAILABLE", "HISTORICAL_INVENTORY_SNAPSHOT", "CURRENT_CONTEXT_STALENESS_HIGH", "MANUAL_REVIEW_REQUIRED", "RULE_VIOLATION_REVIEW", "MODEL_IMPLIED_SCENARIO", "OBSERVED_DATA_NOT_AVAILABLE", "COARSE_GRID_VALUE_WARNING", "RESPONSE_PARTIAL"]
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "severity"],
+      "properties": {
+        "code": {"$ref": "#/$defs/warning_code"},
+        "message": {"type": "string", "minLength": 1, "maxLength": 500},
+        "severity": {"type": "string", "enum": ["info", "notice", "warning"]}
+      }
+    }
+  }
+}
