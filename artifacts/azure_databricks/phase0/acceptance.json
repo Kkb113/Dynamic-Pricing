@@ -3,7 +3,7 @@
   "phase": "Phase 0 - Remediation and release readiness",
   "status": "PASS_LOCAL_AND_LINUX",
   "source_branch": "codex/azure-phase0-remediation",
-  "source_commit": "731be2d3a5dbcb22b27cc7be7e5f151f8b864bda",
+  "source_commit": "f35a7a7326e03f9a6b759358c9a43b0608f4cb95",
   "validation": {
     "python": {
       "status": "PASS",

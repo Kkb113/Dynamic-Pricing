@@ -1243,13 +1243,13 @@
       "sha256": "2bb24e03609a59408a31375947765640054dacf45c23a72b98ac013568345265"
     }
   ],
-  "generated_at_utc": "2026-09-16T04:58:04.118010+00:00",
+  "generated_at_utc": "2026-09-16T05:17:07.785811+00:00",
   "inventory_snapshot_date": "2025-12-31",
   "missing": [],
   "release_mode": "HISTORICAL_SNAPSHOT_POC",
   "schema_version": "pricing.release.manifest.v1",
   "source_branch": "codex/azure-phase0-remediation",
-  "source_commit": "731be2d3a5dbcb22b27cc7be7e5f151f8b864bda",
+  "source_commit": "f35a7a7326e03f9a6b759358c9a43b0608f4cb95",
   "source_tree_clean": true,
   "status": "PASS",
   "total_bytes": 16267703,
