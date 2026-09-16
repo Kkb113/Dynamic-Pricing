@@ -133,3 +133,21 @@ def test_manifest_verifier_detects_tampering(tmp_path):
     report = verify_release_manifest(tmp_path, json.loads(json.dumps(payload)))
     assert report["status"] == "BLOCKED"
     assert report["hash_mismatches"][0]["path"] == "artifact.txt"
+
+
+def test_manifest_text_hash_is_portable_across_git_line_endings(tmp_path):
+    text_file = tmp_path / "portable.yaml"
+    text_file.write_bytes(b"mode: historical\r\nadvisory_only: true\r\n")
+    from dynamic_pricing.release import manifest_digest
+
+    digest, byte_count, hash_mode = manifest_digest(text_file)
+    payload = {
+        "files": [{
+            "path": "portable.yaml",
+            "bytes": byte_count,
+            "sha256": digest,
+            "hash_mode": hash_mode,
+        }]
+    }
+    text_file.write_bytes(b"mode: historical\nadvisory_only: true\n")
+    assert verify_release_manifest(tmp_path, payload)["status"] == "PASS"

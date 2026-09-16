@@ -16,6 +16,10 @@ EXCLUDED_PARTS = frozenset({
     ".phase2-run-tmp", ".phase4-runtime", ".test-tmp",
 })
 EXCLUDED_NAMES = frozenset({".env", ".env.local", ".env.production"})
+CANONICAL_TEXT_SUFFIXES = frozenset({
+    ".css", ".html", ".json", ".lock", ".md", ".py", ".toml", ".ts",
+    ".tsx", ".txt", ".yaml", ".yml",
+})
 
 CRITICAL_RUNTIME_PATHS = (
     "contracts/phase2_feature_contract_v1.yaml",
@@ -54,6 +58,30 @@ def sha256_file(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def _manifest_bytes(path: Path) -> tuple[bytes, str]:
+    """Return deterministic bytes and the hashing mode used by the manifest.
+
+    Git may materialize text files with CRLF on Windows and LF on Linux. Release
+    integrity therefore hashes UTF-8 text in canonical LF form while preserving
+    exact bytes for model, Parquet, and other binary artifacts.
+    """
+
+    raw = path.read_bytes()
+    if path.suffix.lower() not in CANONICAL_TEXT_SUFFIXES:
+        return raw, "raw_bytes"
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return raw, "raw_bytes"
+    canonical = text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+    return canonical, "canonical_utf8_lf"
+
+
+def manifest_digest(path: Path) -> tuple[str, int, str]:
+    content, mode = _manifest_bytes(path)
+    return hashlib.sha256(content).hexdigest(), len(content), mode
 
 
 def _git(root: Path, *args: str) -> str:
@@ -112,14 +140,17 @@ def build_release_manifest(root: Path, *, require_clean: bool = True) -> Release
     candidates = transfer_paths(root)
     missing = [path.relative_to(root).as_posix() for path in candidates if not path.is_file()]
     unsafe = [path.relative_to(root).as_posix() for path in candidates if not _safe(path, root)]
-    entries = [
-        {
+    entries = []
+    for path in candidates:
+        if not path.is_file() or not _safe(path, root):
+            continue
+        digest, canonical_bytes, hash_mode = manifest_digest(path)
+        entries.append({
             "path": path.relative_to(root).as_posix(),
-            "bytes": path.stat().st_size,
-            "sha256": sha256_file(path),
-        }
-        for path in candidates if path.is_file() and _safe(path, root)
-    ]
+            "bytes": canonical_bytes,
+            "sha256": digest,
+            "hash_mode": hash_mode,
+        })
     tree_status = _git(root, "status", "--porcelain", "--untracked-files=all")
     dirty = tree_status not in {"", "unavailable"}
     blockers = []
@@ -163,7 +194,10 @@ def verify_release_manifest(root: Path, payload: dict[str, Any]) -> dict[str, An
         if not path.is_file():
             missing.append(relative)
             continue
-        actual = sha256_file(path)
+        if item.get("hash_mode") == "canonical_utf8_lf":
+            actual, _, _ = manifest_digest(path)
+        else:
+            actual = sha256_file(path)
         if actual != item.get("sha256"):
             mismatches.append({"path": relative, "expected": str(item.get("sha256")), "actual": actual})
     return {
@@ -179,6 +213,7 @@ __all__ = [
     "ReleaseManifest",
     "ReleaseManifestError",
     "build_release_manifest",
+    "manifest_digest",
     "sha256_file",
     "transfer_paths",
     "verify_release_manifest",
