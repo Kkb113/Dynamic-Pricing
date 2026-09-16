@@ -1,0 +1,21 @@
+{
+  "accepted_merge_commit": "975aad7006c2bde099729570b442f2d0bd371c90",
+  "command": "plan",
+  "compute_started": false,
+  "file_count": 204,
+  "partition_counts": {
+    "restricted": 8,
+    "runtime": 196
+  },
+  "phase0_manifest_sha256": "2e6c455737c60c1b422154c4b410e99bf7d6ddfac8d25cc2ac3ba3927ad62adc",
+  "release_id": "pricing-f35a7a7326e0-2e6c455737c60c1b",
+  "roots": {
+    "restricted": "/Volumes/intellify_databricks_demo/pricing_bronze/release_inputs/pricing-f35a7a7326e0-2e6c455737c60c1b",
+    "runtime": "/Volumes/intellify_databricks_demo/pricing_ml/release_runtime/pricing-f35a7a7326e0-2e6c455737c60c1b"
+  },
+  "schema_version": "pricing.transfer.v1",
+  "source_commit": "f35a7a7326e03f9a6b759358c9a43b0608f4cb95",
+  "status": "PASS",
+  "timestamp_utc": "2026-09-16T05:43:29.151538+00:00",
+  "total_bytes": 16267703
+}
