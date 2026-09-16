@@ -1,5 +1,10 @@
 # Phase 2 — Lakehouse and business data contracts
 
+Status (16 September 2026): implemented, deployed and live-validated in frozen
+snapshot scope. [PR #12](https://github.com/Kkb113/Dynamic-Pricing/pull/12) awaits
+review/merge. Full rerun created zero objects; App and warehouse ended stopped.
+There are 42 local governance/contract tests and 280 passing pricing regressions.
+
 ## Scope and release
 
 Pricing remains a separately versioned project in `intellify-databricks-demo`.
@@ -61,6 +66,10 @@ there is no schema-wide SELECT. Costs and labels are excluded from public projec
 - Review reasons, data/model/policy hashes and release ID travel with business rows.
 - Store IDs present in retail inventory do not establish matching store semantics.
   Combined tools remain disabled until their required mappings are accepted.
+- Live reconciliation found all 2,671 product ID/category/brand combinations matched,
+  and all 49 store IDs present in retail inventory. Mobile, Store and Web matched
+  retail customer channels. Email, Kiosk and Online were not observed there; do not
+  silently equate Online with Web or claim those pricing channels are invalid.
 - Product display names are borrowed only for matching ID, category and brand.
   Attribute conflicts and unmatched IDs are reported; names are never matching keys.
 

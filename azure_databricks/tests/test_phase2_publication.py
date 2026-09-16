@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from databricks.sdk.errors import NotFound
-from phase2_live import MARKER, materialize
+from phase2_live import MARKER, materialize, object_snapshot
 
 
 class FakeSQL:
@@ -21,6 +21,11 @@ class FakeSQL:
 
 
 class PublicationTests(unittest.TestCase):
+    def test_first_deployment_can_have_no_schemas(self):
+        def missing(*args):
+            raise NotFound("schema does not exist")
+        self.assertEqual(object_snapshot(SimpleNamespace(tables=SimpleNamespace(list=missing))), {})
+
     def client(self, seal="seal", absent=False):
         def get(name):
             if absent:

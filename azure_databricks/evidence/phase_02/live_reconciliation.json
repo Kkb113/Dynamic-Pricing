@@ -1,0 +1,85 @@
+{
+  "app_effective_rights": {
+    "intellify_databricks_demo.pricing_gold.action_summary_2e6c455737c6": [
+      "SELECT"
+    ],
+    "intellify_databricks_demo.pricing_gold.action_summary_2e6c455737c6_view": [
+      "SELECT"
+    ],
+    "intellify_databricks_demo.pricing_gold.business_decisions_2e6c455737c6": [
+      "SELECT"
+    ],
+    "intellify_databricks_demo.pricing_gold.business_decisions_2e6c455737c6_view": [
+      "SELECT"
+    ],
+    "intellify_databricks_demo.pricing_gold.product_context_2e6c455737c6": [
+      "SELECT"
+    ],
+    "intellify_databricks_demo.pricing_gold.store_context_2e6c455737c6": [
+      "SELECT"
+    ],
+    "intellify_databricks_demo.pricing_silver.cost_policy_context_2e6c455737c6": [],
+    "intellify_databricks_demo.pricing_silver.features_2e6c455737c6": [],
+    "intellify_databricks_demo.pricing_silver.inventory_decisions_2e6c455737c6": [],
+    "intellify_databricks_demo.pricing_silver.source_lineage_2e6c455737c6": [],
+    "intellify_databricks_demo.pricing_silver.splits_2e6c455737c6": [],
+    "intellify_databricks_demo.pricing_silver.test_decisions_2e6c455737c6": [],
+    "intellify_databricks_demo.pricing_silver.validation_candidates_2e6c455737c6": [],
+    "intellify_databricks_demo.pricing_silver.validation_decisions_2e6c455737c6": [],
+    "intellify_databricks_demo.pricing_silver.validation_model_decisions_2e6c455737c6": [],
+    "intellify_databricks_demo.pricing_silver.validation_outcomes_2e6c455737c6": []
+  },
+  "app_identity_checks": "CURATED_READ_PASS_RESTRICTED_READ_DENIED",
+  "business_tables": [
+    "intellify_databricks_demo.pricing_gold.product_context_2e6c455737c6",
+    "intellify_databricks_demo.pricing_gold.store_context_2e6c455737c6",
+    "intellify_databricks_demo.pricing_gold.business_decisions_2e6c455737c6",
+    "intellify_databricks_demo.pricing_gold.action_summary_2e6c455737c6",
+    "intellify_databricks_demo.pricing_gold.business_decisions_2e6c455737c6_view",
+    "intellify_databricks_demo.pricing_gold.action_summary_2e6c455737c6_view"
+  ],
+  "combined_tools_enabled": false,
+  "contract_seal": "c6a1f0d2affa43ba034b6dd0d789570de0b2689faabf2fc23f7e5a6c899b8687",
+  "counts": {
+    "action_summary": 13,
+    "business_decisions": 12329,
+    "cost_policy_context": 1829,
+    "features": 35000,
+    "inventory_decisions": 1829,
+    "lineage": 8,
+    "product_context": 2671,
+    "splits": 35000,
+    "store_context": 49,
+    "test_decisions": 5250,
+    "validation_candidates": 47250,
+    "validation_decisions": 5250,
+    "validation_model_decisions": 5250,
+    "validation_outcomes": 5250
+  },
+  "deadline_unix": 1789542951,
+  "product_mapping": [
+    [
+      "ID_AND_ATTRIBUTES_MATCH",
+      "2671"
+    ]
+  ],
+  "restricted_tables": [
+    "intellify_databricks_demo.pricing_silver.features_2e6c455737c6",
+    "intellify_databricks_demo.pricing_silver.splits_2e6c455737c6",
+    "intellify_databricks_demo.pricing_silver.validation_candidates_2e6c455737c6",
+    "intellify_databricks_demo.pricing_silver.validation_model_decisions_2e6c455737c6",
+    "intellify_databricks_demo.pricing_silver.inventory_decisions_2e6c455737c6",
+    "intellify_databricks_demo.pricing_silver.test_decisions_2e6c455737c6",
+    "intellify_databricks_demo.pricing_silver.validation_decisions_2e6c455737c6",
+    "intellify_databricks_demo.pricing_silver.validation_outcomes_2e6c455737c6",
+    "intellify_databricks_demo.pricing_silver.cost_policy_context_2e6c455737c6",
+    "intellify_databricks_demo.pricing_silver.source_lineage_2e6c455737c6"
+  ],
+  "retail_unchanged": true,
+  "sql_operations": 44,
+  "status": "DEPLOYED_RECONCILED",
+  "stop_job": "9dd8000b-a858-4436-9b03-e2be38020305",
+  "store_names": "Identifiers only; no verified source names",
+  "timestamp_utc": "2026-09-16T07:00:01.153131+00:00",
+  "warehouse_final_state": "STOPPED"
+}

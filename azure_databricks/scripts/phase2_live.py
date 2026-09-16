@@ -111,6 +111,16 @@ def grant_select(client, full_name, principals):
             PermissionsChange(principal=principal, add=[Privilege.SELECT])])
 
 
+def object_snapshot(client):
+    objects = {}
+    for name in ("pricing_silver", "pricing_gold"):
+        try:
+            objects.update({t.full_name: t.table_id for t in client.tables.list(CATALOG, name)})
+        except NotFound:
+            pass  # Expected on the first deployment, before schema creation.
+    return objects
+
+
 def deploy(cloud, sql, plan):
     client, cfg = cloud.client, cloud.config
     seal = digest(packed({"plan": plan, "deployment_contract": "pricing.lakehouse.deploy.v1"}))
@@ -163,6 +173,13 @@ def deploy(cloud, sql, plan):
        FROM (SELECT DISTINCT StoreID FROM {f}) s
        LEFT JOIN (SELECT DISTINCT store_id FROM {CATALOG}.silver.inventory) r ON s.StoreID = r.store_id"""
     counts["store_context"] = materialize(client, sql, stores, stores_query, seal, owner)
+    store_mapping = sql.run("SELECT mapping_status, count(*) FROM " + stores + " GROUP BY mapping_status")
+    channel_mapping = sql.run(f"""SELECT p.Channel,
+       CASE WHEN r.channel IS NULL THEN 'NOT_OBSERVED_IN_RETAIL_CUSTOMER_CHANNELS'
+       ELSE 'EXACT_CHANNEL_MATCH' END AS mapping_status
+       FROM (SELECT DISTINCT Channel FROM {f}) p
+       LEFT JOIN (SELECT DISTINCT preferred_channel AS channel FROM {CATALOG}.silver.customers) r
+         ON p.Channel=r.channel ORDER BY p.Channel""")
     public = [products, stores]
     business = []
     for scenario, table in (("validation", tables["validation_decisions"]), ("test", tables["test_decisions"]),
@@ -226,7 +243,8 @@ def deploy(cloud, sql, plan):
                     "Restricted-read test failed for an unrelated reason")
         else:
             raise RuntimeError("App unexpectedly read restricted features")
-    return {"counts": counts, "product_mapping": mapping, "contract_seal": seal,
+    return {"counts": counts, "product_mapping": mapping, "store_mapping": store_mapping,
+            "channel_mapping": channel_mapping, "contract_seal": seal,
             "app_identity_checks": "CURATED_READ_PASS_RESTRICTED_READ_DENIED", "app_effective_rights": rights_report,
             "restricted_tables": list(tables.values()), "business_tables": public,
             "combined_tools_enabled": False, "store_names": "Identifiers only; no verified source names",
@@ -269,17 +287,25 @@ def main():
         require(digest(content) == item["compatibility_sha256"], "Compatibility content drift")
         write_once(store, item["source"], content)
     result = {"status": "FAILED", "deadline_unix": deadline, "stop_job": stop_job}
+    objects_before = object_snapshot(cloud.client)
     try:
         cloud.client.warehouses.start(WAREHOUSE)
         sql = SQL(cloud.client, deadline)
         result.update(deploy(cloud, sql, plan))
         result["sql_operations"] = sql.count
+        objects_after = object_snapshot(cloud.client)
+        result["objects_created"] = len(objects_after.keys() - objects_before.keys())
+        result["existing_object_ids_unchanged"] = all(objects_after.get(k) == v for k, v in objects_before.items())
+        require(result["existing_object_ids_unchanged"], "Existing objects were replaced")
     finally:
         cloud.client.warehouses.stop(WAREHOUSE)
         cloud.client.warehouses.wait_get_warehouse_stopped(WAREHOUSE)
         result["warehouse_final_state"] = cloud.client.warehouses.get(WAREHOUSE).state.value
         result["timestamp_utc"] = datetime.now(UTC).isoformat()
         after = audit(cloud)
+        result["app_final_state"] = after["app_state"]
+        result["predictive_optimization"] = {s: cloud.client.schemas.get(CATALOG + "." + s)
+            .effective_predictive_optimization_flag.value.value for s in ("pricing_silver", "pricing_gold")}
         result["retail_unchanged"] = all(before[k] == after[k] for k in
             ("catalog_grants", "retail_schema_grants", "app_configuration_sha256", "azure_resources"))
         args.output.parent.mkdir(parents=True, exist_ok=True)
