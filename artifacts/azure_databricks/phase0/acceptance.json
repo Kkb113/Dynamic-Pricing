@@ -1,7 +1,7 @@
 {
   "schema_version": "pricing.phase0.acceptance.v1",
   "phase": "Phase 0 - Remediation and release readiness",
-  "status": "PASS_LOCAL",
+  "status": "PASS_LOCAL_AND_LINUX",
   "source_branch": "codex/azure-phase0-remediation",
   "source_commit": "731be2d3a5dbcb22b27cc7be7e5f151f8b864bda",
   "validation": {
@@ -33,5 +33,17 @@
     "azure_resources_created_or_started": false,
     "cloud_deployment_performed": false
   },
-  "remaining_external_gate": "Linux GitHub Actions must pass after the branch is pushed; Phase 1 cloud work has not started."
+  "linux_ci": {
+    "status": "PASS",
+    "tested_commit": "08bf3194627bbc8c3fdee954fc998d934d46ecb8",
+    "run_url": "https://github.com/Kkb113/Dynamic-Pricing/actions/runs/35057674763",
+    "python_tests_passed": 280,
+    "frontend_tests_passed": 30,
+    "manifest_files_verified": 204,
+    "python_wheel": "PASS",
+    "frontend_lint_and_build": "PASS",
+    "warning": "One upstream Starlette/AnyIO deprecation warning; no test failures."
+  },
+  "remaining_external_gate": null,
+  "next_phase": "Phase 1 governance and immutable transfer; not started."
 }

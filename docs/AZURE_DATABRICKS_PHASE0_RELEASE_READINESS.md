@@ -1,6 +1,8 @@
 # Azure Databricks dynamic pricing — Phase 0 release readiness
 
-Status: implemented locally; cloud deployment and live validation not started.
+Status: Phase 0 complete with local and Linux CI validation; cloud deployment and live validation not started.
+
+Linux CI passed on commit `08bf3194627bbc8c3fdee954fc998d934d46ecb8`: 280 Python tests, 30 frontend tests, lint, frontend production build, Python wheel, and all 204 release hashes. Evidence: https://github.com/Kkb113/Dynamic-Pricing/actions/runs/35057674763. The run emitted one upstream Starlette/AnyIO deprecation warning.
 
 ## Scope decision
 
