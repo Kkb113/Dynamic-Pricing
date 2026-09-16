@@ -727,10 +727,10 @@
       "sha256": "73b1b776c33e335126acf1f3a6c521b762cb5587295bcdb9911de930d8a75d27"
     },
     {
-      "bytes": 8232,
+      "bytes": 9943,
       "hash_mode": "canonical_utf8_lf",
       "path": "src/dynamic_pricing/release.py",
-      "sha256": "3628b76ba6d6d43f16bf717a7808ffc9be4b08d74732451a836e051804a6f9c6"
+      "sha256": "f7f1edac6df0d99336270666168ff4c2a5ab33ede5e03b960092f0114931faec"
     },
     {
       "bytes": 191,
@@ -955,10 +955,10 @@
       "sha256": "4e98a7873efbef6cc93ee1a5ee72172dbcb611f6289783649dbe1fa2904ae2e9"
     },
     {
-      "bytes": 7599,
+      "bytes": 7918,
       "hash_mode": "canonical_utf8_lf",
       "path": "src/phase7/frozen_scorer.py",
-      "sha256": "6f2d0caccbc13018583165b397d886cd254f7f192c38aa33587f77e08b3ca6d6"
+      "sha256": "62984484e73cd977e7599b7acc6b05fb165d3ab0583ab3888efe9233803cf799"
     },
     {
       "bytes": 83641,
@@ -1243,15 +1243,15 @@
       "sha256": "2bb24e03609a59408a31375947765640054dacf45c23a72b98ac013568345265"
     }
   ],
-  "generated_at_utc": "2026-09-16T04:43:55.782973+00:00",
+  "generated_at_utc": "2026-09-16T04:51:17.258113+00:00",
   "inventory_snapshot_date": "2025-12-31",
   "missing": [],
   "release_mode": "HISTORICAL_SNAPSHOT_POC",
   "schema_version": "pricing.release.manifest.v1",
   "source_branch": "codex/azure-phase0-remediation",
-  "source_commit": "b0eff4dacd68dc1d2381b71f070e30bd1bcc8b7f",
+  "source_commit": "d1d5ef5ac2f11eb8d29df3c1c1018dbe7557cd17",
   "source_tree_clean": true,
   "status": "PASS",
-  "total_bytes": 16265089,
+  "total_bytes": 16267119,
   "unsafe": []
 }
