@@ -13,9 +13,10 @@
     ".test-tmp",
     ".venv",
     "__pycache__",
+    "dist",
     "node_modules"
   ],
-  "file_count": 205,
+  "file_count": 204,
   "files": [
     {
       "bytes": 5495194,
@@ -250,12 +251,6 @@
       "hash_mode": "canonical_utf8_lf",
       "path": "contracts/pricing_runtime_contract_v1.yaml",
       "sha256": "5d117bbf40263f6e5b23959aefa165de2e2cef62ee05ee3dc94d94b69d3d92a0"
-    },
-    {
-      "bytes": 568,
-      "hash_mode": "canonical_utf8_lf",
-      "path": "frontend/dist/index.html",
-      "sha256": "933ed4b53dc7ee8c0918c8f6278f6be420819a971fa005152c2dcd23b1ca4999"
     },
     {
       "bytes": 469,
@@ -732,10 +727,10 @@
       "sha256": "73b1b776c33e335126acf1f3a6c521b762cb5587295bcdb9911de930d8a75d27"
     },
     {
-      "bytes": 8224,
+      "bytes": 8232,
       "hash_mode": "canonical_utf8_lf",
       "path": "src/dynamic_pricing/release.py",
-      "sha256": "6320d9651f9a14b0e12cc3820d16db357ecf56b499d2065c9a9ec33b2f5ac029"
+      "sha256": "3628b76ba6d6d43f16bf717a7808ffc9be4b08d74732451a836e051804a6f9c6"
     },
     {
       "bytes": 191,
@@ -1248,15 +1243,15 @@
       "sha256": "2bb24e03609a59408a31375947765640054dacf45c23a72b98ac013568345265"
     }
   ],
-  "generated_at_utc": "2026-09-16T04:41:13.594534+00:00",
+  "generated_at_utc": "2026-09-16T04:43:55.782973+00:00",
   "inventory_snapshot_date": "2025-12-31",
   "missing": [],
   "release_mode": "HISTORICAL_SNAPSHOT_POC",
   "schema_version": "pricing.release.manifest.v1",
   "source_branch": "codex/azure-phase0-remediation",
-  "source_commit": "47766d9d4dda1819f2f66ca55129fd62f5af8eb6",
+  "source_commit": "b0eff4dacd68dc1d2381b71f070e30bd1bcc8b7f",
   "source_tree_clean": true,
   "status": "PASS",
-  "total_bytes": 16265649,
+  "total_bytes": 16265089,
   "unsafe": []
 }
