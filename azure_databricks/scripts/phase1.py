@@ -147,6 +147,8 @@ def audit(cloud):
                  "enabled": x["properties"].get("isEnabled"), "expiry": x["properties"].get("expiryTime")}
                 for x in data.get("value", [])]})
     return {"workspace": cfg["workspace_name"], "catalog_owner": catalog.owner,
+            "catalog_predictive_optimization": catalog.effective_predictive_optimization_flag.as_dict()
+                if catalog.effective_predictive_optimization_flag else None,
             "catalog_grants": c.grants.get("catalog", cfg["catalog"]).as_dict(),
             "retail_schema_grants": retail,
             "app_configuration_sha256": digest(packed({"resources": [r.as_dict() for r in app.resources or []],
@@ -326,6 +328,7 @@ def identity_test(c, cfg, plan):
     runtime_item = next(i for i in plan["files"] if i["path"].endswith("purchase_catboost.cbm"))
     restricted_path = plan["roots"]["restricted"] + "/" + restricted["path"]
     with workload(c, runtime, cfg["host"]) as client:
+        checks["authenticated_as_actual_app"] = str(client.current_user.me().id) == str(runtime.id)
         files = RemoteFiles(client)
         data = files.read(plan["roots"]["runtime"] + "/" + runtime_item["path"])
         checks["actual_app_model_read"] = data is not None and digest(data) == runtime_item["sha256"]
@@ -342,6 +345,7 @@ def identity_test(c, cfg, plan):
         checks["app_runtime_no_effective_write"] = "READ_VOLUME" in rights and not rights.intersection(
             {"WRITE_VOLUME", "ALL_PRIVILEGES", "MANAGE", "OWN"})
     with workload(c, negative, cfg["host"]) as client:
+        checks["authenticated_as_lower_privilege_identity"] = str(client.current_user.me().id) == str(negative.id)
         try:
             RemoteFiles(client).read(restricted_path)
             checks["lower_privilege_restricted_read_denied"] = False

@@ -98,6 +98,11 @@ one-minute auto-stop and one-cluster maximum. The old September 11 and 15 demo
 shutdown schedules had expired; a new approved demo window is required before a
 future compute-based validation. Phase 1 does not extend those schedules.
 
+The existing catalog inherits enabled predictive optimization. Phase 1 creates
+no tables, so this does not initiate an optimization workload here. Phase 2 must
+explicitly review or disable that setting for new pricing tables before ingestion
+to keep maintenance compute within its approved cost plan.
+
 The live identity test validates the existing App principal's Files API permissions;
 it does not establish that dynamic pricing is enabled in the App. App integration,
 curated contexts and serving validation remain later phases.
