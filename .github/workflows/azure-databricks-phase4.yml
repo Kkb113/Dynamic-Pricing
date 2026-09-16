@@ -1,0 +1,28 @@
+name: pricing-unified-app-phase4
+on:
+  pull_request:
+    paths: ['azure_databricks/**', '.github/workflows/azure-databricks-phase4.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pricing-app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r azure_databricks/requirements-mlflow.txt
+      - run: pip install --no-deps ./azure_databricks/app
+      - name: Prepare local model without cloud authentication
+        run: |
+          python -c "import sys;sys.path.insert(0,'azure_databricks/scripts');from phase3 import save_package;from pathlib import Path;save_package(Path('build/phase4-model'))"
+          python azure_databricks/scripts/phase4_package.py --destination build/phase4-private --model-path build/phase4-model
+      - run: python -m unittest discover -s azure_databricks/app/tests -v
+      - name: Minimal Linux without native ODBC
+        run: |
+          docker build -f azure_databricks/app/Dockerfile.test -t pricing-phase4-test azure_databricks/app
+          docker run --rm --network none --cpus 2 --memory 2g -v "$PWD/build/phase4-private:/payload:ro" pricing-phase4-test
+      - run: python -m unittest discover -s azure_databricks/tests -v
