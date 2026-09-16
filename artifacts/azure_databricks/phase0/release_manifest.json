@@ -481,10 +481,10 @@
       "sha256": "35cce539da01a5e0917391c8cda409048ea38c8f2aa446f60e50a0f33962febe"
     },
     {
-      "bytes": 12653,
+      "bytes": 13237,
       "hash_mode": "canonical_utf8_lf",
       "path": "src/app_services/artifact_registry.py",
-      "sha256": "510ce9f0e98b03b65932aee498e5b5d0dc5413e31532b34dcafa21da971f7cf5"
+      "sha256": "f0e4523eee5bff59542afd43fe82f415c575902ca17ae766d4d4792069ed53d3"
     },
     {
       "bytes": 971,
@@ -1243,15 +1243,15 @@
       "sha256": "2bb24e03609a59408a31375947765640054dacf45c23a72b98ac013568345265"
     }
   ],
-  "generated_at_utc": "2026-09-16T04:51:17.258113+00:00",
+  "generated_at_utc": "2026-09-16T04:58:04.118010+00:00",
   "inventory_snapshot_date": "2025-12-31",
   "missing": [],
   "release_mode": "HISTORICAL_SNAPSHOT_POC",
   "schema_version": "pricing.release.manifest.v1",
   "source_branch": "codex/azure-phase0-remediation",
-  "source_commit": "d1d5ef5ac2f11eb8d29df3c1c1018dbe7557cd17",
+  "source_commit": "731be2d3a5dbcb22b27cc7be7e5f151f8b864bda",
   "source_tree_clean": true,
   "status": "PASS",
-  "total_bytes": 16267119,
+  "total_bytes": 16267703,
   "unsafe": []
 }
